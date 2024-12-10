@@ -36,14 +36,14 @@ const schema = z.object({
 });
 
 export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
-    // const { status, data: session } = useSession();
+    //   const { status, data: session } = useSession();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get("callbackUrl") ?? "/";
 
     const title =
         mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản Highschool";
 
-    // const loading = status == "loading" || session?.user;
+    //   const loading = status == "loading" || session?.user;
 
     const emailMethods = useForm<EmailFormInputs>({
         resolver: zodResolver(schema),
@@ -138,7 +138,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                                                 : "my-0 mb-0 h-0"
                                         )}
                                     >
-                                        <div className="top-0 w-full min-h-0.5 bg-gray-100 dark:bg-gray-800/50 rounded-full mb-3" />
+                                        <div className="top-0 w-full min-h-0.5 bg-gray-200 dark:bg-gray-800/50 rounded-full mb-3" />
                                         <FormField
                                             control={control}
                                             name="email"

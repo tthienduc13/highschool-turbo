@@ -8,32 +8,32 @@ import { CommandMenu } from "./command-menu";
 import { menuEventChannel } from "@/events/menu";
 
 function GlobalShortcutLayer() {
-    const [open, setOpen] = useState(false);
-    const session = useSession();
+  const [open, setOpen] = useState(false);
+  const session = useSession();
 
-    useEffect(() => {
-        const unsub = tinykeys(window, {
-            "$mod+k": (e) => {
-                if (!session.data?.user) return;
+  useEffect(() => {
+    const unsub = tinykeys(window, {
+      "$mod+k": (e) => {
+        if (!session.data?.user) return;
 
-                e.preventDefault();
-                setOpen(!open);
-            },
-        });
+        e.preventDefault();
+        setOpen(!open);
+      },
+    });
 
-        return () => {
-            unsub();
-        };
-    }, [session.data?.user, setOpen, open]);
-    return (
-        <CommandMenu
-            open={open}
-            onClose={() => {
-                setOpen(false);
-                menuEventChannel.emit("commandMenuClosed");
-            }}
-        />
-    );
+    return () => {
+      unsub();
+    };
+  }, [session.data?.user, setOpen, open]);
+  return (
+    <CommandMenu
+      open={open}
+      onClose={() => {
+        setOpen(false);
+        menuEventChannel.emit("commandMenuClosed");
+      }}
+    />
+  );
 }
 
 export default GlobalShortcutLayer;

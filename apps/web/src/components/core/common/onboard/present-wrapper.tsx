@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext } from "react";
 import { SegmentedProgress } from "./segmented-progress";
 import { Loading } from "../loading";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import { useMediaQuery } from "@highschool/hooks";
 
 const computeMap = (isMobile = false) => {
     const base = [
@@ -77,7 +77,7 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
 
     return (
         <PresentWrapperContext.Provider value={{ nextStep }}>
-            <div className="min-h-screen relative flex items-center justify-center">
+            <div className="min-h-screen relative flex items-center justify-center w-screen">
                 <div className="max-w-3xl py-20 mx-auto">
                     <motion.div
                         initial={{
@@ -113,7 +113,7 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
                             disableFrom={!me.username ? 3 : undefined}
                             onClick={async (i) => {
                                 await router.replace(
-                                    `/onboarding${map[i]!}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`
+                                    `/onboard${map[i]!}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`
                                 );
                             }}
                         />

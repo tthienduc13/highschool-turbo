@@ -2,59 +2,57 @@ import { auth } from "@/auth";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
 const NEXT_PUBLIC_API_URL =
-    "https://apigateway-dea9axdwfgfef5cw.southeastasia-01.azurewebsites.net";
+  "https://apigateway-dea9axdwfgfef5cw.southeastasia-01.azurewebsites.net";
 
 const axiosServices = axios.create({
-    baseURL: NEXT_PUBLIC_API_URL,
-    timeout: 50000,
+  baseURL: NEXT_PUBLIC_API_URL,
+  timeout: 50000,
 });
 
 axiosServices.interceptors.request.use(
-    async function (config) {
-        const session = await auth();
-        if (session?.user.accessToken) {
-            config.headers["Authorization"] =
-                `Bearer ${session.user.accessToken}`;
-        }
-        config.headers["Content-Type"] = "application/json";
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
+  async function (config) {
+    const session = await auth();
+    if (session?.user.accessToken) {
+      config.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
     }
+    config.headers["Content-Type"] = "application/json";
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
 );
 
 axiosServices.interceptors.response.use(
-    (res: AxiosResponse) => {
-        return res;
-    },
-    async (err) => {
-        return Promise.reject(err);
-    }
+  (res: AxiosResponse) => {
+    return res;
+  },
+  async (err) => {
+    return Promise.reject(err);
+  },
 );
 
 const axiosUpload = axios.create({
-    baseURL: NEXT_PUBLIC_API_URL,
-    timeout: 50000,
+  baseURL: NEXT_PUBLIC_API_URL,
+  timeout: 50000,
 });
 
 axiosUpload.interceptors.request.use(
-    async function (config) {
-        const session = await auth();
-        if (session?.user.accessToken) {
-            config.headers["Authorization"] =
-                `Bearer ${session.user.accessToken}`;
-        }
-        config.headers["Content-Type"] = "multipart/form-data";
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
+  async function (config) {
+    const session = await auth();
+    if (session?.user.accessToken) {
+      config.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
     }
+    config.headers["Content-Type"] = "multipart/form-data";
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
 );
 
 export function isAxiosError<T>(error: unknown): error is AxiosError<T> {
-    return axios.isAxiosError(error);
+  return axios.isAxiosError(error);
 }
 
 export const axiosClientUpload = axiosUpload;

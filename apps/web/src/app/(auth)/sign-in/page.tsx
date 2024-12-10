@@ -2,11 +2,11 @@ import SignInModule from "@/components/modules/SignIn";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Đăng nhập",
+  title: "Đăng nhập",
 };
 
 function SignInPage() {
-    return <SignInModule />;
+  return <SignInModule />;
 }
 
 export default SignInPage;

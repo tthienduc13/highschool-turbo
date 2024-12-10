@@ -1,7 +1,7 @@
 import VerifyAccountModule from "@/components/modules/VerifyAccount";
 
 function Verify() {
-    return <VerifyAccountModule />;
+  return <VerifyAccountModule />;
 }
 
 export default Verify;

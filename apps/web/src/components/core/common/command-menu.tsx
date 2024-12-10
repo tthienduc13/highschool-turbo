@@ -21,7 +21,7 @@ import { useTheme } from "next-themes";
 import useColorMode from "@/hooks/use-color-mode";
 import { useSession } from "next-auth/react";
 import { cn } from "@highschool/ui/lib/utils";
-import { useShortcut } from "@/hooks/use-shortcut";
+import { useShortcut } from "@highschool/hooks";
 
 type EntityType = "set" | "folder";
 

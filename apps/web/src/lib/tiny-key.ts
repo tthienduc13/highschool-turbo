@@ -11,26 +11,26 @@ type KeyBindingPress = [string[], string];
  * A map of keybinding strings to event handlers.
  */
 export interface KeyBindingMap {
-    [keybinding: string]: (event: KeyboardEvent) => void;
+  [keybinding: string]: (event: KeyboardEvent) => void;
 }
 
 /**
  * Options to configure the behavior of keybindings.
  */
 export interface KeyBindingOptions {
-    /**
-     * Key presses will listen to this event (default: "keydown").
-     */
-    event?: "keydown" | "keyup";
+  /**
+   * Key presses will listen to this event (default: "keydown").
+   */
+  event?: "keydown" | "keyup";
 
-    /**
-     * Keybinding sequences will wait this long between key presses before
-     * cancelling (default: 1000).
-     *
-     * **Note:** Setting this value too low (i.e. `300`) will be too fast for many
-     * of your users.
-     */
-    timeout?: number;
+  /**
+   * Keybinding sequences will wait this long between key presses before
+   * cancelling (default: 1000).
+   *
+   * **Note:** Setting this value too low (i.e. `300`) will be too fast for many
+   * of your users.
+   */
+  timeout?: number;
 }
 
 /**
@@ -55,19 +55,19 @@ const DEFAULT_EVENT = "keydown";
  * An alias for creating platform-specific keybinding aliases.
  */
 export const MOD =
-    typeof navigator === "object" &&
-    /Mac|iPod|iPhone|iPad/.test(navigator.platform)
-        ? "Meta"
-        : "Control";
+  typeof navigator === "object" &&
+  /Mac|iPod|iPhone|iPad/.test(navigator.platform)
+    ? "Meta"
+    : "Control";
 
 /**
  * There's a bug in Chrome that causes event.getModifierState not to exist on
  * KeyboardEvent's for F1/F2/etc keys.
  */
 function getModifierState(event: KeyboardEvent, mod: string) {
-    return typeof event.getModifierState === "function"
-        ? event.getModifierState(mod)
-        : false;
+  return typeof event.getModifierState === "function"
+    ? event.getModifierState(mod)
+    : false;
 }
 
 /**
@@ -79,15 +79,15 @@ function getModifierState(event: KeyboardEvent, mod: string) {
  * <mods>     = `<mod>+<mod>+...`
  */
 function parse(str: string): KeyBindingPress[] {
-    return str
-        .trim()
-        .split(" ")
-        .map((press) => {
-            let mods = press.split(/\b\+/);
-            const key = mods.pop() as string;
-            mods = mods.map((mod) => (mod === "$mod" ? MOD : mod));
-            return [mods, key];
-        });
+  return str
+    .trim()
+    .split(" ")
+    .map((press) => {
+      let mods = press.split(/\b\+/);
+      const key = mods.pop() as string;
+      mods = mods.map((mod) => (mod === "$mod" ? MOD : mod));
+      return [mods, key];
+    });
 }
 
 /**
@@ -95,13 +95,13 @@ function parse(str: string): KeyBindingPress[] {
  * partially or exactly.
  */
 function match(event: KeyboardEvent, press: KeyBindingPress): boolean {
-    // Special characters; `?` `!`
-    if (/^[^A-Za-z0-9]$/.test(event.key) && press[1] === event.key) {
-        return true;
-    }
+  // Special characters; `?` `!`
+  if (/^[^A-Za-z0-9]$/.test(event.key) && press[1] === event.key) {
+    return true;
+  }
 
-    // prettier-ignore
-    return !(
+  // prettier-ignore
+  return !(
 		// Allow either the `event.key` or the `event.code`
 		// MDN event.key: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
 		// MDN event.code: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
@@ -147,70 +147,64 @@ function match(event: KeyboardEvent, press: KeyBindingPress): boolean {
  * ```
  */
 export default function keybindings(
-    target: Window | HTMLElement,
-    keyBindingMap: KeyBindingMap,
-    options: KeyBindingOptions = {}
+  target: Window | HTMLElement,
+  keyBindingMap: KeyBindingMap,
+  options: KeyBindingOptions = {},
 ): () => void {
-    const timeout = options.timeout ?? DEFAULT_TIMEOUT;
-    const event = options.event ?? DEFAULT_EVENT;
+  const timeout = options.timeout ?? DEFAULT_TIMEOUT;
+  const event = options.event ?? DEFAULT_EVENT;
 
-    const keyBindings = Object.keys(keyBindingMap).map((key) => {
-        return [parse(key), keyBindingMap[key]] as const;
+  const keyBindings = Object.keys(keyBindingMap).map((key) => {
+    return [parse(key), keyBindingMap[key]] as const;
+  });
+
+  const possibleMatches = new Map<KeyBindingPress[], KeyBindingPress[]>();
+  let timer: NodeJS.Timeout | null = null;
+
+  const onKeyEvent: EventListener = (event) => {
+    // Ensure and stop any event that isn't a full keyboard event.
+    // Autocomplete option navigation and selection would fire a instanceof Event,
+    // instead of the expected KeyboardEvent
+    if (!(event instanceof KeyboardEvent)) {
+      return;
+    }
+
+    keyBindings.forEach((keyBinding) => {
+      const sequence = keyBinding[0];
+      const callback = keyBinding[1]!;
+
+      const prev = possibleMatches.get(sequence);
+      const remainingExpectedPresses = prev ? prev : sequence;
+      const currentExpectedPress = remainingExpectedPresses[0]!;
+
+      const matches = match(event, currentExpectedPress);
+
+      if (!matches) {
+        // Modifier keydown events shouldn't break sequences
+        // Note: This works because:
+        // - non-modifiers will always return false
+        // - if the current keypress is a modifier then it will return true when we check its state
+        // MDN: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState
+        if (!getModifierState(event, event.key)) {
+          possibleMatches.delete(sequence);
+        }
+      } else if (remainingExpectedPresses.length > 1) {
+        possibleMatches.set(sequence, remainingExpectedPresses.slice(1));
+      } else {
+        possibleMatches.delete(sequence);
+        callback(event);
+      }
     });
 
-    const possibleMatches = new Map<KeyBindingPress[], KeyBindingPress[]>();
-    let timer: NodeJS.Timeout | null = null;
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(possibleMatches.clear.bind(possibleMatches), timeout);
+  };
 
-    const onKeyEvent: EventListener = (event) => {
-        // Ensure and stop any event that isn't a full keyboard event.
-        // Autocomplete option navigation and selection would fire a instanceof Event,
-        // instead of the expected KeyboardEvent
-        if (!(event instanceof KeyboardEvent)) {
-            return;
-        }
+  target.addEventListener(event, onKeyEvent);
 
-        keyBindings.forEach((keyBinding) => {
-            const sequence = keyBinding[0];
-            const callback = keyBinding[1]!;
-
-            const prev = possibleMatches.get(sequence);
-            const remainingExpectedPresses = prev ? prev : sequence;
-            const currentExpectedPress = remainingExpectedPresses[0]!;
-
-            const matches = match(event, currentExpectedPress);
-
-            if (!matches) {
-                // Modifier keydown events shouldn't break sequences
-                // Note: This works because:
-                // - non-modifiers will always return false
-                // - if the current keypress is a modifier then it will return true when we check its state
-                // MDN: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/getModifierState
-                if (!getModifierState(event, event.key)) {
-                    possibleMatches.delete(sequence);
-                }
-            } else if (remainingExpectedPresses.length > 1) {
-                possibleMatches.set(
-                    sequence,
-                    remainingExpectedPresses.slice(1)
-                );
-            } else {
-                possibleMatches.delete(sequence);
-                callback(event);
-            }
-        });
-
-        if (timer) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(
-            possibleMatches.clear.bind(possibleMatches),
-            timeout
-        );
-    };
-
-    target.addEventListener(event, onKeyEvent);
-
-    return () => {
-        target.removeEventListener(event, onKeyEvent);
-    };
+  return () => {
+    target.removeEventListener(event, onKeyEvent);
+  };
 }

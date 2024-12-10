@@ -1,11 +1,11 @@
 import AuthLayout from "@/components/core/layouts/auth-layout";
 
 function RootAuthLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return <AuthLayout>{children}</AuthLayout>;
+  return <AuthLayout>{children}</AuthLayout>;
 }
 
 export default RootAuthLayout;
