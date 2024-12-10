@@ -14,6 +14,7 @@
         "@highschool/eslint-config": "workspace:*",
         "@highschool/typescript-config": "workspace:*",
         "@highschool/interfaces": "workspace:*",
+        "@highschool/endpoints": "workspace:*",
         "prettier": "^3.2.5",
         "turbo": "^2.3.3",
         "typescript": "5.5.4"
