@@ -24,11 +24,10 @@
     },
     "include": [
         "next-env.d.ts",
+        "**/*.mjs",
         "**/*.ts",
         "**/*.tsx",
-        ".next/types/**/*.ts",
-        "src/components/modules/VerifyAccount/index.tss",
-        "src/hooks/use-shortcut.tsx"
+        ".next/types/**/*.ts"
     ],
     "exclude": ["node_modules"]
 }
