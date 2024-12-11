@@ -1,11 +1,15 @@
 {
     "$schema": "https://turbo.build/schema.json",
     "ui": "tui",
+    "globalDependencies": [
+        "**/.env"
+    ],
+    "globalEnv": [
+        "NEXT_PUBLIC_LANDING_URL",
+        "SKIP_ENV_VALIDATION"
+    ],
     "tasks": {
         "build": {
-            "env": [
-                "NEXT_PUBLIC_LANDING_URL"
-            ],
             "dependsOn": [
                 "^build"
             ],
@@ -22,6 +26,9 @@
             "dependsOn": [
                 "^lint"
             ]
+        },
+        "clean": {
+            "cache": false
         },
         "check-types": {
             "dependsOn": [
