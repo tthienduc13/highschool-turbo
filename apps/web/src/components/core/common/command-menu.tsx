@@ -79,7 +79,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
     const scrollRef = useRef<HTMLDivElement | null>(null);
     const resultsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-    const dismiss = pathName == `/onboard/command`;
+    const dismiss = pathName == `/onboard/command-menu`;
 
     const filteredOptions: MenuOption[] = options
         .filter((o) => (!!o.shouldShow ? o.shouldShow() : true))

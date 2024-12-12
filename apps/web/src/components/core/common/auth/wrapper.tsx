@@ -4,8 +4,6 @@ import Image from "next/image";
 
 import { Input } from "@highschool/ui/components/ui/input";
 
-import { env } from "@/env.mjs";
-
 import { Button } from "@highschool/ui/components/ui/button";
 
 import { useEffect, useRef, useState } from "react";
@@ -23,6 +21,7 @@ import {
 import { IconBrandGoogleFilled, IconWand } from "@tabler/icons-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSearchParams } from "next/navigation";
+import { env } from "@highschool/env";
 
 interface AuthWrapperProps {
     mode: "login" | "signup";
@@ -102,7 +101,6 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                     `pt-[${margin}px]`
                 )}
             >
-                <div>{env.NEXT_PUBLIC_LANDING_URL}</div>
                 <div className="mx-auto flex max-w-sm w-full flex-col items-center justify-center gap-8 px-4 md:px-8">
                     <Image
                         src={"/logo.svg"}

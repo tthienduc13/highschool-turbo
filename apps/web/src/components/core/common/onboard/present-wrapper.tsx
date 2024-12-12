@@ -17,7 +17,6 @@ const computeMap = (isMobile = false) => {
         "/account-type",
         "/account-info",
         "/command-menu",
-        "/invite",
         "/subscribe",
         "/done",
     ];

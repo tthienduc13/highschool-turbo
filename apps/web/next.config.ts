@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
         "@highschool/endpoints",
         "@highschool/types",
         "@highschool/hooks",
+        "@highschool/env",
     ],
 };
 

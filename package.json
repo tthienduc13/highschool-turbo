@@ -16,6 +16,7 @@
         "@highschool/interfaces": "workspace:*",
         "@highschool/endpoints": "workspace:*",
         "@highschool/hooks": "workspace:*",
+        "@highschool/env": "workspace:*",
         "prettier": "^3.2.5",
         "turbo": "^2.3.3",
         "typescript": "5.5.4"
