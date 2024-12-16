@@ -11,12 +11,14 @@
         "ui": "pnpm --filter @highschool/ui ui"
     },
     "devDependencies": {
-        "@highschool/eslint-config": "workspace:*",
-        "@highschool/typescript-config": "workspace:*",
-        "@highschool/interfaces": "workspace:*",
         "@highschool/endpoints": "workspace:*",
-        "@highschool/hooks": "workspace:*",
         "@highschool/env": "workspace:*",
+        "@highschool/eslint-config": "workspace:*",
+        "@highschool/hooks": "workspace:*",
+        "@highschool/interfaces": "workspace:*",
+        "@highschool/react-query": "workspace:*",
+        "@highschool/typescript-config": "workspace:*",
+        "@types/node": "^22.10.2",
         "prettier": "^3.2.5",
         "turbo": "^2.3.3",
         "typescript": "5.5.4"

@@ -1,0 +1,16 @@
+{
+    "extends": "@highschool/typescript-config/react-library.json",
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "module": "NodeNext",
+        "target": "ES6",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "emitDeclarationOnly": true,
+        "baseUrl": ".",
+        "paths": {
+            "src/*": ["./src/*"]
+        }
+    },
+    "include": ["src"]
+}

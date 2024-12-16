@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         "@highschool/types",
         "@highschool/hooks",
         "@highschool/env",
+        "@highschool/react-query",
     ],
 };
 
