@@ -11,8 +11,8 @@
     "dependencies": {
         "@highschool/ui": "workspace:*",
         "@highschool/interfaces": "workspace:*",
-        "react": "19.0.0-rc-66855b96-20241106",
-        "react-dom": "19.0.0-rc-66855b96-20241106",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
         "next": "15.0.3"
     },
     "devDependencies": {
@@ -20,8 +20,8 @@
         "@highschool/typescript-config": "workspace:*",
         "typescript": "^5",
         "@types/node": "^20",
-        "@types/react": "^18",
-        "@types/react-dom": "^18",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
         "postcss": "^8",
         "tailwindcss": "^3.4.1",
         "eslint": "^8",
