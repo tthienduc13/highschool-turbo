@@ -1,143 +1,129 @@
-import { env } from "@highschool/env";
+import { getSession } from "next-auth/react";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { auth, signOut } from "../next-auth/index.ts";
+import { signOut } from "next-auth/react";
+import { auth } from "../next-auth/index.ts";
+import { requestRefreshToken } from "../apis/auth.ts";
 
-const axiosServices = axios.create({
-    baseURL: env.NEXT_PUBLIC_API_URL,
-    timeout: 50000,
-});
-
-interface RetryQueueItem {
-    resolve: (value?: any) => void;
-    reject: (error?: any) => void;
-    config: AxiosRequestConfig;
-}
-
-const refreshAndRetryQueue: RetryQueueItem[] = [];
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const TIMEOUT = 50000;
+const isServer = typeof window === "undefined";
 
 let isRefreshing = false;
+let refreshAndRetryQueue: {
+    resolve: any;
+    reject: any;
+    config: AxiosRequestConfig;
+}[] = [];
 
-axiosServices.interceptors.request.use(
-    async function (config) {
-        const session = await auth();
-        if (session?.user.accessToken) {
-            config.headers["Authorization"] =
-                `Bearer ${session.user.accessToken}`;
-        }
-        config.headers["Content-Type"] = "application/json";
-        return config;
-    },
-    function (error) {
-        return Promise.reject(error);
-    }
-);
+// Refresh Token Logic (unchanged)
+const refreshTokenAndRetry = async (originalRequest: AxiosRequestConfig) => {
+    if (!isRefreshing) {
+        isRefreshing = true;
+        try {
+            let refreshToken: string | null = null;
+            let sessionId: string | null = null;
 
-axiosServices.interceptors.response.use(
-    (res: AxiosResponse) => {
-        return res;
-    },
-    async (error) => {
-        const originalRequest: AxiosRequestConfig = error.config;
-        if (error.response && error.response.status === 401) {
-            if (!isRefreshing) {
-                isRefreshing = true;
-                try {
-                    // const newAccessToken = await refreshAccessToken();
-                    const newAccessToken = "abc";
-
-                    error.config.headers["Authorization"] =
-                        `Bearer ${newAccessToken}`;
-
-                    refreshAndRetryQueue.forEach(
-                        ({ config, resolve, reject }) => {
-                            axiosServices
-                                .request(config)
-                                .then((response) => resolve(response))
-                                .catch((err) => reject(err));
-                        }
-                    );
-
-                    refreshAndRetryQueue.length = 0;
-
-                    return axiosServices(originalRequest);
-                } catch (refreshError) {
-                    signOut();
-                    throw refreshError;
-                } finally {
-                    isRefreshing = false;
-                }
+            if (isServer) {
+                const session = await auth();
+                refreshToken = session?.user?.refreshToken || null;
+                sessionId = session?.user?.sessionId || null;
+            } else {
+                const session = await getSession();
+                refreshToken = session?.user?.refreshToken || null;
+                sessionId = session?.user?.sessionId || null;
             }
 
-            return new Promise<void>((resolve, reject) => {
-                refreshAndRetryQueue.push({
-                    config: originalRequest,
-                    resolve,
-                    reject,
-                });
-            });
-        }
-        return Promise.reject(error);
-    }
-);
-
-const axiosUpload = axios.create({
-    baseURL: env.NEXT_PUBLIC_API_URL,
-    timeout: 50000,
-});
-
-axiosUpload.interceptors.request.use(
-    async function (config) {
-        const session = await auth();
-        if (session?.user.accessToken) {
-            config.headers["Authorization"] =
-                `Bearer ${session.user.accessToken}`;
-        }
-        config.headers["Content-Type"] = "multipart/form-data";
-        return config;
-    },
-    function (error) {
-        const originalRequest: AxiosRequestConfig = error.config;
-        if (error.response && error.response.status === 401) {
-            if (!isRefreshing) {
-                isRefreshing = true;
-                try {
-                    // const newAccessToken = await refreshAccessToken();
-                    const newAccessToken = "abc";
-
-                    error.config.headers["Authorization"] =
-                        `Bearer ${newAccessToken}`;
-
-                    refreshAndRetryQueue.forEach(
-                        ({ config, resolve, reject }) => {
-                            axiosServices
-                                .request(config)
-                                .then((response) => resolve(response))
-                                .catch((err) => reject(err));
-                        }
-                    );
-
-                    refreshAndRetryQueue.length = 0;
-
-                    return axiosServices(originalRequest);
-                } catch (refreshError) {
-                    signOut();
-                    throw refreshError;
-                } finally {
-                    isRefreshing = false;
-                }
+            if (!refreshToken) {
+                throw new Error("No refresh token found");
             }
 
-            return new Promise<void>((resolve, reject) => {
-                refreshAndRetryQueue.push({
-                    config: originalRequest,
-                    resolve,
-                    reject,
-                });
+            const response = await requestRefreshToken({
+                refreshToken: refreshToken,
+                sessionId: sessionId!,
             });
-        }
-        return Promise.reject(error);
-    }
-);
 
-export const axiosClientUpload = axiosUpload;
+            const newAccessToken = response.data?.accessToken;
+
+            refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
+                config.headers = config.headers || {};
+                config.headers["Authorization"] = `Bearer ${newAccessToken}`;
+                axios.request(config).then(resolve).catch(reject);
+            });
+
+            refreshAndRetryQueue = [];
+
+            originalRequest.headers = originalRequest.headers || {};
+            originalRequest.headers["Authorization"] =
+                `Bearer ${newAccessToken}`;
+            return axios(originalRequest);
+        } catch (error) {
+            console.error("Token refresh failed. Signing out...");
+            signOut();
+            return Promise.reject(error);
+        } finally {
+            isRefreshing = false;
+        }
+    }
+
+    return new Promise((resolve, reject) => {
+        refreshAndRetryQueue.push({ config: originalRequest, resolve, reject });
+    });
+};
+
+// Axios Instance Creation
+const createAxiosInstance = (contentType: string) => {
+    const instance = axios.create({
+        baseURL: BASE_URL,
+        timeout: TIMEOUT,
+    });
+
+    instance.interceptors.request.use(
+        async (config) => {
+            try {
+                let accessToken: string | null = null;
+
+                if (isServer) {
+                    // Server-side: Use the `auth` function
+                    const session = await auth();
+                    accessToken = session?.user?.accessToken || null;
+                } else {
+                    // Client-side: Use `getSession`
+                    const session = await getSession();
+                    accessToken = session?.user?.accessToken || null;
+                }
+
+                if (accessToken) {
+                    config.headers = config.headers || {};
+                    config.headers["Authorization"] = `Bearer ${accessToken}`;
+                }
+                config.headers["Content-Type"] = contentType;
+
+                return config;
+            } catch (error) {
+                return Promise.reject(error);
+            }
+        },
+        (error) => Promise.reject(error)
+    );
+
+    instance.interceptors.response.use(
+        (response: AxiosResponse) => response,
+        async (error) => {
+            const originalRequest = error.config;
+
+            if (error.response?.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                return refreshTokenAndRetry(originalRequest);
+            }
+
+            return Promise.reject(error);
+        }
+    );
+
+    return instance;
+};
+const axiosServices = createAxiosInstance("application/json");
+const axiosClientUpload = createAxiosInstance("multipart/form-data");
+
+export { axiosClientUpload };
 export default axiosServices;

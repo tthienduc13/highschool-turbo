@@ -9,19 +9,20 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "@highschool/env": "workspace:*",
         "@highschool/endpoints": "workspace:*",
+        "@highschool/env": "workspace:*",
         "@highschool/interfaces": "workspace:*",
-        "next": "15.0.3",
+        "@tanstack/react-query": "^5.62.7",
+        "axios": "^1.7.9",
+        "next": "15.1.0",
         "next-auth": "5.0.0-beta.25",
-        "react": "^19.0.0",
-        "axios": "^1.7.9"
+        "react": "^19.0.0"
     },
     "devDependencies": {
         "@types/react": "^19"
     },
     "exports": {
-        "./apis": "./src/apis/index.ts",
+        "./apis": "./src/apis/*.ts",
         "./queries": "./src/queries/index.ts",
         "./auth": "./src/next-auth/index.ts"
     }

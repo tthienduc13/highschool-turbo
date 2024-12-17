@@ -4,7 +4,7 @@ const prefixDiscussionServices = "/discussion-service";
 const prefixMediaServices = "/media-service";
 const prefixAnalyseServices = "/analyse-service";
 
-const prefixVersion = "/api/v1";
+const prefixFirstVersion = "/api/v1";
 const prefixSecondVerson = "/api/v2";
 
 const endpointAuth = {
@@ -13,4 +13,9 @@ const endpointAuth = {
     REFESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
 };
 
-export { endpointAuth };
+const endpointUser = {
+    CHECK_USER_NAME: `${prefixUserServices}${prefixFirstVersion}/users/checkusername`,
+    UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
+};
+
+export { endpointAuth, endpointUser };

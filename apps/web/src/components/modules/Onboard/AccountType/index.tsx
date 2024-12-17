@@ -1,28 +1,45 @@
 "use client";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
-import { PresentWrapper } from "@/components/core/common/onboard/present-wrapper";
+import {
+    PresentWrapper,
+    useNextStep,
+} from "@/components/core/common/onboard/present-wrapper";
 import { UserType } from "@highschool/interfaces";
+import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { cn } from "@highschool/ui/lib/utils";
 import { IconBooks, IconSchool } from "@tabler/icons-react";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 function OnboardAccountTypeModule() {
+    const next = useNextStep();
+    const { data: session, update } = useSession();
     const [selectedType, setSelectedType] = useState<UserType>("Student");
-    console.log(selectedType);
+    const [loading, setLoading] = useState(false);
+
+    const updateRole = useUpdateBaseUserInfoMutation();
+
+    useEffect(() => {
+        if (updateRole.isSuccess) {
+            next();
+        }
+    });
     return (
         <PresentWrapper>
             <DefaultLayout
                 heading="Bạn là học sinh hay giáo viên?"
                 description="Hãy chọn đúng để có trải nghiệm tốt nhất"
-                // defaultNext={false}
-                // nextLoading={loading}
-                // onNext={async () => {
-                //     setLoading(true);
-                //     await setUserType.mutateAsync({
-                //         type,
-                //     });
-                // }}
+                nextLoading={loading}
+                onNext={async () => {
+                    setLoading(true);
+                    await updateRole.mutateAsync({
+                        roleName: selectedType.toLocaleLowerCase(),
+                    });
+                    update({
+                        user: { ...session?.user, roleName: selectedType },
+                    });
+                }}
             >
                 <div className=" border-2 rounded-xl grid grid-cols-2 overflow-hidden">
                     <div

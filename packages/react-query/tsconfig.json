@@ -8,5 +8,5 @@
         "noEmit": true,
         "emitDeclarationOnly": true
     },
-    "include": ["src", "../types/next-auth.d.ts"]
+    "include": ["src/apis", "../types/next-auth.d.ts"]
 }

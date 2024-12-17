@@ -1,7 +1,7 @@
-import { googleAuthentication } from "@highschool/react-query/apis";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 import Google from "next-auth/providers/google";
 import { NextAuthConfig } from "next-auth";
+import { googleAuthentication } from "../apis/auth.ts";
 
 export const AuthOptions: NextAuthConfig = {
     providers: [
@@ -26,11 +26,15 @@ export const AuthOptions: NextAuthConfig = {
             session.user.roleName = token.roleName;
             session.user.isNewUser = token.isNewUser;
             session.user.accessToken = token.accessToken;
-            session.user.refreshToken = token.accessToken;
+            session.user.refreshToken = token.refreshToken;
             session.user.sessionId = token.sessionId;
             return session;
         },
-        async jwt({ token, account }) {
+        async jwt({ token, account, trigger, session }) {
+            if (trigger == "update") {
+                token.roleName = session?.user.roleName;
+                token.username = session?.user.username;
+            }
             if (account?.provider === "google") {
                 const googleLoginInfo: GoogleLoginRequest = {
                     email: token.email ?? "",
@@ -38,8 +42,6 @@ export const AuthOptions: NextAuthConfig = {
                     avatar: token.picture ?? "",
                     accessToken: account.access_token ?? "",
                 };
-
-                console.log(googleLoginInfo);
 
                 const response = await googleAuthentication(googleLoginInfo);
                 if (!response.data) return null;
@@ -55,6 +57,7 @@ export const AuthOptions: NextAuthConfig = {
                     fullname,
                     roleName,
                 } = response.data!;
+
                 token.userId = userId;
                 token.email = email;
                 token.fullname = fullname;
@@ -71,5 +74,7 @@ export const AuthOptions: NextAuthConfig = {
     pages: {
         signIn: "/sign-in",
         verifyRequest: "/verify",
+        newUser: "/onboard",
+        error: "/auth-error",
     },
 };

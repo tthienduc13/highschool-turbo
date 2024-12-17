@@ -13,8 +13,8 @@ const computeMap = (isMobile = false) => {
     const base = [
         "",
         "/theme",
-        "/username",
         "/account-type",
+        "/username",
         "/account-info",
         "/command-menu",
         "/subscribe",

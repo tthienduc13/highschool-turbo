@@ -1,7 +1,6 @@
-//@ts-ignore
-
 import {
     GoogleLoginRequest,
+    RefreshTokenResponse,
     ResponseModel,
     UserSession,
 } from "@highschool/interfaces";
@@ -34,8 +33,15 @@ export const requestRefreshToken = async ({
 }: {
     refreshToken: string;
     sessionId: string;
-}) => {
+}): Promise<ResponseModel<RefreshTokenResponse>> => {
     try {
-        const { data } = await axiosServices.post(endpointAuth.REFESH_TOKEN);
-    } catch (error) {}
+        const { data } = await axiosServices.post(endpointAuth.REFESH_TOKEN, {
+            refreshToken: refreshToken,
+            sessionId: sessionId,
+        });
+        return data;
+    } catch (error) {
+        console.log("Error while getting refresh token", error);
+        throw error;
+    }
 };

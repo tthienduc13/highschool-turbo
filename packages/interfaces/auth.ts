@@ -18,3 +18,8 @@ export interface GoogleLoginRequest {
     accessToken: string;
     email: string;
 }
+
+export interface RefreshTokenResponse {
+    accessToken: string;
+    refreshToken: string;
+}

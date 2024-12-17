@@ -45,7 +45,7 @@ export const DefaultLayout: React.FC<
                 </div>
                 {children}
                 <Button
-                    disabled={nextDisabled}
+                    disabled={nextDisabled || nextLoading}
                     variant={nextVariant}
                     onClick={async () => {
                         await onNext?.();
