@@ -12,15 +12,17 @@
         "@highschool/env": "workspace:*",
         "@highschool/endpoints": "workspace:*",
         "@highschool/interfaces": "workspace:*",
-        "axios": "^1.7.9",
+        "next": "15.0.3",
+        "next-auth": "5.0.0-beta.25",
         "react": "^18",
-        "react-dom": "^18"
+        "axios": "^1.7.9"
     },
     "devDependencies": {
         "@types/react": "^18"
     },
     "exports": {
         "./apis": "./src/apis/index.ts",
-        "./queries": "./src/queries/index.ts"
+        "./queries": "./src/queries/index.ts",
+        "./auth": "./src/next-auth/index.ts"
     }
 }

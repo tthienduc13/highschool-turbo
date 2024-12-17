@@ -1,15 +1,12 @@
 //@ts-ignore
 
-import { ResponseModel, UserSession } from "@highschool/interfaces";
+import {
+    GoogleLoginRequest,
+    ResponseModel,
+    UserSession,
+} from "@highschool/interfaces";
 import { endpointAuth } from "@highschool/endpoints";
-import axiosServices from "../lib/index.ts";
-
-export interface GoogleLoginRequest {
-    fullName: string;
-    avatar: string;
-    accessToken: string;
-    email: string;
-}
+import axiosServices from "../lib/axios.ts";
 
 export const googleAuthentication = async ({
     email,
@@ -29,4 +26,16 @@ export const googleAuthentication = async ({
         console.log("Error while login by google", error);
         throw error;
     }
+};
+
+export const requestRefreshToken = async ({
+    refreshToken,
+    sessionId,
+}: {
+    refreshToken: string;
+    sessionId: string;
+}) => {
+    try {
+        const { data } = await axiosServices.post(endpointAuth.REFESH_TOKEN);
+    } catch (error) {}
 };

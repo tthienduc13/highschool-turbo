@@ -26,6 +26,9 @@ importers:
       '@highschool/react-query':
         specifier: workspace:*
         version: link:packages/react-query
+      '@highschool/types':
+        specifier: workspace:*
+        version: link:packages/types
       '@highschool/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
@@ -366,6 +369,12 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
+      next:
+        specifier: 15.0.3
+        version: 15.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-auth:
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@15.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       react:
         specifier: ^18
         version: 18.3.1
@@ -376,6 +385,18 @@ importers:
       '@types/react':
         specifier: ^18
         version: 18.3.0
+
+  packages/types:
+    dependencies:
+      next-auth:
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@15.0.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      react:
+        specifier: ^18
+        version: 18.3.1
+      react-dom:
+        specifier: ^18
+        version: 18.3.1(react@18.3.1)
 
   packages/typescript-config: {}
 

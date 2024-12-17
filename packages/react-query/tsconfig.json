@@ -6,11 +6,7 @@
         "target": "ES6",
         "allowImportingTsExtensions": true,
         "noEmit": true,
-        "emitDeclarationOnly": true,
-        "baseUrl": ".",
-        "paths": {
-            "src/*": ["./src/*"]
-        }
+        "emitDeclarationOnly": true
     },
-    "include": ["src"]
+    "include": ["src", "../types/next-auth.d.ts"]
 }

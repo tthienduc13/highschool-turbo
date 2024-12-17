@@ -10,6 +10,7 @@ const prefixSecondVerson = "/api/v2";
 const endpointAuth = {
     GOOGLE: `${prefixUserServices}${prefixSecondVerson}/authentication/google`,
     EMAIL: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
+    REFESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
 };
 
 export { endpointAuth };
