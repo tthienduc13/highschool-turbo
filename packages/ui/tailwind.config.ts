@@ -81,6 +81,11 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      boxShadow: {
+        'inset-gray-shadow': 'inset 0 -10px #00000033',
+        'inset-gray-shadow-md': 'inset 0 -6px #00000033',
+        'inset-gray-shadow-sm': 'inset 0 -2px #00000033',
+      }
     },
   },
   plugins: [tailwindcssAnimate],
