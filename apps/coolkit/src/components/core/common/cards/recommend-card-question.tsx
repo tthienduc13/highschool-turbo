@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Card } from "@highschool/ui/components/ui/card"
-import { IconBadge, IconBrandZapier, IconChevronDown, IconClock, IconEdit, IconHeart, IconLibrary, IconPlayerPlay, IconShare2, IconStar, IconUser, IconUsers } from "@tabler/icons-react"
+import { IconChevronDown, IconClock, IconEdit, IconHeart, IconLibrary, IconPlayerPlay, IconShare2, IconUser, IconUsers } from "@tabler/icons-react"
 import Image from "next/image"
 import { Button } from "@highschool/ui/components/ui/button"
 

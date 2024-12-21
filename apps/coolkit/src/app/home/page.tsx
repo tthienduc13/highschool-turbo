@@ -1,6 +1,6 @@
 import HomeModule from "@/components/modules/home";
 
-async function HomePage() {
+function HomePage() {
     return (
         <HomeModule />
     );

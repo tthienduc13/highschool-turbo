@@ -1,4 +1,4 @@
-import { Button } from "@highschool/ui/components/ui/button";
+import { ButtonKet } from "@/components/ui/button";
 import { IconEdit, IconLibrary, IconPlayerPlay, IconUser, IconUsers } from "@tabler/icons-react";
 import Image from "next/image";
 
@@ -77,10 +77,6 @@ export const CardQuestion = () => {
                             >
                                 {set.category}
                             </div>
-                            {/* <div className="absolute top-4 right-4 flex items-center gap-1 bg-white px-3 py-1 rounded-full text-sm shadow-sm">
-                                <IconUsers className="h-4 w-4" />
-                                {set.players.toLocaleString()}
-                            </div> */}
                         </div>
                         <div
                             className="p-4 space-y-4"
@@ -94,22 +90,20 @@ export const CardQuestion = () => {
                             </div>
                         </div>
                         <div className="p-4 bg-white flex gap-2 shadow-inset-gray-shadow-md">
-                            <Button
-                                className="text-[1rem] flex-1 flex items-center justify-center gap-2 px-4 py-6 rounded-xl text-white font-bold
-                                shadow-inset-gray-shadow-md animation-hover"
-                                style={{ backgroundColor: set.color }}
+                            <ButtonKet
+                                heightShadow="-6px"
+                                backgroundColor={set.color}
                             >
                                 <IconPlayerPlay className="w-5 h-5 scale-125" />
                                 Tạo phòng
-                            </Button>
-                            <Button
-                                className="text-[1rem] flex-1 flex items-center justify-center gap-2 px-4 py-6 rounded-xl text-white font-bold
-                                shadow-inset-gray-shadow-md animation-hover"
-                                style={{ backgroundColor: set.color }}
+                            </ButtonKet>
+                            <ButtonKet
+                                heightShadow="-6px"
+                                backgroundColor={set.color}
                             >
                                 <IconEdit className="w-5 h-5 scale-125" />
                                 Sửa câu hỏi
-                            </Button>
+                            </ButtonKet>
                         </div>
                     </div>
                 </div>

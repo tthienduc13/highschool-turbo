@@ -13,11 +13,14 @@
         "@highschool/interfaces": "workspace:*",
         "@highschool/ui": "workspace:*",
         "@tabler/icons-react": "^3.24.0",
+        "lodash": "^4.17.21",
         "next": "15.1.0",
+        "qr-code-styling": "^1.8.4",
         "react": "^19.0.0",
         "react-dom": "^19.0.0"
     },
     "devDependencies": {
+        "@types/lodash": "^4.17.13",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",

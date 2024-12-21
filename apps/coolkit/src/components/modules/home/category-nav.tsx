@@ -1,4 +1,3 @@
-import { Button } from "@highschool/ui/components/ui/button"
 import { IconBook, IconCalculator, IconFlask, IconGlobe, IconLanguage, IconLighter } from "@tabler/icons-react"
 
 export const CategoryNav = () => {

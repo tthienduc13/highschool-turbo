@@ -4,7 +4,7 @@ import { SearchHeader } from "./search-header"
 
 export default function AppHeader() {
     return (
-        <header className="sticky top-0 z-10 backdrop-blur-md bg-[#19a5ff] shadow-inset-gray-shadow">
+        <header className="sticky top-0 z-10 backdrop-blur-md bg-primary shadow-inset-gray-shadow">
             <div className="container mx-auto px-6 py-6 flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                     <div className="text-4xl font-extrabold bg-clip-text text-transparent text-white animation-hover">
