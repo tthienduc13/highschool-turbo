@@ -10,6 +10,7 @@ export interface UserSession {
     sessionId: string;
     accessToken: string;
     refreshToken: string;
+    expiresAt: Date;
 }
 
 export interface GoogleLoginRequest {
@@ -22,4 +23,5 @@ export interface GoogleLoginRequest {
 export interface RefreshTokenResponse {
     accessToken: string;
     refreshToken: string;
+    expiresAt: Date;
 }

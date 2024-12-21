@@ -10,7 +10,7 @@ import { auth } from "@highschool/react-query/auth";
 export default auth((req) => {
     const { nextUrl } = req;
     const isLoggedIn = !!req.auth;
-    const isNewUser = req.auth?.user?.isNewUser;
+    const isNewUser = req.auth?.user?.isNewUser === true;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);

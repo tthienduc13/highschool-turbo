@@ -6,7 +6,7 @@ import {
 } from "@/components/core/common/onboard/present-wrapper";
 import { Button } from "@highschool/ui/components/ui/button";
 import { motion } from "framer-motion";
-import { getSession, useSession } from "next-auth/react";
+import Image from "next/image";
 
 const ghost = {
     transition: {
@@ -32,7 +32,7 @@ const Intro = () => {
     return (
         <section className="flex flex-col gap-6 text-center justify-center items-center">
             <motion.div {...ghost}>
-                {/* <Logo width={24} height={24} /> */}
+                <Image src={"/logo.svg"} alt="logo" width={96} height={96} />
             </motion.div>
             <h1 className=" text-3xl md:text-5xl font-bold">
                 Chào mừng đến với Highschool

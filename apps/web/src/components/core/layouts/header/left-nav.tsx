@@ -1,0 +1,149 @@
+"use client";
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@highschool/ui/components/ui/dropdown-menu";
+import { Logo } from "@/components/core/common/logo";
+import { Button } from "@highschool/ui/components/ui/button";
+import { useState } from "react";
+import {
+    IconCards,
+    IconChevronDown,
+    IconDice6,
+    IconFile,
+    IconFolder,
+    TablerIcon,
+} from "@tabler/icons-react";
+import { TeacherOnly } from "@/components/core/common/teacher-only";
+
+import { toast } from "sonner";
+type MenuItem = {
+    label: string;
+    icon: TablerIcon;
+    onClick: () => void;
+    teacherOnly?: boolean;
+    separator?: boolean;
+};
+
+interface LeftNavProps {
+    onFolderClick: () => void;
+}
+
+export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const handleItemClick = (label: string) => {
+        toast(label, {
+            description: "Sunday, December 03, 2023 at 9:00 AM",
+            action: {
+                label: "Undo",
+                onClick: () => console.log("Undo"),
+            },
+        });
+    };
+
+    const menuItems: MenuItem[] = [
+        {
+            label: "Bộ thẻ mới",
+            icon: IconCards,
+            onClick: () => handleItemClick("Bộ thẻ mới"),
+        },
+        {
+            label: "Tài liệu",
+            icon: IconFile,
+            onClick: () => handleItemClick("Tài liệu"),
+            teacherOnly: true,
+        },
+        {
+            label: "Coolket",
+            icon: IconDice6,
+            onClick: () => handleItemClick("Coolket"),
+            teacherOnly: true,
+        },
+        {
+            label: "Thư mục mới",
+            icon: IconFolder,
+            onClick: onFolderClick,
+            separator: true,
+        },
+    ];
+
+    return (
+        <div className="flex flex-row gap-4 items-center">
+            <Logo />
+            <div className="md:flex flex-row gap-2 hidden items-center">
+                <Button variant="ghost">Trang chủ</Button>
+                <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+                    <DropdownMenuTrigger asChild>
+                        <Button size="lg">
+                            Tạo mới
+                            <IconChevronDown
+                                className={`transition-transform duration-200 ${
+                                    menuOpen ? "rotate-180" : "rotate-0"
+                                }`}
+                            />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent
+                        side="bottom"
+                        align="start"
+                        style={{ zIndex: 10000 }}
+                        className="w-48"
+                    >
+                        <DropdownMenuGroup>
+                            {menuItems.map(
+                                (
+                                    {
+                                        label,
+                                        icon: Icon,
+                                        onClick,
+                                        teacherOnly,
+                                        separator,
+                                    },
+                                    index
+                                ) =>
+                                    teacherOnly ? (
+                                        <TeacherOnly key={index}>
+                                            <DropdownMenuItem
+                                                className="text-base px-3 py-2 cursor-pointer group"
+                                                onClick={onClick}
+                                            >
+                                                <Icon
+                                                    size={20}
+                                                    className="transition-transform group-hover:rotate-[-10deg] group-hover:scale-110"
+                                                />
+                                                {label}
+                                            </DropdownMenuItem>
+                                            {separator && (
+                                                <DropdownMenuSeparator />
+                                            )}
+                                        </TeacherOnly>
+                                    ) : (
+                                        <DropdownMenuItem
+                                            key={index}
+                                            className="text-base px-3 py-2 cursor-pointer group"
+                                            onClick={onClick}
+                                        >
+                                            <Icon
+                                                size={20}
+                                                className="transition-transform group-hover:rotate-[-10deg] group-hover:scale-110"
+                                            />
+                                            {label}
+                                            {separator && (
+                                                <DropdownMenuSeparator />
+                                            )}
+                                        </DropdownMenuItem>
+                                    )
+                            )}
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+        </div>
+    );
+};

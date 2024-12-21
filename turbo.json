@@ -8,6 +8,8 @@
         "NEXT_PUBLIC_LANDING_URL",
         "NEXT_PUBLIC_API_URL",
         "NEXT_PUBLIC_APP_URL",
+        "NEXT_PUBLIC_CLOUDINARY_USER_PRESET",
+        "NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME",
         "SKIP_ENV_VALIDATION"
     ],
     "tasks": {

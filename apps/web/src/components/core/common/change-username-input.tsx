@@ -61,14 +61,15 @@ export const ChangeUsernameInput = ({
         (disabledIfUnchanged && usernameValue === session?.user?.username);
 
     useEffect(() => {
-        const mutate = () => {
-            update({
+        const mutate = async () => {
+            changeUsername.mutateAsync({ userName: usernameRef.current });
+            await update({
+                ...session,
                 user: {
                     ...session?.user,
                     username: usernameRef.current,
                 },
             });
-            changeUsername.mutate({ userName: usernameRef.current });
         };
 
         mutationEventChannel.on("submitUsername", mutate);
@@ -94,7 +95,7 @@ export const ChangeUsernameInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [changeUsername.isPending]);
     return (
-        <div className="flex gap-2 w-full max-w-sm mx-auto flex-col ">
+        <div className="flex gap-2 w-full  flex-col ">
             <div className="flex flex-row items-center gap-2 w-full">
                 <div
                     className={cn(
