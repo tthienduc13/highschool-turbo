@@ -15,6 +15,7 @@ import {
     IconChevronDown,
     IconFile,
     IconFolder,
+    IconSparkles,
 } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -103,6 +104,13 @@ export const MobileMenu = ({
                                 <DropdownMenuItem className="text-base px-3 py-2">
                                     <IconCards size={20} className="!size-5" />
                                     Bộ thẻ mới
+                                </DropdownMenuItem>
+                                <DropdownMenuItem className="text-base px-3 py-2">
+                                    <IconSparkles
+                                        size={20}
+                                        className="!size-5"
+                                    />
+                                    Bộ thẻ mới với AI
                                 </DropdownMenuItem>
                                 <TeacherOnly>
                                     <DropdownMenuItem className="text-base px-3 py-2">

@@ -43,7 +43,7 @@ export const UserMenu = () => {
         {
             label: "Thông tin cá nhân",
             icon: IconUser,
-            action: () => router.push(`/@${user?.username}`),
+            action: () => router.push(`/profile/${user?.username}`),
         },
         {
             label: "Cài đặt",

@@ -10,7 +10,7 @@ import { Loading } from "@/components/core/common/loading";
 export const metadata: Metadata = {
     title: {
         default: "Highschool - Nền tảng học tập số 1 cho học sinh trung học",
-        template: "%s - Nền tảng học tập số 1 cho học sinh trung học",
+        template: "%s | Highschool",
     },
     description:
         "Highschool cung cấp dịch vụ chuyên nghiệp cho tất cả học sinh trên toàn thế giới nói chung và học sinh tại Việt Nam nói riêng để vượt qua kỳ thi Trung học Phổ thông Quốc gia.",

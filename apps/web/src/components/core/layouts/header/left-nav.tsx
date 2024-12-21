@@ -17,11 +17,13 @@ import {
     IconDice6,
     IconFile,
     IconFolder,
+    IconSparkles,
     TablerIcon,
 } from "@tabler/icons-react";
 import { TeacherOnly } from "@/components/core/common/teacher-only";
 
 import { toast } from "sonner";
+import Link from "next/link";
 type MenuItem = {
     label: string;
     icon: TablerIcon;
@@ -54,6 +56,11 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
             onClick: () => handleItemClick("Bộ thẻ mới"),
         },
         {
+            label: "Bộ thẻ mới với AI",
+            icon: IconSparkles,
+            onClick: () => handleItemClick("Bộ thẻ mới với AI"),
+        },
+        {
             label: "Tài liệu",
             icon: IconFile,
             onClick: () => handleItemClick("Tài liệu"),
@@ -77,7 +84,9 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
         <div className="flex flex-row gap-4 items-center">
             <Logo />
             <div className="md:flex flex-row gap-2 hidden items-center">
-                <Button variant="ghost">Trang chủ</Button>
+                <Link href={"/"}>
+                    <Button variant="ghost">Trang chủ</Button>
+                </Link>
                 <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
                     <DropdownMenuTrigger asChild>
                         <Button size="lg">
@@ -115,7 +124,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
                                             >
                                                 <Icon
                                                     size={20}
-                                                    className="transition-transform group-hover:rotate-[-10deg] group-hover:scale-110"
+                                                    className="transition-transform group-hover:rotate-[-20deg] group-hover:scale-125"
                                                 />
                                                 {label}
                                             </DropdownMenuItem>

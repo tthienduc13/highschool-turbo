@@ -9,7 +9,7 @@ function PlatformLayout({
     return (
         <div className="w-screen overflow-hidden min-h-screen ">
             <Header />
-            {children}
+            <div className="py-10 px-4 ">{children}</div>
             <Toaster richColors />
         </div>
     );

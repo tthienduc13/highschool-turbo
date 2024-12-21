@@ -18,6 +18,17 @@ const endpointUser = {
     UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
     COMPLETE_ONBOARD: (userId: string) =>
         `${prefixUserServices}${prefixFirstVersion}/users/newuser/${userId}`,
+    PROFILE_USER: (username: string) =>
+        `${prefixUserServices}${prefixFirstVersion}/users/infor/${username}`,
+    USER_FLASHCARD: (username: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user/${username}`,
 };
 
-export { endpointAuth, endpointUser };
+const endpointFolder = {
+    CREATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
+    GET_USER_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
+    UPDATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
+    DELETE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
+};
+
+export { endpointAuth, endpointUser, endpointFolder };

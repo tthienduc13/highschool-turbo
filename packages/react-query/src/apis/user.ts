@@ -1,6 +1,24 @@
 import { endpointUser } from "@highschool/endpoints";
 import axiosServices from "../lib/axios.ts";
-import { ResponseModel, TypeExam } from "@highschool/interfaces";
+import { ResponseModel, TypeExam, UserProfile } from "@highschool/interfaces";
+
+// GET
+
+export const getUserProfile = async ({
+    username,
+}: {
+    username: string;
+}): Promise<ResponseModel<UserProfile>> => {
+    try {
+        const { data } = await axiosServices.get(
+            endpointUser.PROFILE_USER(username)
+        );
+        return data;
+    } catch (error) {
+        console.error("Error while getting user profile", error);
+        throw error;
+    }
+};
 
 export const checkUserNameExist = async ({
     userName,

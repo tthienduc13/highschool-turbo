@@ -2,27 +2,49 @@ import { GoogleLoginRequest } from "@highschool/interfaces";
 import Google from "next-auth/providers/google";
 import { NextAuthConfig } from "next-auth";
 import { googleAuthentication, requestRefreshToken } from "../apis/auth.ts";
-import { signOut } from "next-auth/react";
 import { JWT } from "next-auth/jwt";
+import { env } from "@highschool/env";
 
 const refreshAccessToken = async (token: JWT) => {
     try {
-        console.log("Attempting to refresh token for session:", token);
-        const { data } = await requestRefreshToken({
-            sessionId: token.sessionId,
-            refreshToken: token.refreshToken,
-        });
-        if (!data) {
+        const response = await fetch(
+            `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    sessionId: token.sessionId,
+                    refreshToken: token.refreshToken,
+                }),
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (!result.data) {
             throw new Error("RefreshTokenFailed");
         }
+
         return {
             ...token,
-            accessToken: data.accessToken,
-            expiresAt: data.expiresAt,
-            refreshToken: data.refreshToken || token.refreshToken,
+            accessToken: result.data.accessToken,
+            expiresAt: result.data.expiresAt,
+            refreshToken: result.data.refreshToken || token.refreshToken,
+            userId: token.userId,
+            fullname: token.fullname,
+            username: token.username,
+            roleName: token.roleName,
+            isNewUser: token.isNewUser,
+            sessionId: token.sessionId,
         };
     } catch (error) {
-        console.log(error);
+        console.error("Error refreshing token:", error);
 
         return {
             ...token,
@@ -59,6 +81,7 @@ export const AuthOptions: NextAuthConfig = {
                 const userInfo = response.data;
                 user.userId = userInfo.userId;
                 user.email = userInfo.email;
+                user.username = userInfo.username;
                 user.fullname = userInfo.fullname;
                 user.image = userInfo.image;
                 user.roleName = userInfo.roleName;
@@ -78,42 +101,17 @@ export const AuthOptions: NextAuthConfig = {
                     ...token,
                     ...user,
                 };
-            } else if (Date.now() < new Date(token.expiresAt).getTime()) {
+            } else if (
+                Date.now() <
+                new Date(token.expiresAt).getTime() - 1 * 1000
+            ) {
                 return token;
             } else {
-                console.log("Token has expired, refreshing token");
-                if (!token.refreshToken)
-                    throw new TypeError("Missing refresh_token");
-                // try {
-                //     const { data } = await requestRefreshToken({
-                //         sessionId: token.sessionId,
-                //         refreshToken: token.refreshToken,
-                //     });
-
-                //     if (!data) throw new Error("RefreshTokenFailed");
-
-                //     return {
-                //         ...token,
-                //         accessToken: data.accessToken,
-                //         expiresAt: data.expiresAt,
-                //         refreshToken: data.refreshToken || token.refreshToken,
-                //     };
-                // } catch (error) {
-                //     console.error("Error refreshing access_token", error);
-                //     token.error = "RefreshTokenError";
-                //     return token;
-                // }
-
-                return {
-                    ...token,
-                    accessToken: "abc",
-                    expiresAt: new Date(),
-                    refreshToken: "bcd",
-                };
+                return (await refreshAccessToken(token)) as JWT;
             }
         },
         async session({ session, token }) {
-            session.user.id = token.userId;
+            session.user.userId = token.userId;
             session.user.email = token.email!;
             session.user.username = token.username;
             session.user.fullname = token.fullname;

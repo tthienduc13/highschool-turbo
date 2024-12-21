@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
     checkUserNameExist,
     completeOnboard,
+    getUserProfile,
     updateBaseUserInfo,
 } from "../apis/user.ts";
 
@@ -38,5 +39,19 @@ export const useCompleteOnboardMutation = () => {
         onError: (error) => {
             return error;
         },
+    });
+};
+
+export const useUserProfileQuery = ({
+    username,
+    status,
+}: {
+    username: string;
+    status: string;
+}) => {
+    return useQuery({
+        queryKey: ["user-profile", username],
+        queryFn: () => getUserProfile({ username }),
+        enabled: status !== "loading" && !!username,
     });
 };
