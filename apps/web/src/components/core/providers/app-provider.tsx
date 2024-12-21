@@ -16,7 +16,7 @@ interface AppProviderProps {
 
 export const AppProviders = ({ children, session }: AppProviderProps) => {
     return (
-        <SessionProvider session={session}>
+        <SessionProvider session={session} refetchInterval={60}>
             <ThemeProvider
                 attribute="class"
                 defaultTheme="light"
