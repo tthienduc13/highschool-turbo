@@ -1,5 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { checkUserNameExist, updateBaseUserInfo } from "../apis/user.ts";
+import {
+    checkUserNameExist,
+    completeOnboard,
+    getUserProfile,
+    updateBaseUserInfo,
+} from "../apis/user.ts";
 
 export const useCheckUsernameQuery = ({ username }: { username: string }) => {
     return useQuery({
@@ -22,5 +27,31 @@ export const useUpdateBaseUserInfoMutation = () => {
             //     variant: "destructive",
             // });
         },
+    });
+};
+
+export const useCompleteOnboardMutation = () => {
+    return useMutation({
+        mutationFn: completeOnboard,
+        onSuccess: (data) => {
+            return data;
+        },
+        onError: (error) => {
+            return error;
+        },
+    });
+};
+
+export const useUserProfileQuery = ({
+    username,
+    status,
+}: {
+    username: string;
+    status: string;
+}) => {
+    return useQuery({
+        queryKey: ["user-profile", username],
+        queryFn: () => getUserProfile({ username }),
+        enabled: status !== "loading" && !!username,
     });
 };

@@ -4,6 +4,21 @@ export interface ResponseModel<T> {
     data?: T;
 }
 
+export interface Pagination<T> {
+    data: T[];
+    currentPage: number;
+    pageSize: number;
+    totalCount: number;
+    totalPages: number;
+}
+
+export interface Metadata {
+    TotalCount: number;
+    PageSize: number;
+    TotalPages: number;
+    CurrentPage: number;
+}
+
 export enum TypeExam {
     T1H = "T1H",
     FIE = "FIE",

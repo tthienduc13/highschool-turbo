@@ -8,6 +8,7 @@ import { createContext, useContext } from "react";
 import { SegmentedProgress } from "./segmented-progress";
 import { Loading } from "../loading";
 import { useMediaQuery } from "@highschool/hooks";
+import { getSafeRedirectUrl } from "@/utils/urls";
 
 const computeMap = (isMobile = false) => {
     const base = [
@@ -57,7 +58,7 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
     const getFinalizedCallbackUrl = () => {
         if (!callbackUrl) return "/";
 
-        // return getSafeRedirectUrl(callbackUrl);
+        return getSafeRedirectUrl(callbackUrl);
         return "";
     };
 

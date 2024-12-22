@@ -51,7 +51,7 @@ export const DefaultLayout: React.FC<
                         await onNext?.();
                         if (defaultNext) next();
                     }}
-                    className="md:h-12 md:text-lg font-bold w-72"
+                    className="md:h-12 md:text-lg  w-72"
                     size={"lg"}
                 >
                     {nextLoading ? (

@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         "@highschool/env",
         "@highschool/react-query",
     ],
+    experimental: {
+        staleTimes: {
+            dynamic: 0,
+            static: 0,
+        },
+    },
 };
 
 export default nextConfig;

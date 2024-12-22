@@ -1,6 +1,24 @@
 import { endpointUser } from "@highschool/endpoints";
 import axiosServices from "../lib/axios.ts";
-import { TypeExam } from "@highschool/interfaces";
+import { ResponseModel, TypeExam, UserProfile } from "@highschool/interfaces";
+
+// GET
+
+export const getUserProfile = async ({
+    username,
+}: {
+    username: string;
+}): Promise<ResponseModel<UserProfile>> => {
+    try {
+        const { data } = await axiosServices.get(
+            endpointUser.PROFILE_USER(username)
+        );
+        return data;
+    } catch (error) {
+        console.error("Error while getting user profile", error);
+        throw error;
+    }
+};
 
 export const checkUserNameExist = async ({
     userName,
@@ -74,6 +92,22 @@ export const updateBaseUserInfo = async ({
         return data;
     } catch (error) {
         console.error("Error while updating base user", error);
+        throw error;
+    }
+};
+
+export const completeOnboard = async ({
+    userId,
+}: {
+    userId: string;
+}): Promise<ResponseModel<string>> => {
+    try {
+        const { data } = await axiosServices.put(
+            `${endpointUser.COMPLETE_ONBOARD(userId)}`
+        );
+        return data;
+    } catch (error) {
+        console.error("Error while updating user status", error);
         throw error;
     }
 };

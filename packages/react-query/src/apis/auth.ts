@@ -35,7 +35,7 @@ export const requestRefreshToken = async ({
     sessionId: string;
 }): Promise<ResponseModel<RefreshTokenResponse>> => {
     try {
-        const { data } = await axiosServices.post(endpointAuth.REFESH_TOKEN, {
+        const { data } = await axiosServices.post(endpointAuth.REFRESH_TOKEN, {
             refreshToken: refreshToken,
             sessionId: sessionId,
         });
