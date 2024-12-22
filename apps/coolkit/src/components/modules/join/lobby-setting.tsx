@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { ButtonKet } from "@/components/ui/button"
 import { IconCopy, IconMaximize, IconMaximizeOff, IconVolume, IconVolumeOff } from "@tabler/icons-react"
-import { use, useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 
 export const LobbySetting = () => {
