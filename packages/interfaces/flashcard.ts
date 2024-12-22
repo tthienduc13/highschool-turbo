@@ -2,6 +2,8 @@ export interface Flashcard {
     id: string;
     userId: string;
     subjectId: string;
+    subjectName: string;
+    grade: string;
     flashcardName: string;
     slug: string;
     flashcardDescription: string;
@@ -10,9 +12,11 @@ export interface Flashcard {
     isRated: boolean;
     star: number;
     createdBy: string;
-    createdAt: Date;
-    updatedAt: Date;
-    updatedBy: string;
+    createdAt: string;
+    updatedAt: string;
+    updatedBy: null;
+    todayView: number;
+    totalView: number;
     numberOfFlashcardContent: number;
 }
 

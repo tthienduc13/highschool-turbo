@@ -27,8 +27,15 @@ const endpointUser = {
 const endpointFolder = {
     CREATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
     GET_USER_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
-    UPDATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
-    DELETE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
+    GET_FOLDER_DETAIL: `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards`,
+    ADD_TO_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}/add`,
+    UPDATE_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
+    DELETE_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
+    REMOVE_FLASHCARD: (flashcardId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards/${flashcardId}`,
 };
 
 export { endpointAuth, endpointUser, endpointFolder };

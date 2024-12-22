@@ -12,8 +12,8 @@ export const getUserFlashcard = async ({
     username: string;
     pageSize: number;
     pageNumber: number;
-}): Promise<Pagination<Flashcard>> => {
-    return fetchPaginatedData<Flashcard>(
+}): Promise<Pagination<Flashcard[]>> => {
+    return fetchPaginatedData<Flashcard[]>(
         endpointUser.USER_FLASHCARD(username),
         {
             pageNumber,

@@ -2,6 +2,7 @@ import { auth, signOut } from "@highschool/react-query/auth";
 
 async function HomePage() {
     const session = await auth();
+    console.log(session?.user.accessToken);
     return (
         <div>
             {JSON.stringify(session?.user)}

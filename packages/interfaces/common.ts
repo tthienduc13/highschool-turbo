@@ -5,7 +5,7 @@ export interface ResponseModel<T> {
 }
 
 export interface Pagination<T> {
-    data: T[];
+    data: T;
     currentPage: number;
     pageSize: number;
     totalCount: number;

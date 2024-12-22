@@ -1,10 +1,10 @@
-import { Loading } from "@/components/core/common/loading";
 import { useProfile } from "@/hooks/use-profile";
 import { groupIntoTimeline } from "@/utils/grouping";
 import { useUserFlashcardQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import Link from "next/link";
 import { ProfileLinkable } from "../profile-linkable";
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 export const FlashcardList = () => {
     const profile = useProfile()!;
@@ -20,7 +20,7 @@ export const FlashcardList = () => {
     });
 
     if (isLoading) {
-        return <Loading />;
+        return <FlashcardList.Skeleton />;
     }
 
     const grouped = groupIntoTimeline(data?.data ?? []);
@@ -58,6 +58,30 @@ export const FlashcardList = () => {
                     </Link>
                 </div>
             )}
+        </div>
+    );
+};
+
+FlashcardList.Skeleton = function FlashcardListSkeleton() {
+    const Group = ({ numSets }: { numSets: number }) => (
+        <div className="flex flex-col gap-6">
+            <div className="flex flex-row gap-4 items-center">
+                <div className="h-7 flex flex-row items-center">
+                    <Skeleton className=" rounded-md h-[26px] w-[100px]" />
+                </div>
+                <div className="bg-gray-300 dark:bg-gray-700 w-full h-[1px]"></div>
+            </div>
+            <div className="flex flex-col gap-4">
+                {Array.from({ length: numSets }, (_, i) => (
+                    <ProfileLinkable.Skeleton key={i} />
+                ))}
+            </div>
+        </div>
+    );
+    return (
+        <div className=" flex flex-col gap-8">
+            <Group numSets={3} />
+            <Group numSets={5} />
         </div>
     );
 };
