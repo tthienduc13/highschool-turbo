@@ -1,42 +1,24 @@
 'use client'
 
 import { ButtonKet } from "@/components/ui/button"
-import { IconUsers } from "@tabler/icons-react"
 import Image from "next/image"
 import { motion } from "motion/react"
 
-interface LobbyPlayerProps {
-    count: number
-}
 
-export function LobbyPlayer({ count }: LobbyPlayerProps) {
+export function LobbyPlayer() {
+
     return (
         <>
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                className="text-white text-3xl flex justify-between w-[55vw] content-center"
+                className="text-white text-3xl flex justify-between w-[55vw] content-center mb-1rem"
             >
-                <div className="flex items-center gap-1">
-                    <IconUsers className="h-[1.875rem] w-[1.875rem]" />
-                    <span className=" font-medium ">
-                        {
-                            count == 0 ? 'Chờ người chơi' : `${count}`
-                        }
-                    </span>
-                </div>
-                <div className="text-5xl font-bold">
-                    <h2>Coolket</h2>
-                </div>
-                <ButtonKet
-                    className="flex-none text-black text-2xl"
-                    backgroundColor="white"
-                    isDisabled={count == 0}
+                <div
+                    className="flex-none text-white font-extrabold text-2xl text-center w-full"
                 >
-                    {
-                        count == 0 ? '+1 người' : 'Bắt đầu'
-                    }
-                </ButtonKet>
+                    Waiting to host...
+                </div>
             </motion.div>
             <div className="flex flex-wrap justify-around w-[75vw] mt-[8vh] gap-5">
                 <Player />
@@ -54,6 +36,7 @@ export function LobbyPlayer({ count }: LobbyPlayerProps) {
 }
 
 const Player = () => {
+
     return (
         <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -68,7 +51,7 @@ const Player = () => {
                         className="-rotate-12"
                     />
                 </div>
-                <div className="text-black text-center w-[14vw] overflow-hidden whitespace-nowrap text-ellipsis mb-2 hover:line-through">
+                <div className="text-black text-center w-[14vw] overflow-hidden whitespace-nowrap text-ellipsis mb-2">
                     <span className="text-xl font-[500]">Nguyễn Văn AAAA</span>
                 </div>
             </ButtonKet>
@@ -77,3 +60,6 @@ const Player = () => {
     )
 
 }
+
+
+

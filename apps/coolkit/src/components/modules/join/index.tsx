@@ -1,4 +1,4 @@
-import { LobbyHeader } from "@/components/core/main/lobby-header"
+import { LobbyHeader } from "@/components/modules/join/lobby-header"
 import { LobbyPlayer } from "./lobby-player"
 import SnowEffect from "@/components/animation/snow/snow-effect"
 import { LobbySetting } from "./lobby-setting"

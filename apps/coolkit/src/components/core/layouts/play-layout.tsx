@@ -6,12 +6,12 @@ function PlayLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="h-screen w-screen">
+        <div className="h-screen w-screen overflow-x-hidden">
             <div className="z-50 w-full px-5 md:px-0">
                 <div
                     style={{
                         height: '100vh',
-                        width: '100vw',
+                        width: 'screen',
                         background: 'linear-gradient(to bottom, #2980b9, #6dd5fa, #f2f2f2)',
                     }}
                     className="relative"

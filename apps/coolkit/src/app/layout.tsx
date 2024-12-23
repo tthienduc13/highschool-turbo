@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@highschool/ui/globals.css";
 import "./global.css"
+import AppProviders from "@/components/core/common/provider/app-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,10 +13,13 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppProviders>
+          {children}
+        </AppProviders>
+      </body>
     </html>
   );
 }

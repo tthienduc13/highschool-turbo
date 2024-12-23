@@ -15,6 +15,8 @@ const config = {
     backgroundImage: {
       "custom-gradient":
         "linear-gradient(211.35deg, #DC03FF 22.42%, rgba(10, 152, 255, 0.74) 70.33%)",
+      "game-winter":
+        "linear-gradient(to bottom, #2980b9, #6dd5fa, #f2f2f2)"
     },
     transitionTimingFunction: {
       "cubic-ease": "cubic-bezier(0.25, 1, 0.5, 1)",

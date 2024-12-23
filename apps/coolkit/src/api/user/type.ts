@@ -6,3 +6,11 @@ export type player = {
     avatar: string;
     timeAverage: number;
 }
+export type Avatar = {
+    id: string;
+    name: string;
+    image: string | null;
+    rarity: string;
+    type: string;
+    background: string;
+}

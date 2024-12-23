@@ -2,15 +2,17 @@
 "use client"
 
 import { ButtonKet } from "@/components/ui/button"
-import { IconCopy, IconMaximize, IconMaximizeOff, IconVolume, IconVolumeOff } from "@tabler/icons-react"
+import { IconHanger2Filled, IconMaximize, IconMaximizeOff, IconVolume, IconVolumeOff } from "@tabler/icons-react"
 import { useEffect, useRef, useState } from "react"
 import { motion } from "motion/react"
+import { AvatarWardrobe } from "./avatar-wardrobe"
 
 export const LobbySetting = () => {
     const [isTurnOnMusic, setIsTurnOnMusic] = useState(true)
     const [isFullScreen, setIsFullScreen] = useState(false)
-    const [copied, setCopied] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLoadingAvatar, setIsLoadingAvatar] = useState(true);
 
     useEffect(() => {
         if (audioRef.current) {
@@ -39,13 +41,6 @@ export const LobbySetting = () => {
         } else if ((document as any).msExitFullscreen) {
             (document as any).msExitFullscreen();
         }
-    };
-
-    const handleCopy = () => {
-        navigator.clipboard.writeText("97456710").then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
     };
 
     const toggleMusic = () => {
@@ -100,16 +95,13 @@ export const LobbySetting = () => {
             </ButtonKet>
             <ButtonKet
                 className="bg-white bg-opacity-70 text-black py-4 hover:bg-slate-50 relative"
-                onClick={handleCopy}
+                onClick={() => setIsOpen(true)}
+                isDisabled={isLoadingAvatar}
             >
-                <IconCopy style={{ width: "1.4rem", height: "1.4rem" }} />
-                {
-                    copied && (
-                        <span className="absolute -top-2 -right-1 bg-black text-white text-xs px-2 py-1 rounded-md">Đã copy</span>
-                    )
-                }
+                <IconHanger2Filled style={{ width: "1.4rem", height: "1.4rem" }} />
             </ButtonKet>
 
+            <AvatarWardrobe isOpen={isOpen} setOpen={setIsOpen} setIsLoadingAvatar={setIsLoadingAvatar} />
         </motion.div>
     )
 }
