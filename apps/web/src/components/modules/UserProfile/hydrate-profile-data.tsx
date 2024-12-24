@@ -2,7 +2,7 @@
 
 import { useUserProfileQuery } from "@highschool/react-query/queries";
 import { useParams } from "next/navigation";
-import { ProfileNotFound } from "./profile-not-found";
+import { ProfileNotFound } from "../../core/common/404s/profile-404";
 import { UserProfile } from "@highschool/interfaces";
 import { createContext } from "react";
 import { useSession } from "next-auth/react";

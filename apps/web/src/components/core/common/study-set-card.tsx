@@ -1,13 +1,17 @@
 import { Flashcard, StudySetVisibility } from "@highschool/interfaces";
 import { GenericCard } from "./generic-card";
-import { visibilityIcon } from "./visibility-icon";
+import { visibilityIcon } from "./renderer/visibility-icon";
 import { IconPointFilled, IconProgress } from "@tabler/icons-react";
 
 export interface StudySetCardProps {
-    studySet: Pick<Flashcard, "id" | "flashcardName" | "status" | "star">;
+    studySet: Pick<
+        Flashcard,
+        "id" | "flashcardName" | "status" | "grade" | "slug"
+    >;
     numTerms: number;
     // collaborators?: { total: number; avatars: string[] };
     draft?: boolean;
+    userLoading?: boolean;
     user: {
         fullname: string | null;
         image: string | null;
@@ -20,6 +24,7 @@ export interface StudySetCardProps {
 export const StudySetCard = ({
     studySet,
     numTerms,
+    userLoading,
     // collaborators,
     draft,
     user,
@@ -31,11 +36,11 @@ export const StudySetCard = ({
         <GenericCard
             title={studySet.flashcardName || "Chưa đặt tên"}
             numItems={numTerms}
-            star={studySet.star}
+            grade={studySet.grade}
             url={
                 !draft
-                    ? `/study-set/${studySet.id}`
-                    : `/study-set/${studySet.id}/edit`
+                    ? `/study-set/${studySet.slug}`
+                    : `/study-set/${studySet.slug}/edit`
             }
             itemsLabel={"thẻ"}
             label={
@@ -57,6 +62,7 @@ export const StudySetCard = ({
                     : undefined
             }
             user={user}
+            userLoading={userLoading}
             // bottom={
             //     studySet.type == "Collab" ? (
             //         <GenericCollaboratorsFooter

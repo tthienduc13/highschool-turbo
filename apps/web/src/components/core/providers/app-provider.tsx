@@ -11,7 +11,7 @@ const SessionProvider = dynamic(() =>
 
 interface AppProviderProps {
     children: React.ReactNode;
-    session: Session;
+    session?: Session | undefined;
 }
 
 export const AppProviders = ({ children, session }: AppProviderProps) => {

@@ -14,6 +14,7 @@
         "@highschool/endpoints": "workspace:*",
         "@highschool/env": "workspace:*",
         "@highschool/eslint-config": "workspace:*",
+        "@highschool/lib": "workspace:*",
         "@highschool/hooks": "workspace:*",
         "@highschool/interfaces": "workspace:*",
         "@highschool/react-query": "workspace:*",

@@ -1,0 +1,24 @@
+{
+    "name": "@highschool/lib",
+    "version": "0.0.0",
+    "private": true,
+    "dependencies": {
+        "@highschool/interfaces": "workspace:*",
+        "@tiptap/extension-bold": "^2.10.4",
+        "@tiptap/extension-document": "^2.10.4",
+        "@tiptap/extension-highlight": "^2.10.4",
+        "@tiptap/extension-italic": "^2.10.4",
+        "@tiptap/extension-paragraph": "^2.10.4",
+        "@tiptap/extension-strike": "^2.10.4",
+        "@tiptap/extension-text": "^2.10.4",
+        "@tiptap/extension-underline": "^2.10.4",
+        "@tiptap/html": "^2.10.4",
+        "@tiptap/react": "^2.10.4",
+        "next": "^15.1.0",
+        "react": "^19.0.0",
+        "xss": "^1.0.15"
+    },
+    "devDependencies": {
+        "@types/react": "^19.0.0"
+    }
+}

@@ -22,11 +22,19 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const session = await auth();
+    console.log(session?.user.accessToken);
     return (
         <html lang="vi" suppressHydrationWarning>
-            <body className={cn("w-screen font-sans ", sofiaFontVN.variable)}>
+            <body
+                className={cn(
+                    "w-screen font-sans bg-[#F7FAFC] dark:bg-[#171923]",
+                    sofiaFontVN.variable
+                )}
+            >
                 <Suspense fallback={<Loading />}>
-                    <AppProviders session={session!}>{children}</AppProviders>
+                    <AppProviders session={session ?? undefined}>
+                        {children}
+                    </AppProviders>
                 </Suspense>
             </body>
         </html>

@@ -1,6 +1,6 @@
 import { StudySetVisibility } from "@highschool/interfaces";
 import { cn } from "@highschool/ui/lib/utils";
-import { visibilityIcon } from "./visibility-icon";
+import { visibilityIcon } from "./renderer/visibility-icon";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 
 export interface SelectableGenericCardProps {

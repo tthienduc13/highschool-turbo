@@ -1,3 +1,4 @@
+import { cn } from "@highschool/ui/lib/utils";
 import { motion } from "framer-motion";
 
 const draw = {
@@ -12,7 +13,13 @@ const draw = {
     }),
 };
 
-export const AnimatedCheckCircle = () => {
+interface AnimatedCheckCircleProps {
+    className?: string;
+}
+
+export const AnimatedCheckCircle = ({
+    className,
+}: AnimatedCheckCircleProps) => {
     return (
         <motion.svg
             xmlns="http://www.w3.org/2000/svg"
@@ -26,7 +33,7 @@ export const AnimatedCheckCircle = () => {
             strokeLinejoin="round"
             initial="hidden"
             animate="visible"
-            className="min-h-[24px] min-w-[24px]"
+            className={cn("min-h-[24px] min-w-[24px]", className)}
         >
             <motion.path
                 stroke="none"

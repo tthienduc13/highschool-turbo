@@ -39,6 +39,7 @@ export const EditFolderModal = ({
                     folderName: title,
                     folderId: folder.folderUser.id,
                 });
+                onClose();
             }}
         >
             <Input

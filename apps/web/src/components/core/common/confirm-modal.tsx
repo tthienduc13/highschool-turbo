@@ -58,7 +58,6 @@ export const ConfirmModal = ({
                     <Button
                         disabled={isLoading}
                         variant={cancelText ? "outline" : "ghost"}
-                        size={"lg"}
                         onClick={() => {
                             onCancel?.();
                             onClose();

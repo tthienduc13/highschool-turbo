@@ -1,0 +1,17 @@
+export interface FlashcardContent {
+    id: string;
+    flashcardId: string;
+    flashcardContentTerm: string;
+    flashcardContentDefinition: string;
+    image: string | null;
+    flashcardContentTermRichText: string;
+    flashcardContentDefinitionRichText: string;
+    rank: number;
+    createdAt: Date;
+    updatedAt: Date;
+    createdBy: string;
+    updatedBy: string;
+    // distractors?: Distractor[];
+}
+
+// TODO: Add distractor

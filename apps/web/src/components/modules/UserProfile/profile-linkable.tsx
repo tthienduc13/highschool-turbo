@@ -1,4 +1,4 @@
-import { visibilityIcon } from "@/components/core/common/visibility-icon";
+import { visibilityIcon } from "@/components/core/common/renderer/visibility-icon";
 import { StudySetVisibility } from "@highschool/interfaces";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import Link from "next/link";

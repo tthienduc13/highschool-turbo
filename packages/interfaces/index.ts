@@ -4,3 +4,6 @@ export * from "./common";
 export * from "./user";
 export * from "./flashcard";
 export * from "./folder";
+export * from "./recent-view";
+export * from "./flashcard-content";
+export * from "./study-mode";

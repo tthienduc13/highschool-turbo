@@ -1,6 +1,11 @@
 "use client";
 
-import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
+import { Grade } from "@highschool/interfaces";
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import {
@@ -14,20 +19,21 @@ import { cn } from "@highschool/ui/lib/utils";
 import {
     IconDiscountCheck,
     IconDotsVertical,
-    IconStar,
     IconTrash,
 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
+import { gradeRenderer } from "./renderer/grade";
 
 export interface GenericCardProps {
     title: string;
     numItems: number;
     itemsLabel: string;
-    star: number;
+    grade: Grade;
     label?: React.ReactNode;
     bottom?: React.ReactNode;
     url: string;
+    userLoading?: boolean;
     user: {
         fullname: string | null;
         image: string | null;
@@ -43,7 +49,8 @@ export interface GenericCardProps {
 export const GenericCard = ({
     title,
     numItems,
-    star,
+    grade,
+    userLoading = false,
     itemsLabel,
     label,
     bottom,
@@ -53,6 +60,7 @@ export const GenericCard = ({
     leftIcon,
     rightIcon,
     verified = false,
+
     removable = false,
     onRemove,
 }: GenericCardProps) => {
@@ -61,7 +69,7 @@ export const GenericCard = ({
     return (
         <Link href={url}>
             <div
-                className="h-full rounded-lg p-5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 shadow-lg transition-all ease-in-out duration-200 hover:-translate-y-2 hover:border-b-primary cursor-pointer "
+                className="h-full rounded-lg p-5 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 shadow-md transition-all ease-in-out duration-200 hover:-translate-y-2 hover:border-b-primary cursor-pointer "
                 style={{ zIndex: menuOpen ? 30 : 25 }}
             >
                 <div className="flex flex-col justify-center h-full gap-4">
@@ -71,7 +79,7 @@ export const GenericCard = ({
                             reverseTitle ? "flex-col-reverse" : "flex-col"
                         )}
                     >
-                        <h2 className="overflow-hidden text-lg font-bold text-ellipsis line-clamp-2">
+                        <h2 className="overflow-hidden text-lg font-bold text-ellipsis line-clamp-1">
                             {title}
                         </h2>
                         <div className="flex flex-row items-center justify-between">
@@ -89,28 +97,26 @@ export const GenericCard = ({
                                 </div>
                             )}
                             <div className="flex gap-[2px] flex-row items-center">
-                                <IconStar
-                                    size={16}
-                                    className="mb-0.5 fill-yellow-500 text-yellow-500"
-                                />
-                                <p className="h-fit text-sm text-gray-600 dark:text-gray-400">
-                                    {star}
-                                </p>
+                                {gradeRenderer(grade)}
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-row justify-between">
-                        {user && (
+                        {!userLoading && (
                             <div className="flex flex-row items-center gap-2">
                                 <Avatar className="size-6">
                                     <AvatarImage
-                                        src={user.image ?? ""}
-                                        alt={user.fullname ?? ""}
+                                        src={user.image ?? "/logo.svg"}
+                                        alt={
+                                            user.fullname ??
+                                            "Người dùng Highschool"
+                                        }
                                     />
                                 </Avatar>
                                 <div className="flex flex-row items-center gap-1">
                                     <div className="text-sm font-semibold">
-                                        {user.fullname}
+                                        {user.fullname ??
+                                            "Người dùng Highschool"}
                                     </div>
                                     {verified && (
                                         <IconDiscountCheck

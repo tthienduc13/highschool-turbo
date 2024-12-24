@@ -14,6 +14,7 @@ const endpointAuth = {
 };
 
 const endpointUser = {
+    GET_AUTHOR: `${prefixUserServices}${prefixFirstVersion}/users/author`,
     CHECK_USER_NAME: `${prefixUserServices}${prefixFirstVersion}/users/checkusername`,
     UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
     COMPLETE_ONBOARD: (userId: string) =>
@@ -38,4 +39,25 @@ const endpointFolder = {
         `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards/${flashcardId}`,
 };
 
-export { endpointAuth, endpointUser, endpointFolder };
+const endpointUserPersonalized = {
+    RECENT_VIEW: `${prefixAnalyseServices}${prefixFirstVersion}/recent-view`,
+};
+
+const endpointFlashcard = {
+    GET_TOP_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/top`,
+    GET_BY_SLUG: (slug: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}`,
+};
+
+const endpointFlashcardContent = {
+    GET_LIST_BY_SLUG: (slug: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}/contents`,
+};
+export {
+    endpointAuth,
+    endpointUser,
+    endpointFolder,
+    endpointUserPersonalized,
+    endpointFlashcard,
+    endpointFlashcardContent,
+};

@@ -27,6 +27,12 @@ export enum TypeExam {
     // OTHER = 'OTHER'
 }
 
+export enum Grade {
+    Grade10 = "Grade 10",
+    Grade11 = "Grade 11",
+    Grade12 = "Grade 12",
+}
+
 export const examDescriptions: { [key in TypeExam]: string } = {
     [TypeExam.T1H]: "Kiểm tra 1 tiết",
     [TypeExam.FIE]: "Kiểm tra cuối kỳ",
