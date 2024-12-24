@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["static.wikia.nocookie.net"],
+    domains: ["static.wikia.nocookie.net", "res.cloudinary.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "**",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "**",
+      }
     ],
   },
 };
