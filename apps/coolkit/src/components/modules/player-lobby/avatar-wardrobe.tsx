@@ -7,12 +7,15 @@ import { Dialog, DialogContent, DialogTitle } from "@highschool/ui/components/ui
 import { motion } from "motion/react"
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
+import { BookAvatar } from "./book-avatar";
 
 interface AvatarWardrobeProps {
     isOpen: boolean;
     setOpen: (value: boolean) => void;
     setIsLoadingAvatar: (value: boolean) => void;
 }
+
+
 
 
 export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWardrobeProps) => {
@@ -45,23 +48,7 @@ export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWa
                     animate={{ y: 0, opacity: 1 }}
                     className="flex items-center w-full "
                 >
-                    <div className="w-[56vw] h-[75vh] bg-game-winter rounded-lg overflow-y-auto"
-                        style={{ boxShadow: "inset 0 -10px #00000" }}
-                    >
-                        <div className="p-4 flex flex-wrap gap-2">
-                            {
-                                avatars?.map((avatar, index) => (
-                                    <div key={index} className="relative w-[3rem] h-[3rem]">
-                                        <button onClick={() => onChangeAvatar(index)}>
-                                            <Image src={avatar.image ?? ""}
-                                                width={100} height={100}
-                                                alt={avatar.name} className="bottom-0" />
-                                        </button>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    </div>
+                    <BookAvatar />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -109,3 +96,4 @@ export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWa
 
     )
 }
+
