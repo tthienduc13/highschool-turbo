@@ -1,7 +1,7 @@
 "use client"
 
 import { useGetAvatarQuery } from "@/api/user/query";
-import { Avatar } from "@/api/user/type";
+import { Avatar, AvatarRarity } from "@/api/user/type";
 import { ButtonKet } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@highschool/ui/components/ui/dialog";
 import { motion } from "motion/react"
@@ -16,28 +16,29 @@ interface AvatarWardrobeProps {
 }
 
 
-
-
 export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWardrobeProps) => {
     const background = "https://static.wikia.nocookie.net/blooket/images/9/92/BlizzardPackBackground.webp/revision/latest/scale-to-width-down/200?cb=20221116001218";
     const { data } = useGetAvatarQuery({
         page: -1,
         pageSize: 10
     });
-    const avatars = useMemo(() => data?.data || [], [data]);
+    const avatars: Avatar[] = useMemo(() => (Array.isArray(data?.data) ? data.data : []), [data]);
 
     const [selectAvatar, setSelectAvatar] = useState<Avatar | null>(null);
 
-    const onChangeAvatar = (index: number) => {
-        setSelectAvatar(avatars[index]);
-    }
+    const onChangeAvatar = (avatar: Avatar) => {
+        if (selectAvatar?.id !== avatar.id) {
+            setSelectAvatar(avatar);
+        }
+    };
+
 
     useEffect(() => {
         if (avatars.length > 0) {
             setSelectAvatar(avatars[0]);
             setIsLoadingAvatar(false);
         }
-    }, [avatars]);
+    }, [avatars, setIsLoadingAvatar]);
 
     return (
         <Dialog open={isOpen} onOpenChange={setOpen}>
@@ -48,7 +49,7 @@ export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWa
                     animate={{ y: 0, opacity: 1 }}
                     className="flex items-center w-full "
                 >
-                    <BookAvatar />
+                    <BookAvatar avatars={avatars} onChangeAvatar={onChangeAvatar} />
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -71,7 +72,7 @@ export const AvatarWardrobe = ({ isOpen, setOpen, setIsLoadingAvatar }: AvatarWa
                                 <div className="text-white font-extrabold text-xl mb-2"
                                     style={{ WebkitTextStroke: "#3a3a3a 1.5px" }}
                                 >
-                                    {selectAvatar?.rarity}
+                                    {AvatarRarity[selectAvatar?.rarity ?? 1]}
                                 </div>
                                 <Image
                                     src={selectAvatar?.image ?? ""}

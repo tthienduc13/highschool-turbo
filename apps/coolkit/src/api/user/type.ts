@@ -15,3 +15,15 @@ export type Avatar = {
     type: string;
     background: string;
 }
+
+export enum AvatarRarity {
+    Common = 1,
+    Uncommon = 2,
+    Rare = 3,
+    Epic = 4,
+    Legendary = 5,
+    Mythic = 6,
+    Unique = 7,
+    Special = 8,
+    Exclusive = 9
+}
