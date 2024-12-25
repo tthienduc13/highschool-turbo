@@ -17,7 +17,7 @@ export function RarityBadge({ rarity }: RarityBadgeProps) {
         8: { name: 'Mythic', color: 'bg-indigo-400 ', textColor: 'text-indigo-100', shadow: 'shadow-indigo-500/20' },
         9: { name: 'Limited', color: 'bg-amber-400 ', textColor: 'text-amber-100', shadow: 'shadow-amber-500/20' },
     }[rarity]
-    console.log(rarityConfig)
+
     return (
         <div className={`absolute -top-2 -right-2 z-10 rounded-full px-2 py-0.5 text-[0.7rem] font-semibold 
             bg-gradient-to-r ${rarityConfig.color} ${rarityConfig.textColor}
