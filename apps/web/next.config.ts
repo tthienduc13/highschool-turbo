@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
         "@highschool/hooks",
         "@highschool/env",
         "@highschool/react-query",
+        "@highschool/lib",
     ],
     experimental: {
         staleTimes: {

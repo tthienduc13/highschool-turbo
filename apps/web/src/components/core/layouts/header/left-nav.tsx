@@ -15,7 +15,7 @@ import {
     IconCards,
     IconChevronDown,
     IconDice6,
-    IconFile,
+    IconFileTypePdf,
     IconFolder,
     IconSparkles,
     TablerIcon,
@@ -62,7 +62,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
         },
         {
             label: "Tài liệu",
-            icon: IconFile,
+            icon: IconFileTypePdf,
             onClick: () => handleItemClick("Tài liệu"),
             teacherOnly: true,
         },

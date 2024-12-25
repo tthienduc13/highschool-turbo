@@ -14,6 +14,9 @@ const endpointAuth = {
 };
 
 const endpointUser = {
+    GET_AUTHOR: `${prefixUserServices}${prefixFirstVersion}/users/author`,
+    GET_AUTHOR_BY_ID: (authorId: string) =>
+        `${prefixUserServices}${prefixFirstVersion}/users/author/${authorId}`,
     CHECK_USER_NAME: `${prefixUserServices}${prefixFirstVersion}/users/checkusername`,
     UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
     COMPLETE_ONBOARD: (userId: string) =>
@@ -27,8 +30,38 @@ const endpointUser = {
 const endpointFolder = {
     CREATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
     GET_USER_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
-    UPDATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
-    DELETE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folder`,
+    GET_FOLDER_DETAIL: `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards`,
+    ADD_TO_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}/add`,
+    UPDATE_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
+    DELETE_FOLDER: (folderId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
+    REMOVE_FLASHCARD: (flashcardId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards/${flashcardId}`,
 };
 
-export { endpointAuth, endpointUser, endpointFolder };
+const endpointUserPersonalized = {
+    RECENT_VIEW: `${prefixAnalyseServices}${prefixFirstVersion}/recent-view`,
+};
+
+const endpointFlashcard = {
+    GET_TOP_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/top`,
+    GET_BY_SLUG: (slug: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}`,
+};
+
+const endpointFlashcardContent = {
+    GET_LIST_BY_SLUG: (slug: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}/contents`,
+    EDIT_CONTENT: (flashcardContentId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardContentId}/content`,
+};
+export {
+    endpointAuth,
+    endpointUser,
+    endpointFolder,
+    endpointUserPersonalized,
+    endpointFlashcard,
+    endpointFlashcardContent,
+};

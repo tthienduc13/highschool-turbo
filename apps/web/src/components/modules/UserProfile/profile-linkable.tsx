@@ -1,5 +1,6 @@
-import { visibilityIcon } from "@/components/core/common/visibility-icon";
+import { visibilityIcon } from "@/components/core/common/renderer/visibility-icon";
 import { StudySetVisibility } from "@highschool/interfaces";
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import Link from "next/link";
 
 interface ProfileLinkableProps {
@@ -36,5 +37,19 @@ export const ProfileLinkable = ({
                 </div>
             </div>
         </Link>
+    );
+};
+
+ProfileLinkable.Skeleton = function ProfileLinkableSkeleton() {
+    return (
+        <div className="h-full w-full rounded-lg border-2 border-gray-200 p-4 bg-white dark:bg-gray-800 dark:border-gray-700 shadow-md">
+            <div className="flex flex-col gap-2">
+                <div className="flex flex-row items-center h-5 justify-between">
+                    <Skeleton className="h-[14px] w-20" />
+                    <Skeleton className="h-[18px] w-[18px] rounded-full" />
+                </div>
+                <Skeleton className="w-32 h-7" />
+            </div>
+        </div>
     );
 };

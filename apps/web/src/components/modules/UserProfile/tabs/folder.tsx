@@ -5,10 +5,10 @@ import {
     useUserFlashcardQuery,
     useUserFoldersQuery,
 } from "@highschool/react-query/queries";
-import { Button } from "@highschool/ui/components/ui/button";
-import Link from "next/link";
+
 import { ProfileLinkable } from "../profile-linkable";
 import { IconFolder } from "@tabler/icons-react";
+import { FlashcardList } from "./flashcard";
 
 export const FolderList = () => {
     const profile = useProfile()!;
@@ -23,7 +23,7 @@ export const FolderList = () => {
     });
 
     if (isLoading) {
-        return <Loading />;
+        return <FlashcardList.Skeleton />;
     }
 
     const grouped = groupIntoTimeline(data?.data ?? []);
@@ -44,7 +44,11 @@ export const FolderList = () => {
                                 key={item.id}
                                 title={item.name}
                                 url={`/profile/${profile.username}/folder/${item.id}`}
-                                numValues={3}
+                                numValues={
+                                    item.countFlashCard ??
+                                    0 + item.countDocument ??
+                                    0
+                                }
                                 label="mục"
                                 leftIcon={
                                     <IconFolder

@@ -1,22 +1,7 @@
-import { auth, signOut } from "@highschool/react-query/auth";
+import HomeModule from "@/components/modules/Home";
 
-async function HomePage() {
-    const session = await auth();
-    return (
-        <div>
-            {JSON.stringify(session?.user)}
-            <form
-                action={async () => {
-                    "use server";
-                    await signOut();
-                }}
-            >
-                {" "}
-                <button type="submit">signout</button>
-            </form>
-            {process.env.NEXT_PUBLIC_APP_URL}
-        </div>
-    );
+function HomePage() {
+    return <HomeModule />;
 }
 
 export default HomePage;

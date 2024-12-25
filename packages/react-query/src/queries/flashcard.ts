@@ -1,5 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserFlashcard } from "../apis/flashcard.ts";
+import {
+    getFlashcardBySlug,
+    getTopFlashcard,
+    getUserFlashcard,
+} from "../apis/flashcard.ts";
 
 export const useUserFlashcardQuery = ({
     pageSize,
@@ -19,5 +23,20 @@ export const useUserFlashcardQuery = ({
                 username: username,
             }),
         enabled: !!username,
+    });
+};
+
+export const useTopFlashcardQuery = () => {
+    return useQuery({
+        queryKey: ["top-flashcard"],
+        queryFn: getTopFlashcard,
+    });
+};
+
+export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
+    return useQuery({
+        queryKey: ["flashcard-by-slug", slug],
+        queryFn: () => getFlashcardBySlug({ slug }),
+        enabled: !!slug,
     });
 };

@@ -5,7 +5,7 @@ export interface ResponseModel<T> {
 }
 
 export interface Pagination<T> {
-    data: T[];
+    data: T;
     currentPage: number;
     pageSize: number;
     totalCount: number;
@@ -25,6 +25,12 @@ export enum TypeExam {
     NHE = "NHE",
     CAP = "CAP",
     // OTHER = 'OTHER'
+}
+
+export enum Grade {
+    Grade10 = "Grade 10",
+    Grade11 = "Grade 11",
+    Grade12 = "Grade 12",
 }
 
 export const examDescriptions: { [key in TypeExam]: string } = {

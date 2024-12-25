@@ -3,7 +3,8 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/study-set"];
+export const publicRoutes = ["/study-set", "/study-set/*"];
+export const restrictedRoutes = ["/study-set/*/learn"];
 
 /**
  * An array of routes that are used for authentication

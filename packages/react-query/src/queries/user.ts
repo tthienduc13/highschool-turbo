@@ -2,9 +2,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
     checkUserNameExist,
     completeOnboard,
+    getAuthorById,
+    getAuthorList,
     getUserProfile,
     updateBaseUserInfo,
 } from "../apis/user.ts";
+import { toast } from "sonner";
 
 export const useCheckUsernameQuery = ({ username }: { username: string }) => {
     return useQuery({
@@ -22,10 +25,7 @@ export const useUpdateBaseUserInfoMutation = () => {
             return data;
         },
         onError: (error) => {
-            // toast({
-            //     title: error.message ?? "Đã có lỗi xảy ra",
-            //     variant: "destructive",
-            // });
+            toast.error(error.message ?? "Đã có lỗi xảy ra");
         },
     });
 };
@@ -53,5 +53,21 @@ export const useUserProfileQuery = ({
         queryKey: ["user-profile", username],
         queryFn: () => getUserProfile({ username }),
         enabled: status !== "loading" && !!username,
+    });
+};
+
+export const useAuthorsQuery = ({ userIds }: { userIds: string[] }) => {
+    return useQuery({
+        queryKey: ["authors", userIds],
+        queryFn: () => getAuthorList({ userIds }),
+        enabled: !!userIds.length,
+    });
+};
+
+export const useAuthorQuery = ({ authorId }: { authorId: string }) => {
+    return useQuery({
+        queryKey: ["author", authorId],
+        queryFn: () => getAuthorById({ authorId }),
+        enabled: !!authorId,
     });
 };

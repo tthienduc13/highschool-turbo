@@ -16,7 +16,7 @@ const units = {
     second: 1000,
 };
 
-export const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+export const rtf = new Intl.RelativeTimeFormat("vi", { numeric: "auto" });
 
 // https://stackoverflow.com/a/53800501/9768266
 export const getRelativeTime = (d1: Date, d2 = new Date()) => {

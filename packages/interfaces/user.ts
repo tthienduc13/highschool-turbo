@@ -24,3 +24,11 @@ export interface UserProfile {
     reports: any[];
     isMe: boolean;
 }
+
+export interface Author {
+    id: string;
+    username: string;
+    fullname: string;
+    profilePicture: string;
+    isStudent: boolean;
+}

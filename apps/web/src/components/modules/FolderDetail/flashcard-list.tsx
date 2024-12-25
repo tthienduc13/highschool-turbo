@@ -1,0 +1,116 @@
+"use client";
+
+import { GenericCard } from "@/components/core/common/generic-card";
+import { StudySetCard } from "@/components/core/common/study-set-card";
+import { useFolder } from "@/hooks/use-folder";
+import { useMe } from "@/hooks/use-me";
+import {
+    useAddTofolderMutation,
+    useRemoveFlashcardMutation,
+    useUserFlashcardQuery,
+} from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
+import { IconCards, IconPlus } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { AddToFolderModal } from "./add-to-folder-modal";
+
+export const FlashcardList = () => {
+    const folder = useFolder();
+    const me = useMe();
+
+    const [hasOpenedSets, setHasOpenedSets] = useState(false);
+    const [addSetsModalOpen, setAddSetsModalOpen] = useState(false);
+
+    const { data, isLoading } = useUserFlashcardQuery({
+        pageNumber: 1,
+        pageSize: 100,
+        username: me?.username!,
+    });
+
+    const removeFlashcard = useRemoveFlashcardMutation();
+    const addToFolder = useAddTofolderMutation();
+
+    useEffect(() => {
+        if (addToFolder.isSuccess) {
+            setAddSetsModalOpen(false);
+        }
+    }, [addToFolder.isSuccess]);
+
+    return (
+        <>
+            <AddToFolderModal
+                isOpen={addSetsModalOpen}
+                onClose={() => setAddSetsModalOpen(false)}
+                actionLabel="Thêm thẻ ghi nhớ"
+                isAddLoading={addToFolder.isPending}
+                isEntitiesLoading={isLoading}
+                entities={
+                    data?.data.filter(
+                        (x) =>
+                            !folder.flashcards.some(
+                                (flashcard) => flashcard.id === x.id
+                            )
+                    ) ?? []
+                }
+                onAdd={async (ids: string[]) => {
+                    await addToFolder.mutateAsync({
+                        folderId: folder.folderUser.id,
+                        flashcardIds: ids,
+                    });
+                }}
+            />
+            <div className="flex flex-col gap-6 ">
+                <div className="flex flex-row items-center gap-2">
+                    <IconCards size={24} />
+                    <h2 className="text-2xl font-bold whitespace-nowrap">
+                        Thẻ ghi nhớ ({folder.folderUser.countFlashCard})
+                    </h2>
+                </div>
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(256px,1fr))] gap-4 w-full">
+                    {folder.flashcards.map((flashcard) => (
+                        <StudySetCard
+                            key={flashcard.id}
+                            studySet={flashcard}
+                            user={{
+                                fullname: me?.fullname!,
+                                image: me?.image!,
+                            }}
+                            numTerms={flashcard.numberOfFlashcardContent}
+                            // collaborators={studySet.collaborators}
+                            removable={true}
+                            onRemove={() => {
+                                removeFlashcard.mutate({
+                                    folderId: folder.folderUser.id,
+                                    flashcardId: flashcard.id,
+                                });
+                            }}
+                        />
+                    ))}
+                    <Button
+                        variant={"outline"}
+                        className="h-full min-h-[120px] text-lg text-primary"
+                        onClick={() => {
+                            setAddSetsModalOpen(true);
+                            setHasOpenedSets(true);
+                        }}
+                    >
+                        <IconPlus className="!size-6" />
+                        Thêm mới
+                    </Button>
+                </div>
+            </div>
+        </>
+    );
+};
+
+export const FlashcardListSkeleton = () => {
+    return (
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(256px,1fr))] gap-4 w-full">
+            {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i}>
+                    <GenericCard.Skeleton />
+                </div>
+            ))}
+        </div>
+    );
+};

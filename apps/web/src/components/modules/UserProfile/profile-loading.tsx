@@ -1,15 +1,36 @@
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { ProfileArea } from "./profile-area";
+import { FlashcardList } from "./tabs/flashcard";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@highschool/ui/components/ui/tabs";
 
 export const ProfileLoading = () => {
     return (
         <div className="max-w-4xl mx-auto flex flex-col gap-12">
             <ProfileArea.Skeleton />
-            <div className="mb-5 md:mb-10 flex flex-row gap-2">
-                <Skeleton className="h-9 w-32" />
-                <Skeleton className="h-9 w-32" />
-                <Skeleton className="h-9 w-32" />
-            </div>
+            <Tabs className="mb-5 md:mb-10">
+                <TabsList>
+                    <TabsTrigger value="overview">
+                        <Skeleton className="w-32" />
+                    </TabsTrigger>
+                    <TabsTrigger value="flashcard">
+                        <Skeleton className="w-32" />
+                    </TabsTrigger>
+                    <TabsTrigger value="folder">
+                        <Skeleton className="w-32" />
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="flashcard">
+                    <FlashcardList.Skeleton />
+                </TabsContent>
+                <TabsContent value="folder">
+                    <FlashcardList.Skeleton />
+                </TabsContent>
+            </Tabs>
         </div>
     );
 };

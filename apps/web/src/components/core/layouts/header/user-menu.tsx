@@ -23,7 +23,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
-import { useState, ReactNode } from "react";
+import { useState } from "react";
 
 type MenuItem = {
     label: string;

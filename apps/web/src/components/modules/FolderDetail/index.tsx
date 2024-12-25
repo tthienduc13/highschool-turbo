@@ -1,0 +1,27 @@
+import { DocumentList } from "./document-list";
+import { FlashcardList } from "./flashcard-list";
+import { FolderHeading } from "./folder-heading";
+import { FolderLoading } from "./folder-loading";
+import { HydrateFolderData } from "./hydrate-folder-data";
+
+function FolderDetailModule() {
+    return (
+        <HydrateFolderData fallback={<FolderLoading />}>
+            <div className="max-w-7xl mx-auto w-full">
+                <div className="flex flex-col gap-12">
+                    <FolderHeading />
+                    <div className="flex flex-col gap-8 items-stretch lg:flex-row w-full">
+                        {/* TODO: Add link area to study flashcard */}
+
+                        <div className="flex flex-1 flex-col gap-8">
+                            <FlashcardList />
+                            <DocumentList />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </HydrateFolderData>
+    );
+}
+
+export default FolderDetailModule;

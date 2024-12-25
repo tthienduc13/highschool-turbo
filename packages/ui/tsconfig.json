@@ -6,6 +6,6 @@
             "@highschool/ui/*": ["./src/*"]
         }
     },
-    "include": ["src"],
+    "include": ["src", "../lib/display.tsx"],
     "exclude": ["node_modules"]
 }

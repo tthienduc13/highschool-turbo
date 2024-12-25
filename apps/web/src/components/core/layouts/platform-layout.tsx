@@ -1,5 +1,26 @@
+"use client";
+import dynamic from "next/dynamic";
 import { Header } from "./header";
 import { Toaster } from "@highschool/ui/components/ui/sonner";
+import TopLoadingBar from "../common/top-loading-bar";
+
+const SignupModal = dynamic(
+    () =>
+        import("@/components/core/common/sign-up-modal").then(
+            (mod) => mod.SignUpModal
+        ),
+    {
+        ssr: false,
+    }
+);
+
+const ConfettiLayer = dynamic(
+    () =>
+        import("@/components/core/common/confetti-layer").then(
+            (mod) => mod.ConfettiLayer
+        ),
+    { ssr: false }
+);
 
 function PlatformLayout({
     children,
@@ -7,11 +28,16 @@ function PlatformLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="w-screen overflow-hidden min-h-screen ">
-            <Header />
-            <div className="py-10 px-4 ">{children}</div>
-            <Toaster richColors />
-        </div>
+        <>
+            <TopLoadingBar />
+            <div className="w-screen overflow-hidden min-h-screen ">
+                <Header />
+                <div className=" p-4 ">{children}</div>
+                <Toaster richColors />
+                <SignupModal />
+                <ConfettiLayer />
+            </div>
+        </>
     );
 }
 
