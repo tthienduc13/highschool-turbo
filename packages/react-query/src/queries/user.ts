@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
     checkUserNameExist,
     completeOnboard,
+    getAuthorById,
     getAuthorList,
     getUserProfile,
     updateBaseUserInfo,
@@ -60,5 +61,13 @@ export const useAuthorsQuery = ({ userIds }: { userIds: string[] }) => {
         queryKey: ["authors", userIds],
         queryFn: () => getAuthorList({ userIds }),
         enabled: !!userIds.length,
+    });
+};
+
+export const useAuthorQuery = ({ authorId }: { authorId: string }) => {
+    return useQuery({
+        queryKey: ["author", authorId],
+        queryFn: () => getAuthorById({ authorId }),
+        enabled: !!authorId,
     });
 };

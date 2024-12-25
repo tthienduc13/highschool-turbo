@@ -86,6 +86,7 @@ export const FlashcardPreview = () => {
                                 onClick={toggleAutoplay}
                                 disabled={enableCardsSorting}
                                 size={"lg"}
+                                className="w-full"
                             >
                                 <IconPlayerPlay />
                                 Tự động chạy

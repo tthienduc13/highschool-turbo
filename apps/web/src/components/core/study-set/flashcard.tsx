@@ -193,7 +193,57 @@ export const Flashcard: React.FC<FlashcardProps> = ({
                         )}
                     </div>
                 </div>
+                <div className="flex flex-row items-center gap-4">
+                    <Button
+                        size={"lg"}
+                        className="w-full"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onLeftAction();
+                        }}
+                        variant={"outline"}
+                        disabled={variant == "default" && index === 0}
+                    >
+                        <LeftIcon
+                            className={cn(
+                                "!size-6",
+                                variant === "sortable"
+                                    ? "text-red-500 dark:text-red-200"
+                                    : "text-gray-900 dark:text-white"
+                            )}
+                        />
+                    </Button>
+                    <Button
+                        size={"lg"}
+                        className="w-full"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onRightAction();
+                        }}
+                        variant={"outline"}
+                        disabled={
+                            variant == "default" && index === numTerms - 1
+                        }
+                    >
+                        <RightIcon
+                            className={cn(
+                                "!size-6",
+                                variant === "sortable"
+                                    ? "text-green-500 dark:text-green-200"
+                                    : "text-gray-900 dark:text-white"
+                            )}
+                        />
+                    </Button>
+                </div>
             </CardContent>
+            <div
+                className="h-[4px] min-h-[4px] bg-orange-300"
+                style={{
+                    visibility: isFlipped ? "visible" : "hidden",
+                    transition: "width 0.1s ease-in-out",
+                    width: `calc(100% * ${index + 1} / ${numTerms})`,
+                }}
+            />
         </Card>
     );
 };

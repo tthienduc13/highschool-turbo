@@ -6,6 +6,7 @@ import { auth } from "@highschool/react-query/auth";
 import { cn } from "@highschool/ui/lib/utils";
 import { Suspense } from "react";
 import { Loading } from "@/components/core/common/loading";
+import TopLoadingBar from "@/components/core/common/top-loading-bar";
 
 export const metadata: Metadata = {
     title: {
@@ -27,7 +28,7 @@ export default async function RootLayout({
         <html lang="vi" suppressHydrationWarning>
             <body
                 className={cn(
-                    "w-screen font-sans bg-[#F7FAFC] dark:bg-[#171923]",
+                    "w-screen font-sans  bg-[#F7FAFC] dark:bg-[#171923]",
                     sofiaFontVN.variable
                 )}
             >

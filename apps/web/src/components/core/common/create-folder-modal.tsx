@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Modal } from "./modal";
-import { useSession } from "next-auth/react";
 import { Input } from "@highschool/ui/components/ui/input";
 import { useCreateFolderMutation } from "@highschool/react-query/queries";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useMe } from "@/hooks/use-me";
+import { menuEventChannel } from "@/events/menu";
 
 interface CreateFolderModalProps {
     isOpen: boolean;
@@ -20,7 +20,6 @@ export const CreateFolderModal = ({
     onClose,
     childSetId,
 }: CreateFolderModalProps) => {
-    // TODO: Implement create with childSetId
     const me = useMe();
     const router = useRouter();
     const [title, setTitle] = useState("");
@@ -30,11 +29,16 @@ export const CreateFolderModal = ({
 
     useEffect(() => {
         if (createFolder.isSuccess && createFolder.data) {
-            onClose();
-            router.push(
-                `/profile/${me?.username}/folder/${createFolder.data.data}`
-            );
-            toast.success(createFolder.data.message);
+            if (!childSetId) {
+                onClose();
+                router.push(
+                    `/profile/${me?.username}/folder/${createFolder.data.data}`
+                );
+                toast.success(createFolder.data.message);
+            } else {
+                menuEventChannel.emit("folderWithSetCreated", childSetId);
+                onClose();
+            }
         }
     }, [createFolder.isSuccess, createFolder.data]);
 
@@ -47,7 +51,10 @@ export const CreateFolderModal = ({
             isPending={createFolder.isPending}
             isDisabled={isDisabled}
             onConfirm={async () => {
-                await createFolder.mutateAsync({ folderName: title });
+                await createFolder.mutateAsync({
+                    folderName: title,
+                    flashcardIds: childSetId ? [childSetId] : [],
+                });
             }}
         >
             <Input

@@ -15,6 +15,8 @@ const endpointAuth = {
 
 const endpointUser = {
     GET_AUTHOR: `${prefixUserServices}${prefixFirstVersion}/users/author`,
+    GET_AUTHOR_BY_ID: (authorId: string) =>
+        `${prefixUserServices}${prefixFirstVersion}/users/author/${authorId}`,
     CHECK_USER_NAME: `${prefixUserServices}${prefixFirstVersion}/users/checkusername`,
     UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
     COMPLETE_ONBOARD: (userId: string) =>

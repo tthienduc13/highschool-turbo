@@ -8,4 +8,6 @@ export const menuEventChannel = eventBus<{
     }) => void;
     commandMenuClosed: () => void;
     createFolder: (setId?: string) => void;
+    folderWithSetCreated: (setId: string) => void;
+    folderWithDocumentCreated: (documentId: string) => void;
 }>();

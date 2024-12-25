@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { Header } from "./header";
 import { Toaster } from "@highschool/ui/components/ui/sonner";
+import TopLoadingBar from "../common/top-loading-bar";
 
 const SignupModal = dynamic(
     () =>
@@ -19,12 +20,15 @@ function PlatformLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="w-screen overflow-hidden min-h-screen ">
-            <Header />
-            <div className=" p-4 ">{children}</div>
-            <Toaster richColors />
-            <SignupModal />
-        </div>
+        <>
+            <TopLoadingBar />
+            <div className="w-screen overflow-hidden min-h-screen ">
+                <Header />
+                <div className=" p-4 ">{children}</div>
+                <Toaster richColors />
+                <SignupModal />
+            </div>
+        </>
     );
 }
 

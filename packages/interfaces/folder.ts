@@ -6,6 +6,8 @@ export interface Folder {
     countFlashCard: number;
     countDocument: number;
     createdAt: Date;
+    isFlashcardInclude: boolean;
+    isDocumentInclude: boolean;
 }
 
 // TODO: Add document interface

@@ -1,6 +1,5 @@
 "use client";
 
-import { AddToFolderModal } from "@/components/core/common/add-to-folder-modal";
 import { GenericCard } from "@/components/core/common/generic-card";
 import { StudySetCard } from "@/components/core/common/study-set-card";
 import { useFolder } from "@/hooks/use-folder";
@@ -13,6 +12,7 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconCards, IconPlus } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { AddToFolderModal } from "./add-to-folder-modal";
 
 export const FlashcardList = () => {
     const folder = useFolder();

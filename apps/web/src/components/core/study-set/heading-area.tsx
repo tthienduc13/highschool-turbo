@@ -4,15 +4,9 @@ import { useSet } from "@/hooks/use-set";
 import { visibilityIcon } from "../common/renderer/visibility-icon";
 import { visibilityText } from "../common/renderer/visibility-text";
 import { Button } from "@highschool/ui/components/ui/button";
-import {
-    IconBooks,
-    IconEditCircle,
-    IconSchool,
-    IconTrash,
-} from "@tabler/icons-react";
-import { gradeRenderer, gradeTextRenderer } from "../common/renderer/grade";
-import Link from "next/link";
+import { IconEditCircle, IconTrash, IconTrendingUp } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const HeadingArea = () => {
     const { flashcard } = useSet();
@@ -37,7 +31,7 @@ export const HeadingArea = () => {
                 isLoading={deleteSetLoading}
                 onConfirm={() => {
                     // deleteSet.mutate({ studySetId: id });
-                    console.log("delete");
+                    toast.info("Delete function đang được phát triển");
                 }}
                 destructive
             />
@@ -45,20 +39,7 @@ export const HeadingArea = () => {
                 <h1 className="md:text-4xl text-2xl font-bold">
                     {flashcard.flashcardName}
                 </h1>
-                <div className="flex flex-row gap-2 text-lg text-gray-600 dark:text-gray-400 cursor-pointer">
-                    <Link
-                        href={"/course"}
-                        className="flex flex-row items-center gap-2 hover:text-primary transition-all ease-in-out duration-200"
-                    >
-                        <IconBooks size={20} />
-                        {flashcard.subjectName}
-                    </Link>
-                    <p>•</p>
-                    <div className="flex flex-row items-center gap-2">
-                        <IconSchool size={20} />
-                        {gradeTextRenderer(flashcard.grade)}
-                    </div>
-                </div>
+
                 <div className=" flex sm:flex-row flex-col sm:items-center justify-between gap-2">
                     <div className="flex flex-row items-center gap-2 text-gray-600 dark:text-gray-400">
                         <div className="flex flex-row items-center gap-2">
@@ -90,6 +71,16 @@ export const HeadingArea = () => {
                             <IconTrash />
                         </Button>
                     </div>
+                </div>
+                <div className=" flex sm:flex-row flex-col sm:items-center justify-between gap-2">
+                    {flashcard.todayView > 0 && (
+                        <div className="flex flex-row items-center gap-2">
+                            <IconTrendingUp className="text-red-500" />
+                            <p className="text-gray-600 dark:text-gray-40">
+                                {flashcard.todayView} người học hôm nay
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         </>

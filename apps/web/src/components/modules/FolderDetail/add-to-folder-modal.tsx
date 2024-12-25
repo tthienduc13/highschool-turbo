@@ -1,9 +1,9 @@
 import { Flashcard } from "@highschool/interfaces";
 import { useEffect, useState } from "react";
-import { Modal } from "./modal";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-import { SelectableGenericCard } from "./selectable-generic-card";
 import { useMe } from "@/hooks/use-me";
+import { SelectableGenericCard } from "@/components/core/common/selectable-generic-card";
+import { Modal } from "@/components/core/common/modal";
 
 export interface AddToFolderModalProps {
     isOpen: boolean;

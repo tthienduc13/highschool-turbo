@@ -13,13 +13,19 @@ import fetchPaginatedData from "./common.ts";
 export const getUserFolderList = async ({
     pageSize,
     pageNumber,
+    flashcardId,
+    documentId,
 }: {
     pageSize: number;
     pageNumber: number;
+    flashcardId?: string;
+    documentId?: string;
 }): Promise<Pagination<Folder[]>> => {
     return fetchPaginatedData<Folder[]>(endpointFolder.GET_USER_FOLDER, {
         pageNumber,
         pageSize,
+        flashcardId,
+        documentId,
     });
 };
 

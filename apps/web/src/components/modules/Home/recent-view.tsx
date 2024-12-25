@@ -20,7 +20,7 @@ export const RecentView = () => {
     return (
         <Wrapper title={"Xem gần đây"}>
             <div className="grid  md:grid-cols-2 grid-cols-1">
-                {data?.items.map((item) => (
+                {data?.items.slice(0, 4).map((item) => (
                     <Link
                         className="w-full"
                         key={item.idDocument}
@@ -42,10 +42,10 @@ export const RecentView = () => {
                                     {IconRenderer(item.typeDocument)}
                                 </div>
                                 <div className="flex flex-col justify-start ">
-                                    <p className="text-sm text-start font-medium w-full line-clamp-1 ">
+                                    <p className="text-sm  text-start font-medium w-full line-clamp-1 ">
                                         {item.documentName}
                                     </p>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-start text-muted-foreground">
                                         {LabelRenderer(item.typeDocument)} •{" "}
                                         {getRelativeTime(new Date(item.time))}
                                     </p>

@@ -47,17 +47,30 @@ export const useUpdateFolderMutation = () => {
 export const useUserFoldersQuery = ({
     pageSize,
     pageNumber,
+    flashcardId,
+    documentId,
 }: {
     pageSize: number;
     pageNumber: number;
+    flashcardId?: string;
+    documentId?: string;
 }) => {
     return useQuery({
-        queryKey: ["user-folders", pageNumber, pageSize],
+        queryKey: [
+            "user-folders",
+            flashcardId,
+            documentId,
+            pageNumber,
+            pageSize,
+        ],
         queryFn: () =>
             getUserFolderList({
                 pageNumber: pageNumber,
                 pageSize: pageSize,
+                flashcardId: flashcardId,
+                documentId: documentId,
             }),
+        refetchOnMount: true,
     });
 };
 

@@ -46,6 +46,44 @@ export const checkUserNameExist = async ({
     }
 };
 
+export const getAuthorList = async ({
+    userIds,
+}: {
+    userIds: string[];
+}): Promise<Author[]> => {
+    try {
+        const params = new URLSearchParams();
+        userIds.forEach((id) => params.append("userIds", id));
+
+        const { data } = await axiosServices.get(`${endpointUser.GET_AUTHOR}`, {
+            params,
+        });
+
+        return data;
+    } catch (error) {
+        console.error("Error while getting author list", error);
+        throw error;
+    }
+};
+
+export const getAuthorById = async ({
+    authorId,
+}: {
+    authorId: string;
+}): Promise<ResponseModel<Author>> => {
+    try {
+        const { data } = await axiosServices.get(
+            `${endpointUser.GET_AUTHOR_BY_ID(authorId)}`
+        );
+        return data;
+    } catch (error) {
+        console.error("Error while getting author by id", error);
+        throw error;
+    }
+};
+
+// PUT
+
 export const updateBaseUserInfo = async ({
     userName,
     bio,
@@ -113,26 +151,6 @@ export const completeOnboard = async ({
         return data;
     } catch (error) {
         console.error("Error while updating user status", error);
-        throw error;
-    }
-};
-
-export const getAuthorList = async ({
-    userIds,
-}: {
-    userIds: string[];
-}): Promise<Author[]> => {
-    try {
-        const params = new URLSearchParams();
-        userIds.forEach((id) => params.append("userIds", id));
-
-        const { data } = await axiosServices.get(`${endpointUser.GET_AUTHOR}`, {
-            params,
-        });
-
-        return data;
-    } catch (error) {
-        console.error("Error while getting author list", error);
         throw error;
     }
 };

@@ -11,6 +11,7 @@ import { LeftNav } from "./left-nav";
 import { UserMenu } from "./user-menu";
 import { UserNotification } from "./user-notification";
 import { menuEventChannel } from "@/events/menu";
+import Link from "next/link";
 
 const CreateFolderModal = dynamic(
     () =>
@@ -61,7 +62,11 @@ export const Header = () => {
         >
             <CreateFolderModal
                 isOpen={folderModalOpen}
-                onClose={() => setFolderModalOpen(false)}
+                onClose={() => {
+                    setFolderModalOpen(false);
+                    setFolderChildSetId(undefined);
+                }}
+                childSetId={folderChildSetId}
             />
             <div className="flex flex-row h-full w-full mx-auto px-6 md:px-8 py-4 justify-between items-center">
                 <LeftNav onFolderClick={() => setFolderModalOpen(true)} />
@@ -97,6 +102,24 @@ export const Header = () => {
                 <div className="hidden md:flex items-center gap-2">
                     {session?.user && <UserNotification />}
                     {session?.user && <UserMenu />}
+                    {status !== "loading" && !session && (
+                        <div className="grid grid-cols-2 gap-2">
+                            <Link href={"/sign-in"}>
+                                <Button
+                                    size="lg"
+                                    variant={"outline"}
+                                    className="w-full"
+                                >
+                                    Đăng nhập
+                                </Button>
+                            </Link>
+                            <Link href={"/sign-up"}>
+                                <Button size={"lg"} className="w-full">
+                                    Đăng kí ngay
+                                </Button>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </header>
