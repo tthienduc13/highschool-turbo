@@ -7,3 +7,4 @@ export * from "./folder";
 export * from "./recent-view";
 export * from "./flashcard-content";
 export * from "./study-mode";
+export * from "./flashcard-test";

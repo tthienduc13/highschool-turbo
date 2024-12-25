@@ -6,6 +6,7 @@ import {
     IconCards,
     IconGridDots,
     IconLayersSubtract,
+    IconLock,
     IconMeteor,
     IconReport,
 } from "@tabler/icons-react";
@@ -68,6 +69,9 @@ export const Linkable: React.FC<LinkableProps> = ({
     const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
         if (!comingSoon) return <>{children}</>;
 
+        if (!comingSoon && !authEnabled)
+            return <Link href={href}>{children}</Link>;
+
         return <Hint label="Sắp ra mắt">{children}</Hint>;
     };
 
@@ -91,6 +95,14 @@ export const Linkable: React.FC<LinkableProps> = ({
                         });
                 }}
             >
+                {comingSoon && (
+                    <div className="p-1 rounded-full absolute -top-2 -left-3 text-blue-600 bg-gray-50 dark:bg-gray-900 dark:text-blue-200">
+                        <div className="bg-white p-[4px] rounded-full shadow-md dark:bg-gray-800/50">
+                            <IconLock size={16} />
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex flex-row gap-3 items-center">
                     <div className="w-6 h-6 relative">
                         {/* <div

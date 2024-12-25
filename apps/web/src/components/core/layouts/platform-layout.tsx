@@ -14,6 +14,14 @@ const SignupModal = dynamic(
     }
 );
 
+const ConfettiLayer = dynamic(
+    () =>
+        import("@/components/core/common/confetti-layer").then(
+            (mod) => mod.ConfettiLayer
+        ),
+    { ssr: false }
+);
+
 function PlatformLayout({
     children,
 }: Readonly<{
@@ -27,6 +35,7 @@ function PlatformLayout({
                 <div className=" p-4 ">{children}</div>
                 <Toaster richColors />
                 <SignupModal />
+                <ConfettiLayer />
             </div>
         </>
     );

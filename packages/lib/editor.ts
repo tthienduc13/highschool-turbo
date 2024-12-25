@@ -12,8 +12,8 @@ import type { JSONContent } from "@tiptap/react";
 import { FlashcardContent } from "@highschool/interfaces";
 
 export type EditorTerm = FlashcardContent & {
-    wordRichText: JSON | null | undefined;
-    definitionRichText: JSON | null | undefined;
+    flashcardContentTermRichText: JSON | null | undefined;
+    flashcardContentDefinitionRichText: JSON | null | undefined;
 };
 
 // Glad you're here! https://arc.net/e/D8FDAA6B-8BCD-4D3B-AAE5-4A6756C42D45
@@ -106,16 +106,22 @@ export const hasRichText = (json: JSONContent, plainText: string): boolean => {
 
 export const editorInput = (
     term: {
-        word: string;
-        definition: string;
-        wordRichText?: JSON | null;
-        definitionRichText?: JSON | null;
+        flashcardContentTerm: string;
+        flashcardContentDefinition: string;
+        flashcardContentTermRichText?: JSON | null;
+        flashcardContentDefinitionRichText?: JSON | null;
     },
-    type: "word" | "definition"
+    type: "term" | "definition"
 ) => {
-    if (type == "word") {
-        return term.wordRichText ?? plainTextToHtml(term.word);
+    if (type == "term") {
+        return (
+            term.flashcardContentTermRichText ??
+            plainTextToHtml(term.flashcardContentTerm)
+        );
     } else {
-        return term.definitionRichText ?? plainTextToHtml(term.definition);
+        return (
+            term.flashcardContentDefinitionRichText ??
+            plainTextToHtml(term.flashcardContentDefinition)
+        );
     }
 };

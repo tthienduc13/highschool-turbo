@@ -54,6 +54,8 @@ const endpointFlashcard = {
 const endpointFlashcardContent = {
     GET_LIST_BY_SLUG: (slug: string) =>
         `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}/contents`,
+    EDIT_CONTENT: (flashcardContentId: string) =>
+        `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardContentId}/content`,
 };
 export {
     endpointAuth,

@@ -1,3 +1,5 @@
+import { Distractor } from "./distractors";
+
 export interface FlashcardContent {
     id: string;
     flashcardId: string;
@@ -11,7 +13,5 @@ export interface FlashcardContent {
     updatedAt: Date;
     createdBy: string;
     updatedBy: string;
-    // distractors?: Distractor[];
+    distractors?: Distractor[];
 }
-
-// TODO: Add distractor

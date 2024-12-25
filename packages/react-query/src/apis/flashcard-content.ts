@@ -28,3 +28,37 @@ export const getFlashcardContentsBySlug = async ({
         throw error;
     }
 };
+
+// PATCH
+export const patchFlashcardContent = async ({
+    flashcardId,
+    values,
+}: {
+    flashcardId: string;
+    values: Partial<
+        Pick<
+            FlashcardContent,
+            | "flashcardContentTerm"
+            | "flashcardContentDefinition"
+            | "image"
+            | "id"
+            | "flashcardContentTermRichText"
+            | "flashcardContentDefinitionRichText"
+            | "rank"
+        >
+    >;
+}) => {
+    try {
+        const cleanValues = Object.fromEntries(
+            Object.entries(values).filter(([_, value]) => value !== undefined)
+        );
+        const { data } = await axiosServices.patch(
+            endpointFlashcardContent.EDIT_CONTENT(flashcardId),
+            cleanValues
+        );
+        return data;
+    } catch (error) {
+        console.error("Error while patching flashcard content", error);
+        throw error;
+    }
+};

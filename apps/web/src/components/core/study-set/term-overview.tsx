@@ -4,9 +4,10 @@ import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
 import { FlashcardContent } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-import { TablerIcon } from "@tabler/icons-react";
+import { IconKeyframes, TablerIcon } from "@tabler/icons-react";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
+import { TermWrapper } from "./term-wrapper";
 
 interface TermsOverviewContextProps {
     starredOnly: boolean;
@@ -45,76 +46,20 @@ export const TermOverView = () => {
 
     return (
         <TermsOverviewContext.Provider value={{ starredOnly }}>
-            {/* <div className="flex flex-col gap-8" >
-                <div className="justify-between flex flex-col md:flex-row items-center gap-6">
-                    <h2 className="text-lg font-bold" >
+            <div className="flex flex-col gap-8">
+                <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
+                    <h2 className="text-lg">
                         <div className="flex flex-row items-center gap-3">
-                            <HStack fontSize="3xl">
+                            <div className="flex flex-row items-center text-3xl font-bold">
                                 <IconKeyframes size={28} />
                                 <>{terms.length}</>
-                            </HStack>
-                            <>
-                                {terms.length != 1 ? "terms" : "term"} in this
-                                set
-                            </>
+                            </div>
+                            <p>thẻ trong bộ này</p>
                         </div>
-                    </>
-                    <HStack spacing={4}>
-                        {!!starredTerms.length && (
-                            <ToggleGroup
-                                index={starredOnly ? 1 : 0}
-                                size="sm"
-                                tabProps={{
-                                    h: "9",
-                                    fontWeight: 600,
-                                    transition: "all 0.2s ease-in-out",
-                                }}
-                            >
-                                <ToggleGroup.Tab
-                                    onClick={() => setStarredOnly(false)}
-                                >
-                                    <Text
-                                        color={
-                                            !starredOnly
-                                                ? "blue.300"
-                                                : undefined
-                                        }
-                                    >
-                                        All
-                                    </Text>
-                                </ToggleGroup.Tab>
-                                <ToggleGroup.Tab
-                                    color={starredOnly ? "blue.300" : undefined}
-                                    onClick={() => setStarredOnly(true)}
-                                >
-                                    <HStack spacing="2">
-                                        <Text>Starred</Text>
-                                        <HStack spacing="1">
-                                            <IconStar
-                                                size={14}
-                                                style={{
-                                                    transition:
-                                                        "fill-opacity 0.2s ease-in-out",
-                                                    fill: "#4b83ff",
-                                                    fillOpacity: starredOnly
-                                                        ? 1
-                                                        : 0,
-                                                }}
-                                            />
-                                            <Text>{starredTerms.length}</Text>
-                                        </HStack>
-                                    </HStack>
-                                </ToggleGroup.Tab>
-                            </ToggleGroup>
-                        )}
-                        <TermsSortSelect
-                            studiable={studiable}
-                            onChange={setSortType}
-                        />
-                    </HStack>
+                    </h2>
                 </div>
                 {termsListComponent()}
-            </div> */}
+            </div>
         </TermsOverviewContext.Provider>
     );
 };
@@ -278,7 +223,7 @@ const TermsList: React.FC<TermsListProps> = ({ terms, sortOrder, slice }) => {
     return (
         <>
             <div className="flex flex-col gap-[14px]">
-                {/* {internalTerms
+                {internalTerms
                     .sort(
                         (a, b) =>
                             internalSort.indexOf(a.id) -
@@ -291,7 +236,7 @@ const TermsList: React.FC<TermsListProps> = ({ terms, sortOrder, slice }) => {
                             key={term.id}
                             creator={creator}
                         />
-                    ))} */}
+                    ))}
             </div>
             {showSlice !== undefined && showSlice < terms.length && (
                 <Button

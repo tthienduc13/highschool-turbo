@@ -13,6 +13,12 @@ import {
 } from "@tabler/icons-react";
 import { RootFlashcardWrapper } from "./root-flashcard-wrapper";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
+import dynamic from "next/dynamic";
+
+const SettingModal = dynamic(
+    () => import("./setting-modal").then((mod) => mod.SettingModal),
+    { ssr: false }
+);
 
 export const FlashcardPreview = () => {
     const data = useSet();
@@ -45,6 +51,10 @@ export const FlashcardPreview = () => {
 
     return (
         <>
+            <SettingModal
+                isOpen={settingsOpen}
+                onClose={() => setSettingsOpen(false)}
+            />
             <div className="flex flex-col gap-8 lg:flex-row items-stretch w-full">
                 <LinkArea />
                 <div className="flex flex-1">
@@ -100,6 +110,17 @@ export const FlashcardPreview = () => {
                         >
                             <IconSettings />
                             Cài đặt
+                        </Button>
+                    </div>
+                    <div className="w-full mt-4 flex justify-end lg:justify-start">
+                        <Button
+                            className=" rounded-full flex lg:hidden "
+                            variant="ghost"
+                            size={"icon"}
+                            aria-label="Settings"
+                            onClick={() => setSettingsOpen(true)}
+                        >
+                            <IconSettings className="!size-6" />
                         </Button>
                     </div>
                 </div>

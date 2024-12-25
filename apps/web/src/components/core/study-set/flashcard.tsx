@@ -55,8 +55,6 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 
     const Star = starred ? IconStarFilled : IconStar;
 
-    console.log(term.image);
-
     const LeftIcon = variant == "sortable" ? IconX : IconChevronLeft;
     const RightIcon = variant == "sortable" ? IconCheck : IconChevronRight;
 

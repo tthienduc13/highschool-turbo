@@ -125,8 +125,7 @@ export const HydrateSetData: React.FC<
     if (error) return <SetNotFound />;
 
     if (
-        status == "loading" ||
-        (!isPublic && !session) ||
+        !isPublic ||
         !flashcardData ||
         !flashcardContentData ||
         (disallowDirty && isDirty) ||

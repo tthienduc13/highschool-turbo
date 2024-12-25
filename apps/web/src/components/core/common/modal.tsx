@@ -23,9 +23,11 @@ interface ModalProps {
     description?: string;
     isPending?: boolean;
     isDisabled?: boolean;
+    withoutCancel?: boolean;
 }
 
 export const Modal = ({
+    withoutCancel = false,
     isOpen,
     onClose,
     title,
@@ -58,11 +60,15 @@ export const Modal = ({
                 </CredenzaBody>
                 <Separator />
                 <CredenzaFooter className="px-5 md:px-10 py-6">
-                    <CredenzaClose asChild>
-                        <Button disabled={isPending} variant={"ghost"}>
-                            Huỷ
+                    {!withoutCancel && (
+                        <Button
+                            variant="outline"
+                            onClick={onClose}
+                            disabled={isPending}
+                        >
+                            Hủy
                         </Button>
-                    </CredenzaClose>
+                    )}
                     <Button
                         disabled={isPending || isDisabled}
                         onClick={onConfirm}
