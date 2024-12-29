@@ -5,7 +5,9 @@ import {
 } from "@tanstack/react-query";
 
 import { Metadata } from "next";
+
 import { getFlashcardBySlug } from "@highschool/react-query/apis";
+
 import StudySetModule from "@/components/modules/StudySet";
 
 const metadataCache = new Map<string, any>();

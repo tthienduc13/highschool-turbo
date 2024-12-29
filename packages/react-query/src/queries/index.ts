@@ -8,3 +8,4 @@ export * from "./course.ts";
 export * from "./mbti.ts";
 export * from "./holland.ts";
 export * from "./unsplash.ts";
+export * from "./flashcard-learn.ts";

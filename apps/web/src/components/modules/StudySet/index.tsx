@@ -6,6 +6,7 @@ import { DescriptionArea } from "@/components/core/study-set/description-area";
 import { FlashcardPreview } from "@/components/core/study-set/flashcard-preview";
 import { HeadingArea } from "@/components/core/study-set/heading-area";
 import { SetLoading } from "@/components/core/study-set/set-loading";
+import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { TermOverView } from "@/components/core/study-set/term-overview";
 
 import { HydrateSetData } from "./hydrate-set-data";
@@ -15,6 +16,7 @@ function StudySetModule() {
     <PhotoViewProvider>
       <HydrateSetData placeholder={<SetLoading />} isPublic>
         <EditorGlobalStyles />
+        <TermImageLayer />
         <WithFooter>
           <Container maxWidth="7xl">
             <div className="flex flex-col gap-12">

@@ -28,6 +28,19 @@ export const getUserFlashcard = async ({
   );
 };
 
+export const getOwnerFlashcard = async ({
+  pageSize,
+  pageNumber,
+}: {
+  pageSize: number;
+  pageNumber: number;
+}): Promise<Pagination<Flashcard[]>> => {
+  return fetchPaginatedData<Flashcard[]>(endpointUser.OWNER_FLASHCARD, {
+    pageNumber,
+    pageSize,
+  });
+};
+
 export const getTopFlashcard = async (): Promise<Flashcard[]> => {
   try {
     const { data } = await axiosServices.get(

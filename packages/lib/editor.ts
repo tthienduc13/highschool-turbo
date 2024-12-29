@@ -74,7 +74,6 @@ export const getPlainText = (json: JSONContent, delimeter = "\n"): string => {
 };
 
 export const plainTextToHtml = (text: string): string => {
-  // Split by newlines and make each line a paragraph
   const paragraphs = text.split("\n").map((line) => `<p>${line}</p>`);
   return paragraphs.join("");
 };
@@ -114,14 +113,14 @@ export const editorInput = (
   type: "term" | "definition",
 ) => {
   if (type == "term") {
-    return (
-      term.flashcardContentTermRichText ??
-      plainTextToHtml(term.flashcardContentTerm)
-    );
+    return !term.flashcardContentTermRichText &&
+      JSON.stringify(term.flashcardContentTermRichText) !== ""
+      ? plainTextToHtml(term.flashcardContentTerm)
+      : term.flashcardContentTermRichText;
   } else {
-    return (
-      term.flashcardContentDefinitionRichText ??
-      plainTextToHtml(term.flashcardContentDefinition)
-    );
+    return !term.flashcardContentDefinitionRichText &&
+      JSON.stringify(term.flashcardContentDefinitionRichText) !== ""
+      ? plainTextToHtml(term.flashcardContentDefinition)
+      : term.flashcardContentDefinitionRichText;
   }
 };

@@ -1,0 +1,77 @@
+"use client";
+
+import { useState } from "react";
+
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@highschool/ui/components/ui/button";
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
+
+import { IconArrowLeft, IconSettings } from "@tabler/icons-react";
+
+import { useSet } from "@/hooks/use-set";
+import { useLearnContext } from "@/stores/use-study-set-learn-store";
+
+const SettingModal = dynamic(
+  () => import("./learn-setting-modal").then((mod) => mod.LearnSettingModal),
+  {
+    ssr: false,
+  },
+);
+
+export const TitleBar = () => {
+  const { flashcard } = useSet();
+
+  const [openSetting, setOpenSetting] = useState<boolean>(false);
+
+  const router = useRouter();
+  const completed = useLearnContext((s) => s.completed);
+  const roundSummary = useLearnContext((s) => s.roundSummary);
+
+  return (
+    <>
+      <SettingModal
+        isOpen={openSetting}
+        onClose={() => setOpenSetting(false)}
+      />
+      <div className="flex flex-row items-center justify-between">
+        <Button
+          onClick={() => router.push(`/study-set/${flashcard.slug}`)}
+          variant={"ghost"}
+          size={"icon"}
+          className="text-blue hover:text-blue h-10 w-10 rounded-full"
+        >
+          <IconArrowLeft className="!size-6" />
+        </Button>
+        <h1 className={`flex-1 text-center text-lg font-semibold md:text-2xl`}>
+          {completed
+            ? "Kết quả tổng quát"
+            : roundSummary
+              ? "Xem lại"
+              : "Hãy thử sức"}
+        </h1>
+        <Button
+          onClick={() => setOpenSetting(true)}
+          variant={"ghost"}
+          size={"icon"}
+          className="text-blue hover:text-blue h-10 w-10 rounded-full"
+        >
+          <IconSettings className="!size-6" />
+        </Button>
+      </div>
+    </>
+  );
+};
+
+TitleBar.Skeleton = function TitlebarSkeleton() {
+  return (
+    <div className="flex w-full items-center">
+      <Skeleton className="h-10 w-10 rounded-full"></Skeleton>
+      <div className="flex flex-1 justify-center">
+        <Skeleton className="h-8 w-24 rounded-lg"></Skeleton>
+      </div>
+      <Skeleton className="h-10 w-10 rounded-full"></Skeleton>
+    </div>
+  );
+};

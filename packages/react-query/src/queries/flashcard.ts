@@ -4,6 +4,7 @@ import {
   deleteFlashcard,
   getDraftFlashcard,
   getFlashcardBySlug,
+  getOwnerFlashcard,
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
@@ -27,6 +28,23 @@ export const useUserFlashcardQuery = ({
         username: username,
       }),
     enabled: !!username,
+  });
+};
+
+export const useOwnFlashcardQuery = ({
+  pageSize,
+  pageNumber,
+}: {
+  pageSize: number;
+  pageNumber: number;
+}) => {
+  return useQuery({
+    queryKey: ["own-flashcard", pageNumber, pageSize],
+    queryFn: () =>
+      getOwnerFlashcard({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+      }),
   });
 };
 

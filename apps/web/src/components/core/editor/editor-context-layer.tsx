@@ -159,12 +159,6 @@ export const EditorContextLayer = ({
       storeRef.current!.getState().setImage(context.termId, args.optimisticUrl);
 
       if (args.query !== undefined && args.index !== undefined) {
-        // apiSetImage.mutate({
-        //     studySetId: context.studySetId,
-        //     id: context.termId,
-        //     query: args.query,
-        //     index: args.index,
-        // });
         apiEditTerm.mutate({
           flashcardId: context.studySetId,
           values: {
@@ -301,7 +295,7 @@ export const EditorContextLayer = ({
         },
         onComplete: () => {
           const state = storeRef.current!.getState();
-          const push = () => void router.push(`/${state.slug}`);
+          const push = () => void router.push(`/study-set/${state.slug}`);
 
           if (mode == "edit") push();
           else {

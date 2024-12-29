@@ -2,7 +2,13 @@
 
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
-import { Editor, EditorContent, JSONContent, useEditor } from "@tiptap/react";
+import {
+  Content,
+  Editor,
+  EditorContent,
+  JSONContent,
+  useEditor,
+} from "@tiptap/react";
 import { motion } from "framer-motion";
 
 import { memo, useCallback, useEffect, useRef, useState } from "react";
@@ -129,10 +135,14 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
 
   useEffect(() => {
     if (!initialized) return;
-    termEditor?.commands.setContent(editorInput(flashcardContent, "term"));
-    definitionEditor?.commands.setContent(
-      editorInput(flashcardContent, "definition"),
-    );
+    const termContent = flashcardContent
+      ? editorInput(flashcardContent, "term")
+      : "";
+    const definitionContent = flashcardContent
+      ? editorInput(flashcardContent, "definition")
+      : "";
+    termEditor?.commands.setContent(termContent as Content);
+    definitionEditor?.commands.setContent(definitionContent as Content);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     flashcardContent.flashcardContentTerm,

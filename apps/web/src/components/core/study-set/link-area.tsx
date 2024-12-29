@@ -43,8 +43,9 @@ export const LinkArea = () => {
       <Linkable
         name="Nối"
         icon={<IconLayersSubtract />}
-        href={`/study-set/${flashcard.slug}/match?intro=true`}
+        // href={`/study-set/${flashcard.slug}/match?intro=true`}
         requireAuth
+        comingSoon
       />
       <Linkable name="Ô chữ" icon={<IconGridDots />} comingSoon />
       <Linkable name="Gravity" icon={<IconMeteor />} comingSoon />

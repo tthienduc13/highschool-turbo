@@ -25,6 +25,7 @@ const endpointUser = {
     `${prefixUserServices}${prefixFirstVersion}/users/infor/${username}`,
   USER_FLASHCARD: (username: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user/${username}`,
+  OWNER_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user`,
   ORIENTATION_STATUS: `${prefixUserServices}${prefixFirstVersion}/users/personalityTestStatus`,
 };
 
@@ -102,6 +103,16 @@ const endpointHolland = {
     `${prefixUserServices}${prefixFirstVersion}/users/student/holland/${hollandType}`,
 };
 
+const endpointFlashcardLearn = {
+  POST_PROGRESS: `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/progress`,
+  GET_LEARN_SET: (flashcardId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/study`,
+  GET_LEARN_PROGRESS: (flashcardId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/progress`,
+  RESET_PROGRESS: (flashcardId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/reset-progress`,
+};
+
 export {
   endpointCourse,
   endpointAuth,
@@ -112,4 +123,5 @@ export {
   endpointFlashcardContent,
   endpointMBTI,
   endpointHolland,
+  endpointFlashcardLearn,
 };

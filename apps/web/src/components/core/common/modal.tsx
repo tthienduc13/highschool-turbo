@@ -44,7 +44,7 @@ export const Modal = ({
 }: ModalProps) => {
   return (
     <Credenza open={isOpen} onOpenChange={onClose}>
-      <CredenzaContent className="z-[1000] w-full max-w-xl gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700">
+      <CredenzaContent className="w-full max-w-xl gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700">
         <CredenzaHeader className="px-5 pt-4 md:px-10 md:pt-8">
           <CredenzaTitle className="text-2xl md:text-3xl">
             {title}

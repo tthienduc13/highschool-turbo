@@ -1,0 +1,175 @@
+import { createStore, useStore } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
+
+import { createContext, useContext } from "react";
+
+import { Question } from "@highschool/interfaces";
+import { CORRECT, INCORRECT } from "@highschool/lib/constants";
+
+export interface LearnStoreProps {
+  studiableTerms: Question[];
+  // allTerms: TermWithDistractors[]
+  numTerms: number;
+  termsThisRound: number;
+  currentRound: number;
+  roundProgress: number;
+  roundCounter: number;
+  roundTimeline: Question[];
+  // specialCharacters: string[]
+  feedbackBank: { correct: string[]; incorrect: string[] };
+  answered?: string;
+  status?: "correct" | "incorrect" | "unknownPartial";
+  roundSummary?: boolean;
+  completed: boolean;
+  // hasMissedTerms?: boolean
+  // prevTermWasIncorrect?: boolean
+}
+
+interface LearnState extends LearnStoreProps {
+  initialize: (studiableTerms: Question[], completed: boolean) => void;
+  answerCorrectly: (termId: string) => void;
+  answerIncorrectly: (termId: string) => void;
+  acknowledgeIncorrect: () => void;
+  // answerUnknownPartial: () => void
+  endQuestionCallback: (correct: boolean) => void;
+  // correctFromUnknown: (termId: string) => void
+  // incorrectFromUnknown: (termId: string) => void
+  nextRound: (start?: boolean) => void;
+  setFeedbackBank: (correct: string[], incorrect: string[]) => void;
+}
+
+export type LearnStore = ReturnType<typeof createLearnStore>;
+
+export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
+  const DEFAULT_PROPS: LearnStoreProps = {
+    studiableTerms: [],
+    // allTerms: [],
+    numTerms: 0,
+    termsThisRound: 0,
+    currentRound: 0,
+    roundProgress: 0,
+    roundCounter: 0,
+    roundTimeline: [],
+    // specialCharacters: [],
+    feedbackBank: {
+      correct: CORRECT,
+      incorrect: INCORRECT,
+    },
+    completed: false,
+  };
+
+  return createStore<LearnState>()(
+    subscribeWithSelector((set) => ({
+      ...DEFAULT_PROPS,
+      ...initProps,
+      initialize: (studiableTerms, completed) => {
+        set({
+          studiableTerms,
+          roundTimeline: studiableTerms,
+          numTerms: studiableTerms.length,
+          termsThisRound: studiableTerms.length,
+          completed: completed,
+        });
+
+        set((state) => {
+          state.nextRound(true);
+          return {};
+        });
+      },
+      answerCorrectly: (termId) => {
+        set(() => ({
+          answered: termId,
+          status: "correct",
+        }));
+
+        setTimeout(() => {
+          set((state) => {
+            state.endQuestionCallback(true);
+            return {};
+          });
+        }, 1000);
+      },
+      answerIncorrectly: (termId) => {
+        set((state) => ({
+          answered: termId,
+          status: "incorrect",
+          roundTimeline:
+            state.roundProgress != state.termsThisRound - 1
+              ? [
+                  ...state.roundTimeline,
+                  state.roundTimeline[state.roundCounter]!,
+                ]
+              : state.roundTimeline,
+          prevTermWasIncorrect: true,
+        }));
+        setTimeout(() => {
+          set((state) => {
+            // const active = state.roundTimeline[state.roundCounter]!
+            // active.term.correctness = active.type == 'choice' ? 1 : 2
+
+            state.endQuestionCallback(true);
+            return {};
+          });
+        }, 1000);
+      },
+      acknowledgeIncorrect: () => {
+        set((state) => {
+          state.endQuestionCallback(false);
+          return {};
+        });
+      },
+      nextRound: (start = false) => {
+        set((state) => {
+          const currentRound = state.currentRound + (!start ? 1 : 0);
+
+          return {
+            roundSummary: false,
+            // termsThisRound: termsThisRound.length,
+            // roundTimeline,
+            roundCounter: 0,
+            roundProgress: 0,
+            answered: undefined,
+            status: undefined,
+            completed: !state.studiableTerms.length,
+            // hasMissedTerms,
+            currentRound,
+          };
+        });
+      },
+
+      endQuestionCallback: (correct) => {
+        set((state) => {
+          const roundCounter = state.roundCounter + 1;
+          const roundProgress = state.roundProgress + (correct ? 1 : 0);
+          if (state.roundProgress === state.termsThisRound - 1) {
+            return {
+              roundSummary: true,
+              status: undefined,
+            };
+          }
+          return {
+            roundCounter,
+            roundProgress,
+            answered: undefined,
+            status: undefined,
+          };
+        });
+      },
+
+      setFeedbackBank: (correct, incorrect) => {
+        set({
+          feedbackBank: { correct, incorrect },
+        });
+      },
+    })),
+  );
+};
+
+export const LearnContext = createContext<LearnStore | null>(null);
+
+export const useLearnContext = <T>(selector: (state: LearnState) => T): T => {
+  const store = useContext(LearnContext);
+  if (!store) throw new Error("Missing LearnContext.Provider in the tree");
+
+  return useStore(store, selector);
+};
