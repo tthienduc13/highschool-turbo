@@ -52,10 +52,12 @@ export const FlashcardPreview = () => {
 
   return (
     <>
-      <SettingModal
-        isOpen={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-      />
+      {settingsOpen && (
+        <SettingModal
+          isOpen={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+        />
+      )}
       <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row">
         <LinkArea />
         <div className="flex flex-1">

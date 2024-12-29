@@ -11,7 +11,6 @@ export interface StudySetCardProps {
     "id" | "flashcardName" | "status" | "grade" | "slug"
   >;
   numTerms: number;
-  // collaborators?: { total: number; avatars: string[] };
   draft?: boolean;
   userLoading?: boolean;
   user: {
@@ -27,7 +26,6 @@ export const StudySetCard = ({
   studySet,
   numTerms,
   userLoading,
-  // collaborators,
   draft,
   user,
   verified = false,

@@ -13,12 +13,6 @@ const nextConfig: NextConfig = {
     "@highschool/react-query",
     "@highschool/lib",
   ],
-  experimental: {
-    staleTimes: {
-      dynamic: 0,
-      static: 0,
-    },
-  },
   images: {
     remotePatterns: [
       {

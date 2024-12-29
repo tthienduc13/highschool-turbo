@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { useAuthorQuery } from "@highschool/react-query/queries";
@@ -14,9 +16,9 @@ import { UsernameLink } from "../common/username-link";
 import { ActionArea } from "./action-area";
 
 export const DescriptionArea = () => {
-  const { flashcard } = useSet();
+  const data = useSet();
   const { data: authorData, isLoading } = useAuthorQuery({
-    authorId: flashcard.userId,
+    authorId: data.flashcard.userId,
   });
 
   return (
@@ -64,23 +66,25 @@ export const DescriptionArea = () => {
         )}
         <ActionArea />
       </div>
-      {flashcard.subjectName && (
+      {data.flashcard.subjectName && (
         <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
           <Link
             href={"/course"}
             className="hover:text-primary flex flex-row items-center gap-2 transition-all duration-200 ease-in-out"
           >
             <IconBooks size={20} />
-            {flashcard.subjectName}
+            {data.flashcard.subjectName}
           </Link>
           <p>•</p>
           <div className="flex flex-row items-center gap-2">
             <IconSchool size={20} />
-            {gradeTextRenderer(flashcard.grade)}
+            {gradeTextRenderer(data.flashcard.grade)}
           </div>
         </div>
       )}
-      <p className="whitespace-pre-wrap">{flashcard.flashcardDescription}</p>
+      <p className="whitespace-pre-wrap">
+        {data.flashcard.flashcardDescription}
+      </p>
     </div>
   );
 };

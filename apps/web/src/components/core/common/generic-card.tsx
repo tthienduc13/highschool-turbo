@@ -5,11 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 import { Grade } from "@highschool/interfaces";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@highschool/ui/components/ui/avatar";
+import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import {
@@ -64,14 +60,12 @@ export const GenericCard = ({
   leftIcon,
   rightIcon,
   verified = false,
-
   removable = false,
   onRemove,
 }: GenericCardProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <Link href={url}>
+    <Link href={url} passHref>
       <div
         className="hover:border-b-primary h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-5 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:border-gray-700 dark:bg-gray-800"
         style={{ zIndex: menuOpen ? 30 : 25 }}

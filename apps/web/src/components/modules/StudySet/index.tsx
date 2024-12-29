@@ -1,5 +1,3 @@
-"use client";
-
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
