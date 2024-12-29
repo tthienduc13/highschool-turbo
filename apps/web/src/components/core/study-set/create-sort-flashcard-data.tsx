@@ -1,9 +1,9 @@
 interface CreateSortFlashcardsDataProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
 export const CreateSortFlashcardsData = ({
-    children,
+  children,
 }: CreateSortFlashcardsDataProps) => {
-    return <div>{children}</div>;
+  return <div>{children}</div>;
 };

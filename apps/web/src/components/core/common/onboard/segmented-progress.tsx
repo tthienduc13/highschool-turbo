@@ -1,6 +1,8 @@
-import { cn } from "@highschool/ui/lib/utils";
 import { motion } from "framer-motion";
+
 import { useState } from "react";
+
+import { cn } from "@highschool/ui/lib/utils";
 
 interface SegmentedProgressProps {
   steps: number;
@@ -19,7 +21,7 @@ export const SegmentedProgress = ({
 }: SegmentedProgressProps) => {
   const [currentHover, setCurrentHover] = useState<number | null>(null);
   return (
-    <div className="flex flex-row gap-2 h-12 items-center w-full">
+    <div className="flex h-12 w-full flex-row items-center gap-2">
       {Array.from({ length: steps }).map((_, i) => (
         <Segment
           key={i}
@@ -81,7 +83,7 @@ const Segment = ({
       onClick={onClick}
       className={
         (cn(
-          "flex flex-row group items-center gap-2 transition-all duration-200 ease-cubic-ease",
+          "ease-cubic-ease group flex flex-row items-center gap-2 transition-all duration-200",
         ),
         clickable ? "cursor-pointer" : "cursor-default")
       }
@@ -89,7 +91,7 @@ const Segment = ({
       <div
         style={{ height: height }}
         className={cn(
-          "bg-gray-200 dark:bg-gray-800/50 w-full rounded-full relative overflow-hidden transition-all duration-200 ease-cubic-ease",
+          "ease-cubic-ease relative w-full overflow-hidden rounded-full bg-gray-200 transition-all duration-200 dark:bg-gray-800/50",
           clickable && "group-hover:bg-gray-200 dark:group-hover:bg-gray-700",
         )}
       >

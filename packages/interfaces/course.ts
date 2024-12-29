@@ -1,3 +1,5 @@
+import { Grade } from "./common";
+
 export interface Course {
   id: string;
   subjectName: string;
@@ -6,7 +8,7 @@ export interface Course {
   subjectDescription: string;
   subjectCode: string;
   createdAt: Date;
-  categoryName: string;
+  categoryName: Grade;
   updatedAt: Date;
   slug: string;
   like: null;

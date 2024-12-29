@@ -1,12 +1,13 @@
-import OnboardUsernameModule from "@/components/modules/Onboard/Username";
 import { Metadata } from "next";
 
+import OnboardUsernameModule from "@/components/modules/Onboard/Username";
+
 export const metadata: Metadata = {
-    title: "Tên người dùng",
+  title: "Tên người dùng",
 };
 
 function OnboardUsername() {
-    return <OnboardUsernameModule />;
+  return <OnboardUsernameModule />;
 }
 
 export default OnboardUsername;

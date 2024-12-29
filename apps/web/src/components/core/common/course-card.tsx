@@ -1,0 +1,78 @@
+import Image from "next/image";
+import Link from "next/link";
+
+import { useMediaQuery } from "@highschool/hooks";
+import { Course } from "@highschool/interfaces";
+import { Button } from "@highschool/ui/components/ui/button";
+import { Separator } from "@highschool/ui/components/ui/separator";
+
+import { IconEye, IconSchool, IconUser } from "@tabler/icons-react";
+
+import { gradeRenderer } from "./renderer/grade";
+
+interface CourseCardProps {
+  course: Course;
+}
+
+export const CourseCard = ({ course }: CourseCardProps) => {
+  const isTablet = useMediaQuery("min-width: 768px");
+  return (
+    <Link href={`/courses/${course.slug}`}>
+      <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700">
+        <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
+          <Image
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+            src={course.image ?? "/logo.svg"}
+            className="transition-transform duration-300 group-hover:scale-105"
+            alt="thumbnail"
+            fill
+            priority={true}
+          />
+        </div>
+        <div className="flex flex-grow flex-col gap-2 md:gap-3">
+          <div className="flex flex-col gap-y-1">
+            <h2 className="line-clamp-1 text-lg font-semibold md:text-2xl">
+              {course.subjectName}
+            </h2>
+            <div className="truncate text-sm font-medium">
+              {course.information}
+            </div>
+          </div>
+          <div className="flex flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center justify-between">
+              <div className="flex flex-row gap-1">
+                <div className="flex items-center gap-1 text-sm font-medium">
+                  <IconEye size={16} />
+                  {course.view ?? 0}
+                </div>
+              </div>
+              <div className="flex flex-row gap-1">
+                <div className="flex items-center gap-1 text-sm font-medium">
+                  <IconSchool size={16} />
+                  {gradeRenderer(course.categoryName)}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="line-clamp-2 h-6 text-xs">
+            {course.subjectDescription}
+          </div>
+          <Separator />
+          <div className="flex items-center justify-between">
+            <div className="text-muted-foreground flex flex-row items-center gap-1">
+              <IconUser className="mb-1" size={16} />
+              <span>{course.numberEnrollment ?? 0}</span>
+            </div>
+            <Button
+              size={"sm"}
+              variant={"default"}
+              // onMouseEnter={handlePrefetch}
+            >
+              Xem khoá học
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};

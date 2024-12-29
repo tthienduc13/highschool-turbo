@@ -1,13 +1,13 @@
 {
-    "name": "@highschool/types",
-    "version": "0.1.0",
-    "main": "index.ts",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "dependencies": {
-        "next-auth": "5.0.0-beta.25",
-        "react": "^19",
-        "react-dom": "^19"
-    }
+  "name": "@highschool/types",
+  "version": "0.1.0",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "next-auth": "5.0.0-beta.25",
+    "react": "^19",
+    "react-dom": "^19"
+  }
 }

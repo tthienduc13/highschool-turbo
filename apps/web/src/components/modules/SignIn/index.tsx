@@ -1,8 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
 import { AuthWrapper } from "@/components/core/common/auth/wrapper";
-import { useRouter } from "next/navigation";
 
 function SignInModule() {
   const router = useRouter();

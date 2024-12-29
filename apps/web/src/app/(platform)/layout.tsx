@@ -1,9 +1,9 @@
 import PlatformLayout from "@/components/core/layouts/platform-layout";
 
 export default async function RootPlatformLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return <PlatformLayout>{children}</PlatformLayout>;
+  return <PlatformLayout>{children}</PlatformLayout>;
 }

@@ -1,21 +1,22 @@
 import { LoadingFlashcard } from "@/components/core/study-set/loading-flashcard";
+
 import { TitleBar } from "./title-bar";
 
 interface FlashcardsLoadingProps {
-    titlePlaceholder?: string;
+  titlePlaceholder?: string;
 }
 
 export const FlashcardsLoading: React.FC<FlashcardsLoadingProps> = ({
-    titlePlaceholder,
+  titlePlaceholder,
 }) => {
-    return (
-        <div className="w-full h-[calc(100vh-80px)] min-h-[720px] p-0 overflow-hidden">
-            <div className="max-w-7xl mx-auto h-[calc(100vh-180px)] w-full min-h-[620px]">
-                <div className="flex flex-col gap-6">
-                    <TitleBar.Skeleton />
-                    <LoadingFlashcard h="max(calc(100vh - 240px), 560px)" />
-                </div>
-            </div>
+  return (
+    <div className="h-[calc(100vh-80px)] min-h-[720px] w-full overflow-hidden p-0">
+      <div className="mx-auto h-[calc(100vh-180px)] min-h-[620px] w-full max-w-7xl">
+        <div className="flex flex-col gap-6">
+          <TitleBar.Skeleton />
+          <LoadingFlashcard h="max(calc(100vh - 240px), 560px)" />
         </div>
-    );
+      </div>
+    </div>
+  );
 };

@@ -1,67 +1,72 @@
 "use client";
 
-import { useSet } from "@/hooks/use-set";
-import { useContainerContext } from "@/stores/use-container-store";
+import { useSession } from "next-auth/react";
+
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { FlashcardContent } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
+
 import { IconKeyframes, TablerIcon } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
-import { createContext, useContext, useEffect, useState } from "react";
+
+import { useSet } from "@/hooks/use-set";
+import { useContainerContext } from "@/stores/use-container-store";
+
 import { TermWrapper } from "./term-wrapper";
 
 interface TermsOverviewContextProps {
-    starredOnly: boolean;
+  starredOnly: boolean;
 }
 
 const TermsOverviewContext = createContext<TermsOverviewContextProps>({
-    starredOnly: false,
+  starredOnly: false,
 });
 
 export const TermOverView = () => {
-    const { status } = useSession();
-    const { terms, injected } = useSet();
-    const starredTerms = useContainerContext((s) => s.starredTerms);
-    const studiable =
-        status == "authenticated" && !!injected!.studiableLearnTerms.length;
+  const { status } = useSession();
+  const { terms, injected } = useSet();
+  const starredTerms = useContainerContext((s) => s.starredTerms);
+  const studiable =
+    status == "authenticated" && !!injected!.studiableLearnTerms.length;
 
-    const [sortType, setSortType] = useState(studiable ? "stats" : "original");
-    const [starredOnly, setStarredOnly] = useState(false);
+  const [sortType, setSortType] = useState(studiable ? "stats" : "original");
+  const [starredOnly, setStarredOnly] = useState(false);
 
-    const termsListComponent = () => {
-        switch (sortType) {
-            // case "stats":
-            //     return <TermsByStats />;
-            case "original":
-                return <TermsByOriginal />;
-            case "alphabetical":
-                return <TermsByAlphabetical />;
-        }
-    };
+  const termsListComponent = () => {
+    switch (sortType) {
+      // case "stats":
+      //     return <TermsByStats />;
+      case "original":
+        return <TermsByOriginal />;
+      case "alphabetical":
+        return <TermsByAlphabetical />;
+    }
+  };
 
-    useEffect(() => {
-        if (!starredTerms.length) setStarredOnly(false);
-    }, [starredTerms.length]);
+  useEffect(() => {
+    if (!starredTerms.length) setStarredOnly(false);
+  }, [starredTerms.length]);
 
-    if (!terms.length) return null;
+  if (!terms.length) return null;
 
-    return (
-        <TermsOverviewContext.Provider value={{ starredOnly }}>
-            <div className="flex flex-col gap-8">
-                <div className="flex flex-col md:flex-row justify-between gap-6 items-center">
-                    <h2 className="text-lg">
-                        <div className="flex flex-row items-center gap-3">
-                            <div className="flex flex-row items-center text-3xl font-bold">
-                                <IconKeyframes size={28} />
-                                <>{terms.length}</>
-                            </div>
-                            <p>thẻ trong bộ này</p>
-                        </div>
-                    </h2>
-                </div>
-                {termsListComponent()}
+  return (
+    <TermsOverviewContext.Provider value={{ starredOnly }}>
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
+          <h2 className="text-lg">
+            <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center text-3xl font-bold">
+                <IconKeyframes size={28} />
+                <>{terms.length}</>
+              </div>
+              <p>thẻ trong bộ này</p>
             </div>
-        </TermsOverviewContext.Provider>
-    );
+          </h2>
+        </div>
+        {termsListComponent()}
+      </div>
+    </TermsOverviewContext.Provider>
+  );
 };
 
 // const TermsByStats = () => {
@@ -122,20 +127,20 @@ export const TermOverView = () => {
 // };
 
 const TermsByOriginal = () => {
-    const { terms } = useSet();
+  const { terms } = useSet();
 
-    return <TermsList terms={terms} slice={100} />;
+  return <TermsList terms={terms} slice={100} />;
 };
 
 const TermsByAlphabetical = () => {
-    const { terms } = useSet();
-    const sortOrder = terms
-        .sort((a, b) =>
-            a.flashcardContentTerm.localeCompare(b.flashcardContentTerm)
-        )
-        .map((x) => x.id);
+  const { terms } = useSet();
+  const sortOrder = terms
+    .sort((a, b) =>
+      a.flashcardContentTerm.localeCompare(b.flashcardContentTerm),
+    )
+    .map((x) => x.id);
 
-    return <TermsList terms={terms} sortOrder={sortOrder} slice={100} />;
+  return <TermsList terms={terms} sortOrder={sortOrder} slice={100} />;
 };
 
 // interface TermsCategoryProps {
@@ -198,55 +203,49 @@ const TermsByAlphabetical = () => {
 // };
 
 interface TermsListProps {
-    terms: FlashcardContent[];
-    sortOrder?: string[];
-    slice?: number;
+  terms: FlashcardContent[];
+  sortOrder?: string[];
+  slice?: number;
 }
 
 const TermsList: React.FC<TermsListProps> = ({ terms, sortOrder, slice }) => {
-    const session = useSession();
-    const { flashcard } = useSet();
+  const session = useSession();
+  const { flashcard } = useSet();
 
-    const creator = session.data?.user?.id === flashcard.userId;
+  const creator = session.data?.user?.id === flashcard.userId;
 
-    const starredTerms = useContainerContext((s) => s.starredTerms);
-    const internalSort =
-        sortOrder || terms.sort((a, b) => a.rank - b.rank).map((x) => x.id);
+  const starredTerms = useContainerContext((s) => s.starredTerms);
+  const internalSort =
+    sortOrder || terms.sort((a, b) => a.rank - b.rank).map((x) => x.id);
 
-    const starredOnly = useContext(TermsOverviewContext).starredOnly;
-    const internalTerms = starredOnly
-        ? terms.filter((x) => starredTerms.includes(x.id))
-        : terms;
+  const starredOnly = useContext(TermsOverviewContext).starredOnly;
+  const internalTerms = starredOnly
+    ? terms.filter((x) => starredTerms.includes(x.id))
+    : terms;
 
-    const [showSlice, setShowSlice] = useState(slice);
+  const [showSlice, setShowSlice] = useState(slice);
 
-    return (
-        <>
-            <div className="flex flex-col gap-[14px]">
-                {internalTerms
-                    .sort(
-                        (a, b) =>
-                            internalSort.indexOf(a.id) -
-                            internalSort.indexOf(b.id)
-                    )
-                    .slice(0, showSlice || terms.length)
-                    .map((term) => (
-                        <TermWrapper
-                            term={term}
-                            key={term.id}
-                            creator={creator}
-                        />
-                    ))}
-            </div>
-            {showSlice !== undefined && showSlice < terms.length && (
-                <Button
-                    onClick={() => {
-                        setShowSlice((s) => (s || 0) + 100);
-                    }}
-                >
-                    Xem thêm
-                </Button>
-            )}
-        </>
-    );
+  return (
+    <>
+      <div className="flex flex-col gap-[14px]">
+        {internalTerms
+          .sort(
+            (a, b) => internalSort.indexOf(a.id) - internalSort.indexOf(b.id),
+          )
+          .slice(0, showSlice || terms.length)
+          .map((term) => (
+            <TermWrapper term={term} key={term.id} creator={creator} />
+          ))}
+      </div>
+      {showSlice !== undefined && showSlice < terms.length && (
+        <Button
+          onClick={() => {
+            setShowSlice((s) => (s || 0) + 100);
+          }}
+        >
+          Xem thêm
+        </Button>
+      )}
+    </>
+  );
 };

@@ -1,4 +1,4 @@
 export interface CardProps {
-    i: number;
-    result?: boolean;
+  i: number;
+  result?: boolean;
 }

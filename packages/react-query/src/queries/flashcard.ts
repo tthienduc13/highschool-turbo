@@ -1,42 +1,60 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+
 import {
-    getFlashcardBySlug,
-    getTopFlashcard,
-    getUserFlashcard,
+  getDraftFlashcard,
+  getFlashcardBySlug,
+  getTopFlashcard,
+  getUserFlashcard,
+  patchFlashcard,
 } from "../apis/flashcard.ts";
 
 export const useUserFlashcardQuery = ({
-    pageSize,
-    pageNumber,
-    username,
+  pageSize,
+  pageNumber,
+  username,
 }: {
-    pageSize: number;
-    pageNumber: number;
-    username: string;
+  pageSize: number;
+  pageNumber: number;
+  username: string;
 }) => {
-    return useQuery({
-        queryKey: ["user-flashcard", username, pageNumber, pageSize],
-        queryFn: () =>
-            getUserFlashcard({
-                pageNumber: pageNumber,
-                pageSize: pageSize,
-                username: username,
-            }),
-        enabled: !!username,
-    });
+  return useQuery({
+    queryKey: ["user-flashcard", username, pageNumber, pageSize],
+    queryFn: () =>
+      getUserFlashcard({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        username: username,
+      }),
+    enabled: !!username,
+  });
 };
 
 export const useTopFlashcardQuery = () => {
-    return useQuery({
-        queryKey: ["top-flashcard"],
-        queryFn: getTopFlashcard,
-    });
+  return useQuery({
+    queryKey: ["top-flashcard"],
+    queryFn: getTopFlashcard,
+  });
 };
 
 export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
-    return useQuery({
-        queryKey: ["flashcard-by-slug", slug],
-        queryFn: () => getFlashcardBySlug({ slug }),
-        enabled: !!slug,
-    });
+  return useQuery({
+    queryKey: ["flashcard-by-slug", slug],
+    queryFn: () => getFlashcardBySlug({ slug }),
+    enabled: !!slug,
+  });
+};
+
+export const useFlashcardDraftQuery = () => {
+  return useQuery({
+    queryKey: ["draft-flaschard"],
+    queryFn: getDraftFlashcard,
+    refetchOnMount: "always",
+  });
+};
+
+export const useEditSetMutation = () => {
+  return useMutation({
+    mutationKey: ["update-flashcard"],
+    mutationFn: patchFlashcard,
+  });
 };

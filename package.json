@@ -1,32 +1,36 @@
 {
-    "name": "highschool",
-    "private": true,
-    "scripts": {
-        "build": "turbo build",
-        "dev": "turbo dev",
-        "lint": "turbo lint",
-        "clean": "find . -name node_modules -o -name .next -o -name .turbo -o -name dist -type d -prune | xargs rm -rf",
-        "clean:workspaces": "turbo clean",
-        "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-        "ui": "pnpm --filter @highschool/ui ui"
-    },
-    "devDependencies": {
-        "@highschool/endpoints": "workspace:*",
-        "@highschool/env": "workspace:*",
-        "@highschool/eslint-config": "workspace:*",
-        "@highschool/lib": "workspace:*",
-        "@highschool/hooks": "workspace:*",
-        "@highschool/interfaces": "workspace:*",
-        "@highschool/react-query": "workspace:*",
-        "@highschool/typescript-config": "workspace:*",
-        "@highschool/types": "workspace:*",
-        "@types/node": "^22.10.2",
-        "prettier": "^3.2.5",
-        "turbo": "^2.3.3",
-        "typescript": "5.5.4"
-    },
-    "packageManager": "pnpm@9.0.0",
-    "engines": {
-        "node": ">=18"
-    }
+  "name": "highschool",
+  "private": true,
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "clean": "find . -name node_modules -o -name .next -o -name .turbo -o -name dist -type d -prune | xargs rm -rf",
+    "clean:workspaces": "turbo clean",
+    "format": "prettier --write \"**/*.{js,cjs,mjs,ts,tsx,md,json}\"",
+    "ui": "pnpm --filter @highschool/ui ui"
+  },
+  "devDependencies": {
+    "@highschool/endpoints": "workspace:*",
+    "@highschool/env": "workspace:*",
+    "@highschool/eslint-config": "workspace:*",
+    "@highschool/hooks": "workspace:*",
+    "@highschool/interfaces": "workspace:*",
+    "@highschool/lib": "workspace:*",
+    "@highschool/react-query": "workspace:*",
+    "@highschool/types": "workspace:*",
+    "@highschool/typescript-config": "workspace:*",
+    "@types/node": "^22.10.2",
+    "prettier": "^3.2.5",
+    "turbo": "^2.3.3",
+    "typescript": "5.5.4"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
+    "prettier-plugin-tailwindcss": "^0.6.9"
+  }
 }

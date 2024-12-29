@@ -1,21 +1,23 @@
-import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
-import { Button } from "@highschool/ui/components/ui/button";
 import Link from "next/link";
+
+import { Button } from "@highschool/ui/components/ui/button";
+
+import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
 
 function VerifyAccountModule() {
   return (
-    <div className="w-screen h-screen relative flex items-center justify-center">
+    <div className="relative flex h-screen w-screen items-center justify-center">
       <EnterWrapper>
-        <div className="max-w-xl w-full mx-auto z-10">
-          <div className="flex flex-col w-full items-center justify-center gap-8">
+        <div className="z-10 mx-auto w-full max-w-xl">
+          <div className="flex w-full flex-col items-center justify-center gap-8">
             <div>logo</div>
             <h1 className="text-4xl font-bold">Kiểm tra hộp thư</h1>
-            <div className="font-medium text-center dark:text-gray-300 text-gray-700">
+            <div className="text-center font-medium text-gray-700 dark:text-gray-300">
               Chúng tôi đã đường dẫn đăng nhập
               <br />
               Hãy bấm vào đường dẫn để xác minh tài khoản
             </div>
-            <div className="w-full h-0.5 bg-gray-200 dark:bg-gray-700" />
+            <div className="h-0.5 w-full bg-gray-200 dark:bg-gray-700" />
             <div className="grid grid-cols-2 gap-2">
               <Link href="https://mail.google.com">
                 <Button variant={"ghost"} size={"lg"} className="w-full">
@@ -52,7 +54,7 @@ function VerifyAccountModule() {
                 </Button>
               </Link>
             </div>
-            <div className="text-gray-600 dark:text-gray-400 text-xs text-center">
+            <div className="text-center text-xs text-gray-600 dark:text-gray-400">
               Không thấy email? Hãy kiểm tra thư mục spam
               <br />
               Sai email?{" "}

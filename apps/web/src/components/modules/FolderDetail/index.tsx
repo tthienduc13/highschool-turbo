@@ -5,23 +5,23 @@ import { FolderLoading } from "./folder-loading";
 import { HydrateFolderData } from "./hydrate-folder-data";
 
 function FolderDetailModule() {
-    return (
-        <HydrateFolderData fallback={<FolderLoading />}>
-            <div className="max-w-7xl mx-auto w-full">
-                <div className="flex flex-col gap-12">
-                    <FolderHeading />
-                    <div className="flex flex-col gap-8 items-stretch lg:flex-row w-full">
-                        {/* TODO: Add link area to study flashcard */}
+  return (
+    <HydrateFolderData fallback={<FolderLoading />}>
+      <div className="mx-auto w-full max-w-7xl">
+        <div className="flex flex-col gap-12">
+          <FolderHeading />
+          <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row">
+            {/* TODO: Add link area to study flashcard */}
 
-                        <div className="flex flex-1 flex-col gap-8">
-                            <FlashcardList />
-                            <DocumentList />
-                        </div>
-                    </div>
-                </div>
+            <div className="flex flex-1 flex-col gap-8">
+              <FlashcardList />
+              <DocumentList />
             </div>
-        </HydrateFolderData>
-    );
+          </div>
+        </div>
+      </div>
+    </HydrateFolderData>
+  );
 }
 
 export default FolderDetailModule;

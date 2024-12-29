@@ -1,0 +1,119 @@
+import { useEffect, useMemo } from "react";
+
+import { useSubmitMBTITestMutation } from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
+
+import { IconLoader2 } from "@tabler/icons-react";
+
+import { useMBTITestContext } from "@/stores/use-mbti-store";
+
+import { AnswerOption } from "./answer-option";
+
+interface TestViewProps {
+  submitAnswer: ReturnType<typeof useSubmitMBTITestMutation>;
+}
+
+export const TestView = ({ submitAnswer }: TestViewProps) => {
+  const questions = useMBTITestContext((s) => s.testQuestions);
+  const currentQuestionIndex = useMBTITestContext(
+    (s) => s.currentQuestionIndex,
+  );
+  const setCurrentQuestionIndex = useMBTITestContext(
+    (s) => s.setCurrentQuestionIndex,
+  );
+  const userAnswers = useMBTITestContext((s) => s.userTestAnswers);
+
+  const setResult = useMBTITestContext((s) => s.setResult);
+
+  const isUserAlreadyPickAnswer =
+    userAnswers[currentQuestionIndex] !== undefined;
+
+  function handleNextButtonClick() {
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  }
+
+  function handlePreviousButtonClick() {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  }
+
+  const progress = useMemo(() => {
+    return ((currentQuestionIndex + 1) / questions.length) * 100;
+  }, [currentQuestionIndex, questions]);
+
+  const handleSubmit = async () => {
+    if (!isUserAlreadyPickAnswer) {
+      alert("Vui lòng trả lời toàn bộ câu hỏi");
+      return;
+    }
+
+    submitAnswer.mutate(userAnswers, {
+      onSuccess: (data) => {
+        setResult(data.mbtiTypeContent, data.mbtiTypeResult);
+      },
+      onError: () => {
+        alert("Đã xảy ra lỗi khi gửi câu trả lời. Vui lòng thử lại.");
+      },
+    });
+  };
+
+  return (
+    <div className="flex w-full flex-col gap-8">
+      <div className="mt-5 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+        <div
+          className={`h-2.5 rounded-full bg-blue-500`}
+          style={{ width: `${progress ?? 0}%` }}
+        ></div>
+      </div>
+      <div className="flex flex-col gap-1">
+        <div className="text-center text-lg font-bold">
+          {currentQuestionIndex + 1}
+        </div>
+        <div className="text-center text-2xl">
+          {questions[currentQuestionIndex]?.question}
+        </div>
+      </div>
+      <AnswerOption goToNextQuestion={handleNextButtonClick} />
+      <div className="flex w-full flex-row gap-5">
+        <Button
+          disabled={currentQuestionIndex === 0 || submitAnswer.isPending}
+          onClick={handlePreviousButtonClick}
+          size={"lg"}
+          className="w-full"
+          variant={"outline"}
+        >
+          Câu trước
+        </Button>
+        {isUserAlreadyPickAnswer &&
+        currentQuestionIndex === questions.length - 1 ? (
+          <Button
+            disabled={submitAnswer.isPending}
+            onClick={handleSubmit}
+            size={"lg"}
+            className="w-full"
+            variant={"default"}
+          >
+            {submitAnswer.isPending ? (
+              <IconLoader2 className="animate-spin" />
+            ) : (
+              " Xem kết quả"
+            )}
+          </Button>
+        ) : (
+          <Button
+            disabled={!isUserAlreadyPickAnswer}
+            onClick={handleNextButtonClick}
+            size={"lg"}
+            className="w-full"
+            variant={"outline"}
+          >
+            Câu tiếp theo
+          </Button>
+        )}
+      </div>
+    </div>
+  );
+};

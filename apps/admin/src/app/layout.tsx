@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import "@highschool/ui/globals.css";
 
 export const metadata: Metadata = {

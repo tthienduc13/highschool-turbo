@@ -8,3 +8,6 @@ export * from "./recent-view";
 export * from "./flashcard-content";
 export * from "./study-mode";
 export * from "./flashcard-test";
+export * from "./mbti";
+export * from "./holland";
+export * from "./document";

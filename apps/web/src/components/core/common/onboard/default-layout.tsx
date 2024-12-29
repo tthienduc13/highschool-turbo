@@ -1,66 +1,62 @@
 "use client";
 
 import { Button } from "@highschool/ui/components/ui/button";
-import GlobalShortcutLayer from "../global-shorcut-layer";
-import { useNextStep } from "./present-wrapper";
+
 import { IconLoader2 } from "@tabler/icons-react";
 
+import GlobalShortcutLayer from "../global-shorcut-layer";
+import { useNextStep } from "./present-wrapper";
+
 interface DefaultLayoutProps {
-    heading: string;
-    description: string | React.ReactNode;
-    action?: string;
-    defaultNext?: boolean;
-    onNext?: () => void | Promise<void>;
-    nextDisabled?: boolean;
-    nextLoading?: boolean;
-    nextVariant?: "default" | "outline" | "ghost";
+  heading: string;
+  description: string | React.ReactNode;
+  action?: string;
+  defaultNext?: boolean;
+  onNext?: () => void | Promise<void>;
+  nextDisabled?: boolean;
+  nextLoading?: boolean;
+  nextVariant?: "default" | "outline" | "ghost";
 }
 
 export const DefaultLayout: React.FC<
-    React.PropsWithChildren<DefaultLayoutProps>
+  React.PropsWithChildren<DefaultLayoutProps>
 > = ({
-    heading,
-    description,
-    children,
-    action = "Tiếp tục",
-    nextLoading,
-    nextVariant,
-    nextDisabled,
-    defaultNext = true,
-    onNext,
+  heading,
+  description,
+  children,
+  action = "Tiếp tục",
+  nextLoading,
+  nextVariant,
+  nextDisabled,
+  defaultNext = true,
+  onNext,
 }) => {
-    const next = useNextStep();
+  const next = useNextStep();
 
-    return (
-        <div className="w-full">
-            <GlobalShortcutLayer />
-            <div className="flex flex-col gap-12 px-4 justify-center items-center">
-                <div className="flex flex-col gap-4 ">
-                    <h1 className="text-3xl font-bold text-center">
-                        {heading}
-                    </h1>
-                    <p className="text-gray-700 dark:text-gray-300 text-sm text-center">
-                        {description}
-                    </p>
-                </div>
-                {children}
-                <Button
-                    disabled={nextDisabled || nextLoading}
-                    variant={nextVariant}
-                    onClick={async () => {
-                        await onNext?.();
-                        if (defaultNext) next();
-                    }}
-                    className="md:h-12 md:text-lg  w-72"
-                    size={"lg"}
-                >
-                    {nextLoading ? (
-                        <IconLoader2 className="animate-spin" />
-                    ) : (
-                        action
-                    )}
-                </Button>
-            </div>
+  return (
+    <div className="w-full">
+      <GlobalShortcutLayer />
+      <div className="flex flex-col items-center justify-center gap-12 px-4">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-center text-3xl font-bold">{heading}</h1>
+          <p className="text-center text-sm text-gray-700 dark:text-gray-300">
+            {description}
+          </p>
         </div>
-    );
+        {children}
+        <Button
+          disabled={nextDisabled || nextLoading}
+          variant={nextVariant}
+          onClick={async () => {
+            await onNext?.();
+            if (defaultNext) next();
+          }}
+          className="w-72 md:h-12 md:text-lg"
+          size={"lg"}
+        >
+          {nextLoading ? <IconLoader2 className="animate-spin" /> : action}
+        </Button>
+      </div>
+    </div>
+  );
 };

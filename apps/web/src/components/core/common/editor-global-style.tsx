@@ -1,17 +1,19 @@
+"use client";
+
 import { Highlight } from "@highschool/lib/editor";
 
 export const EditorGlobalStyles: React.FC<{ small?: boolean }> = ({
-    small = false,
+  small = false,
 }) => {
-    return (
-        <style jsx global>{`
-            mark {
-                background-color: ${Highlight.Yellow};
-                border-radius: 0.25em;
-                box-decoration-break: clone;
-                padding: ${small ? 0 : 0.125}rem 0;
-                color: inherit;
-            }
-        `}</style>
-    );
+  return (
+    <style jsx global>{`
+      mark {
+        background-color: ${Highlight.Yellow};
+        border-radius: 0.25em;
+        box-decoration-break: clone;
+        padding: ${small ? 0 : 0.125}rem 0;
+        color: inherit;
+      }
+    `}</style>
+  );
 };

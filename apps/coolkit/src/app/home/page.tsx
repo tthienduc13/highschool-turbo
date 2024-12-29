@@ -1,9 +1,7 @@
 import HomeModule from "@/components/modules/home";
 
 function HomePage() {
-    return (
-        <HomeModule />
-    );
+  return <HomeModule />;
 }
 
 export default HomePage;

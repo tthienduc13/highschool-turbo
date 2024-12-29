@@ -1,4 +1,4 @@
 {
-    "extends": "@highschool/typescript-config/react-library.json",
-    "include": ["*.ts", "*.d.ts"]
+  "extends": "@highschool/typescript-config/react-library.json",
+  "include": ["*.ts", "*.d.ts"]
 }

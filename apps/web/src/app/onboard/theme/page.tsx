@@ -1,12 +1,13 @@
-import OnboardThemeModule from "@/components/modules/Onboard/Theme";
 import { Metadata } from "next";
 
+import OnboardThemeModule from "@/components/modules/Onboard/Theme";
+
 export const metadata: Metadata = {
-    title: "Chủ đề",
+  title: "Chủ đề",
 };
 
 function OnboardTheme() {
-    return <OnboardThemeModule />;
+  return <OnboardThemeModule />;
 }
 
 export default OnboardTheme;

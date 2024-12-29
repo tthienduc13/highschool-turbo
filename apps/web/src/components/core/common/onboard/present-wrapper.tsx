@@ -1,127 +1,131 @@
 "use client";
 
-import { useMe } from "@/hooks/use-me";
 import { motion } from "framer-motion";
+
+import { createContext, useContext } from "react";
+
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { createContext, useContext } from "react";
-import { SegmentedProgress } from "./segmented-progress";
-import { Loading } from "../loading";
+
 import { useMediaQuery } from "@highschool/hooks";
+
+import { useMe } from "@/hooks/use-me";
 import { getSafeRedirectUrl } from "@/utils/urls";
 
+import { Loading } from "../loading";
+import { SegmentedProgress } from "./segmented-progress";
+
 const computeMap = (isMobile = false) => {
-    const base = [
-        "",
-        "/theme",
-        "/account-type",
-        "/username",
-        "/account-info",
-        "/command-menu",
-        "/subscribe",
-        "/done",
-    ];
-    const remove = (index: string) => base.splice(base.indexOf(index), 1);
+  const base = [
+    "",
+    "/theme",
+    "/account-type",
+    "/username",
+    "/command-menu",
+    "/subscribe",
+    "/done",
+  ];
+  const remove = (index: string) => base.splice(base.indexOf(index), 1);
 
-    if (isMobile) remove("/command-menu");
+  if (isMobile) remove("/command-menu");
 
-    return base;
+  return base;
 };
 
 interface PresentWrapperContextProps {
-    nextStep: () => void;
+  nextStep: () => void;
 }
 
 const PresentWrapperContext = createContext<PresentWrapperContextProps>({
-    nextStep: () => undefined,
+  nextStep: () => undefined,
 });
 
 export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
-    children,
+  children,
 }) => {
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-    const callbackUrl = searchParams.get("callbackUrl");
-    const isMobile = useMediaQuery("(max-width: 768px)");
+  const callbackUrl = searchParams.get("callbackUrl");
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
-    // useUnauthedRedirect();
-    const me = useMe();
+  // useUnauthedRedirect();
+  const me = useMe();
 
-    // const hasMembership = !!me?.orgMembership;
+  // const hasMembership = !!me?.orgMembership;
 
-    const map = computeMap(isMobile);
+  const map = computeMap(isMobile);
 
-    const currentStep = pathname.replace("/onboard", "");
+  const currentStep = pathname.replace("/onboard", "");
 
-    const getFinalizedCallbackUrl = () => {
-        if (!callbackUrl) return "/";
+  const getFinalizedCallbackUrl = () => {
+    if (!callbackUrl) return "/";
 
-        return getSafeRedirectUrl(callbackUrl);
-        return "";
-    };
+    return getSafeRedirectUrl(callbackUrl);
+    return "";
+  };
 
-    const nextStep = () => {
-        const next = map[map.indexOf(currentStep)! + 1];
-        if (next) {
-            router.replace(
-                `/onboard${next}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`
-            );
-        } else {
-            router.push(getFinalizedCallbackUrl());
-        }
-    };
+  const nextStep = () => {
+    const next = map[map.indexOf(currentStep)! + 1];
+    if (next) {
+      router.replace(
+        `/onboard${next}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`,
+      );
+    } else {
+      router.push(getFinalizedCallbackUrl());
+    }
+  };
 
-    if (!me) return <Loading fullHeight />;
+  if (!me) return <Loading fullHeight />;
 
-    return (
-        <PresentWrapperContext.Provider value={{ nextStep }}>
-            <div className="min-h-screen relative flex items-center justify-center w-screen">
-                <div className="max-w-3xl py-20 mx-auto">
-                    <motion.div
-                        initial={{
-                            opacity: -1,
-                            translateY: -16,
-                        }}
-                        animate={{
-                            opacity: 1,
-                            translateY: 0,
-                            transition: {
-                                duration: 0.3,
-                                ease: "easeOut",
-                            },
-                        }}
-                        exit={{
-                            opacity: -1,
-                            translateY: -16,
-                            transition: {
-                                duration: 0.3,
-                                ease: "easeIn",
-                            },
-                        }}
-                    >
-                        {children}
-                    </motion.div>
-                </div>
-                <div className="absolute left-0 bottom-0 w-full">
-                    <div className="max-w-xs w-full px-4 mx-auto">
-                        <SegmentedProgress
-                            steps={map.length}
-                            currentStep={map.indexOf(currentStep)}
-                            clickable
-                            disableFrom={!me.username ? 3 : undefined}
-                            onClick={async (i) => {
-                                await router.replace(
-                                    `/onboard${map[i]!}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`
-                                );
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
-        </PresentWrapperContext.Provider>
-    );
+  return (
+    <PresentWrapperContext.Provider value={{ nextStep }}>
+      <div className="relative flex min-h-screen w-screen items-center justify-center">
+        <div className="mx-auto max-w-3xl py-20">
+          <motion.div
+            initial={{
+              opacity: -1,
+              translateY: -16,
+            }}
+            animate={{
+              opacity: 1,
+              translateY: 0,
+              transition: {
+                duration: 0.3,
+                ease: "easeOut",
+              },
+            }}
+            exit={{
+              opacity: -1,
+              translateY: -16,
+              transition: {
+                duration: 0.3,
+                ease: "easeIn",
+              },
+            }}
+          >
+            {children}
+          </motion.div>
+        </div>
+        <div className="absolute bottom-0 left-0 w-full">
+          <div className="mx-auto w-full max-w-xs px-4">
+            <SegmentedProgress
+              steps={map.length}
+              currentStep={map.indexOf(currentStep)}
+              clickable
+              disableFrom={!me.username ? 3 : undefined}
+              onClick={async (i) => {
+                await router.replace(
+                  `/onboard${map[i]!}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`,
+                );
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </PresentWrapperContext.Provider>
+  );
 };
 
 export const useNextStep = () => useContext(PresentWrapperContext).nextStep;

@@ -3,11 +3,11 @@
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 
 function StudySetLearnModule() {
-    return (
-        <>
-            <EditorGlobalStyles />
-        </>
-    );
+  return (
+    <>
+      <EditorGlobalStyles />
+    </>
+  );
 }
 
 export default StudySetLearnModule;

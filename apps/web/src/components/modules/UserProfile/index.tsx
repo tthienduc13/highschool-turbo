@@ -1,15 +1,15 @@
 "use client";
 
 import { HydrateProfileData } from "./hydrate-profile-data";
-import { ProfileLoading } from "./profile-loading";
 import { InnerProfile } from "./innder-profile";
+import { ProfileLoading } from "./profile-loading";
 
 function UserProfileModule() {
-    return (
-        <HydrateProfileData fallback={<ProfileLoading />}>
-            <InnerProfile />
-        </HydrateProfileData>
-    );
+  return (
+    <HydrateProfileData fallback={<ProfileLoading />}>
+      <InnerProfile />
+    </HydrateProfileData>
+  );
 }
 
 export default UserProfileModule;

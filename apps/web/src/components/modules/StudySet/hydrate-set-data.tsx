@@ -1,176 +1,179 @@
 "use client";
 
+import { useSession } from "next-auth/react";
+
+import { createContext, useEffect, useRef } from "react";
+
+import { useParams } from "next/navigation";
+
+import {
+  Flashcard,
+  FlashcardContent,
+  LimitedStudySetAnswerMode,
+  MultipleAnswerMode,
+  SetData,
+  StudiableTerm,
+  StudySetAnswerMode,
+} from "@highschool/interfaces";
+import {
+  useContentsBySlugQuery,
+  useFlashcardBySlugQuery,
+} from "@highschool/react-query/queries";
+
 import { SetNotFound } from "@/components/core/common/404s/set-404";
 import { Loading } from "@/components/core/common/loading";
 import { queryEventChannel } from "@/events/query";
 import {
-    ContainerContext,
-    ContainerStore,
-    ContainerStoreProps,
-    createContainerStore,
+  ContainerContext,
+  ContainerStore,
+  ContainerStoreProps,
+  createContainerStore,
 } from "@/stores/use-container-store";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
-import {
-    Flashcard,
-    FlashcardContent,
-    LimitedStudySetAnswerMode,
-    MultipleAnswerMode,
-    SetData,
-    StudiableTerm,
-    StudySetAnswerMode,
-} from "@highschool/interfaces";
-import {
-    useContentsBySlugQuery,
-    useFlashcardBySlugQuery,
-} from "@highschool/react-query/queries";
-import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
-import { createContext, useEffect, useRef } from "react";
 
 export interface HydrateSetDataProps {
-    isPublic?: boolean;
-    withDistractors?: boolean;
-    withCollab?: boolean;
-    disallowDirty?: boolean;
-    requireFresh?: boolean;
-    placeholder?: React.ReactNode;
+  isPublic?: boolean;
+  withDistractors?: boolean;
+  withCollab?: boolean;
+  disallowDirty?: boolean;
+  requireFresh?: boolean;
+  placeholder?: React.ReactNode;
 }
 
 export const HydrateSetData: React.FC<
-    React.PropsWithChildren<HydrateSetDataProps>
+  React.PropsWithChildren<HydrateSetDataProps>
 > = ({
-    isPublic,
-    withDistractors = false,
-    withCollab = false,
-    disallowDirty = false,
-    requireFresh,
-    placeholder,
-    children,
+  isPublic,
+  withDistractors = false,
+  withCollab = false,
+  disallowDirty = false,
+  requireFresh,
+  placeholder,
+  children,
 }) => {
-    const params = useParams();
-    const { data: session, status } = useSession();
+  const params = useParams();
+  const { data: session, status } = useSession();
 
-    const isDirty = useSetPropertiesStore((s) => s.isDirty);
-    const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
+  const isDirty = useSetPropertiesStore((s) => s.isDirty);
+  const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
 
-    const {
-        data: flashcardData,
-        refetch: refetchFlashcard,
-        error,
-        isFetchedAfterMount,
-        isSuccess: flaschardSuccess,
-    } = useFlashcardBySlugQuery({
-        slug: params.slug as string,
-    });
+  const {
+    data: flashcardData,
+    refetch: refetchFlashcard,
+    error,
+    isFetchedAfterMount,
+    isSuccess: flaschardSuccess,
+  } = useFlashcardBySlugQuery({
+    slug: params.slug as string,
+  });
 
-    const {
-        data: flashcardContentData,
-        refetch: refetchFlashcardContent,
-        isSuccess: flsahcardContentSuccess,
-    } = useContentsBySlugQuery({
-        slug: params.slug as string,
-        pageNumber: 1,
-        pageSize: status === "authenticated" ? 1000 : 10,
-    });
+  const {
+    data: flashcardContentData,
+    refetch: refetchFlashcardContent,
+    isSuccess: flsahcardContentSuccess,
+  } = useContentsBySlugQuery({
+    slug: params.slug as string,
+    pageNumber: 1,
+    pageSize: status === "authenticated" ? 1000 : 10,
+  });
 
-    useEffect(() => {
-        if (flaschardSuccess && flsahcardContentSuccess) {
-            if (isDirty) setIsDirty(false);
-            queryEventChannel.emit(
-                "setQueryRefetched",
-                createInjectedData(flashcardData!, flashcardContentData)
-            );
-        }
-    });
+  useEffect(() => {
+    if (flaschardSuccess && flsahcardContentSuccess) {
+      if (isDirty) setIsDirty(false);
+      queryEventChannel.emit(
+        "setQueryRefetched",
+        createInjectedData(flashcardData!, flashcardContentData),
+      );
+    }
+  });
 
-    const createInjectedData = (
-        flashcard: Flashcard,
-        terms: FlashcardContent[]
-    ): SetData => {
-        const updatedTerms = terms.map((term) => ({
-            ...term,
-            distractors: withDistractors ? [] : undefined,
-        }));
-        const studiableTerms: StudiableTerm[] = terms.map((term) => ({
-            ...term,
-            correctness: 0,
-            incorrectCount: 0,
-            distractors: withDistractors ? [] : undefined,
-        }));
+  const createInjectedData = (
+    flashcard: Flashcard,
+    terms: FlashcardContent[],
+  ): SetData => {
+    const updatedTerms = terms.map((term) => ({
+      ...term,
+      distractors: withDistractors ? [] : undefined,
+    }));
+    const studiableTerms: StudiableTerm[] = terms.map((term) => ({
+      ...term,
+      correctness: 0,
+      incorrectCount: 0,
+      distractors: withDistractors ? [] : undefined,
+    }));
 
-        const studiableLearnTerms = studiableTerms.filter(
-            (t) => t.correctness > 0
-        );
-        const studiableFlashcardTerms = studiableTerms.filter(
-            (t) => t.correctness === 0
-        );
-
-        return {
-            flashcard,
-            terms: updatedTerms,
-            injected: {
-                studiableLearnTerms,
-                studiableFlashcardTerms,
-            },
-        };
-    };
-    useEffect(() => {
-        if (isDirty) {
-            refetchFlashcard();
-            refetchFlashcardContent();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isDirty]);
-
-    if (error) return <SetNotFound />;
-
-    if (
-        !isPublic ||
-        !flashcardData ||
-        !flashcardContentData ||
-        (disallowDirty && isDirty) ||
-        (!isFetchedAfterMount && requireFresh)
-    )
-        return placeholder || <Loading />;
-
-    const setData: SetData = createInjectedData(
-        flashcardData,
-        flashcardContentData
+    const studiableLearnTerms = studiableTerms.filter((t) => t.correctness > 0);
+    const studiableFlashcardTerms = studiableTerms.filter(
+      (t) => t.correctness === 0,
     );
-    return <ContextLayer data={setData}>{children}</ContextLayer>;
+
+    return {
+      flashcard,
+      terms: updatedTerms,
+      injected: {
+        studiableLearnTerms,
+        studiableFlashcardTerms,
+      },
+    };
+  };
+  useEffect(() => {
+    if (isDirty) {
+      refetchFlashcard();
+      refetchFlashcardContent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDirty]);
+
+  if (error) return <SetNotFound />;
+
+  if (
+    status == "loading" ||
+    (!isPublic && !session) ||
+    !flashcardData ||
+    !flashcardContentData ||
+    (disallowDirty && isDirty) ||
+    (!isFetchedAfterMount && requireFresh)
+  )
+    return placeholder || <Loading />;
+
+  const setData: SetData = createInjectedData(
+    flashcardData,
+    flashcardContentData,
+  );
+  return <ContextLayer data={setData}>{children}</ContextLayer>;
 };
 
 interface ContextLayerProps {
-    data: SetData;
-    children: React.ReactNode;
+  data: SetData;
+  children: React.ReactNode;
 }
 
 interface SetContextProps {
-    data: SetData;
+  data: SetData;
 }
 
 export const SetContext = createContext<SetContextProps | undefined>(undefined);
 
 const ContextLayer = ({ data, children }: ContextLayerProps) => {
-    const storeRef = useRef<ContainerStore>(null);
+  const storeRef = useRef<ContainerStore>(null);
 
-    if (!storeRef.current) {
-        storeRef.current = createContainerStore({
-            shuffleFlashcards: false,
-            autoplayFlashcards: false,
-            shuffleLearn: false,
-            answerWith: StudySetAnswerMode.FlashcardContentDefinition,
-            multipleAnswerMode: MultipleAnswerMode.Unknown,
-            enableCardsSorting: false,
-            cardsAnswerWith: LimitedStudySetAnswerMode.Definition,
-        });
-    }
+  if (!storeRef.current) {
+    storeRef.current = createContainerStore({
+      shuffleFlashcards: false,
+      autoplayFlashcards: false,
+      shuffleLearn: false,
+      answerWith: StudySetAnswerMode.FlashcardContentDefinition,
+      multipleAnswerMode: MultipleAnswerMode.Unknown,
+      enableCardsSorting: false,
+      cardsAnswerWith: LimitedStudySetAnswerMode.Definition,
+    });
+  }
 
-    return (
-        <SetContext.Provider value={{ data }}>
-            <ContainerContext.Provider value={storeRef.current}>
-                {children}
-            </ContainerContext.Provider>
-        </SetContext.Provider>
-    );
+  return (
+    <SetContext.Provider value={{ data }}>
+      <ContainerContext.Provider value={storeRef.current}>
+        {children}
+      </ContainerContext.Provider>
+    </SetContext.Provider>
+  );
 };

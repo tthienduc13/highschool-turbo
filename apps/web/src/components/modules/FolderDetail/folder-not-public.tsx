@@ -1,3 +1,3 @@
 export const FolderNotPublic = () => {
-    return <div className="">Foldernot public</div>;
+  return <div className="">Foldernot public</div>;
 };

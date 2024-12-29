@@ -1,86 +1,83 @@
-import {
-    Credenza,
-    CredenzaBody,
-    CredenzaClose,
-    CredenzaContent,
-    CredenzaDescription,
-    CredenzaFooter,
-    CredenzaHeader,
-    CredenzaTitle,
-} from "@/components/ui/credenza";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+
 import { IconLoader2 } from "@tabler/icons-react";
 
+import {
+  Credenza,
+  CredenzaBody,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+} from "@/components/ui/credenza";
+
 interface ModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title: string;
-    children?: React.ReactNode;
-    buttonLabel?: string;
-    onConfirm?: () => void;
-    description?: string;
-    isPending?: boolean;
-    isDisabled?: boolean;
-    withoutCancel?: boolean;
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children?: React.ReactNode;
+  buttonLabel?: string;
+  onConfirm?: () => void;
+  description?: string;
+  isPending?: boolean;
+  isDisabled?: boolean;
+  withoutCancel?: boolean;
+  withoutFooter?: boolean;
 }
 
 export const Modal = ({
-    withoutCancel = false,
-    isOpen,
-    onClose,
-    title,
-    children,
-    buttonLabel = "Xác nhận",
-    onConfirm,
-    description,
-    isPending,
-    isDisabled,
+  withoutFooter = false,
+  withoutCancel = false,
+  isOpen,
+  onClose,
+  title,
+  children,
+  buttonLabel = "Xác nhận",
+  onConfirm,
+  description,
+  isPending,
+  isDisabled,
 }: ModalProps) => {
-    return (
-        <Credenza open={isOpen} onOpenChange={onClose}>
-            <CredenzaContent className="p-0 gap-0 border-none max-w-xl w-full border-2 border-gray-300 dark:border-gray-700 shadow-lg z-[1000] ">
-                <CredenzaHeader className="md:px-10 px-5 pt-4 md:pt-8">
-                    <CredenzaTitle className="md:text-3xl text-2xl">
-                        {title}
-                    </CredenzaTitle>
-                    {description ? (
-                        <CredenzaDescription>{description}</CredenzaDescription>
-                    ) : (
-                        <VisuallyHidden>
-                            <CredenzaDescription>
-                                Không có phụ đề
-                            </CredenzaDescription>
-                        </VisuallyHidden>
-                    )}
-                </CredenzaHeader>
-                <CredenzaBody className="px-5 md:px-10 pb-8 mt-4">
-                    {children}
-                </CredenzaBody>
-                <Separator />
-                <CredenzaFooter className="px-5 md:px-10 py-6">
-                    {!withoutCancel && (
-                        <Button
-                            variant="outline"
-                            onClick={onClose}
-                            disabled={isPending}
-                        >
-                            Hủy
-                        </Button>
-                    )}
-                    <Button
-                        disabled={isPending || isDisabled}
-                        onClick={onConfirm}
-                    >
-                        {isPending ? (
-                            <IconLoader2 className="animate-spin" />
-                        ) : (
-                            buttonLabel
-                        )}
-                    </Button>
-                </CredenzaFooter>
-            </CredenzaContent>
-        </Credenza>
-    );
+  return (
+    <Credenza open={isOpen} onOpenChange={onClose}>
+      <CredenzaContent className="z-[1000] w-full max-w-xl gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700">
+        <CredenzaHeader className="px-5 pt-4 md:px-10 md:pt-8">
+          <CredenzaTitle className="text-2xl md:text-3xl">
+            {title}
+          </CredenzaTitle>
+          {description ? (
+            <CredenzaDescription>{description}</CredenzaDescription>
+          ) : (
+            <VisuallyHidden>
+              <CredenzaDescription>Không có phụ đề</CredenzaDescription>
+            </VisuallyHidden>
+          )}
+        </CredenzaHeader>
+        <CredenzaBody className="mt-4 px-5 pb-8 md:px-10">
+          {children}
+        </CredenzaBody>
+        {!withoutFooter && <Separator />}
+        {!withoutFooter && (
+          <CredenzaFooter className="px-5 py-6 md:px-10">
+            {!withoutCancel && (
+              <Button variant="outline" onClick={onClose} disabled={isPending}>
+                Hủy
+              </Button>
+            )}
+            <Button disabled={isPending || isDisabled} onClick={onConfirm}>
+              {isPending ? (
+                <IconLoader2 className="animate-spin" />
+              ) : (
+                buttonLabel
+              )}
+            </Button>
+          </CredenzaFooter>
+        )}
+      </CredenzaContent>
+    </Credenza>
+  );
 };

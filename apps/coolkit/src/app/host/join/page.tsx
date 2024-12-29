@@ -1,9 +1,7 @@
 import { JoinModule } from "@/components/modules/join";
 
 function JoinPage() {
-    return (
-        <JoinModule />
-    );
+  return <JoinModule />;
 }
 
 export default JoinPage;
