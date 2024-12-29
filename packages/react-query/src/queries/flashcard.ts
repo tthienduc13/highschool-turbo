@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  deleteFlashcard,
   getDraftFlashcard,
   getFlashcardBySlug,
   getTopFlashcard,
@@ -56,5 +57,12 @@ export const useEditSetMutation = () => {
   return useMutation({
     mutationKey: ["update-flashcard"],
     mutationFn: patchFlashcard,
+  });
+};
+
+export const useDeleteFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["delete-flashcard"],
+    mutationFn: deleteFlashcard,
   });
 };

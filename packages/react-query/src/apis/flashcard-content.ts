@@ -165,3 +165,21 @@ export const deleteFlashcardContent = async ({
     throw error;
   }
 };
+
+export const reorderTerm = async ({
+  flashcardContentId,
+  newRank,
+}: {
+  flashcardContentId: string;
+  newRank: number;
+}) => {
+  try {
+    const { data } = await axiosServices.patch(
+      endpointFlashcardContent.REORDER_TERM(flashcardContentId, newRank),
+    );
+    return data;
+  } catch (error) {
+    console.log("Error while reordering", error);
+    throw error;
+  }
+};

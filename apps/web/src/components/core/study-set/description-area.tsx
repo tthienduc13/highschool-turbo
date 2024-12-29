@@ -64,20 +64,22 @@ export const DescriptionArea = () => {
         )}
         <ActionArea />
       </div>
-      <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
-        <Link
-          href={"/course"}
-          className="hover:text-primary flex flex-row items-center gap-2 transition-all duration-200 ease-in-out"
-        >
-          <IconBooks size={20} />
-          {flashcard.subjectName}
-        </Link>
-        <p>•</p>
-        <div className="flex flex-row items-center gap-2">
-          <IconSchool size={20} />
-          {gradeTextRenderer(flashcard.grade)}
+      {flashcard.subjectName && (
+        <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
+          <Link
+            href={"/course"}
+            className="hover:text-primary flex flex-row items-center gap-2 transition-all duration-200 ease-in-out"
+          >
+            <IconBooks size={20} />
+            {flashcard.subjectName}
+          </Link>
+          <p>•</p>
+          <div className="flex flex-row items-center gap-2">
+            <IconSchool size={20} />
+            {gradeTextRenderer(flashcard.grade)}
+          </div>
         </div>
-      </div>
+      )}
       <p className="whitespace-pre-wrap">{flashcard.flashcardDescription}</p>
     </div>
   );

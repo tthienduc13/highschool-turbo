@@ -1,6 +1,5 @@
 "use client";
 
-import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { EditorListener } from "@/components/core/editor/editor-listener";
 import { SetEditor } from "@/components/core/editor/set-editor";

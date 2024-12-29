@@ -1,9 +1,11 @@
+import { Container } from "@/components/core/layouts/container";
+
 import { FlashcardListSkeleton } from "./flashcard-list";
 import { FolderHeadingSkeleton } from "./folder-heading";
 
 export const FolderLoading = () => {
   return (
-    <div className="mx-auto w-full max-w-7xl">
+    <Container maxWidth="7xl">
       <div className="flex flex-col gap-12">
         <FolderHeadingSkeleton />
         <div className="flex w-full flex-col items-stretch gap-8 lg:flex-row">
@@ -12,6 +14,6 @@ export const FolderLoading = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

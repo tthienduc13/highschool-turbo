@@ -15,6 +15,7 @@ const config = {
     backgroundImage: {
       "custom-gradient":
         "linear-gradient(211.35deg, #DC03FF 22.42%, rgba(10, 152, 255, 0.74) 70.33%)",
+      "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
     },
     transitionTimingFunction: {
       "cubic-ease": "cubic-bezier(0.25, 1, 0.5, 1)",

@@ -1,6 +1,8 @@
 "use client";
 
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
 import { PhotoViewProvider } from "@/components/core/providers/photo-provider";
 import { DescriptionArea } from "@/components/core/study-set/description-area";
 import { FlashcardPreview } from "@/components/core/study-set/flashcard-preview";
@@ -15,24 +17,26 @@ function StudySetModule() {
     <PhotoViewProvider>
       <HydrateSetData placeholder={<SetLoading />} isPublic>
         <EditorGlobalStyles />
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="flex flex-col gap-12">
-            <HeadingArea />
-          </div>
-        </div>
-        <div className="w-full py-6">
-          <div className="mx-auto w-full max-w-7xl py-4">
-            <div className="flex flex-col gap-10">
-              <FlashcardPreview />
-              <DescriptionArea />
+        <WithFooter>
+          <Container maxWidth="7xl">
+            <div className="flex flex-col gap-12">
+              <HeadingArea />
             </div>
+          </Container>
+          <div className="w-full py-6">
+            <Container maxWidth="7xl" className="py-4">
+              <div className="flex flex-col gap-10">
+                <FlashcardPreview />
+                <DescriptionArea />
+              </div>
+            </Container>
           </div>
-        </div>
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="flex flex-col gap-12">
-            <TermOverView />
-          </div>
-        </div>
+          <Container maxWidth="7xl" className="w-full">
+            <div className="flex flex-col gap-12">
+              <TermOverView />
+            </div>
+          </Container>
+        </WithFooter>
       </HydrateSetData>
     </PhotoViewProvider>
   );

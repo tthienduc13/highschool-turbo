@@ -4,18 +4,23 @@ import { toast } from "sonner";
 
 import { useRef, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
+import { useDeleteFlashcardMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
 
 import { IconEditCircle, IconLoader2, IconTrash } from "@tabler/icons-react";
 
+import { editorEventChannel } from "@/events/editor";
 import { useSetEditorContext } from "@/stores/use-set-editor-store";
 import { getRelativeTime } from "@/utils/time";
 
 import { ConfirmModal } from "../common/confirm-modal";
 
 export const TopBar = () => {
+  const router = useRouter();
   const id = useSetEditorContext((s) => s.id);
   const mode = useSetEditorContext((s) => s.mode);
   const isLoading = useSetEditorContext((s) => s.isLoading);
@@ -39,6 +44,7 @@ export const TopBar = () => {
       }`);
 
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const deleteSet = useDeleteFlashcardMutation();
   return (
     <div
       className={cn(
@@ -64,7 +70,19 @@ export const TopBar = () => {
         }
         actionText={mode == "edit" ? "Xoá bộ thẻ " : "Xoá bản nháp"}
         onConfirm={() => {
-          toast.info("Chưa có api");
+          deleteSet.mutate(
+            { flashcardId: id },
+            {
+              onSuccess: (data) => {
+                if (mode == "edit") {
+                  router.push("/");
+                  toast.success(data.message);
+                } else {
+                  editorEventChannel.emit("refresh");
+                }
+              },
+            },
+          );
         }}
         isLoading={false}
         destructive

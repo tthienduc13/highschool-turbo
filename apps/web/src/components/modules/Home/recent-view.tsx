@@ -11,6 +11,7 @@ import { IconBooks, IconCards, IconFileTypePdf } from "@tabler/icons-react";
 
 import { getRelativeTime } from "@/utils/time";
 
+import { EmptyRecent } from "./empty-recent";
 import { Wrapper } from "./wrapper";
 
 export const RecentView = () => {
@@ -36,7 +37,7 @@ export const RecentView = () => {
   }
 
   if (!data?.items.length) {
-    return;
+    return <EmptyRecent />;
   }
   return (
     <Wrapper title={"Xem gần đây"}>

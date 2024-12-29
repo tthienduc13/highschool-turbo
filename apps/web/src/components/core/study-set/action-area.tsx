@@ -40,12 +40,14 @@ export const ActionArea = () => {
   // });
   return (
     <>
-      <AddToFolderModal
-        isOpen={addToFolder}
-        onClose={async () => {
-          setAddToFolder(false);
-        }}
-      />
+      {addToFolder && (
+        <AddToFolderModal
+          isOpen={addToFolder}
+          onClose={async () => {
+            setAddToFolder(false);
+          }}
+        />
+      )}
       <div className="flex w-fit flex-row divide-x-[1px] overflow-hidden rounded-lg border">
         <ActionButton
           label="Thêm vào thư mục"

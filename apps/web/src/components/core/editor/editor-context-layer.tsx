@@ -15,6 +15,7 @@ import {
   deleteFlashcardContent,
   patchFlashcard,
   patchFlashcardContent,
+  reorderTerm,
 } from "@highschool/react-query/apis";
 
 import { SetLoading } from "@/components/core/study-set/set-loading";
@@ -91,6 +92,11 @@ export const EditorContextLayer = ({
     mutationFn: patchFlashcardContent,
   });
 
+  const apiReorderTerm = useMutation({
+    mutationKey: ["reorder-term"],
+    mutationFn: reorderTerm,
+  });
+
   const apiCreate = useMutation({
     mutationKey: ["create-flashcard-status"],
     mutationFn: createFlashcardStatus,
@@ -109,7 +115,8 @@ export const EditorContextLayer = ({
     apiEditSet.isPending ||
     apiAddTerm.isPending ||
     apiDeleteTerm.isPending ||
-    apiEditTerm.isPending;
+    apiEditTerm.isPending ||
+    apiReorderTerm.isPending;
 
   useEffect(() => {
     const state = storeRef.current!.getState();
@@ -148,8 +155,6 @@ export const EditorContextLayer = ({
       index?: number;
     }) => {
       const context = transform(args.context);
-
-      console.log(context);
 
       storeRef.current!.getState().setImage(context.termId, args.optimisticUrl);
 
@@ -255,6 +260,29 @@ export const EditorContextLayer = ({
               },
             });
           }
+        },
+        reorderTerm: (id, rank) => {
+          void (async () => {
+            const state = storeRef.current!.getState();
+
+            const term = state.terms.find((x) => x.id === id)!;
+
+            if (state.serverTerms.includes(term.id)) {
+              await apiReorderTerm.mutateAsync({
+                flashcardContentId: id,
+                newRank: rank,
+              });
+            } else {
+              await apiAddTerm.mutateAsync({
+                flashcardId: data.id,
+                values: {
+                  flashcardContentTerm: term.flashcardContentTerm,
+                  flashcardContentDefinition: term.flashcardContentDefinition,
+                  rank: rank,
+                },
+              });
+            }
+          })();
         },
         onSubscribeDelegate: () => {
           void (async () => {

@@ -112,3 +112,19 @@ export const patchFlashcard = async ({
     throw error;
   }
 };
+
+export const deleteFlashcard = async ({
+  flashcardId,
+}: {
+  flashcardId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      endpointFlashcard.DELETE(flashcardId),
+    );
+    return data;
+  } catch (error) {
+    console.log("Error while deleting flashcard", error);
+    throw error;
+  }
+};

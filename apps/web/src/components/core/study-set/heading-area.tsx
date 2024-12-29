@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { useDeleteFlashcardMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 
 import { IconEditCircle, IconTrash, IconTrendingUp } from "@tabler/icons-react";
@@ -20,7 +21,8 @@ export const HeadingArea = () => {
   let deleteSetLoading = false;
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  // TODO: ADD delete flashcard function
+  const deleteSet = useDeleteFlashcardMutation();
+
   return (
     <>
       <ConfirmModal
@@ -36,8 +38,15 @@ export const HeadingArea = () => {
         actionText="Delete"
         isLoading={deleteSetLoading}
         onConfirm={() => {
-          // deleteSet.mutate({ studySetId: id });
-          toast.info("Delete function đang được phát triển");
+          deleteSet.mutate(
+            { flashcardId: flashcard.id },
+            {
+              onSuccess: (data) => {
+                toast.success(data.message);
+                router.push("/");
+              },
+            },
+          );
         }}
         destructive
       />
@@ -70,7 +79,7 @@ export const HeadingArea = () => {
               size={"icon"}
               variant={"ghost"}
               className="rounded-none"
-              // onClick={() => setDeleteOpen(true)}
+              onClick={() => setDeleteModalOpen(true)}
             >
               <IconTrash />
             </Button>

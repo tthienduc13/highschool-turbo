@@ -56,6 +56,8 @@ const endpointFlashcard = {
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/created/${id}`,
   EDIT_SET: (id: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}`,
+  DELETE: (flashcardId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}`,
 };
 
 const endpointFlashcardContent = {
@@ -67,9 +69,10 @@ const endpointFlashcardContent = {
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/content`,
   CREATE_CONTENTS: (flashcardId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/contents`,
-
   UPDATE_CONTENTS_BY_ID: (flashcardId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/contents`,
+  REORDER_TERM: (flashcardContentId: string, newRank: number) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/content/${flashcardContentId}/rank/${newRank}`,
   DELETE: ({
     flashcardId,
     flashcardContentId,

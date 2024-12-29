@@ -15,7 +15,7 @@ export const generateMetadata = async ({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> => {
-  const slug = (await params).slug;
+  const { slug } = await params;
   const data = await getFlashcardBySlug({ slug });
 
   if (!data) return;
@@ -27,7 +27,7 @@ export const generateMetadata = async ({
 };
 
 async function StudySet({ params }: { params: Promise<{ slug: string }> }) {
-  const slug = (await params).slug;
+  const { slug } = await params;
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
     queryKey: ["flashcard-by-slug", slug],
