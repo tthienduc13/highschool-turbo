@@ -1,6 +1,7 @@
 import { endpointCourse } from "@highschool/endpoints";
 import { Course, Pagination } from "@highschool/interfaces";
 
+import axiosServices from "../lib/axios.ts";
 import fetchPaginatedData from "./common.ts";
 
 export const getCourses = async ({
@@ -20,4 +21,18 @@ export const getCourses = async ({
     search,
     grade,
   });
+};
+
+export const getCourseBySlug = async ({
+  slug,
+}: {
+  slug: string;
+}): Promise<Course> => {
+  try {
+    const { data } = await axiosServices.get(endpointCourse.GET_BY_SLUG(slug));
+    return data;
+  } catch (error) {
+    console.log("Error while getting course by slug", error);
+    throw error;
+  }
 };

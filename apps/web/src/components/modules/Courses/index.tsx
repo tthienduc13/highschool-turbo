@@ -3,6 +3,8 @@
 import { useCoursesQuery } from "@highschool/react-query/queries";
 
 import { CourseCard } from "@/components/core/common/course-card";
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
 
 interface Category {
   label: string;
@@ -31,13 +33,16 @@ function CoursesModule() {
     return <div className="">isloading</div>;
   }
   return (
-    <div className="mx-auto max-w-7xl">
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {data?.data.map((course) => (
-          <CourseCard key={course.id} course={course} />
-        ))}
-      </div>
-    </div>
+    <WithFooter>
+      <Container maxWidth="7xl" className="flex flex-col gap-12">
+        <h1 className="text-3xl font-bold md:text-4xl">Tất cả khoá học</h1>
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {data?.data.map((course) => (
+            <CourseCard key={course.id} course={course} />
+          ))}
+        </div>
+      </Container>
+    </WithFooter>
   );
 }
 

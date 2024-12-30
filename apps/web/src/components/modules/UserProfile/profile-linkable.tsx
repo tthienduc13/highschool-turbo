@@ -20,6 +20,7 @@ export const ProfileLinkable = ({
   title,
   url,
   visibility,
+  leftIcon,
 }: ProfileLinkableProps) => {
   return (
     <Link href={url}>
@@ -35,7 +36,10 @@ export const ProfileLinkable = ({
               </div>
             )}
           </div>
-          <p className="text-lg font-bold">{title}</p>
+          <div className="flex flex-row items-center gap-2">
+            {leftIcon}
+            <p className="text-lg font-bold">{title}</p>
+          </div>
         </div>
       </div>
     </Link>

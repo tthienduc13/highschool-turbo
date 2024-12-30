@@ -86,6 +86,8 @@ const endpointFlashcardContent = {
 
 const endpointCourse = {
   GET_COURSES: `${prefixDocumentServices}${prefixFirstVersion}/subjects`,
+  GET_BY_SLUG: (slug: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/subject/slug/${slug}`,
 };
 
 const endpointMBTI = {
@@ -113,7 +115,21 @@ const endpointFlashcardLearn = {
     `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/reset-progress`,
 };
 
+const endpointChapter = {
+  GET_CHAPTERS: (courseSlug: string, curriculumId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`,
+};
+
+const endpointLesson = {
+  GET_LESSONS: (chapterId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/chapter/${chapterId}/lessons`,
+  GET_LESSON_DETAIL: (lessonId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/chapter/lesson/${lessonId}`,
+};
+
 export {
+  endpointLesson,
+  endpointChapter,
   endpointCourse,
   endpointAuth,
   endpointUser,

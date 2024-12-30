@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
+import { cn } from "@highschool/ui/lib/utils";
 
 import {
   IconCards,
@@ -23,12 +24,14 @@ import {
   IconDice6,
   IconFileTypePdf,
   IconFolder,
+  IconHome,
   IconSparkles,
   TablerIcon,
 } from "@tabler/icons-react";
 
 import { Logo } from "@/components/core/common/logo";
 import { TeacherOnly } from "@/components/core/common/teacher-only";
+import { AnimatedBackground } from "@/components/ui/animated-hover-tab";
 
 type MenuItem = {
   label: string;
@@ -45,6 +48,8 @@ interface LeftNavProps {
 export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const currentPathName = usePathname();
 
   const handleItemClick = (label: string) => {
     toast(label, {
@@ -87,13 +92,46 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
     },
   ];
 
+  const TABS = [
+    { name: "Trang chủ", href: "/" },
+    { name: "Khoá học", href: "/courses" },
+  ];
+
   return (
     <div className="flex flex-row items-center gap-4">
       <Logo />
-      <div className="hidden flex-row items-center gap-2 md:flex">
-        <Link href={"/"}>
-          <Button variant="ghost">Trang chủ</Button>
-        </Link>
+      <div className="hidden flex-row items-center gap-4 md:flex">
+        <div className="flex flex-row gap-2">
+          <AnimatedBackground
+            defaultValue={TABS[0].href}
+            className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+            transition={{
+              type: "spring",
+              bounce: 0.2,
+              duration: 0.3,
+            }}
+            enableHover
+          >
+            {TABS.map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => router.push(tab.href)}
+                data-id={tab}
+                type="button"
+                className={cn(
+                  "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
+                  currentPathName === tab.href &&
+                    "text-blue-700 dark:text-blue-200",
+                )}
+              >
+                {tab.name}
+                {currentPathName === tab.href && (
+                  <div className="absolute bottom-2 left-1/2 h-[3px] w-[calc(100%-30px)] -translate-x-1/2 bg-blue-500" />
+                )}
+              </button>
+            ))}
+          </AnimatedBackground>
+        </div>
         <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
           <DropdownMenuTrigger asChild>
             <Button size="lg">

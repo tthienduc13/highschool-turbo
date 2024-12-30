@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useOwnFlashcardQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 
+import { IconProgress } from "@tabler/icons-react";
+
 import { useProfile } from "@/hooks/use-profile";
 import { groupIntoTimeline } from "@/utils/grouping";
 
@@ -41,6 +43,7 @@ export const OwnFlashcard = () => {
             {group.items.map((item) => (
               <ProfileLinkable
                 key={item.id}
+                leftIcon={!item.created && <IconProgress />}
                 title={item.flashcardName}
                 url={`/study-set/${item.slug}`}
                 visibility={item.status}

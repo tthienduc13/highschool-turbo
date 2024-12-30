@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getCourses } from "../apis/course.ts";
+import { getCourseBySlug, getCourses } from "../apis/course.ts";
 
 export const useCoursesQuery = ({
   search,
@@ -22,5 +22,12 @@ export const useCoursesQuery = ({
         pageNumber: pageNumber,
         pageSize: pageSize,
       }),
+  });
+};
+
+export const useCourseBySlugQuery = ({ slug }: { slug: string }) => {
+  return useQuery({
+    queryKey: ["course", slug],
+    queryFn: () => getCourseBySlug({ slug }),
   });
 };

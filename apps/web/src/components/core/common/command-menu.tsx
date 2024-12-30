@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useShortcut } from "@highschool/hooks";
+import { useRecentViewQuery } from "@highschool/react-query/queries";
 import {
   Dialog,
   DialogContent,
@@ -16,15 +17,18 @@ import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
 
 import {
+  IconFolder,
   IconHome,
   IconLink,
   IconLoader2,
   IconMoon,
   IconPlus,
+  IconSearch,
   IconSun,
   IconUser,
 } from "@tabler/icons-react";
 
+import { menuEventChannel } from "@/events/menu";
 import useColorMode from "@/hooks/use-color-mode";
 
 type EntityType = "set" | "folder";
@@ -183,16 +187,18 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
       name: "Hồ sơ cá nhân",
       label: "Tới hồ sơ cá nhân",
       action: (ctrl) =>
-        openLink(`/profile/@${session.data?.user.username}`, ctrl),
-      // shouldShow: () => window.location.pathname !== `/@${session.data?.user?.username || ''}`
+        openLink(`/profile/${session.data?.user.username}`, ctrl),
+      shouldShow: () =>
+        window.location.pathname !==
+        `/profile/${session.data?.user?.username || ""}`,
     });
 
     total.push({
       icon: <IconPlus className="size-6" />,
       name: "Thẻ ghi nhớ",
       label: "Tạo bộ thẻ mới",
-      action: (ctrl) => openLink(`/study-set/new`, ctrl),
-      shouldShow: () => !pathName.includes("/study-set/new"),
+      action: (ctrl) => openLink(`/study-set/create`, ctrl),
+      shouldShow: () => !pathName.includes("/study-set/create"),
     });
 
     total.push({
@@ -202,15 +208,37 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
       action: () => setTheme(theme === "dark" ? "light" : "dark"),
     });
 
-    setOptions(total);
+    total.push({
+      icon: <IconFolder className="size-6" />,
+      name: "Thư mục",
+      label: "Tạo thư mục mới",
+      action: () => menuEventChannel.emit("createFolder"),
+    });
+
+    const matchingOptions = total.filter((o) =>
+      (o.searchableName ?? o.name).toLowerCase().includes(query.toLowerCase()),
+    );
+
+    if (matchingOptions.length === 0 && query.trim() !== "") {
+      matchingOptions.push({
+        icon: <IconSearch className="size-6" />,
+        name: `Tìm kiếm: "${query}"`,
+        label: "Tìm kiếm các mục phù hợp",
+        action: () => {
+          router.push(`/search?q=${query}`);
+          // Add search logic here, e.g., API call
+        },
+      });
+    }
+
+    setOptions(matchingOptions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  }, [open, query]);
 
   return (
     <Dialog defaultOpen={true} open={open} onOpenChange={onClose}>
       <DialogContent
         aria-describedby={undefined}
-        onOpenAutoFocus={(e) => e.preventDefault()}
         className={cn(
           "gap-0 rounded-xl border-[#E2E8F0] bg-[#f7fafce8] p-0 shadow-xl backdrop-blur-md dark:border-[#2D3748] dark:bg-[#17192399]",
         )}
@@ -233,7 +261,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
           <Input
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Bạn muốn điều hướng tới đâu?"
-            className="border-none p-0 text-2xl shadow-none outline-none focus-visible:ring-0"
+            className="border-none p-0 !text-2xl shadow-none outline-none focus-visible:ring-0"
           />
         </div>
         <div

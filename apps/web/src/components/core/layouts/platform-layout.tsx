@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 
 import { Toaster } from "@highschool/ui/components/ui/sonner";
 
-import TopLoadingBar from "../common/top-loading-bar";
+import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";
+import TopLoadingBar from "@/components/core/common/top-loading-bar";
+
 import { Header } from "./header";
 
 const SignupModal = dynamic(
@@ -44,10 +46,11 @@ function PlatformLayout({
       <div className="min-h-screen w-screen">
         <Header />
         {children}
-        <Toaster richColors />
+        <Toaster richColors position="top-center" />
         <SignupModal />
         <ConfettiLayer />
         <CareerGuidanceModal />
+        <GlobalShortcutLayer />
       </div>
     </>
   );

@@ -62,10 +62,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <header
-      className="relative h-20 w-full items-center justify-center"
-      style={{ zIndex: 1000 }}
-    >
+    <header className="relative h-20 w-full items-center justify-center">
       <CreateFolderModal
         isOpen={folderModalOpen}
         onClose={() => {

@@ -12,3 +12,5 @@ export * from "./mbti";
 export * from "./holland";
 export * from "./document";
 export * from "./flashcard-learn";
+export * from "./chapter";
+export * from "./lesson";

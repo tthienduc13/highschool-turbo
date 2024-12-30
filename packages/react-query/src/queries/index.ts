@@ -9,3 +9,5 @@ export * from "./mbti.ts";
 export * from "./holland.ts";
 export * from "./unsplash.ts";
 export * from "./flashcard-learn.ts";
+export * from "./chapter.ts";
+export * from "./lesson.ts";
