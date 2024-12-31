@@ -10,9 +10,11 @@ import { Button } from "@highschool/ui/components/ui/button";
 import {
   IconBooks,
   IconCards,
+  IconFileTypePdf,
   IconFolder,
   IconPlus,
 } from "@tabler/icons-react";
+import { useIsTeacher } from "@/hooks/use-role";
 
 const logo = {
   transition: {
@@ -51,6 +53,7 @@ const folder = {
 
 export const EmptyRecent = () => {
   const router = useRouter();
+  const isTeacher = useIsTeacher();
   return (
     <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white p-12 dark:border-gray-800/50 dark:bg-gray-800">
       <div className="relative flex flex-col items-center justify-center gap-10 text-center">
@@ -86,9 +89,15 @@ export const EmptyRecent = () => {
           <h1 className="text-3xl font-bold md:text-4xl">
             Tạo bộ thẻ đầu tiên
           </h1>
-          <p className="text-muted-foreground">
-            Bắt đầu học bằng cách tạo bộ thẻ đầu tiên hoặc tham gia khoá học.
-          </p>
+          {isTeacher ? (
+            <p className="text-muted-foreground">
+              Bắt đầu bằng cách tạo bộ thẻ đầu tiên hoặc tạo tài liệu.
+            </p>
+          ) : (
+            <p className="text-muted-foreground">
+              Bắt đầu học bằng cách tạo bộ thẻ đầu tiên hoặc tham gia khoá học.
+            </p>
+          )}
         </div>
         <div className="z-10 flex flex-col gap-4">
           <Button
@@ -98,13 +107,24 @@ export const EmptyRecent = () => {
           >
             <IconPlus className="!size-6" /> Tạo bộ thẻ mới
           </Button>
-          <Button
-            onClick={() => router.push("/courses")}
-            size="lg"
-            className="h-12 rounded-xl !text-base shadow-lg"
-          >
-            <IconBooks className="!size-6" /> Xem các khoá học
-          </Button>
+          {isTeacher ? (
+            <Button
+              onClick={() => router.push("/courses")}
+              size="lg"
+              className="h-12 rounded-xl !text-base shadow-lg"
+            >
+              <IconBooks className="!size-6" /> Tạo tài liệu
+            </Button>
+          ) : (
+            <Button
+              onClick={() => router.push("/courses")}
+              size="lg"
+              className="h-12 rounded-xl !text-base shadow-lg"
+            >
+              <IconFileTypePdf className="!size-6" />
+              Xem các môn học
+            </Button>
+          )}
         </div>
       </div>
     </div>

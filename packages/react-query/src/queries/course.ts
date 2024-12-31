@@ -1,6 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getCourseBySlug, getCourses } from "../apis/course.ts";
+import {
+  enrollCourse,
+  getCourseBySlug,
+  getCourses,
+  unEnrollCourse,
+} from "../apis/course.ts";
 
 export const useCoursesQuery = ({
   search,
@@ -29,5 +34,19 @@ export const useCourseBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["course", slug],
     queryFn: () => getCourseBySlug({ slug }),
+  });
+};
+
+export const useEnrollMutation = () => {
+  return useMutation({
+    mutationKey: ["enroll"],
+    mutationFn: enrollCourse,
+  });
+};
+
+export const useUnEnrollMutation = () => {
+  return useMutation({
+    mutationKey: ["unenroll"],
+    mutationFn: unEnrollCourse,
   });
 };

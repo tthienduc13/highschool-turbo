@@ -14,3 +14,7 @@ export * from "./document";
 export * from "./flashcard-learn";
 export * from "./chapter";
 export * from "./lesson";
+export * from "./information";
+export * from "./career-path";
+export * from "./roadmap";
+export * from "./quiz";

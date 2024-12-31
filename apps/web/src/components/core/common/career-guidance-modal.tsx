@@ -27,7 +27,7 @@ export const CareerGuidanceModal = () => {
   const pathName = usePathname();
 
   const [open, setOpen] = useState<boolean>(false);
-  const { data, isLoading } = useOrientationStatusQuery();
+  const { data, isLoading } = useOrientationStatusQuery(open);
   const testRouters = ["/career-guidance/mbti", "/career-guidance/holland"];
 
   const isDoneMbti = data?.data?.isMBTIDone;
@@ -67,7 +67,10 @@ export const CareerGuidanceModal = () => {
             </div>
           ) : isBothDone ? (
             <Button
-              onClick={() => router.push("/career-orientation/summary")}
+              onClick={() => {
+                router.push("/career-guidance/summary");
+                setOpen(false);
+              }}
               variant={"outline"}
               className="h-[150px] w-full border-gray-100 shadow-lg dark:border-gray-700"
             >

@@ -2,16 +2,34 @@ import Link from "next/link";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 import { Chapter } from "@highschool/interfaces";
-import { useChapterListQuery } from "@highschool/react-query/queries";
+import {
+  useChapterListQuery,
+  useEnrollMutation,
+  useUnEnrollMutation,
+} from "@highschool/react-query/queries";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { IconBook, IconHistory, IconLock } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconHistory,
+  IconLoader2,
+  IconLock,
+} from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { Button } from "@highschool/ui/components/ui/button";
+import AnimatedCircularProgressBar from "@/components/core/common/animated-progress-bar";
 
-export const ChapterList = () => {
+interface ChapterListProps {
+  courseId: string;
+}
+
+export const ChapterList = ({ courseId }: ChapterListProps) => {
   const { slug } = useParams();
   const searchParams = useSearchParams();
   const pathName = usePathname();
+  const queryClient = useQueryClient();
 
   const curriculumId = searchParams.get("curriculum");
 
@@ -22,6 +40,34 @@ export const ChapterList = () => {
     pageSize: 100,
   });
 
+  const enrollCourse = useEnrollMutation();
+  const unEnrollCourse = useUnEnrollMutation();
+
+  const isPending = enrollCourse.isPending || unEnrollCourse.isPending;
+
+  const handleEnroll = () => {
+    enrollCourse.mutate(
+      { subjectId: courseId, curriculumId: curriculumId! },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
+          toast.success(data.message);
+        },
+      },
+    );
+  };
+
+  const handleUnEnroll = () => {
+    unEnrollCourse.mutate(
+      { subjectId: courseId, curriculumId: curriculumId! },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
+          toast.success(data.message);
+        },
+      },
+    );
+  };
   const isEnroll = data?.data?.subjectModel?.isEnroll ?? false;
   if (isLoading) {
     return (
@@ -34,10 +80,38 @@ export const ChapterList = () => {
   }
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-2xl font-semibold md:text-3xl">
-        Chương trong khoá học ({data?.data.items.length ?? 0})
-      </h2>
+      <div className="flex flex-row items-center justify-between">
+        <h2 className="text-xl font-semibold md:text-2xl">
+          Chương trong khoá học ({data?.data.items.length ?? 0})
+        </h2>
+        <Button
+          variant={isEnroll ? "destructive" : "default"}
+          disabled={isPending}
+          onClick={isEnroll ? handleUnEnroll : handleEnroll}
+        >
+          {isPending ? (
+            <IconLoader2 className="animate-spin" />
+          ) : isEnroll ? (
+            "Xoá khoá học"
+          ) : (
+            "Tham gia khoá học"
+          )}
+        </Button>
+      </div>
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] items-stretch gap-4">
+        {data?.data?.subjectModel?.enrollmentProgress && (
+          <div className="flex w-full justify-center">
+            <AnimatedCircularProgressBar
+              min={0}
+              max={100}
+              value={
+                data.data.subjectModel.enrollmentProgress.subjectProgressPercent
+              }
+              gaugePrimaryColor="#7faeff"
+              gaugeSecondaryColor="#f3f4f6"
+            />
+          </div>
+        )}
         {data?.data.items.map((chapter, index) => (
           <ChapterCard
             key={chapter.id}
@@ -87,7 +161,6 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
             "flex h-full w-full flex-col gap-y-4 rounded-xl border-2 border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800/50",
           )}
         >
-          {" "}
           {children}
         </div>
         <div className="absolute -right-2.5 -top-3.5 rounded-full bg-gray-50 p-1 text-blue-600 dark:bg-gray-900 dark:text-blue-200">

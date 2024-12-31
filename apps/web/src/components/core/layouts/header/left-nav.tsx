@@ -32,6 +32,7 @@ import {
 import { Logo } from "@/components/core/common/logo";
 import { TeacherOnly } from "@/components/core/common/teacher-only";
 import { AnimatedBackground } from "@/components/ui/animated-hover-tab";
+import { useIsTeacher } from "@/hooks/use-role";
 
 type MenuItem = {
   label: string;
@@ -48,6 +49,7 @@ interface LeftNavProps {
 export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const isTeacher = useIsTeacher();
 
   const currentPathName = usePathname();
 
@@ -92,45 +94,80 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
     },
   ];
 
-  const TABS = [
+  const STUDENT_TABS = [
     { name: "Trang chủ", href: "/" },
-    { name: "Khoá học", href: "/courses" },
+    { name: "Môn học", href: "/courses" },
+    { name: "Lộ trình học", href: "/roadmap" },
   ];
+
+  const TEACHER_TAB = [{ name: "Trang chủ", href: "/" }];
 
   return (
     <div className="flex flex-row items-center gap-4">
       <Logo />
       <div className="hidden flex-row items-center gap-4 md:flex">
         <div className="flex flex-row gap-2">
-          <AnimatedBackground
-            defaultValue={TABS[0].href}
-            className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
-            transition={{
-              type: "spring",
-              bounce: 0.2,
-              duration: 0.3,
-            }}
-            enableHover
-          >
-            {TABS.map((tab, index) => (
-              <button
-                key={index}
-                onClick={() => router.push(tab.href)}
-                data-id={tab}
-                type="button"
-                className={cn(
-                  "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
-                  currentPathName === tab.href &&
-                    "text-blue-700 dark:text-blue-200",
-                )}
-              >
-                {tab.name}
-                {currentPathName === tab.href && (
-                  <div className="absolute bottom-2 left-1/2 h-[3px] w-[calc(100%-30px)] -translate-x-1/2 bg-blue-500" />
-                )}
-              </button>
-            ))}
-          </AnimatedBackground>
+          {isTeacher ? (
+            <AnimatedBackground
+              defaultValue={STUDENT_TABS[0].href}
+              className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+              transition={{
+                type: "spring",
+                bounce: 0.2,
+                duration: 0.3,
+              }}
+              enableHover
+            >
+              {TEACHER_TAB.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => router.push(tab.href)}
+                  data-id={tab}
+                  type="button"
+                  className={cn(
+                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
+                    currentPathName === tab.href &&
+                      "text-blue-700 dark:text-blue-200",
+                  )}
+                >
+                  {tab.name}
+                  {currentPathName === tab.href && (
+                    <div className="absolute bottom-2 left-1/2 h-[3px] w-[calc(100%-30px)] -translate-x-1/2 bg-blue-500" />
+                  )}
+                </button>
+              ))}
+            </AnimatedBackground>
+          ) : (
+            <AnimatedBackground
+              defaultValue={STUDENT_TABS[0].href}
+              className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+              transition={{
+                type: "spring",
+                bounce: 0.2,
+                duration: 0.3,
+              }}
+              enableHover
+            >
+              {STUDENT_TABS.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => router.push(tab.href)}
+                  data-id={tab}
+                  type="button"
+                  className={cn(
+                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
+                    currentPathName === tab.href &&
+                      "text-blue-700 dark:text-blue-200",
+                  )}
+                >
+                  {tab.name}
+                  {currentPathName === tab.href && (
+                    <div className="absolute bottom-2 left-1/2 h-[3px] w-[calc(100%-30px)] -translate-x-1/2 bg-blue-500" />
+                  )}
+                </button>
+              ))}
+            </AnimatedBackground>
+          )}
         </div>
         <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
           <DropdownMenuTrigger asChild>

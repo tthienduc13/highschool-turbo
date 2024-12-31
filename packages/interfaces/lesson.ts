@@ -22,6 +22,16 @@ export interface LessonDetail {
   chapterId: string;
   theoryCount: number;
   createdAt: Date;
-  theories: any[];
+  theories: Theory[];
+  nextLessonId: string;
+  nextChapterId: string;
   displayOrder: number;
+}
+
+export interface Theory {
+  id: string;
+  theoryTitle: string;
+  theoryDescription: string;
+  theoryContentJson: string;
+  theoryContentHtml: string;
 }

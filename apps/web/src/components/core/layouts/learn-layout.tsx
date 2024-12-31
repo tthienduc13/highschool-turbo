@@ -29,7 +29,9 @@ function LearnLayout({
       <div className="fixed inset-y-0 left-0 top-20 z-50 hidden h-full w-80 flex-col md:flex">
         <LearnSidebar lessons={data?.data} />
       </div>
-      <main className="h-full md:pl-80">{children}</main>
+      <main className="h-[calc(100vh-80px)] overflow-y-scroll md:pl-80">
+        {children}
+      </main>
     </div>
   );
 }

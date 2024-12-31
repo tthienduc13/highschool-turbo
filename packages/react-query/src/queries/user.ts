@@ -7,15 +7,25 @@ import {
   completeOnboard,
   getAuthorById,
   getAuthorList,
+  getCareerGuidanceBrief,
   getUserProfile,
+  getUserProgressStage,
   updateBaseUserInfo,
 } from "../apis/user.ts";
 
-export const useOrientationStatusQuery = () => {
+export const useOrientationStatusQuery = (isOpen: boolean) => {
   return useQuery({
     queryKey: ["orientation-status"],
     queryFn: careerOrientationStatus,
     refetchOnMount: true,
+    enabled: isOpen,
+  });
+};
+
+export const useUserBriefQuery = () => {
+  return useQuery({
+    queryKey: ["user-brief"],
+    queryFn: getCareerGuidanceBrief,
   });
 };
 
@@ -79,5 +89,14 @@ export const useAuthorQuery = ({ authorId }: { authorId: string }) => {
     queryKey: ["author", authorId],
     queryFn: () => getAuthorById({ authorId }),
     enabled: !!authorId,
+  });
+};
+
+export const useProgressStageQuery = () => {
+  return useQuery({
+    queryKey: ["progress-stage"],
+    queryFn: getUserProgressStage,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };

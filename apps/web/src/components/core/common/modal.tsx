@@ -18,7 +18,7 @@ import {
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   buttonLabel?: string;
   onConfirm?: () => void;
@@ -46,9 +46,17 @@ export const Modal = ({
     <Credenza open={isOpen} onOpenChange={onClose}>
       <CredenzaContent className="w-full max-w-xl gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700">
         <CredenzaHeader className="px-5 pt-4 md:px-10 md:pt-8">
-          <CredenzaTitle className="text-2xl md:text-3xl">
-            {title}
-          </CredenzaTitle>
+          {title ? (
+            <CredenzaTitle className="text-2xl md:text-3xl">
+              {title}
+            </CredenzaTitle>
+          ) : (
+            <VisuallyHidden>
+              <CredenzaTitle className="text-2xl md:text-3xl">
+                Không có tiêu đề
+              </CredenzaTitle>
+            </VisuallyHidden>
+          )}
           {description ? (
             <CredenzaDescription>{description}</CredenzaDescription>
           ) : (

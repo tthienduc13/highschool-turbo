@@ -36,7 +36,7 @@ export const UserMobileOption = ({ onClose }: UserMobileOptionProps) => {
         <p className="font-semibold">{user?.fullname ?? "Chưa đặt tên"}</p>
       </div>
       <div className="flex w-full flex-col gap-4">
-        <Link href={`/@${user?.username}`}>
+        <Link href={`/profile/${user?.username}`}>
           <Button
             className="w-full text-base"
             variant="outline"

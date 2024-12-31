@@ -41,9 +41,28 @@ export const examDescriptions: { [key in TypeExam]: string } = {
   // [TypeExam.OTHER]: 'Other'
 };
 
-export enum ProgressState {
-  NewUser,
-  SubjectInformation,
-  PersonalityAsessment,
-  Completion,
+export const classDescriptions: { [key in Grade]: string } = {
+  [Grade.Grade10]: "Lớp 10",
+  [Grade.Grade11]: "Lớp 11",
+  [Grade.Grade12]: "Lớp 12",
+};
+
+export const classNumberMap: Record<Grade, number> = {
+  [Grade.Grade10]: 10,
+  [Grade.Grade11]: 11,
+  [Grade.Grade12]: 12,
+};
+
+export enum StudentProgressState {
+  NewUser = "NewUser",
+  SubjectInformation = "SubjectInformation",
+  PersonalityAssessment = "PersonalityAssessment",
+  Completion = "Completion",
+}
+
+export enum TeacherProgressState {
+  NewUser = "NewUser",
+  SubjectInformation = "SubjectInformation",
+  VerifyTeacher = "VerifyTeacher",
+  Completion = "Completion",
 }

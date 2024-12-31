@@ -15,7 +15,7 @@ import {
 } from "@/stores/use-study-set-test-store";
 import { formatElapsedTime } from "@/utils/time";
 
-import AnimatedCircularProgressBar from "../../common/animated-circular-progress-bar";
+import AnimatedCircularProgressBar from "../../common/animated-progress-bar";
 import { getQuestionTypeIcon, getQuestionTypeName } from "../utils";
 
 export const ResultCard = () => {

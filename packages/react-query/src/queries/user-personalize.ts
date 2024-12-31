@@ -23,7 +23,5 @@ export const useRecommendedDataQuery = () => {
   return useQuery({
     queryKey: ["recommended-data"],
     queryFn: getRecommendedData,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
   });
 };

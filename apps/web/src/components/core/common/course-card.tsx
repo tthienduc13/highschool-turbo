@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { useMediaQuery } from "@highschool/hooks";
 import { Course } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
@@ -15,7 +14,6 @@ interface CourseCardProps {
 }
 
 export const CourseCard = ({ course }: CourseCardProps) => {
-  const isTablet = useMediaQuery("min-width: 768px");
   return (
     <Link href={`/courses/${course.slug}`}>
       <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700">
@@ -29,7 +27,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             priority={true}
           />
         </div>
-        <div className="flex flex-grow flex-col gap-2 md:gap-3">
+        <div className="flex flex-grow flex-col gap-2">
           <div className="flex flex-col gap-y-1">
             <h2 className="line-clamp-1 text-lg font-semibold md:text-2xl">
               {course.subjectName}
@@ -63,12 +61,8 @@ export const CourseCard = ({ course }: CourseCardProps) => {
               <IconUser className="mb-1" size={16} />
               <span>{course.numberEnrollment ?? 0}</span>
             </div>
-            <Button
-              size={"sm"}
-              variant={"default"}
-              // onMouseEnter={handlePrefetch}
-            >
-              Xem khoá học
+            <Button size={"sm"} variant={"default"}>
+              Xem môn học
             </Button>
           </div>
         </div>

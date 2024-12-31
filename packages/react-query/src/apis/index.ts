@@ -11,3 +11,6 @@ export * from "./unsplash.ts";
 export * from "./flashcard-learn.ts";
 export * from "./chapter.ts";
 export * from "./lesson.ts";
+export * from "./information.ts";
+export * from "./roadmap.ts";
+export * from "./quiz.ts";

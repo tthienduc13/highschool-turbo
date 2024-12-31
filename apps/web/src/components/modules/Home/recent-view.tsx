@@ -57,7 +57,7 @@ export const RecentView = () => {
           >
             <Button
               variant={"ghost"}
-              className="group h-full w-full justify-start p-4"
+              className="group h-full w-full justify-start p-4 whitespace-pre-wrap"
             >
               <div className="flex w-full flex-row gap-4">
                 <div className="bg-primary/20 text-primary rounded-md p-2">
@@ -107,7 +107,7 @@ const LabelRenderer = (type: DocumentType) => {
     case DocumentType.Document:
       return "Tài liệu";
     case DocumentType.Subject:
-      return "Khoá học";
+      return "Môn học";
     default:
       break;
   }

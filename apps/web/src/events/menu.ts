@@ -7,6 +7,8 @@ export const menuEventChannel = eventBus<{
     callbackUrl?: string;
   }) => void;
   openCareerGuidanceModal: () => void;
+  openInformationModal: () => void;
+  openTeacherInformationModal: () => void;
   commandMenuClosed: () => void;
   createFolder: (setId?: string) => void;
   folderWithSetCreated: (setId: string) => void;

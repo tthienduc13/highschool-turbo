@@ -42,7 +42,7 @@ export const MobileMenu = ({
   onFolderClick,
 }: MobileMenuProps) => {
   const router = useRouter();
-  const { data: session, update } = useSession();
+  const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <>

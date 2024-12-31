@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { auth } from "@highschool/react-query/auth";
 import "@highschool/ui/globals.css";
 import { cn } from "@highschool/ui/lib/utils";
+import "@/styles/roadmap.css";
 
 import { Loading } from "@/components/core/common/loading";
 import { AppProviders } from "@/components/core/providers/app-provider";

@@ -10,7 +10,7 @@ import Link from "next/link";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { IconMenu, IconX } from "@tabler/icons-react";
+import { IconMenu, IconSearch, IconX } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
 
@@ -18,6 +18,7 @@ import { LeftNav } from "./left-nav";
 import { MobileMenu } from "./mobile-menu";
 import { UserMenu } from "./user-menu";
 import { UserNotification } from "./user-notification";
+import { MOD } from "@/lib/tiny-key";
 
 const CreateFolderModal = dynamic(
   () =>
@@ -103,6 +104,25 @@ export const Header = () => {
           />
         </div>
         <div className="hidden items-center gap-2 md:flex">
+          {session?.user && (
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              onClick={() => {
+                window.dispatchEvent(
+                  new KeyboardEvent("keydown", {
+                    key: "k",
+                    code: "KeyK",
+                    ctrlKey: MOD == "Control",
+                    metaKey: MOD == "Meta",
+                    shiftKey: false,
+                  }),
+                );
+              }}
+            >
+              <IconSearch className="!size-[20px]" />
+            </Button>
+          )}
           {session?.user && <UserNotification />}
           {session?.user && <UserMenu />}
           {status !== "loading" && !session && (

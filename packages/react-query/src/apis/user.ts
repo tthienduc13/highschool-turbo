@@ -1,4 +1,4 @@
-import { endpointUser } from "@highschool/endpoints";
+import { endpointCareerGuidance, endpointUser } from "@highschool/endpoints";
 import {
   Author,
   CareerGuidanceStatus,
@@ -10,7 +10,25 @@ import {
 
 import axiosServices from "../lib/axios.ts";
 
+export interface CareerGuidanceBrief {
+  mbtiBrief: string;
+  hollandBrief: string;
+  summaryBrief: string;
+}
+
 // GET
+
+export const getUserProgressStage = async (): Promise<
+  ResponseModel<string>
+> => {
+  try {
+    const { data } = await axiosServices.get(endpointUser.PROGRESS_STATE);
+    return data;
+  } catch (error) {
+    console.log("Error while getting user progress stage", error);
+    throw error;
+  }
+};
 
 export const careerOrientationStatus = async (): Promise<
   ResponseModel<CareerGuidanceStatus>
@@ -20,6 +38,18 @@ export const careerOrientationStatus = async (): Promise<
     return data;
   } catch (error) {
     console.log("Error while getting status", error);
+    throw error;
+  }
+};
+
+export const getCareerGuidanceBrief = async (): Promise<
+  ResponseModel<CareerGuidanceBrief>
+> => {
+  try {
+    const { data } = await axiosServices.get(endpointCareerGuidance.GET_BRIEF);
+    return data;
+  } catch (error) {
+    console.log("Error while getting career guidance brief", error);
     throw error;
   }
 };

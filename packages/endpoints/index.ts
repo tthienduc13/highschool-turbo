@@ -13,6 +13,13 @@ const endpointAuth = {
   REFRESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
 };
 
+const endpointInformation = {
+  GET_ALL_SCHOOL: `${prefixDocumentServices}${prefixFirstVersion}/information/schools`,
+  GET_ALL_CITY_SCHOOL: (cityId: number) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/information/provice/${cityId}/schools`,
+  GET_ALL_CITIES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
+};
+
 const endpointUser = {
   GET_AUTHOR: `${prefixUserServices}${prefixFirstVersion}/users/author`,
   GET_AUTHOR_BY_ID: (authorId: string) =>
@@ -27,6 +34,7 @@ const endpointUser = {
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user/${username}`,
   OWNER_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user`,
   ORIENTATION_STATUS: `${prefixUserServices}${prefixFirstVersion}/users/personalityTestStatus`,
+  PROGRESS_STATE: `${prefixUserServices}${prefixFirstVersion}/users/progressStage`,
 };
 
 const endpointFolder = {
@@ -88,6 +96,22 @@ const endpointCourse = {
   GET_COURSES: `${prefixDocumentServices}${prefixFirstVersion}/subjects`,
   GET_BY_SLUG: (slug: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/subject/slug/${slug}`,
+  ENROLL_COURSE: ({
+    subjectId,
+    curriculumId,
+  }: {
+    subjectId: string;
+    curriculumId: string;
+  }) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/enroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
+  UNENROLL_COURSE: ({
+    subjectId,
+    curriculumId,
+  }: {
+    subjectId: string;
+    curriculumId: string;
+  }) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
 };
 
 const endpointMBTI = {
@@ -125,9 +149,43 @@ const endpointLesson = {
     `${prefixDocumentServices}${prefixFirstVersion}/chapter/${chapterId}/lessons`,
   GET_LESSON_DETAIL: (lessonId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/chapter/lesson/${lessonId}`,
+  FINISH_LESSON: (lessonId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/enrollProgress/${lessonId}`,
+};
+
+const endpointCareerGuidance = {
+  GET_BRIEF: `${prefixUserServices}${prefixFirstVersion}/users/brief?isHardCode=true`,
+  GET_RECOMMEND_MAJOR: `${prefixUserServices}${prefixFirstVersion}/users/recommendMajor`,
+};
+
+const endpointData = {
+  GET_RECOMMEND_DATA: `${prefixDocumentServices}${prefixFirstVersion}/data/recommended`,
+};
+
+const endpointRoadmap = {
+  GET_USER_ROADMAP: `${prefixUserServices}${prefixFirstVersion}/users/roadmap`,
+  GET_NODE_RESOURCE: (resourceId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/roadmap/node/data/${resourceId}`,
+  RELATED_SUBJECT_BY_IDS: `${prefixDocumentServices}${prefixFirstVersion}/subject/related/ids`,
+  RELATED_DOCUMENT_BY_IDS: `${prefixDocumentServices}${prefixFirstVersion}/document/related/ids`,
+};
+
+const endpointSearch = {
+  SEARCH: `${prefixAnalyseServices}${prefixFirstVersion}/search`,
+};
+
+const endpointQuiz = {
+  GET_QUIZ: `${prefixDocumentServices}${prefixFirstVersion}/questions/quiz`,
+  SUBMIT_QUIZ: `${prefixDocumentServices}${prefixFirstVersion}/questions/quiz/submit`,
 };
 
 export {
+  endpointQuiz,
+  endpointSearch,
+  endpointRoadmap,
+  endpointData,
+  endpointInformation,
+  endpointCareerGuidance,
   endpointLesson,
   endpointChapter,
   endpointCourse,

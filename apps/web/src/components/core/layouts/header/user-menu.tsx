@@ -28,6 +28,7 @@ import {
   IconUser,
   TablerIcon,
 } from "@tabler/icons-react";
+import { env } from "@highschool/env";
 
 type MenuItem = {
   label: string;
@@ -65,7 +66,7 @@ export const UserMenu = () => {
     {
       label: "Hỗ trợ",
       icon: IconLifebuoy,
-      action: () => alert("Support"),
+      action: () => router.push(`${env.NEXT_PUBLIC_LANDING_URL}/ho-tro`),
     },
     {
       label: "Báo cáo",
@@ -95,7 +96,7 @@ export const UserMenu = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="end"
-          className="w-48"
+          className="w-48 border-gray-200 dark:border-gray-700"
           side="bottom"
           sideOffset={10}
         >

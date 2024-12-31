@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { useParams, useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 import { useCourseBySlugQuery } from "@highschool/react-query/queries";
 
@@ -11,6 +12,15 @@ import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
 
 import { ChapterList } from "./chapter-list";
+import {
+  IconEye,
+  IconFileLike,
+  IconHistory,
+  IconSchool,
+} from "@tabler/icons-react";
+import { formatDueDate } from "@/utils/time";
+import { Breadcrumbs } from "@/components/core/common/breadcumbs";
+import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
 
 function CourseDetailModule() {
   const { slug } = useParams();
@@ -18,6 +28,21 @@ function CourseDetailModule() {
 
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const { data, isLoading } = useCourseBySlugQuery({ slug: slug as string });
+
+  const courseItems = [
+    { icon: IconSchool, value: gradeTextRenderer(data?.categoryName!) },
+    { icon: IconFileLike, value: data?.like ?? 0 },
+    { icon: IconEye, value: data?.view ?? 0 },
+    {
+      icon: IconHistory,
+      value: `${new Date(data?.createdAt!).toLocaleDateString()}`,
+    },
+  ];
+
+  const breadcrumbItems = [
+    { title: "Môn học", link: "/courses" },
+    { title: data?.subjectName!, link: `/courses/${data?.slug}` },
+  ];
 
   useEffect(() => {
     if (!searchParams.get("curriculum")) {
@@ -27,6 +52,7 @@ function CourseDetailModule() {
   if (isLoading) {
     return <div>is loading</div>;
   }
+
   return (
     <WithFooter>
       <Container maxWidth="7xl">
@@ -34,9 +60,39 @@ function CourseDetailModule() {
           isOpen={selectOpen}
           onClose={() => setSelectOpen(false)}
         />
-
         <div className="flex flex-col gap-12">
-          <ChapterList />
+          <Breadcrumbs items={breadcrumbItems} />
+          <div className="flex flex-col gap-5 md:flex-row">
+            <div className="relative aspect-video w-full md:w-[250px]  border-gray-50 shadow-md dark:border-gray-700 border-2 rounded-md overflow-hidden bg-background">
+              <Image
+                src={data?.image ?? "/logo.svg"}
+                fill
+                className="rounded-2xl object-contain"
+                alt={`Image of ${data?.subjectName || "Subject"}`}
+              />
+            </div>
+            <div className="flex flex-1 flex-col gap-4">
+              <div className="flex flex-col gap-2">
+                <h1 className=" text-2xl font-bold md:text-3xl">
+                  {data?.subjectName}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {data?.information}
+                </p>
+              </div>
+              <div className={`grid grid-cols-2} gap-4`}>
+                <div className="col-span-2 grid grid-cols-2 gap-2">
+                  {courseItems.map((item, index) => (
+                    <div key={index} className="flex items-center gap-x-2">
+                      <item.icon className="h-5 w-5" />
+                      <span>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+          <ChapterList courseId={data?.id!} />
         </div>
       </Container>
     </WithFooter>

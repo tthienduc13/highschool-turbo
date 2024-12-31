@@ -1,6 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getLessonDetail, getLessonList } from "../apis/lesson.ts";
+import {
+  getLessonDetail,
+  getLessonList,
+  markLessonDone,
+} from "../apis/lesson.ts";
 
 export const useLessonsQuery = ({
   chapterId,
@@ -12,7 +16,7 @@ export const useLessonsQuery = ({
   pageSize: number;
 }) => {
   return useQuery({
-    queryKey: ["lesson-list"],
+    queryKey: ["lesson-list", chapterId],
     queryFn: () => getLessonList({ chapterId, pageNumber, pageSize }),
     enabled: !!chapterId,
   });
@@ -23,5 +27,12 @@ export const useLessonDetailQuery = ({ lessonId }: { lessonId: string }) => {
     queryKey: ["lesson-detail", lessonId],
     queryFn: () => getLessonDetail({ lessonId }),
     enabled: !!lessonId,
+  });
+};
+
+export const useMarkLessonDoneMutation = () => {
+  return useMutation({
+    mutationKey: ["mark-lesson-done"],
+    mutationFn: markLessonDone,
   });
 };

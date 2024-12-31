@@ -18,5 +18,7 @@ export const useChapterListQuery = ({
     queryFn: () =>
       getChapterList({ courseSlug, curriculumId, pageNumber, pageSize }),
     enabled: !!courseSlug && !!curriculumId,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };

@@ -14,6 +14,10 @@ import {
   PresentWrapper,
   useNextStep,
 } from "@/components/core/common/onboard/present-wrapper";
+import {
+  StudentProgressState,
+  TeacherProgressState,
+} from "@highschool/interfaces";
 
 function OnboardDoneModule() {
   const { data: session, update } = useSession();
@@ -31,7 +35,10 @@ function OnboardDoneModule() {
         ...session,
         user: {
           ...session?.user,
-          progressStage: "SubjectInformation",
+          progressStage:
+            session?.user.roleName?.toLocaleLowerCase() === "teacher"
+              ? TeacherProgressState.SubjectInformation
+              : StudentProgressState.Completion,
         },
       });
     },
