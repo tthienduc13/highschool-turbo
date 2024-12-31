@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import { Flashcard } from "@highschool/interfaces";
 import { useAuthorsQuery } from "@highschool/react-query/queries";
 import {
   Carousel,
@@ -14,7 +15,6 @@ import {
 import { StudySetCard } from "@/components/core/common/study-set-card";
 
 import { Wrapper } from "./wrapper";
-import { Flashcard } from "@highschool/interfaces";
 
 interface RecommendFlashcardProps {
   data: Flashcard[];

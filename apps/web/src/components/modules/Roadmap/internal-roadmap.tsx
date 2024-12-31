@@ -1,42 +1,46 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  type Node,
-  type Edge,
-  ReactFlow,
   Background,
-  OnNodesChange,
-  applyNodeChanges,
-  OnEdgesChange,
-  applyEdgeChanges,
-  useReactFlow,
-  ReactFlowInstance,
-  Viewport,
-  ReactFlowProvider,
-  FitViewOptions,
-  Panel,
   Controls,
+  type Edge,
+  FitViewOptions,
+  type Node,
   NodeMouseHandler,
+  OnEdgesChange,
+  OnNodesChange,
+  Panel,
+  ReactFlow,
+  ReactFlowInstance,
+  ReactFlowProvider,
+  Viewport,
+  applyEdgeChanges,
+  applyNodeChanges,
+  useReactFlow,
 } from "@xyflow/react";
-
 import "@xyflow/react/dist/base.css";
 
-import { IconArrowBackUp } from "@tabler/icons-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
 import { useRouter } from "next/navigation";
-import { useRoadMapContext } from "@/stores/use-roadmap-store";
+
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-import { UserPanel } from "./user-panel";
-import { ResourcePanel } from "./resource-panel";
-import { HydrateRoadMapData } from "./hydrate-roadmap-data";
+
+import { IconArrowBackUp } from "@tabler/icons-react";
+
+import { Logo } from "@/components/core/common/logo";
 import CustomConnectionLine from "@/components/core/roadmap/custom-connection-line";
-import { InitNode } from "@/components/core/roadmap/init-node";
-import { DefaultNode } from "@/components/core/roadmap/default-node";
-import { SecondaryNode } from "@/components/core/roadmap/secondary-node";
 import { CustomEdge } from "@/components/core/roadmap/custom-edge";
 import { DashedEdge } from "@/components/core/roadmap/dashed-edge";
-import { Logo } from "@/components/core/common/logo";
+import { DefaultNode } from "@/components/core/roadmap/default-node";
+import { InitNode } from "@/components/core/roadmap/init-node";
+import { SecondaryNode } from "@/components/core/roadmap/secondary-node";
+import { useRoadMapContext } from "@/stores/use-roadmap-store";
+
+import { HydrateRoadMapData } from "./hydrate-roadmap-data";
+import { ResourcePanel } from "./resource-panel";
+import { UserPanel } from "./user-panel";
 
 export type EdgeType = "custom" | "dashed";
 
@@ -124,7 +128,7 @@ function Roadmap() {
   return (
     // <FullPage>
     <div
-      className="w-screen h-screen fixed top-0 left-0"
+      className="fixed left-0 top-0 h-screen w-screen"
       style={{ zIndex: 100 }}
     >
       <ReactFlow
@@ -147,7 +151,7 @@ function Roadmap() {
       >
         <Panel
           position={"top-left"}
-          className="flex flex-row items-center gap-x-2 rounded-md border bg-background px-4 py-2 shadow-xl"
+          className="bg-background flex flex-row items-center gap-x-2 rounded-md border px-4 py-2 shadow-xl"
         >
           <Button variant={"ghost"} size={"icon"} onClick={() => router.back()}>
             <IconArrowBackUp />
@@ -160,7 +164,7 @@ function Roadmap() {
         <ResourcePanel selectedNodeId={selectedNodeId ?? ""} />
         <Background />
         <Controls
-          className="border bg-background"
+          className="bg-background border"
           position="bottom-left"
           orientation="horizontal"
           showInteractive={false}

@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { env } from "@highschool/env";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import {
   DropdownMenu,
@@ -28,7 +29,6 @@ import {
   IconUser,
   TablerIcon,
 } from "@tabler/icons-react";
-import { env } from "@highschool/env";
 
 type MenuItem = {
   label: string;

@@ -13,12 +13,12 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { IconMenu, IconSearch, IconX } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
+import { MOD } from "@/lib/tiny-key";
 
 import { LeftNav } from "./left-nav";
 import { MobileMenu } from "./mobile-menu";
 import { UserMenu } from "./user-menu";
 import { UserNotification } from "./user-notification";
-import { MOD } from "@/lib/tiny-key";
 
 const CreateFolderModal = dynamic(
   () =>

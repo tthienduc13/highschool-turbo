@@ -1,11 +1,12 @@
+import { endpointQuiz } from "@highschool/endpoints";
 import {
   CourseQuiz,
   QuizCategory,
   QuizSubmission,
   ResponseModel,
 } from "@highschool/interfaces";
+
 import axiosServices from "../lib/axios.ts";
-import { endpointQuiz } from "@highschool/endpoints";
 
 export const getQuiz = async ({
   questionCategory,

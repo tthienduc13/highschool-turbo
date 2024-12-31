@@ -11,7 +11,7 @@ export const TheoryList = ({ theories }: TheoryListProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-8 max-w-4xl mx-auto mt-8">
+    <div className="mx-auto mt-8 flex max-w-4xl flex-col gap-8">
       {theories.map((theory, index) => (
         <div key={theory.id}>
           <div className="mb-4">

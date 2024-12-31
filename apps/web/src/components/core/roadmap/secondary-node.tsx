@@ -1,5 +1,6 @@
+import { Handle, Node, NodeProps, NodeResizer, Position } from "@xyflow/react";
+
 import { memo, useState } from "react";
-import { Node, Handle, NodeProps, Position, NodeResizer } from "@xyflow/react";
 
 export type SecNodeData = {
   label: string;

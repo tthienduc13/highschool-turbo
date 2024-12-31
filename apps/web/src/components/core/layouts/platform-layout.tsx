@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 import { Toaster } from "@highschool/ui/components/ui/sonner";
 
@@ -8,7 +9,6 @@ import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";
 import TopLoadingBar from "@/components/core/common/top-loading-bar";
 
 import { Header } from "./header";
-import { usePathname } from "next/navigation";
 
 const SignupModal = dynamic(
   () =>

@@ -1,9 +1,13 @@
-import { useRoadMapContext } from "@/stores/use-roadmap-store";
+import { useReactFlow } from "@xyflow/react";
+
+import Link from "next/link";
+
 import { useGetNodeResourceQuery } from "@highschool/react-query/queries";
 import { Badge } from "@highschool/ui/components/ui/badge";
+
 import { IconLoader2 } from "@tabler/icons-react";
-import { useReactFlow } from "@xyflow/react";
-import Link from "next/link";
+
+import { useRoadMapContext } from "@/stores/use-roadmap-store";
 
 interface SpecificResourceProps {
   selectedNodeId: string;
@@ -66,7 +70,7 @@ export const SpecificResource = ({ selectedNodeId }: SpecificResourceProps) => {
         >
           <div className="mt-3 flex flex-col gap-y-2">
             <div className="text-base font-bold">Tài liệu chính</div>
-            <div className="flex flex-col rounded-lg border border-l-2 border-l-blue p-2">
+            <div className="border-l-blue flex flex-col rounded-lg border border-l-2 p-2">
               <p className="line-clamp-2 font-medium">{data?.title}</p>
               <p className="line-clamp-1 text-xs">{data?.description}</p>
             </div>

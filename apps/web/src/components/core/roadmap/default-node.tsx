@@ -1,5 +1,6 @@
+import { Handle, Node, NodeProps, NodeResizer, Position } from "@xyflow/react";
+
 import { memo, useState } from "react";
-import { Handle, NodeProps, Position, Node, NodeResizer } from "@xyflow/react";
 
 export type DefaultNodeData = {
   label: string;

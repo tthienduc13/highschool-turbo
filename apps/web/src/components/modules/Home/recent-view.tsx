@@ -57,7 +57,7 @@ export const RecentView = () => {
           >
             <Button
               variant={"ghost"}
-              className="group h-full w-full justify-start p-4 whitespace-pre-wrap"
+              className="group h-full w-full justify-start whitespace-pre-wrap p-4"
             >
               <div className="flex w-full flex-row gap-4">
                 <div className="bg-primary/20 text-primary rounded-md p-2">

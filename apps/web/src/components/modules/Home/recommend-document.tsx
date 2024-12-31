@@ -1,5 +1,6 @@
 "use client";
 
+import { Document } from "@highschool/interfaces";
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +9,9 @@ import {
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
 
-import { Wrapper } from "./wrapper";
-import { Document } from "@highschool/interfaces";
 import { DocumentCard } from "@/components/core/common/document-card";
+
+import { Wrapper } from "./wrapper";
 
 interface RecommendDocumentProps {
   data: Document[];

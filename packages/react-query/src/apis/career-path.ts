@@ -1,6 +1,7 @@
 import { endpointCareerGuidance } from "@highschool/endpoints";
-import axiosServices from "../lib/axios.ts";
 import { CareerPath, ResponseModel } from "@highschool/interfaces";
+
+import axiosServices from "../lib/axios.ts";
 
 export const getRecommendMajor = async ({
   isHardCode,

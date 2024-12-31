@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 
 import { useRouter, useSearchParams } from "next/navigation";
 
+import {
+  StudentProgressState,
+  TeacherProgressState,
+} from "@highschool/interfaces";
 import { completeOnboard } from "@highschool/react-query/apis";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
@@ -14,10 +18,6 @@ import {
   PresentWrapper,
   useNextStep,
 } from "@/components/core/common/onboard/present-wrapper";
-import {
-  StudentProgressState,
-  TeacherProgressState,
-} from "@highschool/interfaces";
 
 function OnboardDoneModule() {
   const { data: session, update } = useSession();

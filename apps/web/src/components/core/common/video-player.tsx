@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { LessonDetail } from "@highschool/interfaces";
+import { Button } from "@highschool/ui/components/ui/button";
 
 import { IconHeart, IconLoader2, IconNote } from "@tabler/icons-react";
-import { Button } from "@highschool/ui/components/ui/button";
 
 interface VideoPlayerProps {
   lesson: LessonDetail;
@@ -38,8 +38,8 @@ export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
           <source src={lesson.videoUrl} />
         </video>
       </div>
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-        <h2 className="md:text-2xl text-xl font-semibold">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-xl font-semibold md:text-2xl">
           {lesson.lessonName}
         </h2>
         <div className="flex flex-row items-center gap-2">

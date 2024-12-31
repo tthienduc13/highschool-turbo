@@ -1,11 +1,11 @@
 "use client";
 
 import { useCoursesQuery } from "@highschool/react-query/queries";
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 import { CourseCard } from "@/components/core/common/course-card";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
-import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 interface Category {
   label: string;

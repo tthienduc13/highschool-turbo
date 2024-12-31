@@ -1,4 +1,3 @@
-import { useState, memo, useCallback } from "react";
 import {
   Handle,
   Node,
@@ -6,6 +5,9 @@ import {
   Position,
   useConnection,
 } from "@xyflow/react";
+
+import { memo, useCallback, useState } from "react";
+
 import { cn } from "@highschool/ui/lib/utils";
 
 export type InitNodeData = {

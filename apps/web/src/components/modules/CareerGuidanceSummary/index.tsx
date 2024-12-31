@@ -1,13 +1,16 @@
 "use client";
 
-import { effectChannel } from "@/events/effect";
 import { useEffect } from "react";
-import { ProfileSection } from "./profile-section";
+
+import { useUserBriefQuery } from "@highschool/react-query/queries";
+
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
-import { LoadingView } from "./loading-view";
-import { useUserBriefQuery } from "@highschool/react-query/queries";
+import { effectChannel } from "@/events/effect";
+
 import { CareerSection } from "./career-section";
+import { LoadingView } from "./loading-view";
+import { ProfileSection } from "./profile-section";
 
 function CareerGuidanceSummaryModule() {
   const { data, isLoading, isSuccess } = useUserBriefQuery();

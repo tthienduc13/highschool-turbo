@@ -1,12 +1,16 @@
-import { useRoadMapContext } from "@/stores/use-roadmap-store";
+import { useQueries } from "@tanstack/react-query";
+
+import Link from "next/link";
+
 import { Course, Document } from "@highschool/interfaces";
 import {
   useGetDocumentsQuery,
   useGetSubjectsQuery,
 } from "@highschool/react-query/queries";
+
 import { IconLoader2 } from "@tabler/icons-react";
-import { useQueries } from "@tanstack/react-query";
-import Link from "next/link";
+
+import { useRoadMapContext } from "@/stores/use-roadmap-store";
 
 export const GeneralResource = () => {
   const roadmapData = useRoadMapContext((s) => s.roadmapData);
@@ -36,7 +40,7 @@ export const GeneralResource = () => {
     <>
       <div className="flex flex-col">
         <div className="text-xl font-bold">{roadmapData?.name}</div>
-        <div className="text-justify text-sm text-muted-foreground">
+        <div className="text-muted-foreground text-justify text-sm">
           {roadmapData?.description}
         </div>
       </div>

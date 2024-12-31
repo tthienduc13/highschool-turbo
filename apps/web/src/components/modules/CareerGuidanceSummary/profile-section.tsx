@@ -1,10 +1,13 @@
-import { useMe } from "@/hooks/use-me";
+import { useSession } from "next-auth/react";
+
 import { CareerGuidanceBrief } from "@highschool/react-query/apis";
 import { useUserProfileQuery } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
+
 import { IconUser } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
+
+import { useMe } from "@/hooks/use-me";
 
 interface ProfileSectionProps {
   brief: CareerGuidanceBrief;
@@ -19,20 +22,20 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
   });
   return (
     <div className="flex flex-col gap-8">
-      <h1 className="md:text-4xl group text-3xl font-bold relative w-fit cursor-pointer ">
+      <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
         Hiểu mình
-        <div className="absolute bottom-0 left-0 h-1 bg-primary w-1/2 group-hover:w-full transition-all duration-200 " />
+        <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
       </h1>
 
       <div className="flex flex-col gap-6 md:px-4">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          <Avatar className="md:size-24 size-16 -z-10">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center">
+          <Avatar className="-z-10 size-16 md:size-24">
             <AvatarImage
               src={me?.image ?? "/logo.svg"}
               alt={me?.fullname ?? "Người dùng Highschool"}
             />
           </Avatar>
-          <div className="w-full items-center grid grid-cols-1 md:grid-cols-2 gap-2 md:text-lg font-medium">
+          <div className="grid w-full grid-cols-1 items-center gap-2 font-medium md:grid-cols-2 md:text-lg">
             <div className="flex flex-row items-center gap-2">
               Họ và tên: {userInfo?.data?.fullname}
             </div>
@@ -48,21 +51,21 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
           </div>
         </div>
         <div className="flex flex-col gap-4">
-          <h2 className="md:text-2xl text-xl font-semibold">
+          <h2 className="text-xl font-semibold md:text-2xl">
             Tóm tắt từ kết quả
           </h2>
-          <div className="w-full grid md:grid-cols-2 grid-cols-1 gap-4 items-stretch">
+          <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2">
             <Card className="w-full border-gray-200 dark:border-gray-700">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
-                  <h3 className="text-lg font-medium highlight w-fit highlight-[#C9F77A] highlight-variant-5">
+                  <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
                     Kiểm tra tính cách
                   </h3>
-                  <div className="bg-primary/40 flex h-8  items-center justify-center rounded-md px-3 text-base font-bold">
+                  <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
                     {userInfo?.data?.mbtiType}
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {brief.mbtiBrief}
                 </p>
               </CardContent>
@@ -70,14 +73,14 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
             <Card className="w-full border-gray-200 dark:border-gray-700">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
-                  <h3 className="text-lg font-medium highlight w-fit highlight-[#C9F77A] highlight-variant-5">
+                  <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
                     Định hướng nghề nghiệp
                   </h3>
-                  <div className="bg-primary/40 flex h-8  items-center justify-center rounded-md px-3 text-base font-bold">
+                  <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
                     {userInfo?.data?.hollandType}
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {brief.hollandBrief}
                 </p>
               </CardContent>

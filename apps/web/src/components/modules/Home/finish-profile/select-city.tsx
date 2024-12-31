@@ -1,6 +1,5 @@
-import { Button } from "@highschool/ui/components/ui/button";
-import { WizardLayout } from "./wizard-layout";
 import { useCitiesQuery } from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -8,7 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
+
+import { WizardLayout } from "./wizard-layout";
 
 export const SelectCity = () => {
   const { data: cityData, isLoading: cityLoading } = useCitiesQuery({
@@ -26,7 +28,7 @@ export const SelectCity = () => {
       steps={5}
       currentStep={currentStep}
     >
-      <div className="flex flex-col gap-6 ">
+      <div className="flex flex-col gap-6">
         <Select
           disabled={cityLoading}
           value={selectedCity.id ? String(selectedCity.id) : ""}
@@ -40,7 +42,7 @@ export const SelectCity = () => {
             });
           }}
         >
-          <SelectTrigger className="h-12 w-full rounded-lg border-2 bg-background text-left text-lg font-bold">
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 text-left text-lg font-bold">
             <SelectValue placeholder={"Bạn ở đâu?"} className="px-4" />
           </SelectTrigger>
           <SelectContent
@@ -57,7 +59,7 @@ export const SelectCity = () => {
             ))}
           </SelectContent>
         </Select>
-        <div className="grid grid-cols-2 md:gap-4 gap-2">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
           <div></div>
           <Button
             disabled={!selectedCity.id}

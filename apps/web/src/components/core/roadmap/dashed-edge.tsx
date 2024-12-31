@@ -1,5 +1,6 @@
-import React, { memo } from "react";
 import { EdgeProps, getBezierPath } from "@xyflow/react";
+
+import React, { memo } from "react";
 
 function Edge({
   id,

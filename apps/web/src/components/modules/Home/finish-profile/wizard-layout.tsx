@@ -1,6 +1,8 @@
-import { SegmentedProgress } from "@/components/core/common/onboard/segmented-progress";
-import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { motion } from "framer-motion";
+
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
+
+import { SegmentedProgress } from "@/components/core/common/onboard/segmented-progress";
 
 export interface WizardLayoutProps {
   title: string;
@@ -25,20 +27,20 @@ export const WizardLayout: React.FC<
   cardIn = true,
 }) => {
   const description = (
-    <p className="text-gray-600 dark:text-gray-400 text-sm whitespace-pre-wrap">
+    <p className="whitespace-pre-wrap text-sm text-gray-600 dark:text-gray-400">
       {_description}
     </p>
   );
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col">
-        <div className=" text-base md:text-lg font-medium text-gray-600 dark:text-gray-400">
+        <div className="text-base font-medium text-gray-600 md:text-lg dark:text-gray-400">
           Bước {currentStep + 1} trên {steps}
         </div>
         <SegmentedProgress steps={steps} currentStep={currentStep} />
       </div>
       <div className="flex flex-col gap-2">
-        <h2 className="md:text-xl text-lg font-bold">{title}</h2>
+        <h2 className="text-lg font-bold md:text-xl">{title}</h2>
         {enableSkeleton ? <Skeleton>{description}</Skeleton> : description}
       </div>
       <motion.div

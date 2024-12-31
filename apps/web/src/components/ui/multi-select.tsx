@@ -1,22 +1,10 @@
 // src/components/multi-select.tsx
+import { type VariantProps, cva } from "class-variance-authority";
 
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@highschool/ui/components/ui/popover";
-import { Button } from "@highschool/ui/components/ui/button";
-import { cn } from "@highschool/ui/lib/utils";
-import {
-  IconCheck,
-  IconChevronDown,
-  IconWand,
-  IconX,
-} from "@tabler/icons-react";
-import { Separator } from "@highschool/ui/components/ui/separator";
+
 import { Badge } from "@highschool/ui/components/ui/badge";
+import { Button } from "@highschool/ui/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -26,6 +14,20 @@ import {
   CommandList,
   CommandSeparator,
 } from "@highschool/ui/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@highschool/ui/components/ui/popover";
+import { Separator } from "@highschool/ui/components/ui/separator";
+import { cn } from "@highschool/ui/lib/utils";
+
+import {
+  IconCheck,
+  IconChevronDown,
+  IconWand,
+  IconX,
+} from "@tabler/icons-react";
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -208,12 +210,12 @@ export const MultiSelect = React.forwardRef<
             {...props}
             onClick={handleTogglePopover}
             className={cn(
-              "flex w-full p-1 rounded-md border-2 min-h-12 h-auto  items-center justify-between bg-inherit hover:bg-inherit [&_svg]:pointer-events-auto",
+              "flex h-auto min-h-12 w-full items-center justify-between rounded-md border-2 bg-inherit p-1 hover:bg-inherit [&_svg]:pointer-events-auto",
               className,
             )}
           >
             {selectedValues.length > 0 ? (
-              <div className="flex justify-between items-center w-full">
+              <div className="flex w-full items-center justify-between">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const option = options.find((o) => o.value === value);
@@ -228,7 +230,7 @@ export const MultiSelect = React.forwardRef<
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {IconComponent && (
-                          <IconComponent className="h-4 w-4 mr-2" />
+                          <IconComponent className="mr-2 h-4 w-4" />
                         )}
                         {option?.label}
                         <IconX
@@ -244,7 +246,7 @@ export const MultiSelect = React.forwardRef<
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={cn(
-                        "bg-transparent text-foreground border-foreground/1 hover:bg-transparent",
+                        "text-foreground border-foreground/1 bg-transparent hover:bg-transparent",
                         isAnimating ? "animate-bounce" : "",
                         multiSelectVariants({ variant }),
                       )}
@@ -263,7 +265,7 @@ export const MultiSelect = React.forwardRef<
                 </div>
                 <div className="flex items-center justify-between">
                   <IconX
-                    className="h-4 mx-2 cursor-pointer text-muted-foreground"
+                    className="text-muted-foreground mx-2 h-4 cursor-pointer"
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
@@ -271,23 +273,23 @@ export const MultiSelect = React.forwardRef<
                   />
                   <Separator
                     orientation="vertical"
-                    className="flex min-h-6 h-full"
+                    className="flex h-full min-h-6"
                   />
-                  <IconChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                  <IconChevronDown className="text-muted-foreground mx-2 h-4 cursor-pointer" />
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-lg font-bold text-muted-foreground mx-3 ">
+              <div className="mx-auto flex w-full items-center justify-between">
+                <span className="text-muted-foreground mx-3 text-lg font-bold">
                   {placeholder}
                 </span>
-                <IconChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
+                <IconChevronDown className="text-muted-foreground mx-2 h-4 cursor-pointer" />
               </div>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height] p-0"
+          className="max-h-[--radix-popover-content-available-height] w-[--radix-popover-trigger-width] p-0"
           align="start"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
@@ -310,12 +312,12 @@ export const MultiSelect = React.forwardRef<
                       onSelect={() => !isDisabled && toggleOption(option.value)}
                       className={cn(
                         "cursor-pointer",
-                        isDisabled && "opacity-50 cursor-not-allowed",
+                        isDisabled && "cursor-not-allowed opacity-50",
                       )}
                     >
                       <div
                         className={cn(
-                          "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                          "border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border",
                           isSelected
                             ? "bg-primary text-primary-foreground"
                             : "opacity-50 [&_svg]:invisible",
@@ -324,7 +326,7 @@ export const MultiSelect = React.forwardRef<
                         <IconCheck className="h-3 w-3" />
                       </div>
                       {option.icon && (
-                        <option.icon className="mr-2 h-3 w-3 text-muted-foreground" />
+                        <option.icon className="text-muted-foreground mr-2 h-3 w-3" />
                       )}
                       <span>{option.label}</span>
                     </CommandItem>
@@ -338,19 +340,19 @@ export const MultiSelect = React.forwardRef<
                     <>
                       <CommandItem
                         onSelect={handleClear}
-                        className="flex-1 justify-center cursor-pointer"
+                        className="flex-1 cursor-pointer justify-center"
                       >
                         Xoá
                       </CommandItem>
                       <Separator
                         orientation="vertical"
-                        className="flex min-h-6 h-full"
+                        className="flex h-full min-h-6"
                       />
                     </>
                   )}
                   <CommandItem
                     onSelect={() => setIsPopoverOpen(false)}
-                    className="flex-1 justify-center cursor-pointer max-w-full"
+                    className="max-w-full flex-1 cursor-pointer justify-center"
                   >
                     Đóng
                   </CommandItem>

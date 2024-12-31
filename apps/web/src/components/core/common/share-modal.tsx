@@ -1,5 +1,10 @@
 "use client";
 
+import { env } from "@highschool/env";
+import { Button } from "@highschool/ui/components/ui/button";
+
+import { IconLink } from "@tabler/icons-react";
+
 import {
   Credenza,
   CredenzaBody,
@@ -9,9 +14,7 @@ import {
   CredenzaFooter,
   CredenzaTitle,
 } from "@/components/ui/credenza";
-import { env } from "@highschool/env";
-import { Button } from "@highschool/ui/components/ui/button";
-import { IconLink } from "@tabler/icons-react";
+
 import { AnimatedCopyButton } from "./animated-copy-button";
 
 interface ShareModalProps {
@@ -32,7 +35,7 @@ export const ShareModal = ({ open, onClose, pathName }: ShareModalProps) => {
           Copy đường link dưới đây để chia sẻ với mọi người
         </CredenzaDescription>
         <CredenzaBody className="flex flex-row items-center gap-x-4">
-          <div className="flex flex-grow flex-row gap-x-2 rounded-lg border bg-background px-4 py-2">
+          <div className="bg-background flex flex-grow flex-row gap-x-2 rounded-lg border px-4 py-2">
             <IconLink />
             {currentPath}
           </div>

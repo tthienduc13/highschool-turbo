@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "@highschool/ui/lib/utils";
 import { motion, useScroll, useSpring } from "framer-motion";
+
+import { cn } from "@highschool/ui/lib/utils";
 
 interface ScrollProgressProps {
   className?: string;

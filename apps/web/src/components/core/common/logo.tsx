@@ -13,7 +13,7 @@ export const Logo = () => {
   return (
     <>
       <div
-        className="relative hover:opacity-80 hidden lg:block"
+        className="relative hidden hover:opacity-80 lg:block"
         style={{ height: `40px`, width: "auto" }}
       >
         <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>
@@ -28,7 +28,7 @@ export const Logo = () => {
         </Link>
       </div>
       <div
-        className="relative hover:opacity-80 block lg:hidden"
+        className="relative block hover:opacity-80 lg:hidden"
         style={{ height: `32px`, width: "auto" }}
       >
         <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>

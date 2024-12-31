@@ -1,16 +1,17 @@
 "use client";
 
+import { useRecommendedDataQuery } from "@highschool/react-query/queries";
+
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
 
 import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
 import { RecentView } from "./recent-view";
-import { TopFlascard } from "./top-flashcard";
-import { useRecommendedDataQuery } from "@highschool/react-query/queries";
-import { RecommendFlashcard } from "./recommend-flashcard";
-import { RecommendDocument } from "./recommend-document";
 import { RecommendCourse } from "./recommend-course";
+import { RecommendDocument } from "./recommend-document";
+import { RecommendFlashcard } from "./recommend-flashcard";
+import { TopFlascard } from "./top-flashcard";
 
 function HomeModule() {
   const { data, isLoading } = useRecommendedDataQuery();

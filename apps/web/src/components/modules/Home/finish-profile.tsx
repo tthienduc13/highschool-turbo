@@ -1,22 +1,26 @@
 "use client";
 
-import { SegmentedProgress } from "@/components/core/common/onboard/segmented-progress";
-import { menuEventChannel } from "@/events/menu";
-import { useMe } from "@/hooks/use-me";
-import { useIsTeacher } from "@/hooks/use-role";
+import { useSession } from "next-auth/react";
+
+import { useEffect } from "react";
+
 import {
   StudentProgressState,
   TeacherProgressState,
 } from "@highschool/interfaces";
 import { useProgressStageQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
+
 import {
   IconArrowMergeAltLeft,
   IconCircleCheck,
   IconUser,
 } from "@tabler/icons-react";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+
+import { SegmentedProgress } from "@/components/core/common/onboard/segmented-progress";
+import { menuEventChannel } from "@/events/menu";
+import { useMe } from "@/hooks/use-me";
+import { useIsTeacher } from "@/hooks/use-role";
 
 export const FinishProfile = () => {
   const me = useMe();
@@ -57,13 +61,13 @@ export const FinishProfile = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="p-4 flex flex-col  bg-background dark:bg-gray-800 border-gray-100 rounded-3xl border-2 shadow-lg dark:border-gray-700">
+      <div className="bg-background flex flex-col rounded-3xl border-2 border-gray-100 p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800">
         {isTeacher ? (
-          <h2 className="text-xl font-medium px-4 py-2">
+          <h2 className="px-4 py-2 text-xl font-medium">
             Xin chào! Điền thông tin để có thêm quyền truy cập
           </h2>
         ) : (
-          <h2 className="text-xl font-medium px-4 py-2">
+          <h2 className="px-4 py-2 text-xl font-medium">
             Xin chào! Cùng hoàn thiện thông tin cá nhân để nhận quà nhé
           </h2>
         )}
@@ -74,7 +78,7 @@ export const FinishProfile = () => {
           <>
             {isTeacher ? (
               <Button
-                className="w-full h-full md:!text-base justify-start whitespace-pre-wrap"
+                className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
                 variant={"ghost"}
                 onClick={() => {
                   menuEventChannel.emit("openTeacherInformationModal");
@@ -82,17 +86,17 @@ export const FinishProfile = () => {
               >
                 <div className="flex flex-col gap-1 text-left">
                   <div className="flex flex-row items-center gap-2">
-                    <IconUser className="!size-[18px] mb-1" />
+                    <IconUser className="mb-1 !size-[18px]" />
                     Thông tin cá nhân
                   </div>
-                  <p className="text-xs md:text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-xs md:text-sm">
                     Hãy hoàn thiện thông tin cá nhân để được xác thực 🚀
                   </p>
                 </div>
               </Button>
             ) : (
               <Button
-                className="w-full h-full md:!text-base justify-start whitespace-pre-wrap"
+                className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
                 variant={"ghost"}
                 onClick={() => {
                   menuEventChannel.emit("openInformationModal");
@@ -100,10 +104,10 @@ export const FinishProfile = () => {
               >
                 <div className="flex flex-col gap-1 text-left">
                   <div className="flex flex-row items-center gap-2">
-                    <IconUser className="!size-[18px] mb-1" />
+                    <IconUser className="mb-1 !size-[18px]" />
                     Thông tin cá nhân
                   </div>
-                  <p className=" text-xs md:text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-xs md:text-sm">
                     Thêm vào thông tin trường, lớp để được gợi ý học tập tốt
                     nhất 🚀
                   </p>
@@ -116,7 +120,7 @@ export const FinishProfile = () => {
         {!isTeacher &&
           data?.data === StudentProgressState.PersonalityAssessment && (
             <Button
-              className="w-full h-full md:!text-base justify-start whitespace-pre-wrap"
+              className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
               variant={"ghost"}
               onClick={() => {
                 menuEventChannel.emit("openCareerGuidanceModal");
@@ -124,10 +128,10 @@ export const FinishProfile = () => {
             >
               <div className="flex flex-col gap-1 text-left">
                 <div className="flex flex-row items-center gap-2">
-                  <IconArrowMergeAltLeft className="!size-[18px] mb-1" />
+                  <IconArrowMergeAltLeft className="mb-1 !size-[18px]" />
                   Hướng nghiệp
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-xs md:text-sm">
                   Hoàn thành 2 bài kiểm tra MBTI và Holland để tìm ra công việc
                   phù hợp🚀
                 </p>
@@ -136,7 +140,7 @@ export const FinishProfile = () => {
           )}
         {isTeacher && data?.data === TeacherProgressState.VerifyTeacher && (
           <Button
-            className="w-full h-full md:!text-base justify-start whitespace-pre-wrap"
+            className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
             variant={"ghost"}
             onClick={() => {
               menuEventChannel.emit("openCareerGuidanceModal");
@@ -144,10 +148,10 @@ export const FinishProfile = () => {
           >
             <div className="flex flex-col gap-1 text-left">
               <div className="flex flex-row items-center gap-2">
-                <IconCircleCheck className="!size-[18px] mb-1" />
+                <IconCircleCheck className="mb-1 !size-[18px]" />
                 Xác thực người dùng
               </div>
-              <p className="text-xs md:text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Kết quả của bạn đang được quản trị viên xác thực, vui lòng chờ
                 📍
               </p>

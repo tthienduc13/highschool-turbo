@@ -1,5 +1,6 @@
 "use client";
 
+import { Course } from "@highschool/interfaces";
 import {
   Carousel,
   CarouselContent,
@@ -8,9 +9,9 @@ import {
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
 
-import { Wrapper } from "./wrapper";
-import { Course } from "@highschool/interfaces";
 import { CourseCard } from "@/components/core/common/course-card";
+
+import { Wrapper } from "./wrapper";
 
 interface RecommendCourseProps {
   data: Course[];

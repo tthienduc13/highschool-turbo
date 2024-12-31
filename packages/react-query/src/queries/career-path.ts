@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { getRecommendMajor } from "../apis/career-path.ts";
 
 export const useRecommendMajorQuery = ({

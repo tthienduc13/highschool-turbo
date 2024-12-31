@@ -1,7 +1,10 @@
-import { useRoadMapContext } from "@/stores/use-roadmap-store";
-import { cn } from "@highschool/ui/lib/utils";
 import { Panel } from "@xyflow/react";
+
 import dynamic from "next/dynamic";
+
+import { cn } from "@highschool/ui/lib/utils";
+
+import { useRoadMapContext } from "@/stores/use-roadmap-store";
 
 const GeneralResource = dynamic(
   () => import("./general-resource").then((mod) => mod.GeneralResource),
@@ -26,7 +29,7 @@ export const ResourcePanel = ({ selectedNodeId }: ResourcePanelProps) => {
     <Panel
       position="bottom-right"
       className={cn(
-        "fixed bottom-0 right-0 flex h-[90%] w-[350px] transform flex-col gap-y-4 rounded-md border bg-background p-4 transition-all duration-500 ease-in-out",
+        "bg-background fixed bottom-0 right-0 flex h-[90%] w-[350px] transform flex-col gap-y-4 rounded-md border p-4 transition-all duration-500 ease-in-out",
         isOpen
           ? "pointer-events-auto translate-x-0 opacity-100"
           : "pointer-events-none translate-x-full opacity-0",

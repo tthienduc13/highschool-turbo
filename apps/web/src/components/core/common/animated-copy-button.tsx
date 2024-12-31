@@ -1,9 +1,13 @@
 "use client";
-import React, { useState } from "react";
+
 import { AnimatePresence, motion } from "framer-motion";
-import { IconCheck } from "@tabler/icons-react";
-import { cn } from "@highschool/ui/lib/utils";
+
+import React, { useState } from "react";
+
 import { buttonVariants } from "@highschool/ui/components/ui/button";
+import { cn } from "@highschool/ui/lib/utils";
+
+import { IconCheck } from "@tabler/icons-react";
 
 interface AnimatedCopyButtonProps {
   pathName: string;

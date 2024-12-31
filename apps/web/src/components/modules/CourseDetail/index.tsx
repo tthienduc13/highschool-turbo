@@ -2,25 +2,26 @@
 
 import { useEffect, useState } from "react";
 
-import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
 
 import { useCourseBySlugQuery } from "@highschool/react-query/queries";
 
-import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-moda";
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-
-import { ChapterList } from "./chapter-list";
 import {
   IconEye,
   IconFileLike,
   IconHistory,
   IconSchool,
 } from "@tabler/icons-react";
-import { formatDueDate } from "@/utils/time";
+
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
+import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-moda";
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
+import { formatDueDate } from "@/utils/time";
+
+import { ChapterList } from "./chapter-list";
 
 function CourseDetailModule() {
   const { slug } = useParams();
@@ -63,7 +64,7 @@ function CourseDetailModule() {
         <div className="flex flex-col gap-12">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex flex-col gap-5 md:flex-row">
-            <div className="relative aspect-video w-full md:w-[250px]  border-gray-50 shadow-md dark:border-gray-700 border-2 rounded-md overflow-hidden bg-background">
+            <div className="bg-background relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 shadow-md md:w-[250px] dark:border-gray-700">
               <Image
                 src={data?.image ?? "/logo.svg"}
                 fill
@@ -73,14 +74,14 @@ function CourseDetailModule() {
             </div>
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-col gap-2">
-                <h1 className=" text-2xl font-bold md:text-3xl">
+                <h1 className="text-2xl font-bold md:text-3xl">
                   {data?.subjectName}
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {data?.information}
                 </p>
               </div>
-              <div className={`grid grid-cols-2} gap-4`}>
+              <div className={`grid-cols-2} grid gap-4`}>
                 <div className="col-span-2 grid grid-cols-2 gap-2">
                   {courseItems.map((item, index) => (
                     <div key={index} className="flex items-center gap-x-2">

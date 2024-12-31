@@ -1,3 +1,4 @@
+import { endpointRoadmap } from "@highschool/endpoints";
 import {
   Course,
   Document,
@@ -5,8 +6,8 @@ import {
   ResponseModel,
   RoadmapType,
 } from "@highschool/interfaces";
+
 import axiosServices from "../lib/axios.ts";
-import { endpointRoadmap } from "@highschool/endpoints";
 
 export const getUserRoadmap = async (): Promise<ResponseModel<RoadmapType>> => {
   try {

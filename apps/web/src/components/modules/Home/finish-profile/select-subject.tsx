@@ -1,14 +1,18 @@
-import { Button } from "@highschool/ui/components/ui/button";
-import { WizardLayout } from "./wizard-layout";
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-import { MultiSelect } from "@/components/ui/multi-select";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
   useCoursesQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
-import { classNumberMap, Grade } from "@highschool/interfaces";
+import { Button } from "@highschool/ui/components/ui/button";
+
 import { IconLoader2 } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
+
+import { MultiSelect } from "@/components/ui/multi-select";
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
+
+import { WizardLayout } from "./wizard-layout";
 
 export const convertToClass = (grade: Grade): number => {
   const number = classNumberMap[grade];
@@ -82,8 +86,8 @@ export const SelectSubject = () => {
           maxCount={3}
           limit={4}
         />
-        <div className="grid grid-cols-2 md:gap-4 gap-2">
-          <div className="w-full ">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
+          <div className="w-full">
             <Button
               disabled={updateUser.isPending}
               className="w-fit"

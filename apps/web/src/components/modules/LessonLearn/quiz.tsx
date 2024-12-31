@@ -1,5 +1,7 @@
-import { Loading } from "@/components/core/common/loading";
-import { Container } from "@/components/core/layouts/container";
+import React, { useState } from "react";
+
+import { useParams } from "next/navigation";
+
 import { QuizCategory, QuizSubmission } from "@highschool/interfaces";
 import {
   useQuizQuery,
@@ -7,24 +9,26 @@ import {
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@highschool/ui/components/ui/radio-group";
-import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@highschool/ui/components/ui/card";
-import { useParams } from "next/navigation";
-import React, { useState } from "react";
 import { Label } from "@highschool/ui/components/ui/label";
+import {
+  RadioGroup,
+  RadioGroupItem,
+} from "@highschool/ui/components/ui/radio-group";
+
 import {
   IconChevronLeft,
   IconChevronRight,
   IconLoader2,
 } from "@tabler/icons-react";
+
+import { Loading } from "@/components/core/common/loading";
+import { Container } from "@/components/core/layouts/container";
 
 interface QuizProps {
   setShowQuiz: React.Dispatch<React.SetStateAction<boolean>>;
@@ -102,7 +106,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
   if (showSummary) {
     return (
       <Container maxWidth="4xl" className="p-10">
-        <Card className="w-full max-w-2xl mx-auto">
+        <Card className="mx-auto w-full max-w-2xl">
           <CardHeader>
             <CardTitle className="text-lg font-bold">Tổng kết</CardTitle>
           </CardHeader>
@@ -152,7 +156,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
   if (quizCompleted) {
     return (
       <Container maxWidth="4xl" className="p-10">
-        <Card className="w-full max-w-2xl mx-auto">
+        <Card className="mx-auto w-full max-w-2xl">
           <CardHeader>
             <CardTitle className="text-lg font-bold">Tổng kết</CardTitle>
           </CardHeader>
@@ -168,7 +172,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
   return (
     <Container maxWidth="4xl" className="flex flex-col gap-10 p-10">
       <h2 className="text-2xl font-bold">Câu hỏi</h2>
-      <Card className="w-full max-w-2xl mx-auto">
+      <Card className="mx-auto w-full max-w-2xl">
         <CardHeader>
           <CardTitle>{currentQuestion?.questionContent}</CardTitle>
         </CardHeader>
@@ -188,7 +192,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
           </RadioGroup>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <div className="text-sm text-muted-foreground">
+          <div className="text-muted-foreground text-sm">
             Câu {currentQuestionIndex + 1} trên {data?.data?.questions.length}
           </div>
           <div className="flex space-x-2">
@@ -203,7 +207,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
               {currentQuestionIndex === data?.data?.questions.length - 1
                 ? "Xem lại"
                 : "Câu sau"}
-              <IconChevronRight className="h-4 w-4 ml-2" />
+              <IconChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
         </CardFooter>

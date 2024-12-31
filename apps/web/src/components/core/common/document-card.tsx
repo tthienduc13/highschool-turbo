@@ -1,17 +1,20 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
+
+import { useRouter } from "next/navigation";
+
 import { env } from "@highschool/env";
 import { useMediaQuery } from "@highschool/hooks";
 import { Document } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
+
 import {
   IconDownload,
   IconEye,
   IconFileLike,
   IconFolder,
 } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 interface DocumentCardProps {
   data: Document;
@@ -35,9 +38,9 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
   return (
     <div
       key={data.id}
-      className="flex w-full flex-col gap-2 rounded-xl border border-gray-200 bg-white dark:bg-gray-800 shadow-lg dark:border-gray-700 md:gap-4"
+      className="flex w-full flex-col gap-2 rounded-xl border border-gray-200 bg-white shadow-lg md:gap-4 dark:border-gray-700 dark:bg-gray-800"
     >
-      <div className="flex flex-col gap-2 border-b p-4 ">
+      <div className="flex flex-col gap-2 border-b p-4">
         <div
           className="line-clamp-1 cursor-pointer text-sm font-semibold"
           onClick={() =>

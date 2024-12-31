@@ -1,9 +1,11 @@
+import { useParams, useRouter } from "next/navigation";
+
 import { Lesson } from "@highschool/interfaces";
+import { Button } from "@highschool/ui/components/ui/button";
+
+import { IconArrowBack } from "@tabler/icons-react";
 
 import { LearnSidebarItem } from "./learn-sidebar-item";
-import { Button } from "@highschool/ui/components/ui/button";
-import { IconArrowBack } from "@tabler/icons-react";
-import { useParams, useRouter } from "next/navigation";
 
 interface LearnSidebarProps {
   lessons: Lesson[];

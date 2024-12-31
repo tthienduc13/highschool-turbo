@@ -1,3 +1,6 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+
 import Link from "next/link";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 
@@ -7,6 +10,7 @@ import {
   useEnrollMutation,
   useUnEnrollMutation,
 } from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
 
@@ -16,9 +20,7 @@ import {
   IconLoader2,
   IconLock,
 } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { Button } from "@highschool/ui/components/ui/button";
+
 import AnimatedCircularProgressBar from "@/components/core/common/animated-progress-bar";
 
 interface ChapterListProps {

@@ -1,7 +1,9 @@
+import { TypeExam, examDescriptions } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-import { WizardLayout } from "./wizard-layout";
-import { examDescriptions, TypeExam } from "@highschool/interfaces";
+
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
+
+import { WizardLayout } from "./wizard-layout";
 
 export const SelectExamType = () => {
   const {
@@ -24,7 +26,7 @@ export const SelectExamType = () => {
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6 pt-4">
-        <div className="flex flex-row items-center justify-center gap-2 flex-wrap">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-2">
           {Object.keys(examDescriptions).map((key) => (
             <Button
               size={"sm"}
@@ -41,8 +43,8 @@ export const SelectExamType = () => {
             </Button>
           ))}
         </div>
-        <div className="grid grid-cols-2 md:gap-4 gap-2">
-          <div className="w-full ">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
+          <div className="w-full">
             <Button
               className="w-fit"
               variant={"ghost"}

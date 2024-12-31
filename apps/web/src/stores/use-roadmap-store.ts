@@ -1,7 +1,9 @@
-import { RoadmapType } from "@highschool/interfaces";
-import { createContext, useContext } from "react";
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
+
+import { createContext, useContext } from "react";
+
+import { RoadmapType } from "@highschool/interfaces";
 
 export type RoadmapTab = "general" | "specific";
 

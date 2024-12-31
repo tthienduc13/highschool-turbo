@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getQuiz, submitQuiz } from "../apis/quiz.ts";
+
 import { QuizCategory } from "@highschool/interfaces";
+
+import { getQuiz, submitQuiz } from "../apis/quiz.ts";
 
 export const useQuizQuery = ({
   questionCategory,

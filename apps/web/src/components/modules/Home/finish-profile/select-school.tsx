@@ -1,7 +1,5 @@
-import { Button } from "@highschool/ui/components/ui/button";
-import { WizardLayout } from "./wizard-layout";
-import { ICity } from "@/components/core/common/account-information-modal";
 import { useCitySchoolQuery } from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -9,7 +7,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+
+import { ICity } from "@/components/core/common/account-information-modal";
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
+
+import { WizardLayout } from "./wizard-layout";
 
 export const SelectSchool = () => {
   const {
@@ -31,7 +33,7 @@ export const SelectSchool = () => {
       steps={5}
       currentStep={currentStep}
     >
-      <div className="flex flex-col gap-6 ">
+      <div className="flex flex-col gap-6">
         <Select
           disabled={schoolLoading}
           value={selectedSchool ?? ""}
@@ -39,7 +41,7 @@ export const SelectSchool = () => {
             setSelectedSchool(school);
           }}
         >
-          <SelectTrigger className="h-12 w-full rounded-lg border-2 bg-background text-left text-lg font-bold">
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 text-left text-lg font-bold">
             <SelectValue placeholder={"Bạn học trường nào?"} className="px-4" />
           </SelectTrigger>
           <SelectContent
@@ -53,8 +55,8 @@ export const SelectSchool = () => {
             ))}
           </SelectContent>
         </Select>
-        <div className="grid grid-cols-2 md:gap-4 gap-2">
-          <div className="w-full ">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
+          <div className="w-full">
             <Button
               className="w-fit"
               variant={"ghost"}

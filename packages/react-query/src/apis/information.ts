@@ -1,6 +1,7 @@
-import { City, Pagination, School } from "@highschool/interfaces";
-import fetchPaginatedData from "./common.ts";
 import { endpointInformation } from "@highschool/endpoints";
+import { City, Pagination, School } from "@highschool/interfaces";
+
+import fetchPaginatedData from "./common.ts";
 
 export const getCitySchools = async ({
   cityId,

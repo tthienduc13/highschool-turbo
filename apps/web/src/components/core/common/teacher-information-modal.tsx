@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { menuEventChannel } from "@/events/menu";
+
 import { Modal } from "./modal";
 
 export const TeacherInformationModal = () => {

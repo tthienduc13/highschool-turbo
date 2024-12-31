@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+
 import { getCities, getCitySchools } from "../apis/information.ts";
 
 export const useCitySchoolQuery = ({

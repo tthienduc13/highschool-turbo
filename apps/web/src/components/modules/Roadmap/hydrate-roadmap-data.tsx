@@ -1,12 +1,14 @@
-import { Loading } from "@/components/core/common/loading";
-import {
-  createRoadMapStore,
-  RoadMapContext,
-  RoadMapStore,
-} from "@/stores/use-roadmap-store";
+import { useRef } from "react";
+
 import { RoadmapType } from "@highschool/interfaces";
 import { useGetUserRoadmapQuery } from "@highschool/react-query/queries";
-import { useRef } from "react";
+
+import { Loading } from "@/components/core/common/loading";
+import {
+  RoadMapContext,
+  RoadMapStore,
+  createRoadMapStore,
+} from "@/stores/use-roadmap-store";
 
 interface HydrateRoadMapDataProps {
   children: React.ReactNode;
