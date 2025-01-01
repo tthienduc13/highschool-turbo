@@ -1,11 +1,12 @@
 import { NextAuthConfig } from "next-auth";
 import { JWT } from "next-auth/jwt";
+import EmailProvider from "next-auth/providers/email";
 import Google from "next-auth/providers/google";
 
 import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 
-import { googleAuthentication, requestRefreshToken } from "../apis/auth.ts";
+import { googleAuthentication, login } from "../apis/auth.ts";
 
 const refreshAccessToken = async (token: JWT) => {
   try {
@@ -55,6 +56,13 @@ const refreshAccessToken = async (token: JWT) => {
   }
 };
 
+export const sendVerificationRequest = async (params: {
+  identifier: string;
+  url: string;
+}) => {
+  await login({ email: params.identifier });
+};
+
 export const AuthOptions: NextAuthConfig = {
   providers: [
     Google({
@@ -68,6 +76,12 @@ export const AuthOptions: NextAuthConfig = {
         },
       },
     }),
+    // {
+    //   id: "magic",
+    //   name: "Email",
+    //   type: "email",
+    //   sendVerificationRequest,
+    // },
   ],
   callbacks: {
     async signIn({ account, user }) {

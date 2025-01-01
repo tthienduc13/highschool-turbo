@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Form,
@@ -85,9 +84,8 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
   const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
     setMagicLinkLoading(true);
     // await signIn("magic", {
-    //     email: data.email,
+    //   email: data.email,
     // });
-    console.log(data.email);
   };
 
   const control = emailMethods.control as unknown as Control<EmailFormInputs>;

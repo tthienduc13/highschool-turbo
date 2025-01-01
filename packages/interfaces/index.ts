@@ -18,3 +18,4 @@ export * from "./information";
 export * from "./career-path";
 export * from "./roadmap";
 export * from "./quiz";
+export * from "./university";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useUserBriefQuery } from "@highschool/react-query/queries";
 
@@ -11,9 +11,12 @@ import { effectChannel } from "@/events/effect";
 import { CareerSection } from "./career-section";
 import { LoadingView } from "./loading-view";
 import { ProfileSection } from "./profile-section";
+import { UniversitySection } from "./university-section";
 
 function CareerGuidanceSummaryModule() {
   const { data, isLoading, isSuccess } = useUserBriefQuery();
+  const [selectedMajor, setSelectedMajor] = useState<string | null>(null);
+
   useEffect(() => {
     effectChannel.emit("prepareConfetti");
 
@@ -33,9 +36,12 @@ function CareerGuidanceSummaryModule() {
         <Container maxWidth="7xl">
           <div className="flex flex-col gap-10">
             <ProfileSection brief={data?.data!} />
-            <CareerSection />
+            <CareerSection
+              setSelectedMajor={setSelectedMajor}
+              selectedMajor={selectedMajor}
+            />
+            <UniversitySection selectedMajor={selectedMajor} />
           </div>
-          <div className="h-[2000px]"></div>
         </Container>
       </WithFooter>
     </>

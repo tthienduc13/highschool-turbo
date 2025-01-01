@@ -28,6 +28,15 @@ export interface Major {
 }
 
 export interface MajorCategory {
+  id: string;
   majorCategoryCode: string;
   name: string;
+  mbtiTypes: string[];
+  primaryHollandTrait: PrimaryHollandTrait;
+  secondaryHollandTrait: string;
+}
+export enum PrimaryHollandTrait {
+  Enterprising = "Enterprising",
+  Investigative = "Investigative",
+  Realistic = "Realistic",
 }

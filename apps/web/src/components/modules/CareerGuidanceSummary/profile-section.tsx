@@ -55,7 +55,7 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
             Tóm tắt từ kết quả
           </h2>
           <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2">
-            <Card className="w-full border-gray-200 dark:border-gray-700">
+            <Card className="w-full border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
                   <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
@@ -70,7 +70,7 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
                 </p>
               </CardContent>
             </Card>
-            <Card className="w-full border-gray-200 dark:border-gray-700">
+            <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
                   <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">

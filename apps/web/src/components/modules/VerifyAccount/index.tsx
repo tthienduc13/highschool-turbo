@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@highschool/ui/components/ui/button";
@@ -10,7 +11,7 @@ function VerifyAccountModule() {
       <EnterWrapper>
         <div className="z-10 mx-auto w-full max-w-xl">
           <div className="flex w-full flex-col items-center justify-center gap-8">
-            <div>logo</div>
+            <Image src={"/logo.svg"} alt="logo" width={96} height={96} />
             <h1 className="text-4xl font-bold">Kiểm tra hộp thư</h1>
             <div className="text-center font-medium text-gray-700 dark:text-gray-300">
               Chúng tôi đã đường dẫn đăng nhập

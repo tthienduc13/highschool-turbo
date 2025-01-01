@@ -15,3 +15,5 @@ export * from "./information.ts";
 export * from "./career-path.ts";
 export * from "./roadmap.ts";
 export * from "./quiz.ts";
+export * from "./auth.ts";
+export * from "./university.ts";

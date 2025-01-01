@@ -179,7 +179,12 @@ const endpointQuiz = {
   SUBMIT_QUIZ: `${prefixDocumentServices}${prefixFirstVersion}/questions/quiz/submit`,
 };
 
+const endpointUniversity = {
+  GET_UNI_LIST: `${prefixUserServices}${prefixFirstVersion}/university`,
+};
+
 export {
+  endpointUniversity,
   endpointQuiz,
   endpointSearch,
   endpointRoadmap,

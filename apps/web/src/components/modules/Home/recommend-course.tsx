@@ -24,7 +24,7 @@ export const RecommendCourse = ({ data }: RecommendCourseProps) => {
 
   return (
     <Wrapper title="Môn học dành cho bạn">
-      <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(256px,1fr))] gap-4">
         {data?.map((course) => <CourseCard key={course.id} course={course} />)}
       </div>
     </Wrapper>

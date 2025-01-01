@@ -14,3 +14,4 @@ export * from "./lesson.ts";
 export * from "./information.ts";
 export * from "./roadmap.ts";
 export * from "./quiz.ts";
+export * from "./university.ts";

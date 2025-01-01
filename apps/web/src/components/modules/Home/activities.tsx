@@ -13,7 +13,7 @@ export const Activities = () => {
         <div className="group flex cursor-pointer flex-row overflow-hidden rounded-lg border-2 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
           <div className="relative flex h-full w-[120px] items-center justify-center">
             <IconMap
-              className="group-hover:rotate-4 transition-all duration-100 group-hover:scale-110"
+              className="transition-all duration-100 group-hover:rotate-3 group-hover:scale-110"
               size={50}
             />
             <div
@@ -40,7 +40,7 @@ export const Activities = () => {
         <div className="group flex cursor-pointer flex-row overflow-hidden rounded-lg border-2 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800">
           <div className="relative flex h-full w-[120px] items-center justify-center">
             <IconDeviceGamepad2
-              className="group-hover:rotate-4 transition-all duration-200 group-hover:scale-110"
+              className="transition-all duration-200 group-hover:rotate-3 group-hover:scale-110"
               size={50}
             />
             <div

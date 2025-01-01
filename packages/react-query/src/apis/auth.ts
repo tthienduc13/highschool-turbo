@@ -8,6 +8,18 @@ import {
 
 import axiosServices from "../lib/axios.ts";
 
+export const login = async ({ email }: { email: string }) => {
+  try {
+    const { data } = await axiosServices.post(endpointAuth.EMAIL, {
+      email: email,
+    });
+    return data;
+  } catch (error) {
+    console.log("Error while login by login", error);
+    throw error;
+  }
+};
+
 export const googleAuthentication = async ({
   email,
   fullName,

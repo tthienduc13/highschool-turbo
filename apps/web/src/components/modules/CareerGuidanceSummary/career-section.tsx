@@ -1,15 +1,14 @@
 import { CareerPath } from "@highschool/interfaces";
 import { useRecommendMajorQuery } from "@highschool/react-query/queries";
+import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@highschool/ui/components/ui/carousel";
 
-import { IconCashBanknote } from "@tabler/icons-react";
+import {
+  IconArrowRight,
+  IconCashBanknote,
+  IconMinus,
+  IconPlus,
+} from "@tabler/icons-react";
 
 const formattedAmount = (amount: number) => {
   return new Intl.NumberFormat("vi-VN", {
@@ -18,11 +17,23 @@ const formattedAmount = (amount: number) => {
   }).format(amount);
 };
 
-export const CareerSection = () => {
+interface CareerSectionProps {
+  setSelectedMajor: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedMajor: string | null;
+}
+
+export const CareerSection = ({
+  setSelectedMajor,
+  selectedMajor,
+}: CareerSectionProps) => {
   const { data, isLoading } = useRecommendMajorQuery({
     isHardCode: true,
-    limit: 5,
+    limit: 6,
   });
+
+  if (isLoading) {
+    return;
+  }
 
   return (
     <div className="flex flex-col gap-8">
@@ -35,40 +46,17 @@ export const CareerSection = () => {
           Dưới đây là những nghề gợi ý phù hợp với bạn
         </p>
       </div>
-      <div className="group w-full">
-        <Carousel
-          opts={{
-            dragFree: true,
-
-            align: "start",
-          }}
-          className="w-full px-4"
-        >
-          <CarouselContent className="items-stretch">
-            {data?.data?.map((career) => {
-              return (
-                <CarouselItem
-                  key={career.name}
-                  className="h-full items-stretch md:basis-1/2 lg:basis-1/3"
-                >
-                  <RecommendCard key={career.name} career={career} />
-                </CarouselItem>
-              );
-            })}
-          </CarouselContent>
-          <CarouselPrevious
-            style={{
-              zIndex: 10000,
-            }}
-            className="left-0 hidden group-hover:flex"
-          />
-          <CarouselNext
-            style={{
-              zIndex: 10000,
-            }}
-            className="right-0 hidden group-hover:flex"
-          />
-        </Carousel>
+      <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(300,1fr))] items-stretch gap-4">
+        {data?.data?.map((career) => {
+          return (
+            <RecommendCard
+              selectedMajor={selectedMajor ?? ""}
+              key={career.name}
+              career={career}
+              setSelectedMajor={setSelectedMajor}
+            />
+          );
+        })}
       </div>
     </div>
   );
@@ -76,14 +64,20 @@ export const CareerSection = () => {
 
 interface RecommendCardProps {
   career: CareerPath;
+  setSelectedMajor: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedMajor: string;
 }
 
-const RecommendCard = ({ career }: RecommendCardProps) => {
+const RecommendCard = ({
+  career,
+  setSelectedMajor,
+  selectedMajor,
+}: RecommendCardProps) => {
   return (
-    <Card className="h-full p-4">
-      <CardContent className="h-full p-0">
-        <div className="flex flex-col gap-2">
-          <h2 className="font-bold">{career.name}</h2>
+    <Card className="flex h-full flex-col p-4 dark:bg-gray-800">
+      <CardContent className="flex flex-1 flex-col p-0">
+        <div className="flex flex-1 flex-col gap-2">
+          <h2 className="text-lg font-bold">{career.name}</h2>
           <span className="w-fit rounded-full bg-green-500/20 px-1 text-xs">
             {career.chanceToFindJob}% cơ hội việc làm
           </span>
@@ -94,9 +88,44 @@ const RecommendCard = ({ career }: RecommendCardProps) => {
               {formattedAmount(career.maxSalary)}
             </span>
           </div>
-          <p className="text text-muted-foreground text-xs">
+          <p className="text text-muted-foreground line-clamp-4 text-xs">
             {career.description}
           </p>
+          <div className="flex flex-col gap-2">
+            <p>Các ngành liên quan</p>
+            <div className="flex flex-col gap-1 pl-2 text-sm">
+              {career.majors.map((major) => (
+                <div
+                  key={major.majorCode}
+                  className="flex flex-row items-center justify-between"
+                >
+                  <p>{major.name}</p>
+                  <div className="cursor-pointer rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    {selectedMajor === major.majorCode ? (
+                      <IconMinus
+                        onClick={() => setSelectedMajor(null)}
+                        size={16}
+                      />
+                    ) : (
+                      <IconPlus
+                        onClick={() => setSelectedMajor(major.majorCode)}
+                        size={16}
+                      />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="mt-auto flex w-full justify-end">
+            <Button
+              size="sm"
+              className="group w-fit transition-all duration-300"
+            >
+              Tìm hiểu thêm
+              <IconArrowRight className="hidden group-hover:block" />
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
