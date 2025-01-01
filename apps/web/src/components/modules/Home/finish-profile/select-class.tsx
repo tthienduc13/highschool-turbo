@@ -22,7 +22,7 @@ export const SelectClass = () => {
       steps={5}
       currentStep={currentStep}
     >
-      <div className="flex flex-col gap-6 pt-4">
+      <div className="flex flex-col gap-6">
         <Select
           value={selectedClass ?? ""}
           onValueChange={(grade) => {

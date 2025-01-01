@@ -93,7 +93,7 @@ function CourseDetailModule() {
               </div>
             </div>
           </div>
-          <ChapterList courseId={data?.id!} />
+          <ChapterList courseId={data?.id!} setSelectOpen={setSelectOpen} />
         </div>
       </Container>
     </WithFooter>

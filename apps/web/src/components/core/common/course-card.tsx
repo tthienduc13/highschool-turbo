@@ -16,7 +16,7 @@ interface CourseCardProps {
 export const CourseCard = ({ course }: CourseCardProps) => {
   return (
     <Link href={`/courses/${course.slug}`}>
-      <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700">
+      <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700 dark:bg-gray-800">
         <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
           <Image
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
@@ -32,7 +32,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             <h2 className="line-clamp-1 text-lg font-semibold md:text-2xl">
               {course.subjectName}
             </h2>
-            <div className="truncate text-sm font-medium">
+            <div className="truncate whitespace-pre-wrap text-sm font-medium">
               {course.information}
             </div>
           </div>
@@ -52,7 +52,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
               </div>
             </div>
           </div>
-          <div className="line-clamp-2 h-6 text-xs">
+          <div className="line-clamp-2 h-6 whitespace-pre-wrap text-xs">
             {course.subjectDescription}
           </div>
           <Separator />

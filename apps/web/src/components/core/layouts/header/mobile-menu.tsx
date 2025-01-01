@@ -48,7 +48,7 @@ export const MobileMenu = ({
     <>
       <div
         className={cn(
-          "ease-cubic-ease absolute left-0 top-20 h-[calc(100vh-80px)] w-full bg-[rgba(247,250,252,0.75)] backdrop-blur-sm transition-opacity duration-200 dark:bg-[rgba(23,25,35,0.75)]",
+          "ease-cubic-ease absolute left-0 top-20 z-40 h-[calc(100vh-80px)] w-full bg-[rgba(247,250,252,0.75)] backdrop-blur-sm transition-opacity duration-200 dark:bg-[rgba(23,25,35,0.75)]",
           isOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0",
@@ -57,7 +57,7 @@ export const MobileMenu = ({
       />
       <div
         className={cn(
-          "absolute inset-x-0 flex flex-col gap-8 px-6 py-6 pt-10 backdrop-blur-sm",
+          "absolute inset-x-0 z-50 flex flex-col gap-8 px-6 py-6 pt-10 backdrop-blur-sm",
           isOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0",

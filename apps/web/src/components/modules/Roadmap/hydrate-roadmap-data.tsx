@@ -1,4 +1,8 @@
+import { toast } from "sonner";
+
 import { useRef } from "react";
+
+import { useRouter } from "next/navigation";
 
 import { RoadmapType } from "@highschool/interfaces";
 import { useGetUserRoadmapQuery } from "@highschool/react-query/queries";
@@ -16,8 +20,14 @@ interface HydrateRoadMapDataProps {
 
 export const HydrateRoadMapData = ({ children }: HydrateRoadMapDataProps) => {
   const { data, isLoading } = useGetUserRoadmapQuery();
+  const router = useRouter();
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (!data?.data) {
+    toast.info("Dữ liệu của bạn chưa có");
+    router.push("/");
   }
   return <ContextLayer data={data?.data!}>{children}</ContextLayer>;
 };

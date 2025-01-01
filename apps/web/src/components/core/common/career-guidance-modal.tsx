@@ -87,9 +87,12 @@ export const CareerGuidanceModal = () => {
           ) : (
             <div className="flex flex-col gap-5 md:flex-row">
               <div
-                onClick={() =>
-                  isDoneMbti ? null : router.push("/career-guidance/mbti")
-                }
+                onClick={() => {
+                  if (!isDoneMbti) {
+                    router.push("/career-guidance/mbti");
+                    setOpen(false);
+                  }
+                }}
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "flex min-h-[150px] w-full cursor-pointer",
@@ -110,6 +113,7 @@ export const CareerGuidanceModal = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         router.push("/career-guidance/mbti");
+                        setOpen(false);
                       }}
                     >
                       Làm lại
@@ -125,9 +129,12 @@ export const CareerGuidanceModal = () => {
                 )}
               </div>
               <div
-                onClick={() =>
-                  isDoneHolland ? null : router.push("/career-guidance/holland")
-                }
+                onClick={() => {
+                  if (!isDoneHolland) {
+                    router.push("/career-guidance/holland");
+                    setOpen(false);
+                  }
+                }}
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "min-h-[150px] w-full cursor-pointer",
@@ -148,6 +155,7 @@ export const CareerGuidanceModal = () => {
                       onClick={(e) => {
                         e.stopPropagation();
                         router.push("/career-guidance/holland");
+                        setOpen(false);
                       }}
                     >
                       Làm lại

@@ -125,7 +125,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
                   data-id={tab}
                   type="button"
                   className={cn(
-                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
+                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
                     currentPathName === tab.href &&
                       "text-blue-700 dark:text-blue-200",
                   )}
@@ -155,7 +155,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
                   data-id={tab}
                   type="button"
                   className={cn(
-                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700",
+                    "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
                     currentPathName === tab.href &&
                       "text-blue-700 dark:text-blue-200",
                   )}

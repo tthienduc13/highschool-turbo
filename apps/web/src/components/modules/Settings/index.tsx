@@ -1,6 +1,7 @@
 import { IconSettings } from "@tabler/icons-react";
 
 import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
 
 import { AvatarSetting } from "./avatar";
 import { DangerZone } from "./danger";
@@ -15,7 +16,7 @@ function SettingsModule() {
   return (
     <WithFooter>
       {" "}
-      <div className="mx-auto w-full max-w-4xl">
+      <Container maxWidth="4xl">
         <div className="flex w-full flex-col gap-12">
           <div className="flex items-center gap-3">
             <IconSettings size={32} />
@@ -33,7 +34,7 @@ function SettingsModule() {
             <DangerZone />
           </div>
         </div>
-      </div>
+      </Container>
     </WithFooter>
   );
 }

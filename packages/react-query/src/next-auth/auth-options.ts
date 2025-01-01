@@ -81,7 +81,6 @@ export const AuthOptions: NextAuthConfig = {
         const response = await googleAuthentication(googleLoginInfo);
         if (!response.data) return false;
 
-        console.log("User info", response.data);
         const userInfo = response.data;
         user.userId = userInfo.userId;
         user.email = userInfo.email;

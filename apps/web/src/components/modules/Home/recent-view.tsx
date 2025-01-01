@@ -45,7 +45,7 @@ export const RecentView = () => {
         {data?.items.slice(0, 4).map((item) => (
           <Link
             className="w-full"
-            key={item.idDocument}
+            key={String(item.time)}
             href={
               item.typeDocument === DocumentType.Subject
                 ? `/courses/${item.slugDocument}`

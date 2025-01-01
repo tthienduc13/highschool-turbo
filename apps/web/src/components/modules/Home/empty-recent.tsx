@@ -114,7 +114,8 @@ export const EmptyRecent = () => {
               size="lg"
               className="h-12 rounded-xl !text-base shadow-lg"
             >
-              <IconBooks className="!size-6" /> Tạo tài liệu
+              <IconFileTypePdf className="!size-6" />
+              Tạo tài liệu
             </Button>
           ) : (
             <Button
@@ -122,7 +123,7 @@ export const EmptyRecent = () => {
               size="lg"
               className="h-12 rounded-xl !text-base shadow-lg"
             >
-              <IconFileTypePdf className="!size-6" />
+              <IconBooks className="!size-6" />
               Xem các môn học
             </Button>
           )}

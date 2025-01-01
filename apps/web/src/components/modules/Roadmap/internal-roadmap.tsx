@@ -129,7 +129,7 @@ function Roadmap() {
     // <FullPage>
     <div
       className="fixed left-0 top-0 h-screen w-screen"
-      style={{ zIndex: 100 }}
+      style={{ zIndex: 40 }}
     >
       <ReactFlow
         nodes={nodes}

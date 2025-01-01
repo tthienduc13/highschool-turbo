@@ -19,15 +19,17 @@ import {
   IconHistory,
   IconLoader2,
   IconLock,
+  IconSettings,
 } from "@tabler/icons-react";
 
 import AnimatedCircularProgressBar from "@/components/core/common/animated-progress-bar";
 
 interface ChapterListProps {
   courseId: string;
+  setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const ChapterList = ({ courseId }: ChapterListProps) => {
+export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
   const { slug } = useParams();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -86,19 +88,26 @@ export const ChapterList = ({ courseId }: ChapterListProps) => {
         <h2 className="text-xl font-semibold md:text-2xl">
           Chương trong khoá học ({data?.data.items.length ?? 0})
         </h2>
-        <Button
-          variant={isEnroll ? "destructive" : "default"}
-          disabled={isPending}
-          onClick={isEnroll ? handleUnEnroll : handleEnroll}
-        >
-          {isPending ? (
-            <IconLoader2 className="animate-spin" />
-          ) : isEnroll ? (
-            "Xoá khoá học"
-          ) : (
-            "Tham gia khoá học"
-          )}
-        </Button>
+        {!curriculumId ? (
+          <Button onClick={() => setSelectOpen(true)} variant="outline">
+            <IconSettings />
+            Chọn chương trình học
+          </Button>
+        ) : (
+          <Button
+            variant={isEnroll ? "destructive" : "default"}
+            disabled={isPending}
+            onClick={isEnroll ? handleUnEnroll : handleEnroll}
+          >
+            {isPending ? (
+              <IconLoader2 className="animate-spin" />
+            ) : isEnroll ? (
+              "Xoá khoá học"
+            ) : (
+              "Tham gia khoá học"
+            )}
+          </Button>
+        )}
       </div>
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] items-stretch gap-4">
         {data?.data?.subjectModel?.enrollmentProgress && (
