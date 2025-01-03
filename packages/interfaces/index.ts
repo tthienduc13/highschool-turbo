@@ -19,3 +19,5 @@ export * from "./career-path";
 export * from "./roadmap";
 export * from "./quiz";
 export * from "./university";
+export * from "./curriculum";
+export * from "./news";

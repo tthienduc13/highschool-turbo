@@ -82,6 +82,7 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
       </div>
       <div className="flex w-full flex-row gap-x-2 px-4 pb-2 md:w-full">
         <Button
+          onClick={() => router.push("/kho-tai-lieu/" + data.documentSlug)}
           size={isDesktop ? "lg" : "sm"}
           variant="ghost"
           className="flex-1 border-gray-50 dark:border-gray-800"

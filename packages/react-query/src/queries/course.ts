@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   enrollCourse,
+  getCategories,
   getCourseBySlug,
   getCourses,
   unEnrollCourse,
@@ -48,5 +49,12 @@ export const useUnEnrollMutation = () => {
   return useMutation({
     mutationKey: ["unenroll"],
     mutationFn: unEnrollCourse,
+  });
+};
+
+export const useCategoriesQuery = () => {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategories,
   });
 };

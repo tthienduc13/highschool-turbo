@@ -1,6 +1,6 @@
 import { Metadata, Pagination } from "@highschool/interfaces";
 
-import axiosServices from "../lib/axios.ts";
+import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 
 type QueryParams = Record<string, string | number | boolean | undefined | null>;
 
@@ -15,7 +15,7 @@ async function fetchPaginatedData<T>(
       ),
     );
 
-    const response = await axiosServices.get(endpoint, {
+    const response = await axiosClientWithoutAuth.get(endpoint, {
       params: filteredParams,
     });
     const paginationHeader = response.headers["x-pagination"];

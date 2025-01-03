@@ -15,3 +15,9 @@ export interface Course {
   view: number;
   numberEnrollment: null;
 }
+
+export interface CourseCategory {
+  id: string;
+  categoryName: string;
+  categorySlug: string;
+}

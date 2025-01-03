@@ -1,85 +1,121 @@
-"use client";
+import Image from "next/image";
 
-export default function FeedBack() {
-  const cards = [
-    {
-      title: "Xuân Thành",
-      description:
-        "HighSchool là một nền tảng học tập trực tuyến tuyệt vời cho học sinh trung học. Đặc biệt, tính năng trợ giúp thông minh giúp tôi giải quyết mọi thắc mắc nhanh chóng và hiệu quả.",
-      color: "bg-green-500",
-      rotate: "rotate-2 sm:rotate-6",
-    },
-    {
-      title: "Thiện Đức",
-      description:
-        "HighSchool thực sự là một nguồn tài nguyên học tập đa dạng và phong phú cho học sinh trung học. Hệ thống lộ trình học tập thông minh giúp tôi theo dõi được quá trình học và điều chỉnh cách học phù hợp với bản thân.",
-      color: "bg-red-400",
-      rotate: "",
-    },
-    {
-      title: "Huy Trần",
-      description:
-        "Tôi rất hài lòng với trải nghiệm học tập tại HighSchool. Từ việc quản lý kiến thức, theo dõi lộ trình học đến hệ thống trợ giúp thông minh, mọi thứ đều được thiết kế để giúp học sinh trung học đạt kết quả tốt nhất. ",
-      color: "bg-orange-400",
-      rotate: "-rotate-2 sm:-rotate-6",
-    },
-    {
-      title: "Nguyễn Thanh",
-      description:
-        "Ứng dụng này là một người bạn đồng hành đáng tin cậy trên hành trình học tập của tôi. Tôi đặc biệt yêu thích cách mà HighSchool cung cấp nội dung phù hợp với nhu cầu học tập của mỗi học sinh.",
-      color: "bg-purple-400",
-      rotate: "rotate-3 sm:rotate-6",
-    },
-    {
-      title: "Sơn Hoàng Lê",
-      description:
-        "HighSchool không chỉ là nơi để học tập mà còn là nơi truyền cảm hứng. Các bài giảng sáng tạo và hệ thống hỗ trợ tuyệt vời đã giúp tôi tiến bộ nhanh chóng trong các môn học khó.",
-      color: "bg-pink-400",
-      rotate: "-rotate-3 sm:-rotate-6",
-    },
-  ];
+import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
+export const FeedBack = () => {
   return (
-    <main className="relative mt-[60px] h-screen overflow-y-scroll bg-black md:mt-[100px]">
-      <div className="wrapper">
-        <section className="sticky top-0 grid min-h-screen w-full place-content-center bg-slate-950 text-white">
-          <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:54px_54px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
-
-          <h1 className="px-4 text-center text-3xl font-semibold leading-[150%] tracking-tight sm:px-8 sm:text-5xl 2xl:text-7xl">
-            Từ những học sinh trải nghiệm <br className="hidden sm:inline" />
-            HighSchool và thấy sự khác biệt! 👇
-          </h1>
-        </section>
+    <div className="mx-auto flex w-full max-w-[560px] flex-col gap-12 p-4 text-center md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14">
+      <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 text-center">
+        <h2 className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent">
+          Tại sao lại sử dụng Highschool?
+        </h2>
+        <p className="text-4xl font-bold md:text-5xl">
+          Được tin tưởng bởi nhiều học sinh
+        </p>
       </div>
+      <div className="relative mx-auto flex w-full max-w-[300px] items-center justify-center md:max-w-2xl lg:max-w-3xl">
+        <Card className="absolute left-10 top-[20px] w-full max-w-[260px] -translate-x-1/3 -rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
+          <CardContent className="relative h-full w-full p-0">
+            <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5"></div>
+            <div className="flex h-full w-full flex-col gap-4 p-5">
+              <div className="flex flex-row items-start justify-between">
+                <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                  <Image
+                    src={
+                      "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png"
+                    }
+                    alt="logo"
+                    height={120}
+                    width={120}
+                    priority
+                    className="object-contain"
+                  />
+                </div>
+                <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
+                  Lớp 10
+                </div>
+              </div>
+              <p className="text-lg font-semibold">Nguyễn Lê Thiện Đức</p>
+              <p>
+                HighSchool là một nền tảng học tập trực tuyến tuyệt vời cho học
+                sinh trung học.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
-      <section className="mx-auto w-full bg-slate-950 text-white">
-        <div className="mx-auto w-full max-w-[1280px]">
-          <div className="flex flex-col justify-between px-4 sm:px-8 lg:flex-row lg:px-16">
-            <div className="mb-16 grid gap-8 lg:mb-0 lg:gap-2">
-              {cards.map((card, index) => (
-                <figure
-                  key={index}
-                  className="sticky top-0 grid min-h-screen place-content-center"
-                >
-                  <article
-                    className={`${card.color} ${card.rotate} grid h-auto w-full place-content-center gap-4 rounded-lg p-4 transition-all duration-300 ease-in-out hover:scale-105 sm:h-72 sm:w-[30rem]`}
-                  >
-                    <h1 className="text-xl font-semibold sm:text-2xl">
-                      {card.title}
-                    </h1>
-                    <p className="text-sm sm:text-base">{card.description}</p>
-                  </article>
-                </figure>
-              ))}
+        <Card className="relative z-10 w-full max-w-[260px] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
+          <CardContent className="relative h-full w-full p-0">
+            <div className="bg-custom-gradient absolute h-full w-full opacity-5"></div>
+            <div className="flex h-full w-full flex-col gap-4 p-5">
+              <div className="flex flex-row items-start justify-between">
+                <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                  <Image
+                    src={
+                      "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png"
+                    }
+                    alt="logo"
+                    height={120}
+                    width={120}
+                    priority
+                    className="object-contain"
+                  />
+                </div>
+                <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
+                  Lớp 10
+                </div>
+              </div>
+              <p className="text-lg font-semibold">Nguyễn Lê Thiện Đức</p>
+              <p>
+                HighSchool là một nền tảng học tập trực tuyến tuyệt vời cho học
+                sinh trung học.
+              </p>
             </div>
-            <div className="hidden h-screen place-content-center lg:sticky lg:top-0 lg:grid">
-              <h1 className="px-4 text-center text-2xl font-medium leading-[120%] tracking-tight sm:px-8 sm:text-4xl">
-                Những ý kiến <br /> từ các học sinh😎
-              </h1>
+          </CardContent>
+        </Card>
+
+        <Card className="absolute right-10 top-[20px] z-20 w-full max-w-[260px] translate-x-1/3 rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
+          <CardContent className="relative h-full w-full p-0">
+            <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5"></div>
+            <div className="flex h-full w-full flex-col gap-4 p-5">
+              <div className="flex flex-row items-start justify-between">
+                <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                  <Image
+                    src={
+                      "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png"
+                    }
+                    alt="logo"
+                    height={120}
+                    width={120}
+                    priority
+                    className="object-contain"
+                  />
+                </div>
+                <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
+                  Lớp 10
+                </div>
+              </div>
+              <p className="text-lg font-semibold">Nguyễn Lê Thiện Đức</p>
+              <p>
+                HighSchool là một nền tảng học tập trực tuyến tuyệt vời cho học
+                sinh trung học.
+              </p>
             </div>
-          </div>
+          </CardContent>
+        </Card>
+      </div>
+      <div className="flex flex-col items-center gap-5">
+        <p className="mt-10 text-3xl font-bold md:text-4xl">Tài trợ bởi</p>
+        <div className="relative h-[100px] w-[200px]">
+          <Image
+            src="/fpt-logo.png"
+            alt="fpt logo"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   );
-}
+};

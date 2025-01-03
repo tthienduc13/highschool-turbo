@@ -17,3 +17,6 @@ export * from "./roadmap.ts";
 export * from "./quiz.ts";
 export * from "./auth.ts";
 export * from "./university.ts";
+export * from "./curriculum.ts";
+export * from "./document.ts";
+export * from "./news.ts";

@@ -111,8 +111,8 @@ export const Banner = () => {
                 <IconSchool size={18} className="mr-2" /> Học tập nhưng thú vị
                 hơn
               </Button>
-              <h2 className="text-lg lg:text-2xl xl:text-3xl">
-                HighSchoolVN cung cấp một nền tảng học tập toàn diện, giúp học
+              <h2 className="text-lg font-semibold lg:text-2xl xl:text-3xl">
+                HighSchool cung cấp một nền tảng học tập toàn diện, giúp học
                 sinh trung học tiếp cận các tài liệu học tập, theo dõi tiến độ.
               </h2>
             </div>

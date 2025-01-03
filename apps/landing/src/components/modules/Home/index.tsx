@@ -1,6 +1,6 @@
 import { Banner } from "./banner";
 import { Features } from "./features";
-import FeedBack from "./feed-back";
+import { FeedBack } from "./feed-back";
 import { Subscribe } from "./subscribe";
 
 function HomeModule() {

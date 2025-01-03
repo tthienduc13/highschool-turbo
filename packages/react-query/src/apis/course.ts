@@ -1,7 +1,12 @@
-import { endpointCourse } from "@highschool/endpoints";
-import { Course, Pagination, ResponseModel } from "@highschool/interfaces";
+import { endpointCategory, endpointCourse } from "@highschool/endpoints";
+import {
+  Course,
+  CourseCategory,
+  Pagination,
+  ResponseModel,
+} from "@highschool/interfaces";
 
-import axiosServices from "../lib/axios.ts";
+import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 import fetchPaginatedData from "./common.ts";
 
 export const getCourses = async ({
@@ -33,6 +38,18 @@ export const getCourseBySlug = async ({
     return data;
   } catch (error) {
     console.log("Error while getting course by slug", error);
+    throw error;
+  }
+};
+
+export const getCategories = async (): Promise<CourseCategory[]> => {
+  try {
+    const { data } = await axiosClientWithoutAuth.get(
+      endpointCategory.GET_ALL_CATEGORIES,
+    );
+    return data;
+  } catch (error) {
+    console.error("Error while getting category", error);
     throw error;
   }
 };

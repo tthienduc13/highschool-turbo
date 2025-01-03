@@ -182,8 +182,47 @@ const endpointQuiz = {
 const endpointUniversity = {
   GET_UNI_LIST: `${prefixUserServices}${prefixFirstVersion}/university`,
 };
+const endpointCurriculum = {
+  GET: `${prefixDocumentServices}${prefixFirstVersion}/curriculum`,
+};
+
+const endpointCategory = {
+  GET_ALL_CATEGORIES: `${prefixDocumentServices}${prefixFirstVersion}/categories`,
+};
+
+const endpointDocument = {
+  GET_DOCUMENTS: `${prefixDocumentServices}${prefixFirstVersion}/documents/advance`,
+  GET_BY_SLUG: (slug: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/document/slug/${slug}`,
+};
+
+const endpointDocumentMedia = {
+  GET_DOCUMENT: (documentId: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/document/${documentId}`,
+  UP_LOAD: (documentId: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/document/${documentId}`,
+  DOWNLOAD_DOCUMENT: (documentId: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/document/download/${documentId}`,
+};
+
+const endpointNews = {
+  GET_HOT_NEWS: `${prefixMediaServices}${prefixFirstVersion}/hotnews`,
+  GET_POPULAR_NEWS: `${prefixMediaServices}${prefixFirstVersion}/popularnews`,
+  GET_NEWS: `${prefixMediaServices}${prefixFirstVersion}/news`,
+  GET_NEW_SLUG: (slug: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/new/slug/${slug}`,
+  GET_AUTHOR_NEW: (authorId: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/new/authorId/${authorId}`,
+  GET_RELATED_NEW: (newTagId: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/relatednews/${newTagId}`,
+};
 
 export {
+  endpointNews,
+  endpointDocumentMedia,
+  endpointDocument,
+  endpointCategory,
+  endpointCurriculum,
   endpointUniversity,
   endpointQuiz,
   endpointSearch,

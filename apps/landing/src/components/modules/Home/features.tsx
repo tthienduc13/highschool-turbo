@@ -6,6 +6,7 @@ import { useRef } from "react";
 
 import Link from "next/link";
 
+import { env } from "@highschool/env";
 import { cn } from "@highschool/ui/lib/utils";
 
 import { IconArrowRight } from "@tabler/icons-react";
@@ -26,19 +27,19 @@ interface FeatureItemProps {
 export const Features = () => {
   const featuresItems: FeatureItemProps[] = [
     {
-      title: "Flash Card & Quiz",
+      title: "Thẻ ghi nhớ và bộ câu hỏi",
       description1:
-        "Tăng hiệu suất học thông qua Flash card & quiz. Giúp ghi nhớ kiến thức nhanh chóng và hiệu quả hơn.",
+        "Tăng hiệu suất học thông qua thẻ ghi nhớ và bộ câu hỏi. Giúp ghi nhớ kiến thức nhanh chóng và hiệu quả hơn.",
       description2:
-        " Tự tạo bộ flashcard của riêng bạn hoặc khám phá kho flashcard khổng lồ từ cộng đồng.",
-      externalLink: "https://app.highschool.vn",
+        " Tự tạo bộ thẻ ghi nhớ của riêng bạn hoặc khám phá kho thẻ ghi nhớ khổng lồ từ cộng đồng.",
+      externalLink: env.NEXT_PUBLIC_APP_URL,
       backgroundColor: "#84D2F6",
       videoUrl:
         "https://res.cloudinary.com/dyu2kc3bl/video/upload/v1735375360/dsumjckqfox4tcloiwxq.mp4",
       thumbailUrl: "/images/screenshots/flashcard-screenshot.png",
     },
     {
-      title: "AI Recommend",
+      title: "Gợi ý từ AI",
       description1:
         "Cá nhân hóa trải nghiệm học tập để bạn luôn cảm thấy hứng thú với tiến độ của mình.",
       description2:
@@ -48,7 +49,7 @@ export const Features = () => {
       className: "-skew-y-6 skew-x-6",
     },
     {
-      title: "Knownledge Map",
+      title: "Lộ trình học",
       description1:
         "Cung cấp một kế hoạch học tập rõ ràng và chi tiết, giúp dễ dàng theo dõi tiến độ và đạt được mục tiêu học tập.",
       description2:
@@ -57,11 +58,11 @@ export const Features = () => {
       backgroundColor: "#fe9b8b",
     },
     {
-      title: "Note To Book",
+      title: "Giải đố và ôn tập",
       description1:
-        "Cung cấp một bảng trắng để học sinh có thể kéo và tổ chức các tài liệu học tập từ trang web.",
+        "Định kì theo tuần, tháng sẽ có những bài giải đố và ôn tập giúp củng cố kiến thức và rèn luyện kỹ năng.",
       description2:
-        "Tạo ra môi trường học tập cá nhân hóa phù hợp với phong cách riêng của bạn.",
+        "Nhiều phần quà hấp dẫn được gửi tặng cho bạn sau khi hoàn thành",
       externalLink: "",
       backgroundColor: "#8beefe",
     },
@@ -129,8 +130,16 @@ export const Features = () => {
   return (
     <div
       id="features"
-      className="mx-auto mt-[60px] flex w-full max-w-[560px] flex-col p-4 md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14"
+      className="mx-auto mt-[60px] flex w-full max-w-[560px] flex-col gap-12 p-4 md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14"
     >
+      <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 text-center">
+        <h2 className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent">
+          Highschool có gì?
+        </h2>
+        <p className="text-4xl font-bold md:text-5xl">
+          Tối ưu hoá quy trình học tập, gợi ý lộ trình, tài liệu phù hợp cho bạn
+        </p>
+      </div>
       {featuresItems.map((item, index) => {
         const isEven = index % 2 === 0;
         return (
