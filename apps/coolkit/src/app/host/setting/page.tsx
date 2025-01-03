@@ -1,7 +1,9 @@
 import SettingModule from "@/components/modules/setting";
 
 function SettingPage() {
-  return <SettingModule />;
+    return (
+        <SettingModule />
+    );
 }
 
 export default SettingPage;

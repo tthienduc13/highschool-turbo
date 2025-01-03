@@ -1,28 +1,25 @@
-import SnowEffect from "@/components/animation/snow/snow-effect";
-import { LobbyHeader } from "@/components/core/main/lobby-header";
+'use client'
 
-import { LobbyPlayer } from "./lobby-player";
-import { LobbySetting } from "./lobby-setting";
+import { ChannelProvider } from "ably/react"
+import { JoinModule } from "./join-module"
+import { useRouter, useSearchParams } from "next/navigation"
 
-export const JoinModule = () => {
-  return (
-    <div
-      className="min-h-screen bg-opacity-20"
-      style={{
-        backgroundColor: "rgb(11, 194, 207)",
-        backgroundImage:
-          "linear-gradient(rgb(49, 170, 224), rgb(187, 221, 255))",
-      }}
-    >
-      <SnowEffect count={150} />
 
-      <div className="relative z-10 flex flex-col items-center">
-        <LobbyHeader gameId="97456710" />
+export const JoinProviderModule = () => {
 
-        <LobbyPlayer count={1} />
+    const searchParam = useSearchParams()
+    const router = useRouter()
 
-        <LobbySetting />
-      </div>
-    </div>
-  );
-};
+    const id = searchParam.get('id')
+
+    if (!id) {
+        router.back()
+    }
+
+
+    return (
+        <ChannelProvider channelName={`room:${id}`}>
+            <JoinModule roomId={id as string} />
+        </ChannelProvider>
+    )
+}
