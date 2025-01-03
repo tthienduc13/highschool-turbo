@@ -1,9 +1,7 @@
 import PlayerRegisterModule from "@/components/modules/player-register";
 
 function RegisterPage() {
-    return (
-        <PlayerRegisterModule />
-    );
+  return <PlayerRegisterModule />;
 }
 
 export default RegisterPage;

@@ -1,9 +1,5 @@
-"use client"
-
+"use client";
 
 export default function CreateKetModule() {
-
-    return (
-        <div>pkpp</div>
-    );
+  return <div>pkpp</div>;
 }

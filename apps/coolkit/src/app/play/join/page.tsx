@@ -1,9 +1,7 @@
 import PlayerJoinModule from "@/components/modules/player-join";
 
 function PlayPage() {
-    return (
-        <PlayerJoinModule />
-    );
+  return <PlayerJoinModule />;
 }
 
 export default PlayPage;

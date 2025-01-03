@@ -1,12 +1,9 @@
-"use client"
+"use client";
 
 import { JoinProviderModule } from "@/components/modules/join";
 
 function JoinPage() {
-
-    return (
-        <JoinProviderModule />
-    );
+  return <JoinProviderModule />;
 }
 
 export default JoinPage;

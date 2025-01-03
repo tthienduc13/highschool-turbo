@@ -2,7 +2,11 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["static.wikia.nocookie.net", "res.cloudinary.com", "play-lh.googleusercontent.com"],
+    domains: [
+      "static.wikia.nocookie.net",
+      "res.cloudinary.com",
+      "play-lh.googleusercontent.com",
+    ],
     remotePatterns: [
       {
         protocol: "https",

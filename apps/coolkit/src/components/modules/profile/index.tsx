@@ -1,5 +1,3 @@
 export default function ProfileModule() {
-    return (
-        <div>okokoko</div>
-    )
+  return <div>okokoko</div>;
 }

@@ -1,9 +1,7 @@
 import CreateKetModule from "@/components/modules/ket/create";
 
 function CreatePage() {
-    return (
-        <CreateKetModule />
-    );
+  return <CreateKetModule />;
 }
 
 export default CreatePage;
