@@ -1,7 +1,12 @@
-import { JoinModule } from "@/components/modules/join";
+"use client"
+
+import { JoinProviderModule } from "@/components/modules/join";
 
 function JoinPage() {
-  return <JoinModule />;
+
+    return (
+        <JoinProviderModule />
+    );
 }
 
 export default JoinPage;
