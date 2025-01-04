@@ -62,7 +62,7 @@ export const GettingStarted = () => {
           Kết quả của bạn sẽ được cải thiện từ hôm nay
         </p>
       </div>
-      <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(400,1fr))] items-stretch gap-6">
+      <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(420,1fr))] items-stretch gap-6">
         {StartedItems.map((item, index) => (
           <div key={index} className="flex h-full w-full flex-col gap-2">
             {item.logo}
