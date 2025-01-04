@@ -19,14 +19,16 @@ interface HydrateRoadMapDataProps {
 }
 
 export const HydrateRoadMapData = ({ children }: HydrateRoadMapDataProps) => {
-  const { data, isLoading } = useGetUserRoadmapQuery();
+  const { data, isLoading, isSuccess } = useGetUserRoadmapQuery();
   const router = useRouter();
   const isDataMissing = !data?.data?.contentJson;
 
   useEffect(() => {
-    if (isDataMissing) {
-      toast.info("Dữ liệu của bạn chưa có");
-      router.push("/");
+    if (isSuccess) {
+      if (isDataMissing) {
+        toast.info("Dữ liệu của bạn chưa có");
+        router.push("/");
+      }
     }
   }, [isDataMissing, router]);
 
@@ -35,7 +37,7 @@ export const HydrateRoadMapData = ({ children }: HydrateRoadMapDataProps) => {
   }
 
   if (isDataMissing) {
-    return null; // Render nothing while navigation happens.
+    return null;
   }
 
   return <ContextLayer data={data?.data!}>{children}</ContextLayer>;

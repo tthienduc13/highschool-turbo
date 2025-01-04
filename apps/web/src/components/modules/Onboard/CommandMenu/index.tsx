@@ -31,8 +31,7 @@ function OnboardCommandMenuModule() {
             "Điều hướng giữa các bộ thẻ, thư mục, khoá học nhanh chóng"
           )
         }
-        nextVariant={interacted ? "default" : "outline"}
-        nextDisabled={!interacted}
+        nextVariant={"default"}
       >
         {!interacted && (
           <Card className="w-full max-w-lg border-gray-200 bg-transparent p-10 pb-12 dark:border-gray-700">

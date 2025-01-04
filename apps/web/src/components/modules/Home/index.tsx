@@ -34,10 +34,10 @@ function HomeModule() {
         <FinishProfile />
         <RecentView />
         {data?.subjects && <RecommendCourse data={data?.subjects!} />}
-        <TopFlascard />
-        <Activities />
         {data?.flashcards && <RecommendFlashcard data={data?.flashcards!} />}
         {data?.documents && <RecommendDocument data={data?.documents!} />}
+        <Activities />
+        <TopFlascard />
       </Container>
     </WithFooter>
   );
