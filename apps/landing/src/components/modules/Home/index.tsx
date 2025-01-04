@@ -1,7 +1,8 @@
 import { Banner } from "./banner";
 import { Features } from "./features";
 import { FeedBack } from "./feed-back";
-import { Subscribe } from "./subscribe";
+import { GettingStarted } from "./getting-started";
+import { Info } from "./info";
 
 function HomeModule() {
   return (
@@ -9,7 +10,8 @@ function HomeModule() {
       <Banner />
       <Features />
       <FeedBack />
-      <Subscribe />
+      <Info />
+      <GettingStarted />
     </>
   );
 }

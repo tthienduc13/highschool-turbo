@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { useShortcut } from "@highschool/hooks";
-import { useRecentViewQuery } from "@highschool/react-query/queries";
 import {
   Dialog,
   DialogContent,
@@ -122,6 +121,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
     if (option.loadable) {
       option.isLoading = true;
       setOptions([...options]);
+
       return;
     }
     onClose();
@@ -249,22 +249,23 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
         {open && (
           <ShortcutsManager
             filteredOptions={filteredOptions}
-            selectionIndex={selectionIndex}
-            setSelectionIndex={setSelectionIndex}
-            setIgnoreMouse={setIgnoreMouse}
             resultsRef={resultsRef}
             scrollRef={scrollRef}
+            selectionIndex={selectionIndex}
+            setIgnoreMouse={setIgnoreMouse}
+            setSelectionIndex={setSelectionIndex}
             onSubmit={(ctrl) => onSubmit(selectionIndex, ctrl)}
           />
         )}
         <div className="border-b-2 border-b-[#E2E8F0] px-7 py-5 dark:border-b-[#2D3748]">
           <Input
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Bạn muốn điều hướng tới đâu?"
             className="border-none p-0 !text-2xl shadow-none outline-none focus-visible:ring-0"
+            placeholder="Bạn muốn điều hướng tới đâu?"
+            onChange={(e) => setQuery(e.target.value)}
           />
         </div>
         <div
+          ref={scrollRef}
           className={cn(
             "command-ease relative my-4 px-4 transition-[height] duration-300",
             filteredOptions.length > 6 ? "overflow-auto" : "overflow-hidden",
@@ -274,7 +275,6 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
               ? 64
               : 72 * (filteredOptions || []).slice(0, 6).length,
           }}
-          ref={scrollRef}
         >
           {!!filteredOptions.length && (
             <div
@@ -286,22 +286,22 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
                 transform: `translateY(${selectionIndex * 72}px)`,
               }}
             >
-              <div className="h-full w-full rounded-xl bg-[#e2e8f080] dark:bg-[#2d374880]"></div>
+              <div className="h-full w-full rounded-xl bg-[#e2e8f080] dark:bg-[#2d374880]" />
             </div>
           )}
           {filteredOptions.map((o, i) => (
             <OptionComponent
               key={i}
-              index={i}
               icon={o.icon}
-              name={o.name}
+              ignoreMouse={ignoreMouse}
+              index={i}
+              isLoading={o.isLoading}
               label={o.label}
+              name={o.name}
               resultsRef={resultsRef}
               selectionIndex={selectionIndex}
-              setSelectionIndex={setSelectionIndex}
-              isLoading={o.isLoading}
-              ignoreMouse={ignoreMouse}
               setIgnoreMouse={setIgnoreMouse}
+              setSelectionIndex={setSelectionIndex}
               onClick={(e) => onSubmit(i, e.ctrlKey)}
             />
           ))}
@@ -345,18 +345,19 @@ const OptionComponent = ({
   const highlightColor = useColorMode("#171923", "#F7FAFC");
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
-      className="relative flex h-[72px] w-full cursor-pointer items-center gap-x-4 p-4"
       ref={(el) => {
         resultsRef.current[index] = el;
       }}
+      className="relative flex h-[72px] w-full cursor-pointer items-center gap-x-4 p-4"
       onClick={onClick}
+      onPointerEnter={() => {
+        if (!ignoreMouse) setSelectionIndex(index);
+      }}
       onPointerMove={() => {
         setIgnoreMouse(false);
         setSelectionIndex(index);
-      }}
-      onPointerEnter={() => {
-        if (!ignoreMouse) setSelectionIndex(index);
       }}
     >
       <div
@@ -418,6 +419,7 @@ const ShortcutsManager: React.FC<ShortcutsManagerProps> = ({
     let { height } = rect;
 
     const containerRect = container.getBoundingClientRect();
+
     height = height - 72;
 
     const visible =
@@ -437,6 +439,7 @@ const ShortcutsManager: React.FC<ShortcutsManagerProps> = ({
       setSelectionIndex((i) => {
         const next = i < filteredEvents.length - 1 ? i + 1 : 0;
         const scrollTo = next;
+
         if (!isScrolledIntoView(resultsRef.current[scrollTo]!))
           resultsRef.current[scrollTo]!.scrollIntoView(false);
 

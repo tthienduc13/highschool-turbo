@@ -25,6 +25,7 @@ interface ShareModalProps {
 
 export const ShareModal = ({ open, onClose, pathName }: ShareModalProps) => {
   const currentPath = `${env.NEXT_PUBLIC_APP_URL}${pathName}`;
+
   return (
     <Credenza open={open} onOpenChange={onClose}>
       <CredenzaContent>

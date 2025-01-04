@@ -5,7 +5,6 @@ import { toast } from "sonner";
 import { useRef, useState } from "react";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { MBTIResult } from "@highschool/interfaces";
 import { useUpdateStudentMBTIMutation } from "@highschool/react-query/queries";
@@ -28,7 +27,6 @@ export const ResultView = () => {
   const printRef = useRef(null);
   const mbtiType = useMBTITestContext((s) => s.mbtiType);
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const updateStudent = useUpdateStudentMBTIMutation();
 
@@ -62,7 +60,9 @@ export const ResultView = () => {
     "advantages",
     "disadvantages",
   ];
+
   if (!result) return;
+
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-y-5">
       <div className="flex flex-row items-center justify-between">
@@ -79,7 +79,7 @@ export const ResultView = () => {
             <IconLoader2 className="animate-spin" />
           ) : (
             <>
-              <IconDownload size={18} className="mr-2" />
+              <IconDownload className="mr-2" size={18} />
               Tải xuống kết quả
             </>
           )}
@@ -94,11 +94,11 @@ export const ResultView = () => {
         <div className="flex flex-col items-center gap-4 md:flex-row">
           <div className="relative h-[200px] w-[200px] overflow-hidden rounded-full">
             <Image
-              src={result?.imageUrl}
-              alt={result?.title}
               fill
+              alt={result?.title}
               className="object-cover"
               sizes="200px"
+              src={result?.imageUrl}
             />
           </div>
           <h2 className="text-center text-2xl font-semibold md:text-start">
@@ -129,7 +129,7 @@ export const ResultView = () => {
       <div className="mt-4 flex items-center justify-end">
         <Button disabled={updateStudent.isPending} onClick={handleUpdate}>
           {updateStudent.isPending ? (
-            <IconLoader2 size={18} className="animate-spin" />
+            <IconLoader2 className="animate-spin" size={18} />
           ) : (
             "Lưu kết quả"
           )}

@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 import { useRef } from "react";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { env } from "@highschool/env";
@@ -22,6 +23,7 @@ interface FeatureItemProps {
   className?: string;
   videoUrl?: string;
   thumbailUrl?: string;
+  imageUrl?: string;
 }
 
 export const Features = () => {
@@ -46,7 +48,8 @@ export const Features = () => {
         " Đề xuất các tài liệu và lộ trình học phù hợp với từng học sinh, giúp tối ưu hóa quá trình học tập.",
       externalLink: "https://app.highschool.vn",
       backgroundColor: "#fed48b",
-      className: "-skew-y-6 skew-x-6",
+      className: "",
+      imageUrl: "/images/ai.png",
     },
     {
       title: "Lộ trình học",
@@ -140,57 +143,72 @@ export const Features = () => {
           Tối ưu hoá quy trình học tập, gợi ý lộ trình, tài liệu phù hợp cho bạn
         </p>
       </div>
-      {featuresItems.map((item, index) => {
-        const isEven = index % 2 === 0;
-        return (
-          <div key={index}>
-            <div
-              className={cn(
-                "flex w-full gap-8 lg:items-center lg:justify-between lg:gap-16",
-                isEven
-                  ? "flex-col-reverse lg:flex-row"
-                  : "flex-col-reverse lg:flex-row-reverse",
-              )}
-            >
+      <div>
+        {" "}
+        {featuresItems.map((item, index) => {
+          const isEven = index % 2 === 0;
+          return (
+            <div key={index}>
               <div
-                data-aos="zoom-in"
                 className={cn(
-                  item.className,
-                  "h-[300px] w-full max-w-[550px] transform rounded-xl p-10 transition-all duration-200 hover:scale-110 lg:h-[400px]",
+                  "flex w-full gap-8 lg:items-center lg:justify-between lg:gap-16",
+                  isEven
+                    ? "flex-col-reverse lg:flex-row"
+                    : "flex-col-reverse lg:flex-row-reverse",
                 )}
-                style={{
-                  backgroundColor: item.backgroundColor,
-                }}
               >
-                <div className="relative h-full w-full">
-                  {item.videoUrl && item.thumbailUrl && (
-                    <VideoPlayer
-                      thumbnailUrl={item.thumbailUrl}
-                      videoUrl={item.videoUrl}
-                    />
+                <div
+                  data-aos="zoom-in"
+                  className={cn(
+                    item.className,
+                    "h-[300px] w-full max-w-[550px] transform rounded-xl p-10 transition-all duration-200 hover:scale-110 lg:h-[400px]",
                   )}
-                </div>
-              </div>
-              <div className="max-w-[550px]">
-                <h2 className="mb-5 text-3xl font-semibold">{item.title}</h2>
-                <div className="mb-4 flex flex-col gap-3">
-                  <p className="text-xl">{item.description1}</p>
-                  <p className="text-xl">{item.description2}</p>
-                </div>
-                <Link
-                  href={item.externalLink || "/"}
-                  className="flex items-center gap-1 text-xl font-medium underline"
+                  style={{
+                    backgroundColor: item.backgroundColor,
+                  }}
                 >
-                  Xem thêm <IconArrowRight className="h-5 w-5" />
-                </Link>
+                  <div className="relative h-full w-full">
+                    {item.videoUrl && item.thumbailUrl && (
+                      <VideoPlayer
+                        thumbnailUrl={item.thumbailUrl}
+                        videoUrl={item.videoUrl}
+                      />
+                    )}
+                    {item.imageUrl && (
+                      <div className="relative h-full w-full">
+                        <Image
+                          src={item.imageUrl}
+                          alt={item.title}
+                          fill
+                          className="rounded-xl object-fill"
+                          priority={false}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="max-w-[550px]">
+                  <h2 className="mb-5 text-3xl font-semibold">{item.title}</h2>
+                  <div className="mb-4 flex flex-col gap-3">
+                    <p className="text-xl">{item.description1}</p>
+                    <p className="text-xl">{item.description2}</p>
+                  </div>
+                  <Link
+                    href={item.externalLink || "/"}
+                    className="flex items-center gap-1 text-xl font-medium underline"
+                  >
+                    Xem thêm <IconArrowRight className="h-5 w-5" />
+                  </Link>
+                </div>
               </div>
+              {index < featuresItems.length - 1 && (
+                <SvgCurve flipped={index % 2 !== 0} />
+              )}
             </div>
-            {index < featuresItems.length - 1 && (
-              <SvgCurve flipped={index % 2 !== 0} />
-            )}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

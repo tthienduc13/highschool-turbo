@@ -68,11 +68,11 @@ export const ConfirmModal = ({
           </Button>
           <Button
             disabled={isLoading}
+            variant={destructive ? "destructive" : "default"}
             onClick={() => {
               onConfirm();
               onClose();
             }}
-            variant={destructive ? "destructive" : "default"}
           >
             {isLoading ? (
               <IconLoader2 className="animate-spin" />

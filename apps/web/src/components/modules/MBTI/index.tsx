@@ -24,6 +24,7 @@ const TestContainer = () => {
   const [showInstruction, setShowInstruction] = useState<boolean>(true);
   const result = useMBTITestContext((s) => s.result);
   const submitAnswer = useSubmitMBTITestMutation();
+
   return (
     <div className="mx-auto max-w-4xl">
       {showInstruction ? (

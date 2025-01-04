@@ -1,0 +1,7 @@
+node_modules
+**/**/node_modules
+**/**/.next
+**/**/public
+
+scripts/*.ts
+tests/*.ts

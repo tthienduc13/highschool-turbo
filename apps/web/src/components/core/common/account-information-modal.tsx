@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { SelectCity } from "@/components/modules/Home/finish-profile/select-city";
 import { SelectClass } from "@/components/modules/Home/finish-profile/select-class";
@@ -26,6 +26,7 @@ export const AccountInformationModal = () => {
     };
 
     menuEventChannel.on("openInformationModal", handler);
+
     return () => {
       menuEventChannel.off("openInformationModal", handler);
     };
@@ -49,7 +50,7 @@ export const AccountInformationModal = () => {
   };
 
   return (
-    <Modal isOpen={open} onClose={() => setOpen(false)} withoutFooter>
+    <Modal withoutFooter isOpen={open} onClose={() => setOpen(false)}>
       <Components />
     </Modal>
   );

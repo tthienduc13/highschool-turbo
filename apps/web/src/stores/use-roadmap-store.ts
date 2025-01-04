@@ -53,7 +53,6 @@ export const RoadMapContext = createContext<RoadMapStore | null>(null);
 
 export const useRoadMapContext = <T>(
   selector: (state: RoadMapState) => T,
-  equalityFn?: (left: T, right: T) => boolean,
 ): T => {
   const store = useContext(RoadMapContext);
   if (!store) throw new Error("Missing StudyContext.Provider in the tree");

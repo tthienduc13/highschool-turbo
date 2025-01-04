@@ -104,18 +104,6 @@ export const FeedBack = () => {
           </CardContent>
         </Card>
       </div>
-      <div className="flex flex-col items-center gap-5">
-        <p className="mt-10 text-3xl font-bold md:text-4xl">Tài trợ bởi</p>
-        <div className="relative h-[100px] w-[200px]">
-          <Image
-            src="/fpt-logo.png"
-            alt="fpt logo"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
-      </div>
     </div>
   );
 };

@@ -54,6 +54,7 @@ export const getQueryParams = (
     });
 
     const types = getQuestionTypesFromBitwise(settings.types);
+
     return {
       settings: {
         questionCount: settings.count,

@@ -12,31 +12,38 @@ export function Developers() {
     {
       quote:
         "Implementation was seamless and the results exceeded our expectations. The platform's flexibility is remarkable.",
-      name: "Michael Rodriguez",
+      name: "Nguyễn Xuân Thành",
       designation: "CTO at InnovateSphere",
-      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k51q.png",
+      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png",
     },
     {
       quote:
         "This solution has significantly improved our team's productivity. The intuitive interface makes complex tasks simple.",
-      name: "Emily Watson",
+      name: "Tống Trần Lê Huy",
       designation: "Operations Director at CloudScale",
-      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q2.png",
+      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png",
     },
     {
       quote:
         "Outstanding support and robust features. It's rare to find a product that delivers on all its promises.",
-      name: "James Kim",
+      name: "Nguyễn Duy Thanh",
       designation: "Engineering Lead at DataPro",
-      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q3.png",
+      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png",
     },
     {
       quote:
         "The scalability and performance have been game-changing for our organization. Highly recommend to any growing business.",
-      name: "Lisa Thompson",
+      name: "Lê Hoàng Sơn",
       designation: "VP of Technology at FutureNet",
-      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k54q.png",
+      src: "https://res.cloudinary.com/dyu2kc3bl/image/upload/v1734500933/highschool/user-image/wyc29ngk9rue8bsa3k5q.png",
     },
   ];
-  return <AnimatedTestimonials testimonials={testimonials} />;
+  return (
+    <div className="flex flex-col">
+      <h2 className="text-center text-3xl font-semibold">
+        Gặp gỡ các nhà phát triển
+      </h2>
+      <AnimatedTestimonials testimonials={testimonials} />
+    </div>
+  );
 }

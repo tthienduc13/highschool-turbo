@@ -22,12 +22,7 @@ import {
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
 
-import {
-  IconCheck,
-  IconChevronDown,
-  IconWand,
-  IconX,
-} from "@tabler/icons-react";
+import { IconCheck, IconChevronDown, IconX } from "@tabler/icons-react";
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -153,6 +148,7 @@ export const MultiSelect = React.forwardRef<
         setIsPopoverOpen(true);
       } else if (event.key === "Backspace" && !event.currentTarget.value) {
         const newSelectedValues = [...selectedValues];
+
         newSelectedValues.pop();
         setSelectedValues(newSelectedValues);
         onValueChange(newSelectedValues);
@@ -164,10 +160,12 @@ export const MultiSelect = React.forwardRef<
         const newSelectedValues = selectedValues.filter(
           (value) => value !== option,
         );
+
         setSelectedValues(newSelectedValues);
         onValueChange(newSelectedValues);
       } else if (!limit || selectedValues.length < limit) {
         const newSelectedValues = [...selectedValues, option];
+
         setSelectedValues(newSelectedValues);
         onValueChange(newSelectedValues);
       }
@@ -184,6 +182,7 @@ export const MultiSelect = React.forwardRef<
 
     const clearExtraOptions = () => {
       const newSelectedValues = selectedValues.slice(0, maxCount);
+
       setSelectedValues(newSelectedValues);
       onValueChange(newSelectedValues);
     };
@@ -193,6 +192,7 @@ export const MultiSelect = React.forwardRef<
         handleClear();
       } else {
         const allValues = options.map((option) => option.value);
+
         setSelectedValues(allValues);
         onValueChange(allValues);
       }
@@ -200,19 +200,19 @@ export const MultiSelect = React.forwardRef<
 
     return (
       <Popover
+        modal={modalPopover}
         open={isPopoverOpen}
         onOpenChange={setIsPopoverOpen}
-        modal={modalPopover}
       >
         <PopoverTrigger asChild>
           <Button
             ref={ref}
             {...props}
-            onClick={handleTogglePopover}
             className={cn(
               "flex h-auto min-h-12 w-full items-center justify-between rounded-md border-2 bg-inherit p-1 hover:bg-inherit [&_svg]:pointer-events-auto",
               className,
             )}
+            onClick={handleTogglePopover}
           >
             {selectedValues.length > 0 ? (
               <div className="flex w-full items-center justify-between">
@@ -220,6 +220,7 @@ export const MultiSelect = React.forwardRef<
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const option = options.find((o) => o.value === value);
                     const IconComponent = option?.icon;
+
                     return (
                       <Badge
                         key={value}
@@ -272,8 +273,8 @@ export const MultiSelect = React.forwardRef<
                     }}
                   />
                   <Separator
-                    orientation="vertical"
                     className="flex h-full min-h-6"
+                    orientation="vertical"
                   />
                   <IconChevronDown className="text-muted-foreground mx-2 h-4 cursor-pointer" />
                 </div>
@@ -289,8 +290,8 @@ export const MultiSelect = React.forwardRef<
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="max-h-[--radix-popover-content-available-height] w-[--radix-popover-trigger-width] p-0"
           align="start"
+          className="max-h-[--radix-popover-content-available-height] w-[--radix-popover-trigger-width] p-0"
           onEscapeKeyDown={() => setIsPopoverOpen(false)}
         >
           <Command>
@@ -309,11 +310,11 @@ export const MultiSelect = React.forwardRef<
                   return (
                     <CommandItem
                       key={option.value}
-                      onSelect={() => !isDisabled && toggleOption(option.value)}
                       className={cn(
                         "cursor-pointer",
                         isDisabled && "cursor-not-allowed opacity-50",
                       )}
+                      onSelect={() => !isDisabled && toggleOption(option.value)}
                     >
                       <div
                         className={cn(
@@ -339,20 +340,20 @@ export const MultiSelect = React.forwardRef<
                   {selectedValues.length > 0 && (
                     <>
                       <CommandItem
-                        onSelect={handleClear}
                         className="flex-1 cursor-pointer justify-center"
+                        onSelect={handleClear}
                       >
                         Xoá
                       </CommandItem>
                       <Separator
-                        orientation="vertical"
                         className="flex h-full min-h-6"
+                        orientation="vertical"
                       />
                     </>
                   )}
                   <CommandItem
-                    onSelect={() => setIsPopoverOpen(false)}
                     className="max-w-full flex-1 cursor-pointer justify-center"
+                    onSelect={() => setIsPopoverOpen(false)}
                   >
                     Đóng
                   </CommandItem>

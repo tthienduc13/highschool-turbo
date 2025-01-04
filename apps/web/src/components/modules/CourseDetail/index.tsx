@@ -19,7 +19,6 @@ import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
 import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-moda";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
-import { formatDueDate } from "@/utils/time";
 
 import { ChapterList } from "./chapter-list";
 
@@ -66,10 +65,10 @@ function CourseDetailModule() {
           <div className="flex flex-col gap-5 md:flex-row">
             <div className="bg-background relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 shadow-md md:w-[250px] dark:border-gray-700">
               <Image
-                src={data?.image ?? "/logo.svg"}
                 fill
-                className="rounded-2xl object-contain"
                 alt={`Image of ${data?.subjectName || "Subject"}`}
+                className="rounded-2xl object-contain"
+                src={data?.image ?? "/logo.svg"}
               />
             </div>
             <div className="flex flex-1 flex-col gap-4">
