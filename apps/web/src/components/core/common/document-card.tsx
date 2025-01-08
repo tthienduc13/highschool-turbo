@@ -25,7 +25,7 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
 
   const documentName = data.documentName || "Chưa đặt tên";
   const subjectName =
-    `${data.subjectCurriculum?.subjectName} - ${data.subjectCurriculum?.curriculumName}` ||
+    `${data.subjectCurriculum?.subjectName ?? ""} - ${data.subjectCurriculum?.curriculumName ?? ""}` ||
     "Chưa biết";
 
   const likeCount = data.like ?? 0;
@@ -54,7 +54,7 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
             <div className="text-xs font-medium md:text-sm">{subjectName}</div>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <p className="text-sm font-semibold md:text-base">
+            <p className="text-sm font-semibold">
               {data.documentYear} - {data.documentYear + 1}
             </p>
             <div className="flex flex-row items-center gap-x-4">

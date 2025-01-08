@@ -1,8 +1,8 @@
 "use client";
 
-import { useGetKetCategoryQuery } from "@/api/ket/query";
-import { CardQuestion } from "@/components/core/common/cards/card-question";
-import { LoadingCard } from "@/components/core/common/loading/loading-card";
+import { useGetKetCategoryQuery } from "@/app/api/ket/query";
+import { CardQuestion } from "@/components/core/commons/cards/card-question";
+import { LoadingCard } from "@/components/core/commons/loading/loading-card";
 
 import { FeatureNav } from "./feature-nav";
 

@@ -97,7 +97,10 @@ export const SelectSubject = () => {
               Quay lại
             </Button>
           </div>
-          <Button disabled={updateUser.isPending} onClick={handleDone}>
+          <Button
+            disabled={updateUser.isPending || selectedSubjects?.length! < 4}
+            onClick={handleDone}
+          >
             {updateUser.isPending ? (
               <IconLoader2 className="animate-spin" />
             ) : (

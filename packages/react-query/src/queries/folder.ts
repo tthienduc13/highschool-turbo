@@ -50,14 +50,16 @@ export const useUserFoldersQuery = ({
   pageNumber,
   flashcardId,
   documentId,
+  isMyFolder,
 }: {
   pageSize: number;
   pageNumber: number;
+  isMyFolder?: boolean
   flashcardId?: string;
   documentId?: string;
 }) => {
   return useQuery({
-    queryKey: ["user-folders", flashcardId, documentId, pageNumber, pageSize],
+    queryKey: ["user-folders", flashcardId, documentId, pageNumber, pageSize,isMyFolder],
     queryFn: () =>
       getUserFolderList({
         pageNumber: pageNumber,

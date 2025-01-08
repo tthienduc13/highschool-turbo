@@ -1,5 +1,3 @@
-import { useSession } from "next-auth/react";
-
 import dynamic from "next/dynamic";
 
 import {
@@ -23,12 +21,6 @@ const FolderList = dynamic(
   { ssr: false },
 );
 export const InnerProfile = () => {
-  const profile = useProfile();
-  const { data: session } = useSession();
-
-  console.log(profile.isMe);
-
-  console.log(session);
   return (
     <div className="mx-auto w-full max-w-4xl">
       <div className="flex flex-col gap-12">
@@ -37,7 +29,7 @@ export const InnerProfile = () => {
           <TabsList className="mb-5 md:mb-10">
             <TabsTrigger value="overview">Thông tin tổng quan</TabsTrigger>
             <TabsTrigger value="flashcard">Thẻ ghi nhớ</TabsTrigger>
-            {profile.isMe && <TabsTrigger value="folder">Thư mục</TabsTrigger>}
+            <TabsTrigger value="folder">Thư mục</TabsTrigger>
             {/* <TabsTrigger value="documents">Tài liệu</TabsTrigger> */}
           </TabsList>
           <TabsContent value="overview">

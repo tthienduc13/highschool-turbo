@@ -110,7 +110,13 @@ const config = {
         "inset-gray-shadow": "inset 0 -10px #00000033",
         "inset-gray-shadow-md": "inset 0 -6px #00000033",
         "inset-gray-shadow-sm": "inset 0 -2px #00000033",
+        "3d": "2px 2px 0px 0px #123BAA",
+        "3d-light": "1px 1px 0px 0px #1A4ED6",
+        "3d-dark": "4px 4px 0px 0px #123BAA",
+        "3d-hover": "4px 4px 0px 0px #0F2E89",
+        "3d-active": "0px 0px 0px 0px transparent",
       },
+
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

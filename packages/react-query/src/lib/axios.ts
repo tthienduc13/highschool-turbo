@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 import { env } from "@highschool/env";

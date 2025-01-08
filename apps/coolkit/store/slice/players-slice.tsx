@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { Player } from "@/api/user/type";
+import { Player } from "@/app/api/user/type";
 
 type PlayersState = ReadonlyArray<Player>;
 

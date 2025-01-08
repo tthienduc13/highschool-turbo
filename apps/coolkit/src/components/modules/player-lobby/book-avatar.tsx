@@ -15,7 +15,7 @@ import {
   IconLock,
 } from "@tabler/icons-react";
 
-import { Avatar } from "@/api/user/type";
+import { Avatar } from "@/app/api/user/type";
 import { RarityBadge } from "@/components/animation/tag/rarity-badge";
 
 const ITEMS_PER_PAGE = 16;

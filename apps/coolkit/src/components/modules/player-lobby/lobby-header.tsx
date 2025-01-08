@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 import { IconBookFilled, IconClock, IconUsersGroup } from "@tabler/icons-react";
 
-import { Room } from "@/api/game/type";
+import { Room } from "@/app/api/game/type";
 
 import { selectPlayerCount } from "../../../../store/slice/players-slice";
 

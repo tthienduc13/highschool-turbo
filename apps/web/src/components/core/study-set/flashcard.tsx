@@ -125,7 +125,6 @@ export const Flashcard: React.FC<FlashcardProps> = ({
               onClick={(e) => {
                 e.stopPropagation();
                 toast.info("Chức năng đang phát triển");
-                // onRequestEdit();
               }}
             >
               <Star className="!size-5" />

@@ -8,7 +8,7 @@ export const FlashcardsEmpty = ({ h = "500px" }: FlashcardsEmptyProps) => {
   return (
     <div
       style={{ minHeight: h }}
-      className={`flex w-full items-center justify-center overflow-hidden rounded-xl border p-8 shadow-xl`}
+      className={`flex w-full items-center justify-center overflow-hidden rounded-xl border-2 border-gray-200 p-8 shadow-xl dark:border-gray-700`}
     >
       <div className="flex w-full flex-col">
         <HighschoolMessage message="Không có thẻ ghi nhớ" />

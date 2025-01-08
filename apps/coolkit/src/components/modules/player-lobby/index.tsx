@@ -2,9 +2,9 @@
 
 import { useDispatch } from "react-redux";
 
-import { Room } from "@/api/game/type";
-import { useLobbyInformationQuery } from "@/api/ket/query";
-import { Player } from "@/api/user/type";
+import { Room } from "@/app/api/game/type";
+import { useLobbyInformationQuery } from "@/app/api/ket/query";
+import { Player } from "@/app/api/user/type";
 
 import { setPlayers } from "../../../../store/slice/players-slice";
 import { LobbyHeader } from "./lobby-header";

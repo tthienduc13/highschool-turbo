@@ -21,7 +21,7 @@ interface HydrateRoadMapDataProps {
 export const HydrateRoadMapData = ({ children }: HydrateRoadMapDataProps) => {
   const { data, isLoading, isSuccess } = useGetUserRoadmapQuery();
   const router = useRouter();
-  const isDataMissing = !data?.data?.contentJson;
+  const isDataMissing = data?.data === null || !data?.data?.contentJson;
 
   useEffect(() => {
     if (isSuccess) {

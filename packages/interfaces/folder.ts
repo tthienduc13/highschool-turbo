@@ -8,7 +8,15 @@ export interface Folder {
   createdAt: Date;
   isFlashcardInclude: boolean;
   isDocumentInclude: boolean;
+  visibility: FolderVisibility
 }
+
+export enum FolderVisibility {
+    Public = "Public",
+    Private = "Private",
+}
+
+
 
 // TODO: Add document interface
 export interface UserFolder {

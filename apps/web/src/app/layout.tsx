@@ -26,12 +26,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  console.log(session?.user.accessToken);
+
+  console.log("session", session?.user.accessToken);
   return (
     <html lang="vi" suppressHydrationWarning>
       <body
         className={cn(
-          "w-screen bg-[#F7FAFC] font-sans dark:bg-[#171923]",
+          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50",
           sofiaFontVN.variable,
         )}
       >

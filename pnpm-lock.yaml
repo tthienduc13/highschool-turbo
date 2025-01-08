@@ -121,6 +121,9 @@ importers:
       '@highschool/interfaces':
         specifier: workspace:*
         version: link:../../packages/interfaces
+      '@highschool/react-query':
+        specifier: workspace:*
+        version: link:../../packages/react-query
       '@highschool/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -148,6 +151,9 @@ importers:
       '@keyv/tiered':
         specifier: ^2.0.2
         version: 2.0.2
+      '@radix-ui/react-visually-hidden':
+        specifier: ^1.1.0
+        version: 1.1.1(@types/react-dom@19.0.2(@types/react@19.0.1))(@types/react@19.0.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@reduxjs/toolkit':
         specifier: ^2.5.0
         version: 2.5.0(react-redux@9.2.0(@types/react@19.0.1)(react@19.0.0)(redux@5.0.1))(react@19.0.0)
@@ -166,9 +172,18 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
+      compressorjs:
+        specifier: ^1.2.1
+        version: 1.2.1
       cookies-next:
         specifier: ^5.0.2
         version: 5.0.2(next@15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
+      dotenv-cli:
+        specifier: ^7.4.4
+        version: 7.4.4
+      framer-motion:
+        specifier: ^11.13.1
+        version: 11.15.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       keyv:
         specifier: ^5.2.3
         version: 5.2.3
@@ -181,6 +196,9 @@ importers:
       next:
         specifier: 15.1.0
         version: 15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next-auth:
+        specifier: 5.0.0-beta.25
+        version: 5.0.0-beta.25(next@15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -453,6 +471,9 @@ importers:
       next-auth:
         specifier: 5.0.0-beta.25
         version: 5.0.0-beta.25(next@15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)
+      next-nprogress-bar:
+        specifier: ^2.4.3
+        version: 2.4.3
       next-themes:
         specifier: ^0.4.3
         version: 0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -4230,6 +4251,9 @@ packages:
       nodemailer:
         optional: true
 
+  next-nprogress-bar@2.4.3:
+    resolution: {integrity: sha512-069WmFALkpCyKiIy89q6dWcPiHhUmXh6EZz6oLpOS7zsIunNOYLscloKFALjIQNCOg3ZO9dWRPowYW4ULho4HQ==}
+
   next-themes@0.4.4:
     resolution: {integrity: sha512-LDQ2qIOJF0VnuVrrMSMLrWGjRMkq+0mpgl6e0juCLqdJ+oo8Q84JRWT6Wh11VDQKkMMe+dVzDKLWs5n87T+PkQ==}
     peerDependencies:
@@ -4300,6 +4324,9 @@ packages:
     resolution: {integrity: sha512-/vBvz5Jfr9dT/aFWd0FIRf+T/Q2WBsLENygUaFUqstqsycmZAP/t5BvFJTK0viFmSUxiUKTUplWy5vt+rvKIxg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
     deprecated: This package is no longer supported.
+
+  nprogress-v2@1.0.4:
+    resolution: {integrity: sha512-HPhTEgqsQMFXXuaftvu6bevqEXvcQ/hogvkAswlcNyS9eRGjvo7wZY1O4H3aZS4Uq8oWSO6sL3dOj6Oq/ZJN5A==}
 
   oauth4webapi@3.1.4:
     resolution: {integrity: sha512-eVfN3nZNbok2s/ROifO0UAc5G8nRoLSbrcKJ09OqmucgnhXEfdIQOR4gq1eJH1rN3gV7rNw62bDEgftsgFtBEg==}
@@ -9464,6 +9491,10 @@ snapshots:
       next: 15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
 
+  next-nprogress-bar@2.4.3:
+    dependencies:
+      nprogress-v2: 1.0.4
+
   next-themes@0.4.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       react: 19.0.0
@@ -9557,6 +9588,8 @@ snapshots:
       gauge: 4.0.4
       set-blocking: 2.0.0
     optional: true
+
+  nprogress-v2@1.0.4: {}
 
   oauth4webapi@3.1.4: {}
 

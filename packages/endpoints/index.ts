@@ -1,6 +1,6 @@
 const prefixUserServices = "/users-service";
 const prefixDocumentServices = "/documents-service";
-const prefixDiscussionServices = "/discussion-service";
+const prefixGameServices = "/game-service";
 const prefixMediaServices = "/media-service";
 const prefixAnalyseServices = "/analyse-service";
 

@@ -297,8 +297,9 @@ export const EditorContextLayer = ({
           const state = storeRef.current!.getState();
           const push = () => void router.push(`/study-set/${state.slug}`);
 
-          if (mode == "edit") push();
-          else {
+          if (mode == "edit") {
+            state.created ? push() : apiCreate.mutate({ flashcardId: data.id });
+          } else {
             storeRef.current!.getState().setIsLoading(true);
             apiCreate.mutate({ flashcardId: data.id });
           }

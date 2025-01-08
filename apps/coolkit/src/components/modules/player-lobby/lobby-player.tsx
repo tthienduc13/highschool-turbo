@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { RoomEvent, RoomEventType } from "@/api/ket/type";
-import { Player } from "@/api/user/type";
+import { RoomEvent, RoomEventType } from "@/app/api/ket/type";
+import { Player } from "@/app/api/user/type";
 import { ButtonKet } from "@/components/ui/button";
 
 import {

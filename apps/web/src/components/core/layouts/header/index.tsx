@@ -1,14 +1,18 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 import { useEffect, useState } from "react";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
+import { cn } from "@highschool/ui/lib/utils";
 
 import { IconMenu, IconSearch, IconX } from "@tabler/icons-react";
 
@@ -32,11 +36,25 @@ const CreateFolderModal = dynamic(
 
 export const Header = () => {
   const { data: session, status } = useSession();
+  const { theme } = useTheme();
   const user = session?.user;
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [folderModalOpen, setFolderModalOpen] = useState(false);
   const [folderChildSetId, setFolderChildSetId] = useState<string>();
+
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const createFolder = (setId?: string) => {
@@ -63,7 +81,12 @@ export const Header = () => {
   }, []);
 
   return (
-    <header className="relative h-20 w-full items-center justify-center">
+    <header
+      className={cn(
+        "relative h-20 w-full items-center justify-center bg-gray-50 font-sans transition-all duration-200 ease-in-out dark:bg-gray-900/50",
+        isScrolled && "bg-white shadow-lg dark:bg-gray-950",
+      )}
+    >
       <CreateFolderModal
         isOpen={folderModalOpen}
         onClose={() => {
@@ -72,6 +95,25 @@ export const Header = () => {
         }}
         childSetId={folderChildSetId}
       />
+      <AnimatePresence>
+        {isScrolled && (
+          <motion.div
+            className="absolute -bottom-2 left-0 z-10 h-2 w-full"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.1, ease: "easeInOut" }}
+          >
+            <Image
+              src={theme === "dark" ? "/dark-wave.svg" : "/wave.svg"}
+              alt=""
+              width={1440}
+              height={8}
+              className="h-full w-full object-cover"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="mx-auto flex h-full w-full flex-row items-center justify-between px-6 py-4 md:px-8">
         <LeftNav onFolderClick={() => setFolderModalOpen(true)} />
         <div className="block md:hidden">

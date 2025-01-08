@@ -28,7 +28,7 @@ const padNextFour = (ranks: number[]) => {
   return [...ranks, last + 1, last + 2, last + 3, last + 4];
 };
 
-const MotionCard = motion(Card);
+const MotionCard = motion.create(Card);
 
 export const TermCard = forwardRef<TermCardRef, TermCardProps>(
   function TermCardInner(props, ref) {

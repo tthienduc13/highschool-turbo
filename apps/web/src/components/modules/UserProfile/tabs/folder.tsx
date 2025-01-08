@@ -20,6 +20,7 @@ export const FolderList = () => {
     : "Bạn chưa tạo thư mục nhớ nào";
 
   const { data, isLoading } = useUserFoldersQuery({
+    isMyFolder: profile.isMe,
     pageNumber: 1,
     pageSize: 100,
   });

@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 
-import { QuestionResponse } from "@/api/ket/type";
+import { QuestionResponse } from "@/app/api/ket/type";
 
 import { QuestionHeader } from "./question-header";
 

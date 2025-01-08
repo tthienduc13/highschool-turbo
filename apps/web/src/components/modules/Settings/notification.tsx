@@ -71,7 +71,7 @@ export const Notification = () => {
           <SelectTrigger>
             <SelectValue placeholder="Chọn thời gian" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent align="end">
             {TIMES.map((time) => (
               <SelectItem key={time} value={time}>
                 {time}

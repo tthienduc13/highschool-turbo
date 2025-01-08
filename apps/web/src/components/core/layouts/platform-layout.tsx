@@ -62,9 +62,13 @@ function PlatformLayout({
   const isHideHeader = hideHeaders.includes(pathName);
   return (
     <>
-      <TopLoadingBar />
       <div className="min-h-screen w-screen">
-        {!isHideHeader && <Header />}
+        {!isHideHeader && (
+          <div className="sticky top-0 z-50">
+            <Header />
+            <TopLoadingBar />
+          </div>
+        )}
         {children}
         <Toaster richColors position="top-center" />
         <SignupModal />

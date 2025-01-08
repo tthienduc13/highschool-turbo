@@ -14,11 +14,24 @@ export const TopLoadingBar = () => {
   useEffect(() => {
     const setRegex =
       /^\/study-set\/([a-zA-Z0-9-]+)(\/(learn|flashcards|test|match))?$/;
-    const profileRegex = /^\/@([a-zA-Z0-9-_]+)$/;
+    const profileRegex = /^\/profile\/([a-zA-Z0-9-_]+)$/;
     const folderRegex = /^\/@([a-zA-Z0-9-_]+)\/folders\/[^\/]*$/;
+    const coursesRegex = /^\/courses(\/[a-zA-Z0-9-]+)?$/;
+    const courseChapterRegex =
+      /^\/courses\/([a-zA-Z0-9-]+)\/chapters\/([a-zA-Z0-9-]+)$/;
+    const careerGuidanceRegex = /^\/career-guidance\/(mbti|holland|summary)$/;
+    const searchRegex = /^\/search\?q=.*$/;
 
     const unified = new RegExp(
-      `^(${[setRegex, profileRegex, folderRegex]
+      `^(${[
+        setRegex,
+        profileRegex,
+        folderRegex,
+        coursesRegex,
+        courseChapterRegex,
+        careerGuidanceRegex,
+        searchRegex,
+      ]
         .map((r) => r.source)
         .join("|")})$`,
     );
@@ -27,7 +40,7 @@ export const TopLoadingBar = () => {
       barRef.current?.continuousStart(20, 750);
       setTimeout(() => {
         barRef.current?.complete();
-      }, 1000); // Adjust this timeout as needed
+      }, 1000);
     }
   }, [pathname, searchParams]);
 
@@ -35,7 +48,7 @@ export const TopLoadingBar = () => {
     <LoadingBar
       ref={barRef}
       color="#ffa54c"
-      height={3}
+      height={4}
       waitingTime={500}
       transitionTime={500}
     />

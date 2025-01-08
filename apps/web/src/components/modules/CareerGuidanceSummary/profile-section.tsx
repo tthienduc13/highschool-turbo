@@ -54,34 +54,51 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
           <h2 className="text-xl font-semibold md:text-2xl">
             Tóm tắt từ kết quả
           </h2>
-          <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2">
-            <Card className="w-full border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
-              <CardContent className="flex flex-col gap-4 p-5">
-                <div className="flex flex-row items-center justify-between">
-                  <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
-                    Kiểm tra tính cách
-                  </h3>
-                  <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                    {userInfo?.data?.mbtiType}
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2">
+              <Card className="w-full border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+                <CardContent className="flex flex-col gap-4 p-5">
+                  <div className="flex flex-row items-center justify-between">
+                    <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
+                      Kiểm tra tính cách (MBTI)
+                    </h3>
+                    <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
+                      {userInfo?.data?.mbtiType}
+                    </div>
                   </div>
-                </div>
-                <p className="text-muted-foreground text-sm">
-                  {brief.mbtiBrief}
-                </p>
-              </CardContent>
-            </Card>
+                  <p className="text-muted-foreground text-sm">
+                    {brief.mbtiBrief}
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
+                <CardContent className="flex flex-col gap-4 p-5">
+                  <div className="flex flex-row items-center justify-between">
+                    <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
+                      Định hướng nghề nghiệp (Holland)
+                    </h3>
+                    <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
+                      {userInfo?.data?.hollandType}
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground text-sm">
+                    {brief.hollandBrief}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
             <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
                   <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
-                    Định hướng nghề nghiệp
+                    Bản thân
                   </h3>
                   <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                    {userInfo?.data?.hollandType}
+                    "Summary"
                   </div>
                 </div>
                 <p className="text-muted-foreground text-sm">
-                  {brief.hollandBrief}
+                  {brief.summaryBrief}
                 </p>
               </CardContent>
             </Card>

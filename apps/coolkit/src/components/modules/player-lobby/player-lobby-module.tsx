@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { Player } from "@/api/user/type";
+import { Player } from "@/app/api/user/type";
 
 import PlayerLobbyModule from ".";
 import { RootState } from "../../../../store/store";

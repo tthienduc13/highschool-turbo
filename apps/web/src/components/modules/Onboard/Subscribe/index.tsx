@@ -1,10 +1,7 @@
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
-import {
-  IconBrandFacebook,
-  IconBrandFacebookFilled,
-} from "@tabler/icons-react";
+import { IconBrandFacebookFilled } from "@tabler/icons-react";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
 import { PresentWrapper } from "@/components/core/common/onboard/present-wrapper";

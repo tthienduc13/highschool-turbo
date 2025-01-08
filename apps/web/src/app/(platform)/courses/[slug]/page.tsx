@@ -6,11 +6,12 @@ import {
 
 import { Metadata } from "next";
 
+import { Course } from "@highschool/interfaces";
 import { getCourseBySlug } from "@highschool/react-query/apis";
 
 import CourseDetailModule from "@/components/modules/CourseDetail";
 
-const metadataCache = new Map<string, any>();
+const metadataCache = new Map<string, Course>();
 
 export const generateMetadata = async ({
   params,
@@ -22,8 +23,8 @@ export const generateMetadata = async ({
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
     return {
-      title: cachedData.flashcardName,
-      description: cachedData.flashcardDescription,
+      title: cachedData?.subjectName,
+      description: cachedData?.subjectDescription,
     };
   }
 

@@ -1,4 +1,4 @@
-import { Rarity } from "@/api/user/type";
+import { Rarity } from "@/app/api/user/type";
 
 interface RarityBadgeProps {
   rarity: Rarity;

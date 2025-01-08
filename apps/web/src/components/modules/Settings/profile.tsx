@@ -19,8 +19,8 @@ export const Profile = () => {
 
   return (
     <Wrapper
-      heading="Profile"
-      description="Your username and public profile info"
+      heading="Thông tin cá nhân"
+      description="Tên người dùng và hồ sơ của bạn"
       additional={
         <Button
           onClick={() => router.push(`/profile/${session?.user.username}`)}

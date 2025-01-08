@@ -56,10 +56,10 @@ export const EmptyRecent = () => {
   const router = useRouter();
   const isTeacher = useIsTeacher();
   return (
-    <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white p-12 dark:border-gray-800/50 dark:bg-gray-800">
+    <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white px-6 py-10 md:p-12 dark:border-gray-800/50 dark:bg-gray-800">
       <div className="relative flex flex-col items-center justify-center gap-10 text-center">
         <div
-          className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
+          className="bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 via-transparent to-transparent opacity-30 blur-2xl"
           aria-hidden="true"
         />
         <div className="relative z-10 flex flex-row gap-[-12px]">

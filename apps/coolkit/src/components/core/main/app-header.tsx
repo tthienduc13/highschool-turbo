@@ -1,5 +1,5 @@
-import { MagicCreateNav } from "../common/navigation/magic-create-nav";
-import UserNav from "../common/navigation/user-nav";
+import { MagicCreateNav } from "../commons/navigation/magic-create-nav";
+import UserNav from "../commons/navigation/user-nav";
 import { SearchHeader } from "./search-header";
 
 export default function AppHeader() {

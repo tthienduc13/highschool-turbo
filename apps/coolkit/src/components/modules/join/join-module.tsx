@@ -3,8 +3,8 @@
 import { useChannel } from "ably/react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RoomEvent, RoomEventType } from "@/api/ket/type";
-import { Player } from "@/api/user/type";
+import { RoomEvent, RoomEventType } from "@/app/api/ket/type";
+import { Player } from "@/app/api/user/type";
 import SnowEffect from "@/components/animation/snow/snow-effect";
 import { LobbyHeader } from "@/components/core/main/lobby-header";
 

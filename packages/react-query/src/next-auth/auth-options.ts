@@ -1,12 +1,13 @@
 import { NextAuthConfig } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import EmailProvider from "next-auth/providers/email";
 import Google from "next-auth/providers/google";
 
 import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 
 import { googleAuthentication, login } from "../apis/auth.ts";
+
+
 
 const refreshAccessToken = async (token: JWT) => {
   try {

@@ -2,8 +2,8 @@
 
 import { motion } from "motion/react";
 
-import { ButtonAudio } from "@/components/core/common/button-screen/button-audio";
-import { ButtonScreen } from "@/components/core/common/button-screen/button-screen";
+import { ButtonAudio } from "@/components/core/commons/button-screen/button-audio";
+import { ButtonScreen } from "@/components/core/commons/button-screen/button-screen";
 
 export function QuestionHeader() {
   return (

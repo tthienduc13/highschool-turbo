@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 
-import { useCheckRoomMutation, useJoinRoomMutation } from "@/api/ket/query";
-import { Player } from "@/api/user/type";
+import { useCheckRoomMutation, useJoinRoomMutation } from "@/app/api/ket/query";
+import { Player } from "@/app/api/user/type";
 import { ButtonKet } from "@/components/ui/button";
 
 import { setLobby } from "../../../../store/slice/lobby-slice";

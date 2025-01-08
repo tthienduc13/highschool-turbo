@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 
-import { QuestionResponse } from "@/api/ket/type";
+import { QuestionResponse } from "@/app/api/ket/type";
 import MinimalCountdown from "@/components/animation/clock/minimal-countdown";
 import { ButtonKet } from "@/components/ui/button";
 import { renderColorAnswer } from "@/utils/helper-color";

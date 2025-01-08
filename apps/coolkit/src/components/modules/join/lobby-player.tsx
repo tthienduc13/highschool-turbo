@@ -8,8 +8,8 @@ import Image from "next/image";
 
 import { IconUsers } from "@tabler/icons-react";
 
-import { useKickPlayerMutation } from "@/api/ket/query";
-import { Player } from "@/api/user/type";
+import { useKickPlayerMutation } from "@/app/api/ket/query";
+import { Player } from "@/app/api/user/type";
 import { ButtonKet } from "@/components/ui/button";
 
 interface LobbyPlayerProps {

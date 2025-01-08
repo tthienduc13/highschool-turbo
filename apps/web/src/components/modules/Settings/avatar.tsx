@@ -53,7 +53,7 @@ export const AvatarSetting = () => {
           <Avatar className="size-24">
             <AvatarImage
               src={me?.image ?? "/logo.svg"}
-              alt={me?.fullname ?? "Người dùng Highschool"}
+              alt={me?.fullname ?? "Highschool Avatar"}
             />
           </Avatar>
           <div className="flex flex-row flex-wrap gap-2">

@@ -11,7 +11,7 @@ import { Slider } from "@highschool/ui/components/ui/slider";
 
 import { IconClockFilled } from "@tabler/icons-react";
 
-import { useCreateRoomMutation } from "@/api/ket/query";
+import { useCreateRoomMutation } from "@/app/api/ket/query";
 import { ButtonKet } from "@/components/ui/button";
 import { SettingItem } from "@/components/ui/setting-item";
 

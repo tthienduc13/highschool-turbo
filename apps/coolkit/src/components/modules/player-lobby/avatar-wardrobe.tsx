@@ -15,9 +15,12 @@ import {
 
 import { IconX } from "@tabler/icons-react";
 
-import { useUpdatePlayerInformationMutation } from "@/api/game/query";
-import { useGetAvatarQuery, useGetOwnerAvatarQuery } from "@/api/user/query";
-import { Avatar, AvatarRarity } from "@/api/user/type";
+import { useUpdatePlayerInformationMutation } from "@/app/api/game/query";
+import {
+  useGetAvatarQuery,
+  useGetOwnerAvatarQuery,
+} from "@/app/api/user/query";
+import { Avatar, AvatarRarity } from "@/app/api/user/type";
 import { ButtonKet } from "@/components/ui/button";
 import { DefaultAvatars } from "@/constants/user";
 
