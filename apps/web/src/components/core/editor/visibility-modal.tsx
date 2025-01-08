@@ -1,8 +1,7 @@
 "use client";
 
+import { Modal } from "@highschool/components/modal";
 import { StudySetVisibility } from "@highschool/interfaces";
-
-import { Modal } from "../common/modal";
 
 export interface VisibilityModalProps {
   isOpen: boolean;

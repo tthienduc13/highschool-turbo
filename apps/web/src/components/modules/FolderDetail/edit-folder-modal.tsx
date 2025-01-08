@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 
+import { Modal } from "@highschool/components/modal";
 import { useUpdateFolderMutation } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
 
-import { Modal } from "@/components/core/common/modal";
 import { useFolder } from "@/hooks/use-folder";
 
 interface EditFolderModalProps {

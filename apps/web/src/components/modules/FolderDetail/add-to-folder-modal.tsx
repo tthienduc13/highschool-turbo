@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
+import { Modal } from "@highschool/components/modal";
 import { Flashcard } from "@highschool/interfaces";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
-import { Modal } from "@/components/core/common/modal";
 import { SelectableGenericCard } from "@/components/core/common/selectable-generic-card";
 import { useMe } from "@/hooks/use-me";
 

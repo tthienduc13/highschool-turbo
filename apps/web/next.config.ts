@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     "@highschool/env",
     "@highschool/react-query",
     "@highschool/lib",
+    "@highschool/components"
   ],
   images: {
     remotePatterns: [

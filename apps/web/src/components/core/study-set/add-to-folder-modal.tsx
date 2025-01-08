@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 
+import { Modal } from "@highschool/components/modal";
 import {
   useAddTofolderMutation,
   useRemoveFlashcardMutation,
@@ -26,8 +27,6 @@ import {
 
 import { menuEventChannel } from "@/events/menu";
 import { useSet } from "@/hooks/use-set";
-
-import { Modal } from "../common/modal";
 
 export interface AddToFolderModalProps {
   isOpen: boolean;

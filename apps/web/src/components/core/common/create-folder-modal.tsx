@@ -6,13 +6,12 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
+import { Modal } from "@highschool/components/modal";
 import { useCreateFolderMutation } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
 
 import { menuEventChannel } from "@/events/menu";
 import { useMe } from "@/hooks/use-me";
-
-import { Modal } from "./modal";
 
 interface CreateFolderModalProps {
   isOpen: boolean;

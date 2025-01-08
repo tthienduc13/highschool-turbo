@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import { menuEventChannel } from "@/events/menu";
+import { Modal } from "@highschool/components/modal";
 
-import { Modal } from "./modal";
+import { menuEventChannel } from "@/events/menu";
 
 export const TeacherInformationModal = () => {
   const [open, setOpen] = useState<boolean>(false);

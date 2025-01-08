@@ -1,6 +1,5 @@
+import { Modal } from "@highschool/components/modal";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
-import { Modal } from "../common/modal";
 
 export interface ShortcutModalProps {
   isOpen: boolean;

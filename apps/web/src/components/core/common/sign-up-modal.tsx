@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePathname, useRouter } from "next/navigation";
 
+import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 
 import {
@@ -15,8 +16,6 @@ import {
   CredenzaTitle,
 } from "@/components/ui/credenza";
 import { menuEventChannel } from "@/events/menu";
-
-import { Modal } from "./modal";
 
 export const SignUpModal = () => {
   const pathName = usePathname();

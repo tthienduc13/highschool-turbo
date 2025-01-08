@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+import { Modal } from "@highschool/components/modal";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
 
-import { Modal } from "../common/modal";
 import { ImportTermTextArea } from "./term/import-term-textarea";
 
 export interface ImportTermsModalProps {

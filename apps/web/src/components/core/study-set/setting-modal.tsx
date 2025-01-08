@@ -1,4 +1,4 @@
-import { Modal } from "../common/modal";
+import { Modal } from "@highschool/components/modal";
 
 interface SettingModal {
   isOpen: boolean;

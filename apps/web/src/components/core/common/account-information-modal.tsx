@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 
+import { Modal } from "@highschool/components/modal";
+
 import { SelectCity } from "@/components/modules/Home/finish-profile/select-city";
 import { SelectClass } from "@/components/modules/Home/finish-profile/select-class";
 import { SelectExamType } from "@/components/modules/Home/finish-profile/select-exam-type";
@@ -9,8 +11,6 @@ import { SelectSchool } from "@/components/modules/Home/finish-profile/select-sc
 import { SelectSubject } from "@/components/modules/Home/finish-profile/select-subject";
 import { menuEventChannel } from "@/events/menu";
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
-import { Modal } from "./modal";
 
 export interface ICity {
   name: string | null;

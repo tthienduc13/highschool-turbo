@@ -6,6 +6,7 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import * as React from "react";
 import { useRef } from "react";
 
+import { Modal } from "@highschool/components/modal";
 import { StudySetAnswerMode, TestQuestionType } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -16,24 +17,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
-import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { IconX } from "@tabler/icons-react";
-
-import {
-  Credenza,
-  CredenzaBody,
-  CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
-  CredenzaHeader,
-  CredenzaTitle,
-} from "@/components/ui/credenza";
 import { useTestContext } from "@/stores/use-study-set-test-store";
 
 import { Hint } from "../common/hint";
-import { Modal } from "../common/modal";
 import { getQuestionTypeIcon, getQuestionTypeName } from "./utils";
 
 export interface TestSettingsModalProps {

@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { Modal } from "@highschool/components/modal";
 import { UniversityCity } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -12,8 +11,6 @@ import {
 import { Separator } from "@highschool/ui/components/ui/separator";
 
 import { IconEyeDollar, IconLocation } from "@tabler/icons-react";
-
-import { Modal } from "@/components/core/common/modal";
 
 import { FilterState } from "./university-section";
 

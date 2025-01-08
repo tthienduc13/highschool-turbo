@@ -1,11 +1,10 @@
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 
 import { IconCircleCheck } from "@tabler/icons-react";
-
-import { Modal } from "./modal";
 
 interface SelectCurriculumModalProps {
   isOpen: boolean;

@@ -3,6 +3,7 @@ import { Content, EditorContent, useEditor } from "@tiptap/react";
 
 import { useEffect, useState } from "react";
 
+import { Modal } from "@highschool/components/modal";
 import { FlashcardContent } from "@highschool/interfaces";
 import {
   EditorTerm,
@@ -16,7 +17,6 @@ import { patchFlashcardContent } from "@highschool/react-query/apis";
 import { editorEventChannel } from "@/events/editor";
 import { resize } from "@/utils/resize-image";
 
-import { Modal } from "../common/modal";
 import { editorConfig } from "../editor/editor-config";
 import { RichTextBar } from "../editor/rich-text-bar";
 import { PhotoView } from "../providers/photo-provider/photo-view";
