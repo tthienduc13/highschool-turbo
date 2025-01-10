@@ -7,6 +7,10 @@ const prefixAnalyseServices = "/analyse-service";
 const prefixFirstVersion = "/api/v1";
 const prefixSecondVerson = "/api/v2";
 
+const endpointUploadImage = {
+  UPLOAD_IMAGE: `${prefixMediaServices}${prefixFirstVersion}/upload/image`,
+};
+
 const endpointAuth = {
   GOOGLE: `${prefixUserServices}${prefixSecondVerson}/authentication/google`,
   EMAIL: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
@@ -217,7 +221,13 @@ const endpointNews = {
     `${prefixMediaServices}${prefixFirstVersion}/relatednews/${newTagId}`,
 };
 
+const endpointGame = {
+  CHECK_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/check-room`,
+};
+
 export {
+  endpointUploadImage,
+  endpointGame,
   endpointNews,
   endpointDocumentMedia,
   endpointDocument,

@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
 
 import { IconDeviceGamepad2, IconMap } from "@tabler/icons-react";
@@ -55,7 +58,9 @@ export const Activities = () => {
               bạn rèn luyện trí tuệ và có thể nhận được nhiều phần quà trị giá
             </p>
             <div className="mt-2 flex flex-row justify-end">
-              <Button size="sm">Thử ngay</Button>
+              <Link href={`${env.NEXT_PUBLIC_GAME_URL}/join`}>
+                <Button size="sm">Thử ngay</Button>
+              </Link>
             </div>
           </div>
         </div>

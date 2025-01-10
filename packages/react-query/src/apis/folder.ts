@@ -20,7 +20,7 @@ export const getUserFolderList = async ({
 }: {
   pageSize: number;
   pageNumber: number;
-  isMyFolder?: boolean
+  isMyFolder?: boolean;
   flashcardId?: string;
   documentId?: string;
 }): Promise<Pagination<Folder[]>> => {

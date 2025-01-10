@@ -25,6 +25,8 @@ import { AvatarWardrobe } from "./avatar-wardrobe";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export const LobbySetting = () => {
   const [isTurnOnMusic, setIsTurnOnMusic] = useState(true);
   const [isFullScreen, setIsFullScreen] = useState(false);

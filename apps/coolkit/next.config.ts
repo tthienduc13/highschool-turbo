@@ -1,16 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    reactStrictMode: true,
-    transpilePackages: [
-      "@highschool/ui",
-      "@highschool/endpoints",
-      "@highschool/types",
-      "@highschool/hooks",
-      "@highschool/env",
-      "@highschool/react-query",
-      "@highschool/lib",
-    ],
+  reactStrictMode: true,
+  transpilePackages: [
+    "@highschool/components",
+    "@highschool/ui",
+    "@highschool/endpoints",
+    "@highschool/types",
+    "@highschool/hooks",
+    "@highschool/env",
+    "@highschool/react-query",
+    "@highschool/lib",
+  ],
   images: {
     domains: [
       "static.wikia.nocookie.net",

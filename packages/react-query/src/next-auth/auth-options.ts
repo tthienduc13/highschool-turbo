@@ -7,8 +7,6 @@ import { GoogleLoginRequest } from "@highschool/interfaces";
 
 import { googleAuthentication, login } from "../apis/auth.ts";
 
-
-
 const refreshAccessToken = async (token: JWT) => {
   try {
     const response = await fetch(

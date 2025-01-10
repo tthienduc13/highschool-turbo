@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 
 import { useState } from "react";
 
+import { MediaUpload } from "@highschool/components";
+import { HighSchoolAssets } from "@highschool/interfaces";
+import { useUploaderMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-import { GameButton } from "@highschool/ui/components/ui/game-button";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 
 import { IconChevronLeft } from "@tabler/icons-react";
-
-import { MediaUpload } from "./media-upload";
 
 interface CreateQuizOverlayProps {
   isOpen: boolean;
@@ -53,8 +53,12 @@ export const CreateQuizOverlay = ({
     },
   ];
 
+  const uploadImage = useUploaderMutation();
   const [title, setTitle] = useState("");
   const [description, setDesciption] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+
+  console.log(file);
   return (
     <motion.div
       initial={{
@@ -100,13 +104,22 @@ export const CreateQuizOverlay = ({
                 />
               </div>
             </div>
-            <div className="rounded-xl border-2 bg-white p-5 shadow-md">
-              <div className="h-full w-full rounded-xl border-2 border-dashed bg-gray-100 p-4">
-                <MediaUpload compress aspectRatio="16 / 9" quality={1} />
-              </div>
-            </div>
+            <MediaUpload
+              onFileUpload={async (file) => {
+                await setFile(file);
+                await uploadImage.mutateAsync({
+                  image: file,
+                  fileName: title,
+                  folder: HighSchoolAssets.KetThumbnail,
+                  presetName: "thumbnail",
+                });
+              }}
+              loading={uploadImage.isPending}
+              compress
+              aspectRatio="16 / 9"
+              quality={1}
+            />
           </div>
-
           <h2 className="text-xl font-semibold md:text-2xl">
             Tạo hoạt động mới
           </h2>

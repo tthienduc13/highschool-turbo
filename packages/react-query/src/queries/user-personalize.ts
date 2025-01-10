@@ -19,9 +19,10 @@ export const useUpdateStudentMBTIMutation = () => {
   });
 };
 
-export const useRecommendedDataQuery = () => {
+export const useRecommendedDataQuery = (isStudent: boolean) => {
   return useQuery({
     queryKey: ["recommended-data"],
     queryFn: getRecommendedData,
+    enabled: isStudent,
   });
 };

@@ -9,6 +9,7 @@ export const env = createEnv({
     NEXT_PUBLIC_CLOUDINARY_USER_PRESET: z.string(),
     NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
     NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: z.string(),
+    NEXT_PUBLIC_GAME_URL: z.string(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_LANDING_URL: process.env.NEXT_PUBLIC_LANDING_URL,
@@ -20,6 +21,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
     NEXT_PUBLIC_UNSPLASH_ACCESS_KEY:
       process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY,
+    NEXT_PUBLIC_GAME_URL: process.env.NEXT_PUBLIC_GAME_URL,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
 });

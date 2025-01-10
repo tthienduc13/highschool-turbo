@@ -4,6 +4,7 @@ import { useRecommendedDataQuery } from "@highschool/react-query/queries";
 
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
+import { useMe } from "@/hooks/use-me";
 
 import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
@@ -14,9 +15,12 @@ import { RecommendFlashcard } from "./recommend-flashcard";
 import { TopFlascard } from "./top-flashcard";
 
 function HomeModule() {
-  const { data, isLoading } = useRecommendedDataQuery();
+  const me = useMe();
+  const { data, isLoading } = useRecommendedDataQuery(
+    me?.roleName?.toLocaleLowerCase() === "student",
+  );
 
-  if (isLoading) {
+  if (isLoading || me?.roleName?.toLocaleLowerCase() === "teacher") {
     return (
       <WithFooter>
         <Container maxWidth="7xl" className="flex flex-col gap-12">

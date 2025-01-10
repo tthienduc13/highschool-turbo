@@ -20,4 +20,5 @@ export * from "./roadmap";
 export * from "./quiz";
 export * from "./university";
 export * from "./curriculum";
+export * from "./uploader";
 export * from "./news";

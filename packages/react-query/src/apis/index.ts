@@ -18,3 +18,5 @@ export * from "./university.ts";
 export * from "./curriculum.ts";
 export * from "./document.ts";
 export * from "./news.ts";
+export * from "./uploader.ts";
+export * from "./game.ts";

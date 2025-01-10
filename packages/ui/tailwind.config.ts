@@ -32,7 +32,14 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sofia)"],
       },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      },
       colors: {
+        gray: {
+          50: "#F7FAFC",
+          900: "#171923",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -100,11 +107,23 @@ const config = {
             "background-position": "200%",
           },
         },
+        loading: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "80%": {
+            color: "#ffbf7d",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         progress: "progress 1s infinite linear",
+        loading: "loading 1.25s cubic-bezier(.54,-0.18,.39,.97) infinite",
       },
       boxShadow: {
         "inset-gray-shadow": "inset 0 -10px #00000033",
@@ -116,7 +135,6 @@ const config = {
         "3d-hover": "4px 4px 0px 0px #0F2E89",
         "3d-active": "0px 0px 0px 0px transparent",
       },
-
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

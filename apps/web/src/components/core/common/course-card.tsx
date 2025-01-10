@@ -20,7 +20,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
         <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
           <Image
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-            src={course.image ?? "/logo.svg"}
+            src={course?.image ?? "/logo.svg"}
             className="transition-transform duration-300 group-hover:scale-105"
             alt="thumbnail"
             fill
@@ -32,7 +32,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             <h2 className="line-clamp-1 text-lg font-semibold md:text-2xl">
               {course.subjectName}
             </h2>
-            <div className="truncate whitespace-pre-wrap text-sm font-medium">
+            <div className="line-clamp-2 min-h-10 whitespace-pre-wrap text-sm font-medium">
               {course.information}
             </div>
           </div>
@@ -52,10 +52,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
               </div>
             </div>
           </div>
-          <div className="line-clamp-2 h-6 whitespace-pre-wrap text-xs">
-            {course.subjectDescription}
-          </div>
-          <Separator />
+          <Separator className="my-auto" />
           <div className="flex items-center justify-between">
             <div className="text-muted-foreground flex flex-row items-center gap-1">
               <IconUser className="mb-1" size={16} />
