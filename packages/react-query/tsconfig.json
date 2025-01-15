@@ -1,12 +1,12 @@
 {
-  "extends": "@highschool/typescript-config/react-library.json",
+  "extends": "../../tsconfig.base.json",
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "moduleResolution": "nodenext",
     "module": "NodeNext",
     "target": "ES6",
     "allowImportingTsExtensions": true,
-    "noEmit": true,
-    "emitDeclarationOnly": true
+    "noEmit": true
   },
-  "include": ["src/apis", "src/queries", "../types/next-auth.d.ts"]
+  "include": ["src/apis", "src/queries", "../types/next-auth.d.ts", "."]
 }

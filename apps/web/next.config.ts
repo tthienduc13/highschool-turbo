@@ -4,7 +4,6 @@ import "./src/env.mjs";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
-  trailingSlash: true,
   transpilePackages: [
     "@highschool/ui",
     "@highschool/endpoints",
