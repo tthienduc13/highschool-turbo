@@ -1,12 +1,7 @@
 import NextAuth from "next-auth";
 
 import { AuthOptions } from "./auth-options.ts";
+import { cache } from "react";
 
-const nextAuthInstance = NextAuth(AuthOptions);
 
-export const handlers = nextAuthInstance.handlers;
-// export const signIn = nextAuthInstance.signIn;
-export const signOut = nextAuthInstance.signOut;
-export const auth = nextAuthInstance.auth as ReturnType<
-  typeof NextAuth
->["auth"];
+export const {auth, handlers, signIn, signOut} = NextAuth(AuthOptions)

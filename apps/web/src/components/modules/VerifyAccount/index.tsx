@@ -1,11 +1,27 @@
+"use client";
+
+import { signIn } from "next-auth/react";
+
+import { useEffect } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@highschool/ui/components/ui/button";
 
 import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
 
 function VerifyAccountModule() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+  const email = searchParams.get("email");
+
+  useEffect(() => {
+    if (token && email) {
+      signIn("magic-link", { token, email });
+    }
+  }, [token, email]);
   return (
     <div className="relative flex h-screen w-screen items-center justify-center">
       <EnterWrapper>

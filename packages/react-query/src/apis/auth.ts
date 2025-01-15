@@ -8,7 +8,15 @@ import {
 
 import axiosServices from "../lib/axios.ts";
 
-export const login = async ({ email }: { email: string }) => {
+
+export interface MagicLinkResponse {
+    fullName: string;
+    email:    string;
+    token:    string;
+}
+
+
+export const login = async ({ email }: { email: string }): Promise<ResponseModel<MagicLinkResponse>> => {
   try {
     const { data } = await axiosServices.post(endpointAuth.EMAIL, {
       email: email,
@@ -19,6 +27,20 @@ export const login = async ({ email }: { email: string }) => {
     throw error;
   }
 };
+
+export const verifyAccount = async ({ email, token }: { email: string,token: string }):Promise<ResponseModel<UserSession>> => {
+    try {
+      const { data } = await axiosServices.post(endpointAuth.VERIFY_ACCOUNT, {
+        email: email,
+        token: token
+      });
+      return data;
+    } catch (error) {
+      console.log("Error while verify account", error);
+      throw error;
+    }
+  };
+
 
 export const googleAuthentication = async ({
   email,

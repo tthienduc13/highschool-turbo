@@ -14,6 +14,7 @@ const endpointUploadImage = {
 const endpointAuth = {
   GOOGLE: `${prefixUserServices}${prefixSecondVerson}/authentication/google`,
   EMAIL: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
+  VERIFY_ACCOUNT: `${prefixUserServices}${prefixSecondVerson}/authentication/verify-account`,
   REFRESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
 };
 

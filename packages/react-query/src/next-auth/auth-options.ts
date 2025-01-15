@@ -1,11 +1,16 @@
-import { NextAuthConfig } from "next-auth";
+import { NextAuthConfig, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 
 import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 
-import { googleAuthentication, login } from "../apis/auth.ts";
+import { googleAuthentication, login, verifyAccount } from "../apis/auth.ts";
+
+interface MagicLinkCredentials {
+    email: string;
+    token: string;
+  }
 
 const refreshAccessToken = async (token: JWT) => {
   try {
@@ -75,15 +80,34 @@ export const AuthOptions: NextAuthConfig = {
         },
       },
     }),
-    // {
-    //   id: "magic",
-    //   name: "Email",
-    //   type: "email",
-    //   sendVerificationRequest,
-    // },
+    {
+        id: "magic-link",
+        name: "Magic Link",
+        type: "credentials",
+        credentials: {
+            email: { label: "Email", type: "email", placeholder: "you@example.com" },
+            token: { label: "Token", type: "string" },
+          },
+        async authorize(credentials:Partial<MagicLinkCredentials> | undefined): Promise<User | null> {
+          if (!credentials?.email || !credentials.token) {
+            throw new Error("Email and token are required.");
+          }
+          try {
+            const {data} = await verifyAccount({
+              email: credentials.email,
+              token: encodeURI(credentials.token),
+            });
+            return data!;
+          } catch (error) {
+            console.error("Magic Link authorization failed:", error);
+            return null;
+          }
+        },
+      },
   ],
   callbacks: {
     async signIn({ account, user }) {
+
       if (account?.provider === "google") {
         const googleLoginInfo: GoogleLoginRequest = {
           email: user.email ?? "",
@@ -93,7 +117,6 @@ export const AuthOptions: NextAuthConfig = {
         };
         const response = await googleAuthentication(googleLoginInfo);
         if (!response.data) return false;
-
         const userInfo = response.data;
         user.userId = userInfo.userId;
         user.email = userInfo.email;
@@ -109,6 +132,25 @@ export const AuthOptions: NextAuthConfig = {
         user.expiresAt = userInfo.expiresAt;
         return true;
       }
+      if (account?.provider === "magic-link") {
+
+          const userInfo = user;
+          Object.assign(user, {
+            userId: userInfo.userId,
+            email: userInfo.email,
+            username: userInfo.username,
+            fullname: userInfo.fullname,
+            image: userInfo.image,
+            roleName: userInfo.roleName,
+            accessToken: userInfo.accessToken,
+            refreshToken: userInfo.refreshToken,
+            sessionId: userInfo.sessionId,
+            progressStage: userInfo.progressStage,
+            expiresAt: userInfo.expiresAt,
+          });
+          return true;
+      }
+
       return true;
     },
     async jwt({ token, account, user, trigger, session }) {
@@ -160,4 +202,5 @@ export const AuthOptions: NextAuthConfig = {
     strategy: "jwt",
   },
   trustHost: true,
+  secret: process.env.AUTH_SECRET,
 };

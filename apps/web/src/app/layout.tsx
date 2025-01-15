@@ -28,7 +28,6 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
 
-  console.log("session", session?.user.accessToken);
   return (
     <html lang="vi" suppressHydrationWarning>
       <body

@@ -8,8 +8,9 @@ import * as z from "zod";
 import { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
+import { useSignInMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Form,
@@ -20,7 +21,11 @@ import {
 import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { IconBrandGoogleFilled, IconWand } from "@tabler/icons-react";
+import {
+  IconBrandGoogleFilled,
+  IconLoader2,
+  IconWand,
+} from "@tabler/icons-react";
 
 import { Loading } from "../loading";
 
@@ -42,6 +47,8 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
 
+  const router = useRouter();
+
   const title =
     mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản Highschool";
 
@@ -60,6 +67,8 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
     return margin;
   };
 
+  const apiSignIn = useSignInMutation();
+
   useEffect(() => {
     if (typeof window == "undefined") return;
     setMargin(calculateMargin());
@@ -77,15 +86,20 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
   const [margin, setMargin] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [animationFinished, setAnimationFinished] = useState(false);
-  const [magicLinkLoading, setMagicLinkLoading] = useState(false);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: SubmitHandler<EmailFormInputs> = async (data) => {
-    setMagicLinkLoading(true);
-    // await signIn("magic", {
-    //   email: data.email,
-    // });
+    await apiSignIn.mutateAsync(
+      { email: data.email },
+      {
+        onSuccess: (data) => {
+          if (data.status === 200) {
+            router.push("/verify");
+          }
+        },
+      },
+    );
   };
 
   const control = emailMethods.control as unknown as Control<EmailFormInputs>;
@@ -163,24 +177,31 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                         }
                       }}
                       type={animationFinished ? "submit" : undefined}
-                      disabled={magicLinkLoading}
+                      disabled={apiSignIn.isPending}
                     >
-                      <div
-                        className={cn(
-                          "custom-ease h-12 transition-all duration-500",
-                          expanded ? "translate-y-0" : "-translate-y-12",
-                        )}
-                      >
-                        <div className="flex min-h-12 items-center justify-center">
-                          <div className="flex items-center space-x-2">
-                            <IconWand size={16} />
-                            <span>Gửi magic link</span>
+                      {apiSignIn.isPending ? (
+                        <IconLoader2
+                          className="animate-loading text-primary !size-6"
+                          stroke={"3px"}
+                        />
+                      ) : (
+                        <div
+                          className={cn(
+                            "custom-ease h-12 transition-all duration-500",
+                            expanded ? "translate-y-0" : "-translate-y-12",
+                          )}
+                        >
+                          <div className="flex min-h-12 items-center justify-center">
+                            <div className="flex items-center space-x-2">
+                              <IconWand size={16} />
+                              <span>Gửi magic link</span>
+                            </div>
+                          </div>
+                          <div className="flex min-h-12 items-center justify-center">
+                            <span>Tiếp tục với email</span>
                           </div>
                         </div>
-                        <div className="flex min-h-12 items-center justify-center">
-                          <span>Tiếp tục với email</span>
-                        </div>
-                      </div>
+                      )}
                     </Button>
                   </div>
                 </div>

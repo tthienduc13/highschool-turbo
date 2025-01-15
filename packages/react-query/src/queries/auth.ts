@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { login } from "../apis/auth.ts";
+import { login, verifyAccount } from "../apis/auth.ts";
 
 export const useSignInMutation = () => {
   return useMutation({
@@ -8,3 +8,10 @@ export const useSignInMutation = () => {
     mutationFn: login,
   });
 };
+
+export const useVerifyAccountMutation = () => {
+    return useMutation({
+      mutationKey: ["verify-account"],
+      mutationFn: verifyAccount,
+    });
+  };
