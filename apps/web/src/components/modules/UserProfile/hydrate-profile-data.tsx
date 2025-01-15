@@ -31,6 +31,8 @@ export const ProfileContext = createContext<UserProfile>({
   enrollments: [],
   email: "",
   fullname: "",
+  birthdate: new Date(),
+  address: "",
   roleName: "",
   provider: "",
   status: "",

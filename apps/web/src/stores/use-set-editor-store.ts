@@ -104,7 +104,7 @@ export const createSetEditorStore = (
     slug: "",
     description: "",
     visibleTerms: [],
-    status: StudySetVisibility.Public,
+    visibility: StudySetVisibility.Public,
     terms: [],
     serverTerms: [],
     readonly: false,
