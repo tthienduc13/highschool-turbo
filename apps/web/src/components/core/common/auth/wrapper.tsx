@@ -116,97 +116,104 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
           <div className="mx-auto flex w-full max-w-sm flex-col items-center justify-center gap-8 px-4 md:px-8">
             <Image src={"/logo.svg"} alt="logo" width={96} height={96} />
             <div className="text-2xl font-bold">{title}</div>
-            <Form {...emailMethods}>
-              <form
-                style={{
-                  width: "100%",
+            <div className="flex w-full flex-col gap-3">
+              <Button
+                size={"lg"}
+                className="flex h-12 w-full items-center gap-x-2"
+                variant={"default"}
+                type={undefined}
+                onClick={async (e) => {
+                  await signIn("google", {
+                    callbackUrl: callbackUrl,
+                    redirect: false,
+                  });
                 }}
-                onSubmit={emailMethods.handleSubmit(onSubmit)}
               >
-                <div className="flex w-full flex-col gap-3">
-                  <Button
-                    size={"lg"}
-                    className="flex h-12 w-full items-center gap-x-2"
-                    variant={"default"}
-                    onClick={async () => {
-                      await signIn("google", {
-                        callbackUrl: callbackUrl,
-                        redirect: false,
-                      });
-                    }}
-                  >
-                    <IconBrandGoogleFilled size={18} />
-                    <span>Tiếp tục với Google</span>
-                  </Button>
-                  <div className="h-full w-full">
-                    <div
-                      className={cn(
-                        "relative -ml-1 flex w-[calc(100%+8px)] flex-col gap-2 overflow-hidden px-1 transition-all duration-150 ease-out",
-                        expanded ? "my-4 mb-3 h-[74px]" : "my-0 mb-0 h-0",
-                      )}
-                    >
-                      <div className="top-0 mb-3 min-h-0.5 w-full rounded-full bg-gray-200 dark:bg-gray-800/50" />
-                      <FormField
-                        control={control}
-                        name="email"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <Input
-                                placeholder="Nhập địa chỉ email"
-                                {...field}
-                                ref={emailInputRef}
-                                className="mt-2 min-h-10 border-gray-300 text-sm focus-within:border-blue-600 dark:border-gray-600"
-                              />
-                            </FormControl>
-                          </FormItem>
+                <IconBrandGoogleFilled size={18} />
+                <span>Tiếp tục với Google</span>
+              </Button>
+              <Form {...emailMethods}>
+                <form
+                  style={{
+                    width: "100%",
+                  }}
+                  onSubmit={emailMethods.handleSubmit(onSubmit)}
+                >
+                  <div className="flex w-full flex-col gap-3">
+                    <div className="h-full w-full">
+                      <div
+                        className={cn(
+                          "relative -ml-1 flex w-[calc(100%+8px)] flex-col gap-2 overflow-hidden px-1 transition-all duration-150 ease-out",
+                          expanded ? "my-4 mb-3 h-[74px]" : "my-0 mb-0 h-0",
                         )}
-                      />
-                    </div>
-                    <Button
-                      className="h-12 w-full overflow-hidden text-sm"
-                      size="lg"
-                      variant="outline"
-                      onClick={() => {
-                        if (!expanded) {
-                          setExpanded(true);
-                          setTimeout(() => {
-                            setAnimationFinished(true);
-                            emailInputRef.current?.focus();
-                          }, 200);
-                        }
-                      }}
-                      type={animationFinished ? "submit" : undefined}
-                      disabled={apiSignIn.isPending}
-                    >
-                      {apiSignIn.isPending ? (
-                        <IconLoader2
-                          className="animate-loading text-primary !size-6"
-                          stroke={"3px"}
-                        />
-                      ) : (
-                        <div
-                          className={cn(
-                            "custom-ease h-12 transition-all duration-500",
-                            expanded ? "translate-y-0" : "-translate-y-12",
+                      >
+                        <div className="top-0 mb-3 min-h-0.5 w-full rounded-full bg-gray-200 dark:bg-gray-800/50" />
+                        <FormField
+                          control={control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="Nhập địa chỉ email"
+                                  {...field}
+                                  ref={emailInputRef}
+                                  className="mt-2 min-h-10 border-gray-300 text-sm focus-within:border-blue-600 dark:border-gray-600"
+                                />
+                              </FormControl>
+                            </FormItem>
                           )}
-                        >
-                          <div className="flex min-h-12 items-center justify-center">
-                            <div className="flex items-center space-x-2">
-                              <IconWand size={16} />
-                              <span>Gửi magic link</span>
+                        />
+                      </div>
+                      <Button
+                        className="h-12 w-full overflow-hidden text-sm"
+                        size="lg"
+                        variant="outline"
+                        onClick={() => {
+                          if (!expanded) {
+                            setExpanded(true);
+                            setTimeout(() => {
+                              setAnimationFinished(true);
+                              emailInputRef.current?.focus();
+                            }, 200);
+                          }
+                        }}
+                        type={animationFinished ? "submit" : undefined}
+                        disabled={
+                          (expanded && !emailMethods.formState.isValid) ||
+                          apiSignIn.isPending
+                        }
+                      >
+                        {apiSignIn.isPending ? (
+                          <IconLoader2
+                            className="animate-loading text-primary !size-6"
+                            stroke={"3px"}
+                          />
+                        ) : (
+                          <div
+                            className={cn(
+                              "custom-ease h-12 transition-all duration-500",
+                              expanded ? "translate-y-0" : "-translate-y-12",
+                            )}
+                          >
+                            <div className="flex min-h-12 items-center justify-center">
+                              <div className="flex items-center space-x-2">
+                                <IconWand size={16} />
+                                <span>Gửi magic link</span>
+                              </div>
+                            </div>
+                            <div className="flex min-h-12 items-center justify-center">
+                              <span>Tiếp tục với email</span>
                             </div>
                           </div>
-                          <div className="flex min-h-12 items-center justify-center">
-                            <span>Tiếp tục với email</span>
-                          </div>
-                        </div>
-                      )}
-                    </Button>
+                        )}
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </form>
-            </Form>
+                </form>
+              </Form>
+            </div>
             <div className="text-muted-foreground px-4 text-center text-xs font-light">
               Bằng cách đăng kí, bạn đồng ý với Chính sách bảo mật và Điều khoản
               dịch vụ.
