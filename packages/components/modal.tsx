@@ -4,6 +4,7 @@ import React from "react";
 
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
+import { cn } from "@highschool/ui/lib/utils";
 
 import { IconLoader2 } from "@tabler/icons-react";
 
@@ -29,9 +30,11 @@ interface ModalProps {
   isDisabled?: boolean;
   withoutCancel?: boolean;
   withoutFooter?: boolean;
+  className?: string;
 }
 
 export const Modal = ({
+  className,
   withoutFooter = false,
   withoutCancel = false,
   isOpen,
@@ -46,7 +49,12 @@ export const Modal = ({
 }: ModalProps) => {
   return (
     <Credenza open={isOpen} onOpenChange={onClose}>
-      <CredenzaContent className="w-full max-w-xl gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700">
+      <CredenzaContent
+        className={cn(
+          className,
+          "gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700",
+        )}
+      >
         <CredenzaHeader className="px-5 pt-4 md:px-10 md:pt-8">
           {title ? (
             <CredenzaTitle className="text-2xl md:text-3xl">

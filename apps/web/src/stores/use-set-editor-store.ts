@@ -104,7 +104,7 @@ export const createSetEditorStore = (
     slug: "",
     description: "",
     visibleTerms: [],
-    visibility: StudySetVisibility.Public,
+    status: StudySetVisibility.Public,
     terms: [],
     serverTerms: [],
     readonly: false,
@@ -124,7 +124,7 @@ export const createSetEditorStore = (
       setDescription: (description: string) => set({ description }),
       setSlug: (slug: string) => set({ slug }),
       setCourseId: (courseId) => set({ courseId }),
-      setVisibility: (visibility: StudySetVisibility) => set({ visibility }),
+      setVisibility: (visibility: StudySetVisibility) => set({  visibility }),
       addTerm: (rank: number) => {
         set((state) => {
           const clientKey = nanoid();
@@ -331,8 +331,7 @@ export const createSetEditorStore = (
 export const SetEditorStoreContext = createContext<SetEditorStore | null>(null);
 
 export const useSetEditorContext = <T>(
-  selector: (state: SetEditorState) => T,
-  equalityFn?: (left: T, right: T) => boolean,
+  selector: (state: SetEditorState) => T
 ): T => {
   const store = useContext(SetEditorStoreContext);
   if (!store) throw new Error("Missing SetEditorContext.Provider in the tree");

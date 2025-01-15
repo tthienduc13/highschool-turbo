@@ -27,7 +27,6 @@ export const CareerSection = ({
   selectedMajor,
 }: CareerSectionProps) => {
   const { data, isLoading } = useRecommendMajorQuery({
-    isHardCode: true,
     limit: 6,
   });
 

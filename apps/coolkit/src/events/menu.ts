@@ -2,6 +2,7 @@ import { eventBus } from "@/lib/event-bus";
 
 export const menuEventChannel = eventBus<{
   openCreateQuiz: () => void;
+  openError: (args: { message?: string }) => void;
   openSignup: (args: {
     title?: string;
     message?: string;

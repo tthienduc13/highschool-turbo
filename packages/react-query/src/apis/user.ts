@@ -11,10 +11,32 @@ import {
 import axiosServices from "../lib/axios.ts";
 
 export interface CareerGuidanceBrief {
-  mbtiBrief: string;
-  hollandBrief: string;
-  summaryBrief: string;
+  mbtiResponse: MBTIResponse;
+  hollandResponse: HollandResponse;
+  overallResponse: OveralResponse;
 }
+
+export interface OveralResponse{
+    overallBrief: string[]
+}
+
+export interface MBTIResponse {
+    mbtiType: string
+    mbtiSummary: string[],
+    mbtiDescription: string[],
+}
+export interface HollandResponse {
+    hollandType: string
+   hollandSummary: string[],
+   hollandDescription: string[],
+}
+
+
+export interface CachePersonality {
+    email: string;
+    mbtiType?: string | null;
+    hollandType?: string | null;
+  }
 
 // GET
 
@@ -135,6 +157,7 @@ export const updateBaseUserInfo = async ({
   fullName,
   roleName,
   address,
+  birthdate,
   profilePicture,
   student,
   teacher,
@@ -144,6 +167,7 @@ export const updateBaseUserInfo = async ({
   fullName: string;
   address: string;
   roleName: string;
+  birthdate: Date
   profilePicture: string;
   student: Partial<{
     major: string;
@@ -165,6 +189,7 @@ export const updateBaseUserInfo = async ({
     const payload = {
       username: userName,
       bio,
+      birthdate,
       fullname: fullName,
       roleName: roleName,
       address,
@@ -199,3 +224,16 @@ export const completeOnboard = async ({
     throw error;
   }
 };
+
+export const saveCachePersonality = async ({email, hollandType, mbtiType}: CachePersonality): Promise<ResponseModel<string>> => {
+    try {
+const {data} = await axiosServices.post(endpointUser.CACHE_PERSONALITY,{
+    email, hollandType: hollandType ?? '', mbtiType: mbtiType ?? ''
+})
+return data
+    } catch (error) {
+        console.error("Error while saving cache personality", error);
+        throw error;
+
+    }
+}

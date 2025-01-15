@@ -19,12 +19,11 @@ export default function AppProviders({
   children: React.ReactNode;
   session?: Session | undefined;
 }>) {
-  console.log(session);
   return (
     <SessionProvider session={session}>
-      {/* <AblyWrapper> */}
-      <QueryClientProvider>{children}</QueryClientProvider>
-      {/* </AblyWrapper> */}
+      <AblyWrapper>
+        <QueryClientProvider>{children}</QueryClientProvider>
+      </AblyWrapper>
     </SessionProvider>
   );
 }

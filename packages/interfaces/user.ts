@@ -12,6 +12,8 @@ export interface UserProfile {
   bio: string | null;
   fullname: string;
   roleName: string;
+  birthdate: Date;
+  address: string
   provider: string;
   status: string;
   timezone: null;

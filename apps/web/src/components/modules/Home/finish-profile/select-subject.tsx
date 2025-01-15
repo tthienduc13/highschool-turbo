@@ -27,12 +27,14 @@ export const SelectSubject = () => {
   const {
     currentStep,
     setCurrentStep,
+    selectedCity,
     selectedClass,
     selectedSubjects,
     setSelectedSubjects,
     selectedSchool,
     selectedExamTypes,
     setOpen,
+    selectedDob,
   } = useAccountInformationStore();
   const { data, isLoading } = useCoursesQuery({
     grade: selectedClass!,
@@ -51,6 +53,8 @@ export const SelectSubject = () => {
   const handleDone = () => {
     updateUser.mutate(
       {
+        address: selectedCity.name!,
+        birthdate: selectedDob!,
         student: {
           grade: convertToClass(selectedClass!),
           subjectIds: selectedSubjects,
@@ -71,7 +75,7 @@ export const SelectSubject = () => {
     <WizardLayout
       title="Chọn các môn học "
       description="Hãy chọn đủ 4 môn mà bạn đang chuẩn bị cho kì thi THPTQG"
-      steps={5}
+      steps={6}
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6 pt-4">

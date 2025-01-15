@@ -8,10 +8,13 @@ import { MediaUpload } from "@highschool/components";
 import { HighSchoolAssets } from "@highschool/interfaces";
 import { useUploaderMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
+import { GameButton } from "@highschool/ui/components/ui/game-button";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 
 import { IconChevronLeft } from "@tabler/icons-react";
+
+import { menuEventChannel } from "@/events/menu";
 
 interface CreateQuizOverlayProps {
   isOpen: boolean;
@@ -58,7 +61,30 @@ export const CreateQuizOverlay = ({
   const [description, setDesciption] = useState("");
   const [file, setFile] = useState<File | null>(null);
 
-  console.log(file);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+
+  const handleCreateQuiz = async () => {
+    if (!title.length) {
+      menuEventChannel.emit("openError", {
+        message: `Chưa có tiêu đề `,
+      });
+      return;
+    }
+    await uploadImage.mutateAsync(
+      {
+        image: file!,
+        fileName: title,
+        folder: HighSchoolAssets.KetThumbnail,
+        presetName: "thumbnail",
+      },
+      {
+        onSuccess: (data) => {
+          setImageUrl(data?.data!);
+        },
+      },
+    );
+  };
+
   return (
     <motion.div
       initial={{
@@ -75,13 +101,18 @@ export const CreateQuizOverlay = ({
       }
       className="fixed left-0 top-0 z-20 h-screen w-screen"
     >
-      <div className="flex h-16 items-center gap-2 border-b-2 border-b-gray-200 bg-white px-4">
-        <Button variant={"outline"} onClick={onClose} size={"icon"}>
-          <IconChevronLeft />
-        </Button>
-        <h1 className="font-semibold text-gray-600">Tạo hoạt động mới</h1>
+      <div className="flex h-16 items-center justify-between border-b-2 border-b-gray-200 bg-white px-4">
+        <div className="flex flex-row items-center gap-2">
+          <Button variant={"outline"} onClick={onClose} size={"icon"}>
+            <IconChevronLeft />
+          </Button>
+          <h1 className="font-semibold text-gray-600">Tạo hoạt động mới</h1>
+        </div>
+        <GameButton withOverlay onClick={handleCreateQuiz}>
+          Tạo ngay
+        </GameButton>
       </div>
-      <div className="relative flex h-[calc(100vh-64px)] w-screen bg-gray-50 p-4">
+      <div className="relative flex h-[calc(100vh-64px)] w-screen overflow-y-scroll bg-gray-50 p-4">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
           <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-4 rounded-xl border-2 bg-white p-5 shadow-md">
@@ -106,13 +137,7 @@ export const CreateQuizOverlay = ({
             </div>
             <MediaUpload
               onFileUpload={async (file) => {
-                await setFile(file);
-                await uploadImage.mutateAsync({
-                  image: file,
-                  fileName: title,
-                  folder: HighSchoolAssets.KetThumbnail,
-                  presetName: "thumbnail",
-                });
+                setFile(file);
               }}
               loading={uploadImage.isPending}
               compress
@@ -123,14 +148,14 @@ export const CreateQuizOverlay = ({
           <h2 className="text-xl font-semibold md:text-2xl">
             Tạo hoạt động mới
           </h2>
-          <div className="mx-auto grid w-full max-w-4xl grid-cols-[repeat(auto-fill,minmax(256px,1fr))] items-stretch gap-6">
+          <div className="mx-auto grid w-full max-w-4xl grid-cols-[repeat(auto-fill,minmax(256px,1fr))] items-stretch gap-6 pb-10">
             {ACTIONS.map((action, index) => (
               <div
                 key={index}
                 onClick={action.onClick}
                 className="transtion-all w-full cursor-pointer overflow-hidden rounded-lg border-2 border-gray-200 shadow-md duration-200 hover:border-blue-500"
               >
-                <div className="bg-custom-gradient h-[120px] border-b-2 p-4 pb-0 opacity-10"></div>
+                {/* <div className="bg-custom-gradient h-[120px] border-b-2 p-4 pb-0 opacity-10"></div> */}
                 <div className="flex flex-col px-4 py-6 text-center">
                   <h2 className="text-lg font-semibold">{action.title}</h2>
                   <p className="text-muted-foreground text-sm">

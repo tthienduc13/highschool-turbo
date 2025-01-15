@@ -70,7 +70,7 @@ export const Instruction = ({ onClose }: InstructionProps) => {
             </Button>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 h-[100px] w-[150px] sm:h-[120px] sm:w-[180px] md:h-[150px] md:w-[220px]">
+        <div className="absolute bottom-10 left-0 h-[100px] w-[150px] sm:h-[120px] sm:w-[180px] md:h-[150px] md:w-[220px]">
           <Image
             fill
             alt="Laptop whale mascot"

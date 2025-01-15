@@ -12,12 +12,14 @@ interface AccountInformationState {
   currentStep: number;
   selectedCity: ICity;
   selectedSchool: string | null;
+  selectedDob: Date | null
   selectedExamTypes: TypeExam[];
   selectedSubjects: string[];
   selectedClass: Grade | null;
   setOpen: (open: boolean) => void;
   setCurrentStep: (step: number) => void;
   setSelectedCity: (city: ICity) => void;
+  setSelectedDob: (dob: Date) => void,
   setSelectedSchool: (school: string | null) => void;
   setSelectedExamTypes: (examTypes: TypeExam[]) => void;
   setSelectedSubjects: (subjects: string[]) => void;
@@ -28,6 +30,7 @@ export const useAccountInformationStore = create<AccountInformationState>(
   (set) => ({
     open: false,
     currentStep: 0,
+    selectedDob: null,
     selectedCity: { name: null, id: null },
     selectedSchool: null,
     selectedExamTypes: [],
@@ -40,6 +43,7 @@ export const useAccountInformationStore = create<AccountInformationState>(
       set({ selectedSchool: school }),
     setSelectedExamTypes: (examTypes: TypeExam[]) =>
       set({ selectedExamTypes: examTypes }),
+    setSelectedDob: (dob: Date) => set({selectedDob: dob}),
     setSelectedSubjects: (subjects: string[]) =>
       set({ selectedSubjects: subjects }),
     setSelectedClass: (classGrade: Grade | null) =>

@@ -7,6 +7,7 @@ import "@highschool/ui/globals.css";
 import { cn } from "@highschool/ui/lib/utils";
 
 import { Loading } from "@/components/core/common/loading";
+import Scroll from "@/components/core/common/scroll";
 import { AppProviders } from "@/components/core/providers/app-provider";
 import { sofiaFontVN } from "@/lib/fonts";
 import "@/styles/roadmap.css";
@@ -37,6 +38,7 @@ export default async function RootLayout({
         )}
       >
         <Suspense fallback={<Loading />}>
+          <Scroll />
           <AppProviders session={session ?? undefined}>{children}</AppProviders>
         </Suspense>
       </body>

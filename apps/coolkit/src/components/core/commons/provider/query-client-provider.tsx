@@ -19,6 +19,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 // In Next.js, this file would be called: app/providers.jsx
 
+// In Next.js, this file would be called: app/providers.jsx
+
+// In Next.js, this file would be called: app/providers.jsx
+
 let browserQueryClient: QueryClient | undefined = undefined;
 
 export const makeQueryClient = () => {

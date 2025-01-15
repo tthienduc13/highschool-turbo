@@ -1,3 +1,4 @@
+import { Modal } from "@highschool/components";
 import { cn } from "@highschool/ui/lib/utils";
 
 import {
@@ -8,8 +9,6 @@ import {
 } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
-
-import { Modal } from "./modal";
 
 interface CreateFolderModalProps {
   isOpen: boolean;

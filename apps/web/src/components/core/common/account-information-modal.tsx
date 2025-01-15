@@ -6,6 +6,7 @@ import { Modal } from "@highschool/components/modal";
 
 import { SelectCity } from "@/components/modules/Home/finish-profile/select-city";
 import { SelectClass } from "@/components/modules/Home/finish-profile/select-class";
+import { SelectDob } from "@/components/modules/Home/finish-profile/select-dob";
 import { SelectExamType } from "@/components/modules/Home/finish-profile/select-exam-type";
 import { SelectSchool } from "@/components/modules/Home/finish-profile/select-school";
 import { SelectSubject } from "@/components/modules/Home/finish-profile/select-subject";
@@ -35,14 +36,16 @@ export const AccountInformationModal = () => {
   const Components = () => {
     switch (currentStep) {
       case 0:
-        return <SelectCity />;
+        return <SelectDob />;
       case 1:
-        return <SelectSchool />;
+        return <SelectCity />;
       case 2:
-        return <SelectClass />;
+        return <SelectSchool />;
       case 3:
-        return <SelectExamType />;
+        return <SelectClass />;
       case 4:
+        return <SelectExamType />;
+      case 5:
         return <SelectSubject />;
       default:
         return null;

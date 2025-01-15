@@ -25,7 +25,7 @@ export const SelectCity = () => {
     <WizardLayout
       title="Chọn thành phố bạn sống"
       description="Hãy chọn thành phố của bạn để có được thông tin chính xác theo vị trí"
-      steps={5}
+      steps={6}
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6">
@@ -42,7 +42,7 @@ export const SelectCity = () => {
             });
           }}
         >
-          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 text-left text-lg font-bold">
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
             <SelectValue placeholder={"Bạn ở đâu?"} className="px-4" />
           </SelectTrigger>
           <SelectContent
@@ -60,7 +60,15 @@ export const SelectCity = () => {
           </SelectContent>
         </Select>
         <div className="grid grid-cols-2 gap-2 md:gap-4">
-          <div></div>
+          <div className="w-full">
+            <Button
+              className="w-fit"
+              variant={"ghost"}
+              onClick={() => setCurrentStep(currentStep - 1)}
+            >
+              Quay lại
+            </Button>
+          </div>
           <Button
             disabled={!selectedCity.id}
             onClick={() => setCurrentStep(currentStep + 1)}

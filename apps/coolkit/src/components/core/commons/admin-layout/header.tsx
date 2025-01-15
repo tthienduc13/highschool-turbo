@@ -33,7 +33,7 @@ export const AdminHeader = () => {
           </GameButton>
         </div>
         <div className="flex w-fit flex-row items-center gap-4">
-          <Link href={"/join"}>
+          <Link href={"/play"}>
             <GameButton className="flex items-center gap-2" withOverlay>
               <IconLogin2 size={20} />
               Nhập mã phòng

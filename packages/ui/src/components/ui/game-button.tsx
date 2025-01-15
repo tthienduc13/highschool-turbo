@@ -11,13 +11,14 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "relative bg-primary text-white   border-2 z-10 border-[#123BAA]",
+          "relative bg-primary text-white  border-2 z-10 border-[#123BAA] shadow-[0_3px_0px_#123BAA] transition-all hover:translate-y-[3px] hover:shadow-none",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "relative bg-background text-black  border-2 z-10 border-black",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-[0_3px_0px] shadow-gray-400 transition-all hover:translate-y-[3px] hover:shadow-none",
+
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-black underline-offset-4 hover:underline",
       },
@@ -52,8 +53,9 @@ const GameButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size, className }),
-          withOverlay &&
-            "shadow-3d hover:shadow-3d-hover active:shadow-3d-active",
+          withOverlay
+            ? "shadow-[3px_3px_0px_#123BAA] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none"
+            : "",
         )}
         ref={ref}
         {...props}

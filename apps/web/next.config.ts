@@ -3,7 +3,8 @@ import type { NextConfig } from "next";
 import "./src/env.mjs";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
+  trailingSlash: true,
   transpilePackages: [
     "@highschool/ui",
     "@highschool/endpoints",

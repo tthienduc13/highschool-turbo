@@ -1,7 +1,7 @@
 "use client";
 
-// import { Footer } from "../footer";
 import AOS from "aos";
+import "aos/dist/aos.css";
 
 import { useEffect } from "react";
 
@@ -15,9 +15,7 @@ interface RootMainLayoutProps {
 
 export const MainLayout = ({ children }: RootMainLayoutProps) => {
   useEffect(() => {
-    AOS.init({
-      duration: 1200,
-    });
+    AOS.init({});
   }, []);
   return (
     <ReactQueryProvider>

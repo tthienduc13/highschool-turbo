@@ -39,6 +39,7 @@ const endpointUser = {
   OWNER_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user`,
   ORIENTATION_STATUS: `${prefixUserServices}${prefixFirstVersion}/users/personalityTestStatus`,
   PROGRESS_STATE: `${prefixUserServices}${prefixFirstVersion}/users/progressStage`,
+  CACHE_PERSONALITY: `${prefixUserServices}${prefixFirstVersion}/users/cachePersonality`,
 };
 
 const endpointFolder = {
@@ -223,9 +224,17 @@ const endpointNews = {
 
 const endpointGame = {
   CHECK_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/check-room`,
+  JOIN_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/join-room`,
+  CREATE_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/create-room`,
+};
+
+const endpointKet = {
+  GET_KETS: `/kets`,
+  GET_KETS_CATEGORY: `/kets/categories`,
 };
 
 export {
+  endpointKet,
   endpointUploadImage,
   endpointGame,
   endpointNews,

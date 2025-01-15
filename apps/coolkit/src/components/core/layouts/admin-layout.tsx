@@ -1,5 +1,3 @@
-import { AdminHeader } from "../commons/admin-layout/header";
-
 export default function AdminLayout({
   children,
 }: Readonly<{

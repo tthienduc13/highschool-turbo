@@ -10,6 +10,7 @@ import {
   getCareerGuidanceBrief,
   getUserProfile,
   getUserProgressStage,
+  saveCachePersonality,
   updateBaseUserInfo,
 } from "../apis/user.ts";
 
@@ -100,3 +101,10 @@ export const useProgressStageQuery = () => {
     refetchOnWindowFocus: true,
   });
 };
+
+export const useSaveCachedPersonalityMutation = () => {
+    return useMutation({
+        mutationKey: ["save-cached-personality"],
+        mutationFn: saveCachePersonality,
+    });
+}

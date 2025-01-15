@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { checkRoom } from "../apis/game.ts";
+import { checkRoom, createRoom, joinRoom } from "../apis/game.ts";
 
 export const useCheckRoomMutation = () => {
   return useMutation({
@@ -8,3 +8,17 @@ export const useCheckRoomMutation = () => {
     mutationFn: checkRoom,
   });
 };
+
+export const useJoinRoomMutation = () => {
+  return useMutation({
+    mutationKey: ["join-room"],
+    mutationFn: joinRoom,
+  });
+};
+
+export const useCreateRoomMutation = () => {
+    return useMutation({
+        mutationKey: ["create-room"],
+        mutationFn: createRoom,
+    })
+}

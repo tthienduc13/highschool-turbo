@@ -19,7 +19,7 @@ export const SelectClass = () => {
     <WizardLayout
       title="Chọn lớp của bạn"
       description=""
-      steps={5}
+      steps={6}
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6">
@@ -29,7 +29,7 @@ export const SelectClass = () => {
             setSelectedClass(grade as Grade);
           }}
         >
-          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 text-left text-lg font-bold">
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
             <SelectValue placeholder={"Bạn học lớp mấy?"} className="px-4" />
           </SelectTrigger>
           <SelectContent

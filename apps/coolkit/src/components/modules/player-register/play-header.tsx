@@ -17,6 +17,8 @@ import { ButtonKet } from "@/components/ui/button";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export function PlayerHeader() {
   const [isFullScreen, setIsFullScreen] = useState(false);
 

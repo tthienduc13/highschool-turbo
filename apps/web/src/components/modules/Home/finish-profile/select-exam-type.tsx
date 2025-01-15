@@ -22,7 +22,7 @@ export const SelectExamType = () => {
     <WizardLayout
       title="Chọn loại kì thi"
       description="Hãy chọn loại kì thi mà bạn đang hoặc sẽ quan tâm tới"
-      steps={5}
+      steps={6}
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6 pt-4">

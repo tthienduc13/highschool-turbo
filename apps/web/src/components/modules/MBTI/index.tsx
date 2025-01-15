@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useSubmitMBTITestMutation } from "@highschool/react-query/queries";
 
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
 import { useMBTITestContext } from "@/stores/use-mbti-store";
 
 import { HydrateMBTITestData } from "./hydrate-mbti-test-data";
@@ -14,9 +16,13 @@ import { TestView } from "./test";
 
 function MBTIModule() {
   return (
-    <HydrateMBTITestData>
-      <TestContainer />
-    </HydrateMBTITestData>
+    <WithFooter>
+      <Container maxWidth="7xl">
+        <HydrateMBTITestData>
+          <TestContainer />
+        </HydrateMBTITestData>
+      </Container>
+    </WithFooter>
   );
 }
 

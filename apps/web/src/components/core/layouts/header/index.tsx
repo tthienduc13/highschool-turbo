@@ -98,7 +98,7 @@ export const Header = () => {
       <AnimatePresence>
         {isScrolled && (
           <motion.div
-            className="absolute -bottom-2 left-0 z-10 h-2 w-full"
+            className="absolute -bottom-1 left-0 z-10 h-2 w-full"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}

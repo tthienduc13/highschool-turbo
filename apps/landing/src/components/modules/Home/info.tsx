@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { TextAnimate } from "@/components/core/common/text-animation";
+
 export const Info = () => {
   return (
     <div className="relative mt-[60px] md:mt-[100px]">
@@ -12,16 +14,31 @@ export const Info = () => {
         }}
       >
         <div className="relative z-10 mt-[20px] max-w-4xl px-4 py-[50px] text-center text-white">
-          <h1 className="text-4xl font-bold lg:text-6xl">
-            Học tập thông minh, phát triển tương lai{" "}
-          </h1>
-          <p className="mt-4 text-lg">
+          <TextAnimate
+            animation="slideUp"
+            by="word"
+            className="text-4xl font-bold lg:text-6xl"
+          >
+            Học tập thông minh, phát triển tương lai
+          </TextAnimate>
+          <TextAnimate animation="fadeIn" by="word" className="mt-4 text-lg">
             Highschool đồng hành cùng bạn trong hành trình học tập hiệu quả hơn
             với các phương pháp tối ưu và lộ trình học tập được cá nhân hóa.
-          </p>
+          </TextAnimate>
           <div className="flex flex-col items-center gap-5">
-            <p className="mt-10 text-3xl font-bold md:text-4xl">Tài trợ bởi</p>
-            <div className="relative h-[100px] w-[200px]">
+            <TextAnimate
+              animation="blurInUp"
+              by="character"
+              className="mt-10 text-3xl font-bold md:text-4xl"
+            >
+              Tài trợ bởi
+            </TextAnimate>
+
+            <div
+              data-aos="zoom-in"
+              data-aos-duration="1000"
+              className="relative h-[100px] w-[200px]"
+            >
               <Image
                 src="/fpt-logo.png"
                 alt="fpt logo"

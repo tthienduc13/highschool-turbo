@@ -10,5 +10,7 @@ export const visibilityText = (visibility: StudySetVisibility) => {
       return "Chỉ mình thôi";
     case StudySetVisibility.Closed:
       return "Đã bị xoá";
+    default:
+      return "Không xác định";
   }
 };

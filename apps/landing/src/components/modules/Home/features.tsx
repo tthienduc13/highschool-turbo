@@ -12,6 +12,7 @@ import { cn } from "@highschool/ui/lib/utils";
 
 import { IconArrowRight } from "@tabler/icons-react";
 
+import { TextAnimate } from "@/components/core/common/text-animation";
 import { VideoPlayer } from "@/components/ui/video-player";
 
 interface FeatureItemProps {
@@ -136,15 +137,22 @@ export const Features = () => {
       className="mx-auto mt-[60px] flex w-full max-w-[560px] flex-col gap-12 p-4 md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14"
     >
       <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 text-center">
-        <h2 className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent">
+        <TextAnimate
+          animation="slideUp"
+          by="word"
+          className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent"
+        >
           Highschool có gì?
-        </h2>
-        <p className="text-4xl font-bold md:text-5xl">
+        </TextAnimate>
+        <TextAnimate
+          animation="fadeIn"
+          by="word"
+          className="text-4xl font-bold md:text-5xl"
+        >
           Tối ưu hoá quy trình học tập, gợi ý lộ trình, tài liệu phù hợp cho bạn
-        </p>
+        </TextAnimate>
       </div>
       <div>
-        {" "}
         {featuresItems.map((item, index) => {
           const isEven = index % 2 === 0;
           return (
@@ -188,18 +196,22 @@ export const Features = () => {
                     )}
                   </div>
                 </div>
-                <div className="max-w-[550px]">
-                  <h2 className="mb-5 text-3xl font-semibold">{item.title}</h2>
-                  <div className="mb-4 flex flex-col gap-3">
-                    <p className="text-xl">{item.description1}</p>
-                    <p className="text-xl">{item.description2}</p>
+                <div data-aos="fade-up" data-aos-duration="1000">
+                  <div className="max-w-[550px]">
+                    <h2 className="mb-5 text-3xl font-semibold">
+                      {item.title}
+                    </h2>
+                    <div className="mb-4 flex flex-col gap-3">
+                      <p className="text-xl">{item.description1}</p>
+                      <p className="text-xl">{item.description2}</p>
+                    </div>
+                    <Link
+                      href={item.externalLink || "/"}
+                      className="flex items-center gap-1 text-xl font-medium underline"
+                    >
+                      Xem thêm <IconArrowRight className="h-5 w-5" />
+                    </Link>
                   </div>
-                  <Link
-                    href={item.externalLink || "/"}
-                    className="flex items-center gap-1 text-xl font-medium underline"
-                  >
-                    Xem thêm <IconArrowRight className="h-5 w-5" />
-                  </Link>
                 </div>
               </div>
               {index < featuresItems.length - 1 && (

@@ -29,15 +29,15 @@ export const CourseCard = ({ course }: CourseCardProps) => {
         </div>
         <div className="flex flex-grow flex-col gap-2">
           <div className="flex flex-col gap-y-1">
-            <h2 className="line-clamp-1 text-lg font-semibold md:text-2xl">
+            <h2 className="line-clamp-1 text-lg font-bold">
               {course.subjectName}
             </h2>
-            <div className="line-clamp-2 min-h-10 whitespace-pre-wrap text-sm font-medium">
+            <div className="line-clamp-2 min-h-10 whitespace-pre-wrap text-sm font-medium text-gray-600 dark:text-gray-400">
               {course.information}
             </div>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <div className="flex w-full flex-row items-center justify-between">
+            <div className="flex w-full flex-row items-center gap-2">
               <div className="flex flex-row gap-1">
                 <div className="flex items-center gap-1 text-sm font-medium">
                   <IconEye size={16} />

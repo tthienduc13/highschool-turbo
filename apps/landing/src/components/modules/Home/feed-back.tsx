@@ -2,18 +2,31 @@ import Image from "next/image";
 
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
+import { TextAnimate } from "@/components/core/common/text-animation";
+
 export const FeedBack = () => {
   return (
     <div className="mx-auto flex w-full max-w-[560px] flex-col gap-12 p-4 text-center md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14">
       <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 text-center">
-        <h2 className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent">
+        <TextAnimate
+          animation="slideUp"
+          by="word"
+          className="bg-gradient-radial to-primary from-gray-800 bg-clip-text text-2xl font-medium text-transparent"
+        >
           Tại sao lại sử dụng Highschool?
-        </h2>
-        <p className="text-4xl font-bold md:text-5xl">
+        </TextAnimate>
+        <TextAnimate
+          animation="fadeIn"
+          by="word"
+          className="text-4xl font-bold md:text-5xl"
+        >
           Được tin tưởng bởi nhiều học sinh
-        </p>
+        </TextAnimate>
       </div>
-      <div className="relative mx-auto flex w-full max-w-[300px] items-center justify-center md:max-w-2xl lg:max-w-3xl">
+      <div
+        data-aos="fade-up"
+        className="relative mx-auto flex w-full max-w-[300px] items-center justify-center md:max-w-2xl lg:max-w-3xl"
+      >
         <Card className="absolute left-10 top-[20px] w-full max-w-[260px] -translate-x-1/3 -rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
           <CardContent className="relative h-full w-full p-0">
             <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5"></div>

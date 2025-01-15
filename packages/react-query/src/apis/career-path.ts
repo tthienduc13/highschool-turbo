@@ -4,10 +4,8 @@ import { CareerPath, ResponseModel } from "@highschool/interfaces";
 import axiosServices from "../lib/axios.ts";
 
 export const getRecommendMajor = async ({
-  isHardCode,
   limit,
 }: {
-  isHardCode: boolean;
   limit: number;
 }): Promise<ResponseModel<CareerPath[]>> => {
   try {
@@ -15,7 +13,7 @@ export const getRecommendMajor = async ({
       endpointCareerGuidance.GET_RECOMMEND_MAJOR,
       {
         params: {
-          isHardCode,
+
           limit,
         },
       },

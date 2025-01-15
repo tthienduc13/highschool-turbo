@@ -45,7 +45,11 @@ export const OwnFlashcard = () => {
                 key={item.id}
                 leftIcon={!item.created && <IconProgress />}
                 title={item.flashcardName}
-                url={`/study-set/${item.slug}`}
+                url={
+                  item.created
+                    ? `/study-set/${item.slug}`
+                    : `/study-set/${item.slug}/edit`
+                }
                 visibility={item.status}
                 numValues={item.numberOfFlashcardContent}
                 label="thẻ ghi nhớ"

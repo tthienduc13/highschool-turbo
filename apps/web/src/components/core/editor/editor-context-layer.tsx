@@ -7,7 +7,11 @@ import { useEffect, useRef, useState } from "react";
 
 import { useRouter } from "next/navigation";
 
-import { DraftData, FlashcardContent } from "@highschool/interfaces";
+import {
+  DraftData,
+  FlashcardContent,
+  StudySetVisibility,
+} from "@highschool/interfaces";
 import { richTextToHtml } from "@highschool/lib/editor";
 import {
   addTerm,
@@ -193,6 +197,7 @@ export const EditorContextLayer = ({
         title: data.flashcardName,
         description: data.flashcardDescription,
         courseId: data.subjectId,
+        visibility: data.status as StudySetVisibility,
       },
       {
         deleteTerm: (termId) => {

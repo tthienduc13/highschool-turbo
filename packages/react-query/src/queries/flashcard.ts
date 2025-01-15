@@ -67,7 +67,8 @@ export const useFlashcardDraftQuery = () => {
   return useQuery({
     queryKey: ["draft-flaschard"],
     queryFn: getDraftFlashcard,
-    refetchOnMount: "always",
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   });
 };
 

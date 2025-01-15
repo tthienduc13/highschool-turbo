@@ -43,7 +43,7 @@ const upload = {
     ease: "backInOut",
   },
   animate: {
-    translateY: [0, -40, 0],
+    translateY: [0, -25, 0],
   },
 };
 const file = {

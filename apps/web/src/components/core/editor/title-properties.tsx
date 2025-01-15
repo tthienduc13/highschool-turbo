@@ -92,7 +92,7 @@ export const TitleProperties = () => {
               }}
               disabled={isLoading}
             >
-              <SelectTrigger className="bg-background border-2 border-gray-200 px-4 py-2 text-lg dark:border-gray-700">
+              <SelectTrigger className="h-12 border-2 border-gray-200 bg-white px-4 py-2 text-lg dark:border-gray-700 dark:bg-gray-800">
                 <SelectValue placeholder="Chọn môn học gắn với bộ thẻ">
                   {data?.data.find((subject) => subject.id === courseId)
                     ?.subjectName ?? "Chọn môn học gắn với bộ thẻ"}

@@ -8,7 +8,6 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
-import { ICity } from "@/components/core/common/account-information-modal";
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 import { WizardLayout } from "./wizard-layout";
@@ -30,7 +29,7 @@ export const SelectSchool = () => {
     <WizardLayout
       title="Chọn trường của bạn"
       description=""
-      steps={5}
+      steps={6}
       currentStep={currentStep}
     >
       <div className="flex flex-col gap-6">
@@ -41,7 +40,7 @@ export const SelectSchool = () => {
             setSelectedSchool(school);
           }}
         >
-          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 text-left text-lg font-bold">
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
             <SelectValue placeholder={"Bạn học trường nào?"} className="px-4" />
           </SelectTrigger>
           <SelectContent

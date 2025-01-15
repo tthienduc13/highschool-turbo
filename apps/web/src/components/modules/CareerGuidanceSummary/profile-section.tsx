@@ -5,8 +5,6 @@ import { useUserProfileQuery } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
-import { IconUser } from "@tabler/icons-react";
-
 import { useMe } from "@/hooks/use-me";
 
 interface ProfileSectionProps {
@@ -26,27 +24,33 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
         Hiểu mình
         <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
       </h1>
-
       <div className="flex flex-col gap-6 md:px-4">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center">
+        <div className="flex flex-col gap-10 md:flex-row md:items-start">
           <Avatar className="-z-10 size-16 md:size-24">
             <AvatarImage
               src={me?.image ?? "/logo.svg"}
               alt={me?.fullname ?? "Người dùng Highschool"}
             />
           </Avatar>
-          <div className="grid w-full grid-cols-1 items-center gap-2 font-medium md:grid-cols-2 md:text-lg">
-            <div className="flex flex-row items-center gap-2">
-              Họ và tên: {userInfo?.data?.fullname}
-            </div>
-            <div className="flex flex-row items-center gap-2">
-              Email: {userInfo?.data?.email}
-            </div>
-            <div className="flex flex-row items-center gap-2">
-              Trường: {userInfo?.data?.schoolName}
-            </div>
-            <div className="flex flex-row items-center gap-2">
-              Lớp: {userInfo?.data?.grade}
+          <div className="flex w-full flex-col gap-4 rounded-xl border-2 border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
+            <h2 className="text-3xl font-semibold">Thông tin cá nhân</h2>
+            <div className="grid w-full grid-cols-1 items-center gap-2 font-medium md:grid-cols-2 md:text-lg">
+              <div className="flex flex-row items-center gap-2">
+                Họ và tên: {userInfo?.data?.fullname}
+              </div>
+              <div className="flex flex-row items-center gap-2">
+                Email: {userInfo?.data?.email}
+              </div>
+              <div className="flex flex-row items-center gap-2">Ngày sinh:</div>
+              <div className="flex flex-row items-center gap-2">
+                Trường: {userInfo?.data?.schoolName}
+              </div>
+              <div className="flex flex-row items-center gap-2">
+                Thành phố: {userInfo?.data?.address}
+              </div>
+              <div className="flex flex-row items-center gap-2">
+                Lớp: {userInfo?.data?.grade}
+              </div>
             </div>
           </div>
         </div>
@@ -63,12 +67,16 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
                       Kiểm tra tính cách (MBTI)
                     </h3>
                     <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                      {userInfo?.data?.mbtiType}
+                      {brief.mbtiResponse.mbtiType}
                     </div>
                   </div>
-                  <p className="text-muted-foreground text-sm">
-                    {brief.mbtiBrief}
-                  </p>
+                  <div className="flex flex-col gap-1 pl-4">
+                    {brief.mbtiResponse.mbtiSummary.map((item, index) => (
+                      <p className="list-item text-gray-700" key={index}>
+                        {item}
+                      </p>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
               <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
@@ -78,12 +86,16 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
                       Định hướng nghề nghiệp (Holland)
                     </h3>
                     <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                      {userInfo?.data?.hollandType}
+                      {brief.hollandResponse.hollandType}
                     </div>
                   </div>
-                  <p className="text-muted-foreground text-sm">
-                    {brief.hollandBrief}
-                  </p>
+                  <div className="flex flex-col gap-1 pl-4">
+                    {brief.hollandResponse.hollandSummary.map((item, index) => (
+                      <p className="list-item text-gray-700" key={index}>
+                        {item}
+                      </p>
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -93,18 +105,19 @@ export const ProfileSection = ({ brief }: ProfileSectionProps) => {
                   <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
                     Bản thân
                   </h3>
-                  <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                    "Summary"
-                  </div>
                 </div>
-                <p className="text-muted-foreground text-sm">
-                  {brief.summaryBrief}
-                </p>
+                <div className="flex flex-col gap-1 pl-4">
+                  {brief.overallResponse.overallBrief.map((item, index) => (
+                    <p className="list-item text-gray-700" key={index}>
+                      {item}
+                    </p>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </div>
         </div>
-      </div>
+      </div>{" "}
     </div>
   );
 };

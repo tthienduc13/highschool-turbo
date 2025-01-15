@@ -1,8 +1,13 @@
 "use client";
 
+import { toast } from "sonner";
+
+import { useEffect, useState } from "react";
+
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
+import { useNetworkStatus } from "@highschool/hooks";
 import { Toaster } from "@highschool/ui/components/ui/sonner";
 
 import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";
@@ -51,6 +56,14 @@ const TeacherInformationModal = dynamic(
     ),
   { ssr: false },
 );
+
+const NetworkStatusNotifier = dynamic(
+  () =>
+    import("@/components/core/common/network-notifier").then(
+      (mod) => mod.NetworkStatusNotifier,
+    ),
+  { ssr: false },
+);
 function PlatformLayout({
   children,
 }: Readonly<{
@@ -60,6 +73,7 @@ function PlatformLayout({
   const hideHeaders = ["/roadmap"];
 
   const isHideHeader = hideHeaders.includes(pathName);
+
   return (
     <>
       <div className="min-h-screen w-screen">
@@ -71,6 +85,7 @@ function PlatformLayout({
         )}
         {children}
         <Toaster richColors position="top-center" />
+        <NetworkStatusNotifier />
         <SignupModal />
         <ConfettiLayer />
         <CareerGuidanceModal />

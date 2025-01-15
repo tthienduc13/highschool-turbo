@@ -22,3 +22,5 @@ export * from "./university";
 export * from "./curriculum";
 export * from "./uploader";
 export * from "./news";
+export * from "./ket";
+export * from "./avatar";
