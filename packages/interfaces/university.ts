@@ -8,6 +8,7 @@ export interface University {
   contactPhone: string;
   contactEmail: string;
   websiteLink: string;
+  logoUrl: string;
   city: string;
   universityMajors: UniversityMajor[];
 }

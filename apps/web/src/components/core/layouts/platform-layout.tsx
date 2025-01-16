@@ -56,6 +56,13 @@ const TeacherInformationModal = dynamic(
     ),
   { ssr: false },
 );
+const ReportModal = dynamic(
+  () =>
+    import("@/components/core/common/report-modal").then(
+      (mod) => mod.ReportModal,
+    ),
+  { ssr: false },
+);
 
 const NetworkStatusNotifier = dynamic(
   () =>
@@ -92,6 +99,7 @@ function PlatformLayout({
         <GlobalShortcutLayer />
         <AccountInformationModal />
         <TeacherInformationModal />
+        <ReportModal />
       </div>
     </>
   );

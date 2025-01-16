@@ -10,6 +10,7 @@ import {
   getCareerGuidanceBrief,
   getUserProfile,
   getUserProgressStage,
+  report,
   saveCachePersonality,
   updateBaseUserInfo,
 } from "../apis/user.ts";
@@ -107,4 +108,11 @@ export const useSaveCachedPersonalityMutation = () => {
         mutationKey: ["save-cached-personality"],
         mutationFn: saveCachePersonality,
     });
+}
+
+export const useReportMutation = () => {
+    return useMutation({
+        mutationKey: ['report'],
+        mutationFn: report,
+    })
 }

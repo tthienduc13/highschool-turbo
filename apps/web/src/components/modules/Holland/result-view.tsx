@@ -81,12 +81,12 @@ export const ResultView = () => {
                 )} */}
       </div>
       <div className="relative mt-5 w-full">
-        <div className="flex flex-row items-center border-b-[2px] py-2">
+        <div className="flex flex-row items-center border-b-2 py-2">
           {result?.map((item) => (
             <div
               key={item.title}
               onClick={() => setActiveTab(item.title)}
-              className={`w-1/3 cursor-pointer text-center ${activeTab === item.title ? "text-blue font-bold" : ""}`}
+              className={`w-1/3 cursor-pointer text-center ${activeTab === item.title ? "font-bold text-blue-700" : ""}`}
             >
               {item.title}
             </div>

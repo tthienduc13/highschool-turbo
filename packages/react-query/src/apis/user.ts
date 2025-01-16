@@ -8,7 +8,7 @@ import {
   UserSession,
 } from "@highschool/interfaces";
 
-import axiosServices from "../lib/axios.ts";
+import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 export interface CareerGuidanceBrief {
   mbtiResponse: MBTIResponse;
@@ -237,3 +237,26 @@ return data
 
     }
 }
+
+
+export const report = async ({title, description, files}: {title: string, description: string, files: File[]}): Promise<ResponseModel<string>> => {
+    try {
+        const formData = new FormData();
+        formData.append('ReportTitle', title);
+        formData.append('ReportContent', description);
+
+        files.forEach(file => formData.append('Images', file));
+
+        const {data} = await axiosClientUpload.post(endpointUser.REPORT, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+
+
+        return data;
+    } catch (error) {
+        console.log('Error while reporting', error);
+        throw error;
+    }
+};

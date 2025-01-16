@@ -42,7 +42,8 @@ export const CareerSection = ({
           <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
         </h1>
         <p className="text-muted-foreground font-medium">
-          Dưới đây là những nghề gợi ý phù hợp với bạn
+          Dưới đây là những nghề gợi ý phù hợp với bạn, hãy chọn những chuyên
+          ngành bạn cảm thấy phù hợp
         </p>
       </div>
       <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(300,1fr))] items-stretch gap-4">

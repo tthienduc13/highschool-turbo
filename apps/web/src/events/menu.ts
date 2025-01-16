@@ -8,6 +8,7 @@ export const menuEventChannel = eventBus<{
   }) => void;
   openCareerGuidanceModal: () => void;
   openInformationModal: () => void;
+  openReportModal: () => void;
   openTeacherInformationModal: () => void;
   commandMenuClosed: () => void;
   createFolder: (setId?: string) => void;

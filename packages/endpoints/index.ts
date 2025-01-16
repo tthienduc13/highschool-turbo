@@ -41,6 +41,7 @@ const endpointUser = {
   ORIENTATION_STATUS: `${prefixUserServices}${prefixFirstVersion}/users/personalityTestStatus`,
   PROGRESS_STATE: `${prefixUserServices}${prefixFirstVersion}/users/progressStage`,
   CACHE_PERSONALITY: `${prefixUserServices}${prefixFirstVersion}/users/cachePersonality`,
+  REPORT: `${prefixUserServices}${prefixFirstVersion}/reports`,
 };
 
 const endpointFolder = {
@@ -124,7 +125,7 @@ const endpointMBTI = {
   GET_MBTI_TEST: `${prefixUserServices}${prefixFirstVersion}/mbti`,
   SUBMIT_MBTI: `${prefixUserServices}${prefixFirstVersion}/mbti`,
   UPDATE_STUDENT_MBTI: (mbtiType: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/student/${mbtiType}`,
+    `${prefixUserServices}${prefixFirstVersion}/users/student/mbti/${mbtiType}`,
 };
 
 const endpointHolland = {

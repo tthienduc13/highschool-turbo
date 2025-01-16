@@ -88,7 +88,7 @@ export const Modal = ({
             )}
             <Button disabled={isPending || isDisabled} onClick={onConfirm}>
               {isPending ? (
-                <IconLoader2 className="animate-spin" />
+                <IconLoader2 className="!size-5 animate-spin" />
               ) : (
                 buttonLabel
               )}

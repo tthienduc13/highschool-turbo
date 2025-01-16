@@ -1,6 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
 
@@ -72,7 +73,9 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
       },
     );
   };
+
   const isEnroll = data?.data?.subjectModel?.isEnroll ?? false;
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] gap-4">
@@ -82,18 +85,31 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
       </div>
     );
   }
+
+  const chapters = data?.data?.items || [];
+  const enrollmentProgress = data?.data?.subjectModel?.enrollmentProgress;
+
+  if (!curriculumId) {
+    return (
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold md:text-2xl">
+          Chương trong khoá học ({chapters.length})
+        </h2>
+        <Button onClick={() => setSelectOpen(true)} variant="outline">
+          <IconSettings />
+          Chọn chương trình học
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold md:text-2xl">
-          Chương trong khoá học ({data?.data.items.length ?? 0})
+          Chương trong khoá học ({chapters.length})
         </h2>
-        {!curriculumId ? (
-          <Button onClick={() => setSelectOpen(true)} variant="outline">
-            <IconSettings />
-            Chọn chương trình học
-          </Button>
-        ) : (
+        {chapters.length > 0 ? (
           <Button
             variant={isEnroll ? "destructive" : "default"}
             disabled={isPending}
@@ -107,32 +123,50 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
               "Tham gia khoá học"
             )}
           </Button>
+        ) : (
+          <Button onClick={() => setSelectOpen(true)} variant="outline">
+            <IconSettings />
+            Chọn chương trình khác
+          </Button>
         )}
       </div>
-      <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] items-stretch gap-4">
-        {data?.data?.subjectModel?.enrollmentProgress && (
-          <div className="flex w-full justify-center">
-            <AnimatedCircularProgressBar
-              min={0}
-              max={100}
-              value={
-                data.data.subjectModel.enrollmentProgress.subjectProgressPercent
-              }
-              gaugePrimaryColor="#7faeff"
-              gaugeSecondaryColor="#f3f4f6"
+
+      {chapters.length > 0 ? (
+        <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] gap-4">
+          {enrollmentProgress && (
+            <div className="flex justify-center">
+              <AnimatedCircularProgressBar
+                min={0}
+                max={100}
+                value={enrollmentProgress.subjectProgressPercent}
+                gaugePrimaryColor="#7faeff"
+                gaugeSecondaryColor="#f3f4f6"
+              />
+            </div>
+          )}
+          {chapters.map((chapter, index) => (
+            <ChapterCard
+              key={chapter.id}
+              href={`${pathName}/chapters/${chapter.id}`}
+              chapter={chapter}
+              index={index}
+              isEnroll={isEnroll}
             />
-          </div>
-        )}
-        {data?.data.items.map((chapter, index) => (
-          <ChapterCard
-            key={chapter.id}
-            href={`${pathName}/chapters/${chapter.id}`}
-            chapter={chapter}
-            index={index}
-            isEnroll={isEnroll}
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center">
+          <Image
+            src="/icons/empty-chapters.svg"
+            alt="No study sets"
+            width={350}
+            height={100}
           />
-        ))}
-      </div>
+          <h2 className="text-center text-lg font-medium">
+            Chưa có chương nào, bạn vui lòng chờ hệ thống cập nhật
+          </h2>
+        </div>
+      )}
     </div>
   );
 };
@@ -148,33 +182,26 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
   const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     const isClickable = isEnroll || index < 2;
 
-    if (isClickable) {
-      return (
-        <Link href={href} passHref>
-          <div
-            className={cn(
-              "flex h-full w-full transform cursor-pointer flex-col gap-y-4 rounded-xl border-2 border-gray-200 bg-white p-4 transition-all duration-300 hover:-translate-y-2 hover:border-b-blue-500 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50",
-              chapter.isDone
-                ? "border-emerald-500 bg-emerald-500/10 hover:border-b-emerald-500"
-                : "",
-            )}
-          >
-            {" "}
-            {children}
-          </div>
-        </Link>
-      );
-    }
-    return (
-      <div className="group relative cursor-not-allowed opacity-60">
+    return isClickable ? (
+      <Link href={href} passHref>
         <div
           className={cn(
-            "flex h-full w-full flex-col gap-y-4 rounded-xl border-2 border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800/50",
+            "flex flex-col gap-y-4 rounded-xl border-2 p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg",
+            chapter.isDone
+              ? "border-emerald-500 bg-emerald-500/10"
+              : "border-gray-200 bg-white",
+            "dark:border-gray-700 dark:bg-gray-800/50",
           )}
         >
           {children}
         </div>
-        <div className="absolute -right-2.5 -top-3.5 rounded-full bg-gray-50 p-1 text-blue-600 dark:bg-gray-900 dark:text-blue-200">
+      </Link>
+    ) : (
+      <div className="group relative cursor-not-allowed opacity-60">
+        <div className="flex flex-col gap-y-4 rounded-xl border-2 p-4 dark:border-gray-700 dark:bg-gray-800/50">
+          {children}
+        </div>
+        <div className="absolute -right-2.5 -top-3.5 rounded-full bg-gray-50 p-1 dark:bg-gray-900">
           <div className="rounded-full bg-white p-[4px] shadow-md dark:bg-gray-800/50">
             <IconLock size={20} />
           </div>
@@ -182,24 +209,23 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
       </div>
     );
   };
+
   return (
     <Wrapper>
-      <div className="flex flex-1 flex-col gap-2">
-        <h2 className="line-clamp-1 truncate font-bold">
-          {chapter.chapterName}
-        </h2>
-        <p className="text-muted-foreground line-clamp-2 text-sm">
+      <div className="flex h-full flex-1 flex-col gap-2">
+        <h2 className="truncate font-bold">{chapter.chapterName}</h2>
+        <p className="text-muted-foreground line-clamp-2 h-10 text-sm">
           {chapter.description}
         </p>
       </div>
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-row items-center gap-x-2">
+      <div className="flex justify-between">
+        <div className="flex items-center gap-x-2">
           <IconHistory size={16} />
           <p className="text-muted-foreground text-sm">
             {new Date(chapter.createdAt).toLocaleDateString()}
           </p>
         </div>
-        <div className="flex flex-row items-center gap-x-2">
+        <div className="flex items-center gap-x-2">
           <IconBook size={16} />
           <p className="text-muted-foreground text-sm">
             {chapter.numberLesson} bài học

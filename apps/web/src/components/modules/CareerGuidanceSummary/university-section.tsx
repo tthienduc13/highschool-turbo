@@ -8,12 +8,9 @@ import { University, UniversityCity } from "@highschool/interfaces";
 import { useUniversitiesQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
+import { cn } from "@highschool/ui/lib/utils";
 
-import {
-  IconBuildingSkyscraper,
-  IconFilter,
-  IconLink,
-} from "@tabler/icons-react";
+import { IconFilter, IconHeart, IconLink } from "@tabler/icons-react";
 
 import { Hint } from "@/components/core/common/hint";
 import { Loading } from "@/components/core/common/loading";
@@ -22,6 +19,8 @@ import { FilterModal, cityRender } from "./filter-modal";
 
 interface UniversitySectionProps {
   selectedMajor: string | null;
+  setSavedUniversity: React.Dispatch<React.SetStateAction<University[]>>;
+  savedUniversities: University[];
 }
 
 export interface FilterState {
@@ -32,6 +31,8 @@ export interface FilterState {
 
 export const UniversitySection = ({
   selectedMajor,
+  setSavedUniversity,
+  savedUniversities,
 }: UniversitySectionProps) => {
   const initialFilterState: FilterState = {
     minTuition: null,
@@ -48,6 +49,17 @@ export const UniversitySection = ({
 
   const clearFilter = () => {
     setFilterState(initialFilterState);
+  };
+
+  const isSaved = (uni: University) =>
+    savedUniversities.some((savedUni) => savedUni.id === uni.id);
+
+  const toggleSaveUni = (uni: University) => {
+    setSavedUniversity((prev) =>
+      isSaved(uni)
+        ? prev.filter((savedUni) => savedUni.id !== uni.id)
+        : [...prev, uni],
+    );
   };
 
   const { data, isLoading } = useUniversitiesQuery({
@@ -107,19 +119,29 @@ export const UniversitySection = ({
       />
       <div className="flex flex-col gap-8">
         <div className="flex flex-row items-center justify-between">
-          <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
-            Chọn trường
-            <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
-          </h1>
+          <div className="flex flex-col gap-2">
+            <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
+              Chọn trường
+              <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+            </h1>
+            <h2 className="text-muted-foreground font-medium">
+              Hãy đánh dấu những trường bạn muốn tìm hiểu thêm
+            </h2>
+          </div>
           <Button variant={"outline"} onClick={() => setOpenFilter(true)}>
             <IconFilter />
             Bộ lọc
           </Button>
         </div>
-        <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(400,1fr))] items-stretch gap-4">
+        <div className="grid w-full grid-cols-1 items-stretch gap-4 md:grid-cols-2">
           {data?.data?.map((university) => {
             return (
-              <UniversityCard key={university.id} university={university} />
+              <UniversityCard
+                key={university.id}
+                university={university}
+                onToggleSave={toggleSaveUni}
+                isSaved={isSaved(university)}
+              />
             );
           })}
         </div>
@@ -130,9 +152,15 @@ export const UniversitySection = ({
 
 interface UniversityCardProps {
   university: University;
+  isSaved: boolean;
+  onToggleSave: (uni: University) => void;
 }
 
-const UniversityCard = ({ university }: UniversityCardProps) => {
+const UniversityCard = ({
+  university,
+  isSaved,
+  onToggleSave,
+}: UniversityCardProps) => {
   return (
     <Card className="flex h-full flex-col p-4 dark:bg-gray-800">
       <CardContent className="p-0">
@@ -140,24 +168,46 @@ const UniversityCard = ({ university }: UniversityCardProps) => {
           <div className="flex flex-col gap-2">
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-row items-start gap-2">
-                <IconBuildingSkyscraper />
+                <img
+                  src={university.logoUrl}
+                  alt={university.name}
+                  height={32}
+                  width={64}
+                  className="h-8 object-contain"
+                />
                 <Link href={university.websiteLink}>
                   <h2 className="hover:text-primary text-lg font-semibold">
                     {university.name}
                   </h2>
                 </Link>
               </div>
-              <Hint label="Trang web">
-                <Link href={university.websiteLink}>
-                  <Button
-                    size={"icon"}
-                    variant={"ghost"}
-                    className="rounded-full"
-                  >
-                    <IconLink className="!size-5" />
-                  </Button>
-                </Link>
-              </Hint>
+              <div className="flex flex-row items-center">
+                <Hint label="Trang web">
+                  <Link href={university.websiteLink}>
+                    <Button
+                      size={"icon"}
+                      variant={"ghost"}
+                      className="rounded-full"
+                    >
+                      <IconLink className="!size-5" />
+                    </Button>
+                  </Link>
+                </Hint>
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className={cn(
+                    "rounded-full",
+                    isSaved ? "fill-red-500 text-red-500" : "",
+                  )}
+                  onClick={() => onToggleSave(university)}
+                >
+                  <IconHeart
+                    fill={isSaved ? "red" : "white"}
+                    className="!size-5"
+                  />
+                </Button>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>

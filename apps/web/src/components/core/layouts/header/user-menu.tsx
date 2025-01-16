@@ -30,6 +30,8 @@ import {
   TablerIcon,
 } from "@tabler/icons-react";
 
+import { menuEventChannel } from "@/events/menu";
+
 type MenuItem = {
   label: string;
   icon: TablerIcon;
@@ -71,7 +73,9 @@ export const UserMenu = () => {
     {
       label: "Báo cáo",
       icon: IconBug,
-      action: () => alert("Report"),
+      action: () => {
+        menuEventChannel.emit("openReportModal");
+      },
     },
   ];
 

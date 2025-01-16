@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import { useSubmitHollandMutation } from "@highschool/react-query/queries";
 
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
 import { useHollandTestContext } from "@/stores/use-holland-store";
 
 import { HydrateHollandTestData } from "./hydrate-test-data";
@@ -14,9 +16,13 @@ import { TestView } from "./test-view";
 
 function HollandModule() {
   return (
-    <HydrateHollandTestData>
-      <TestContainer />
-    </HydrateHollandTestData>
+    <WithFooter>
+      <Container maxWidth="7xl">
+        <HydrateHollandTestData>
+          <TestContainer />
+        </HydrateHollandTestData>
+      </Container>
+    </WithFooter>
   );
 }
 

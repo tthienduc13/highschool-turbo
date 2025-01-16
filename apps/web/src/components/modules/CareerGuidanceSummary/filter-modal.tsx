@@ -10,7 +10,7 @@ import {
 } from "@highschool/ui/components/ui/select";
 import { Separator } from "@highschool/ui/components/ui/separator";
 
-import { IconEyeDollar, IconLocation } from "@tabler/icons-react";
+import { IconLocation, IconMoneybag } from "@tabler/icons-react";
 
 import { FilterState } from "./university-section";
 
@@ -65,7 +65,7 @@ export const FilterModal = ({
         <Separator />
         <div className="grid grid-cols-3 items-center">
           <div className="flex flex-row items-center gap-2">
-            <IconEyeDollar size={18} />
+            <IconMoneybag size={18} />
             <h2 className="text-lg font-medium">Học phí</h2>
           </div>
           {/* <Select

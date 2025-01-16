@@ -7,6 +7,7 @@ import { useState } from "react";
 
 import { useParams, useRouter } from "next/navigation";
 
+import { Lesson, Pagination } from "@highschool/interfaces";
 import {
   useCourseBySlugQuery,
   useLessonDetailQuery,
@@ -15,7 +16,7 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
-import { IconCircleCheck, IconLoader2 } from "@tabler/icons-react";
+import { IconCircleCheck, IconCircleX, IconLoader2 } from "@tabler/icons-react";
 
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { Loading } from "@/components/core/common/loading";
@@ -32,6 +33,8 @@ function LessonLearnModule() {
   const { data: lessonData, isLoading: lessonLoading } = useLessonDetailQuery({
     lessonId: params.lessonId as string,
   });
+  const lessonsData: Pagination<Lesson[]> | undefined =
+    queryClient.getQueryData(["lesson-list", params.chapterId]);
 
   const [showQuiz, setShowQuiz] = useState<boolean>(false);
   const { data: courseDetail, isLoading: courseLoading } = useCourseBySlugQuery(
@@ -48,6 +51,12 @@ function LessonLearnModule() {
   const isLoading = lessonLoading || courseLoading;
 
   const markDone = useMarkLessonDoneMutation();
+
+  const matchedLesson = lessonsData?.data.find(
+    (lesson) => lesson.id === params.lessonId,
+  );
+
+  console.log(matchedLesson);
 
   if (lessonLoading) {
     return <Loading />;
@@ -76,40 +85,46 @@ function LessonLearnModule() {
           >
             Làm bài kiểm tra
           </Button>
-          <button
-            disabled={markDone.isPending}
-            onClick={() => {
-              markDone.mutate(
-                { lessonId: lessonData?.id! },
-                {
-                  onSuccess: (data) => {
-                    queryClient.invalidateQueries({
-                      queryKey: ["lesson-list", lessonData?.chapterId],
-                    });
-                    toast.success(data.message);
-                    if (lessonData?.nextLessonId) {
-                      router.push(
-                        `/courses/${params.slug}/chapters/${lessonData.chapterId}/${lessonData.nextLessonId}`,
-                      );
-                    } else {
-                      router.push(
-                        `/courses/${params.slug}/chapters/${lessonData?.nextChapterId}`,
-                      );
-                    }
+          {!matchedLesson?.isDone ? (
+            <button
+              disabled={markDone.isPending}
+              onClick={() => {
+                markDone.mutate(
+                  { lessonId: lessonData?.id! },
+                  {
+                    onSuccess: (data) => {
+                      queryClient.invalidateQueries({
+                        queryKey: ["lesson-list", lessonData?.chapterId],
+                      });
+                      toast.success(data.message);
+                      if (lessonData?.nextLessonId) {
+                        router.push(
+                          `/courses/${params.slug}/chapters/${lessonData.chapterId}/${lessonData.nextLessonId}`,
+                        );
+                      } else {
+                        router.push(
+                          `/courses/${params.slug}/chapters/${lessonData?.nextChapterId}`,
+                        );
+                      }
+                    },
                   },
-                },
-              );
-            }}
-            className="flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:opacity-80"
-          >
-            {markDone.isPending ? (
-              <IconLoader2 className="animate-spin" />
-            ) : (
-              <>
-                Đánh dấu hoàn thành <IconCircleCheck size={18} />
-              </>
-            )}
-          </button>
+                );
+              }}
+              className="flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:opacity-80"
+            >
+              {markDone.isPending ? (
+                <IconLoader2 className="animate-spin" />
+              ) : (
+                <>
+                  Đánh dấu hoàn thành <IconCircleCheck size={18} />
+                </>
+              )}
+            </button>
+          ) : (
+            <Button variant={"destructive"} size={"lg"}>
+              Chưa hoàn thành <IconCircleX size={18} />
+            </Button>
+          )}
         </div>
       </div>
     </Container>
