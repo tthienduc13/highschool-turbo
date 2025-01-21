@@ -61,7 +61,7 @@ export const patchFlashcardContent = async ({
       | "rank"
     >
   >;
-}) => {
+}): Promise<ResponseModel<string>> => {
   try {
     const cleanValues = Object.fromEntries(
       Object.entries(values).filter(([_, value]) => value !== undefined),

@@ -1,32 +1,32 @@
 {
-    "name": "@highschool/react-query",
-    "version": "0.1.0",
-    "type": "module",
-    "scripts": {
-        "clean": "git clean -xdf .cache .turbo dist node_modules",
-        "format": "prettier --check . --ignore-path ../../.gitignore",
-        "lint": "eslint",
-        "typecheck": "tsc --noEmit"
-    },
-    "dependencies": {
-        "@highschool/endpoints": "workspace:*",
-        "@highschool/env": "workspace:*",
-        "@highschool/interfaces": "workspace:*",
-        "@tanstack/react-query": "^5.62.7",
-        "axios": "^1.7.9",
-        "next": "15.1.0",
-        "next-auth": "5.0.0-beta.25",
-        "react": "^19.0.0",
-        "sonner": "^1.7.1",
-        "unsplash-js": "^7.0.19"
-    },
-    "devDependencies": {
-        "@types/react": "^19"
-    },
-    "exports": {
-        "./apis": "./src/apis/index.ts",
-        "./queries": "./src/queries/index.ts",
-        "./auth": "./src/next-auth/index.ts",
-        "./options": "./src/next-auth/auth-options.ts"
-    }
+  "name": "@highschool/react-query",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@highschool/endpoints": "workspace:*",
+    "@highschool/env": "workspace:*",
+    "@highschool/interfaces": "workspace:*",
+    "@tanstack/react-query": "^5.62.7",
+    "axios": "^1.7.9",
+    "next": "15.1.0",
+    "next-auth": "5.0.0-beta.25",
+    "react": "^19.0.0",
+    "sonner": "^1.7.1",
+    "unsplash-js": "^7.0.19"
+  },
+  "devDependencies": {
+    "@types/react": "^19"
+  },
+  "exports": {
+    "./apis": "./src/apis/index.ts",
+    "./queries": "./src/queries/index.ts",
+    "./auth": "./src/next-auth/index.ts",
+    "./options": "./src/next-auth/auth-options.ts"
+  }
 }

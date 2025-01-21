@@ -10,8 +10,8 @@ export const useSignInMutation = () => {
 };
 
 export const useVerifyAccountMutation = () => {
-    return useMutation({
-      mutationKey: ["verify-account"],
-      mutationFn: verifyAccount,
-    });
-  };
+  return useMutation({
+    mutationKey: ["verify-account"],
+    mutationFn: verifyAccount,
+  });
+};

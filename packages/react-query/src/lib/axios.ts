@@ -1,9 +1,11 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { Session } from "next-auth";
 import { getSession as getSessionClient } from "next-auth/react";
 import { signOut } from "next-auth/react";
+
 import { env } from "@highschool/env";
+
 import { auth } from "../next-auth/index.ts";
-import { Session } from "next-auth";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
@@ -29,7 +31,10 @@ const getSession = async ({ cache } = { cache: false }) => {
   cachedSession = cachedSession! || makeSession();
   cachedSession = await cachedSession;
 
-  if (cachedSession && Date.now() <= new Date(cachedSession.user.expiresAt).getTime()) {
+  if (
+    cachedSession &&
+    Date.now() <= new Date(cachedSession.user.expiresAt).getTime()
+  ) {
     return cachedSession;
   }
 
@@ -73,7 +78,7 @@ const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
         return Promise.reject(error);
       }
     },
-    (error) => Promise.reject(error)
+    (error) => Promise.reject(error),
   );
 
   instance.interceptors.response.use(
@@ -88,7 +93,7 @@ const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
         await signOut();
       }
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;

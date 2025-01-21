@@ -68,7 +68,14 @@ export const useFlashcardDraftQuery = () => {
     queryKey: ["draft-flaschard"],
     queryFn: getDraftFlashcard,
     refetchOnMount: true,
-    refetchOnWindowFocus: true
+    refetchOnWindowFocus: true,
+  });
+};
+
+export const useFlashcardDraftMutation = () => {
+  return useMutation({
+    mutationKey: ["draft-flaschard"],
+    mutationFn: getDraftFlashcard,
   });
 };
 

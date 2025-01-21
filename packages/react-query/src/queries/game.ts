@@ -17,8 +17,8 @@ export const useJoinRoomMutation = () => {
 };
 
 export const useCreateRoomMutation = () => {
-    return useMutation({
-        mutationKey: ["create-room"],
-        mutationFn: createRoom,
-    })
-}
+  return useMutation({
+    mutationKey: ["create-room"],
+    mutationFn: createRoom,
+  });
+};

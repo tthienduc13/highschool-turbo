@@ -19,6 +19,8 @@ import { ButtonKet } from "@/components/ui/button";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 interface ButtonScreenProps {
   className?: string;
   sizeIcon?: number;

@@ -15,7 +15,7 @@ export const useContentsBySlugQuery = ({
   pageSize: number;
 }) => {
   return useQuery({
-    queryKey: ["flashcard-content", slug, pageNumber, pageSize],
+    queryKey: ["flashcard-content-by-slug", slug, pageNumber, pageSize],
     queryFn: () => getFlashcardContentsBySlug({ slug, pageNumber, pageSize }),
   });
 };
@@ -31,7 +31,7 @@ export const useEditFlashcardContentMutation = ({
     mutationFn: patchFlashcardContent,
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["flashcard-content", slug],
+        queryKey: ["flashcard-content-by-slug", slug],
       });
       return data;
     },

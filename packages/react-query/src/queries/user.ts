@@ -104,15 +104,15 @@ export const useProgressStageQuery = () => {
 };
 
 export const useSaveCachedPersonalityMutation = () => {
-    return useMutation({
-        mutationKey: ["save-cached-personality"],
-        mutationFn: saveCachePersonality,
-    });
-}
+  return useMutation({
+    mutationKey: ["save-cached-personality"],
+    mutationFn: saveCachePersonality,
+  });
+};
 
 export const useReportMutation = () => {
-    return useMutation({
-        mutationKey: ['report'],
-        mutationFn: report,
-    })
-}
+  return useMutation({
+    mutationKey: ["report"],
+    mutationFn: report,
+  });
+};

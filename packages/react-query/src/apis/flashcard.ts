@@ -1,6 +1,9 @@
 // GET
+import axios from "axios";
+
 import { endpointFlashcard, endpointUser } from "@highschool/endpoints";
 import {
+  DraftData,
   EditSetPayload,
   Flashcard,
   Pagination,
@@ -69,22 +72,21 @@ export const getFlashcardBySlug = async ({
   }
 };
 
-export const getDraftFlashcard = async () => {
+export const getDraftFlashcard = async (): Promise<
+  ResponseModel<DraftData | string>
+> => {
   try {
-    const response = await axiosServices.post(`${endpointFlashcard.DRAFT}`, {});
-
-    if (response.status === 200) {
-      return response.data;
-    }
-
-    throw new Error(`Unexpected status code: ${response.status}`);
+    const { data } = await axiosServices.post(`${endpointFlashcard.DRAFT}`, {});
+    return data;
   } catch (error) {
-    console.log("Error while getting draft", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+      return data;
+    }
+    console.error("Error while getting draft:", error);
     throw error;
   }
 };
-
-// Patch
 
 export const createFlashcardStatus = async ({
   flashcardId,
@@ -97,7 +99,11 @@ export const createFlashcardStatus = async ({
     );
     return data;
   } catch (error) {
-    console.error("Error while updating flashcard create", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+      return data;
+    }
+    console.error("Error creating status draft:", error);
     throw error;
   }
 };

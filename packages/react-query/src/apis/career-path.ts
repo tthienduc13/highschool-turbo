@@ -13,7 +13,6 @@ export const getRecommendMajor = async ({
       endpointCareerGuidance.GET_RECOMMEND_MAJOR,
       {
         params: {
-
           limit,
         },
       },

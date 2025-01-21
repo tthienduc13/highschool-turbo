@@ -13,7 +13,7 @@ export interface UserProfile {
   fullname: string;
   roleName: string;
   birthdate: Date;
-  address: string
+  address: string;
   provider: string;
   status: string;
   timezone: null;

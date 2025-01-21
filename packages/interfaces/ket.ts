@@ -32,17 +32,17 @@ export interface JoinKetRoomResponse {
   timeAverage: number;
 }
 
-export interface HostCreateRoomRequest  {
-    ketId: string;
-  };
+export interface HostCreateRoomRequest {
+  ketId: string;
+}
 
-  export interface HostCreateRoomResponse  {
-    id: string;
-    ketId: string;
-    userId: string;
-    roomStatus: string;
-    totalQuestion: number;
-  };
+export interface HostCreateRoomResponse {
+  id: string;
+  ketId: string;
+  userId: string;
+  roomStatus: string;
+  totalQuestion: number;
+}
 
 export interface Player {
   avatar: string;

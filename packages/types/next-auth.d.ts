@@ -16,7 +16,6 @@ declare module "next-auth" {
       expiresAt: Date;
     } & DefaultSession["user"];
     error?: "RefreshTokenError";
-
   }
 
   interface User {

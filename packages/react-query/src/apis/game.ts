@@ -1,6 +1,6 @@
 import { endpointGame } from "@highschool/endpoints";
 import {
-    HostCreateRoomRequest,
+  HostCreateRoomRequest,
   HostCreateRoomResponse,
   JoinKetRoomRequest,
   JoinKetRoomResponse,
@@ -38,16 +38,17 @@ export const joinRoom = async (
   }
 };
 
-
 export const createRoom = async (
-  createData: HostCreateRoomRequest
+  createData: HostCreateRoomRequest,
 ): Promise<ResponseModel<HostCreateRoomResponse>> => {
- try {
-    const {data} = await axiosServices.post(`${endpointGame.CREATE_ROOM}`, createData);
-   return data;
- } catch (error) {
-   console.error("Error while creating room", error);
-   throw error;
-
- }
+  try {
+    const { data } = await axiosServices.post(
+      `${endpointGame.CREATE_ROOM}`,
+      createData,
+    );
+    return data;
+  } catch (error) {
+    console.error("Error while creating room", error);
+    throw error;
+  }
 };

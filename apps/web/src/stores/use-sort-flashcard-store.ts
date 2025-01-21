@@ -1,8 +1,9 @@
-import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
-import React from "react";
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
+import React from "react";
+
+import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
 
 export interface SortFlashcardsStoreProps {
   studiableTerms: StudiableTerm[];
