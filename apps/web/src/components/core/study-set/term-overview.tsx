@@ -129,7 +129,7 @@ export const TermOverView = () => {
 const TermsByOriginal = () => {
   const { terms } = useSet();
 
-  return <TermsList terms={terms} slice={100} />;
+  return <TermsList terms={terms} slice={20} />;
 };
 
 const TermsByAlphabetical = () => {
@@ -140,7 +140,7 @@ const TermsByAlphabetical = () => {
     )
     .map((x) => x.id);
 
-  return <TermsList terms={terms} sortOrder={sortOrder} slice={100} />;
+  return <TermsList terms={terms} sortOrder={sortOrder} slice={20} />;
 };
 
 // interface TermsCategoryProps {
@@ -238,13 +238,17 @@ const TermsList: React.FC<TermsListProps> = ({ terms, sortOrder, slice }) => {
           ))}
       </div>
       {showSlice !== undefined && showSlice < terms.length && (
-        <Button
-          onClick={() => {
-            setShowSlice((s) => (s || 0) + 100);
-          }}
-        >
-          Xem thêm
-        </Button>
+        <div className="flex w-full items-center justify-center">
+          <Button
+            size={"lg"}
+            variant={"ghost"}
+            onClick={() => {
+              setShowSlice((s) => (s || 0) + 100);
+            }}
+          >
+            Xem thêm
+          </Button>
+        </div>
       )}
     </>
   );

@@ -31,6 +31,7 @@ interface RootFlashcardContextProps {
   editTerm: (term: FlashcardContent, focusDefinition: boolean) => void;
   starTerm: (term: FlashcardContent) => void;
 }
+
 export const RootFlashcardContext = createContext<RootFlashcardContextProps>({
   terms: [],
   termOrder: [],

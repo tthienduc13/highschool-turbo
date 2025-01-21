@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 
 import { useState } from "react";
@@ -14,13 +15,14 @@ import { IconEditCircle, IconTrash, IconTrendingUp } from "@tabler/icons-react";
 import { useSet } from "@/hooks/use-set";
 
 import { ConfirmModal } from "../common/confirm-modal";
+import { Hint } from "../common/hint";
 import { visibilityIcon } from "../common/renderer/visibility-icon";
 import { visibilityText } from "../common/renderer/visibility-text";
 
 export const HeadingArea = () => {
   const { flashcard } = useSet();
+  const { data: session } = useSession();
   const router = useRouter();
-  let deleteSetLoading = false;
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const deleteSet = useDeleteFlashcardMutation();
@@ -37,8 +39,8 @@ export const HeadingArea = () => {
             động này không thể hoàn tác.
           </p>
         }
-        actionText="Delete"
-        isLoading={deleteSetLoading}
+        actionText="Xoá bộ thẻ"
+        isLoading={deleteSet.isPending}
         onConfirm={() => {
           deleteSet.mutate(
             { flashcardId: flashcard.id },
@@ -56,7 +58,6 @@ export const HeadingArea = () => {
         <h1 className="text-2xl font-bold md:text-4xl">
           {flashcard.flashcardName}
         </h1>
-
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div className="flex flex-row items-center gap-2 text-gray-600 dark:text-gray-400">
             <div className="flex flex-row items-center gap-2">
@@ -68,24 +69,32 @@ export const HeadingArea = () => {
             <p>•</p>
             <p> {flashcard.numberOfFlashcardContent} thẻ ghi nhớ</p>
           </div>
-          <div className="flex w-fit flex-row overflow-hidden rounded-lg border">
-            <Button
-              size={"icon"}
-              variant={"ghost"}
-              className="rounded-none"
-              onClick={() => router.push(`/study-set/${flashcard.slug}/edit`)}
-            >
-              <IconEditCircle />
-            </Button>
-            <Button
-              size={"icon"}
-              variant={"ghost"}
-              className="rounded-none"
-              onClick={() => setDeleteModalOpen(true)}
-            >
-              <IconTrash />
-            </Button>
-          </div>
+          {session && session.user.userId === flashcard.userId && (
+            <div className="bg-background flex w-fit flex-row overflow-hidden rounded-lg border">
+              <Hint label="Chỉnh sửa bộ thẻ" side="bottom" sideOffset={10}>
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className="rounded-none"
+                  onClick={() =>
+                    router.push(`/study-set/${flashcard.slug}/edit`)
+                  }
+                >
+                  <IconEditCircle />
+                </Button>
+              </Hint>
+              <Hint label="Xoá bộ thẻ" side="bottom" sideOffset={10}>
+                <Button
+                  size={"icon"}
+                  variant={"ghost"}
+                  className="rounded-none"
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  <IconTrash />
+                </Button>
+              </Hint>
+            </div>
+          )}
         </div>
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           {flashcard.todayView > 0 && (

@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 import { createContext, useEffect, useRef } from "react";
@@ -53,6 +54,7 @@ export const HydrateSetData: React.FC<
 }) => {
   const params = useParams();
   const { data: session, status } = useSession();
+  const queryClient = useQueryClient();
 
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
@@ -116,10 +118,14 @@ export const HydrateSetData: React.FC<
       },
     };
   };
+
   useEffect(() => {
+    const refetch = async () => {
+      await refetchFlashcard();
+      await refetchFlashcardContent();
+    };
     if (isDirty) {
-      refetchFlashcard();
-      refetchFlashcardContent();
+      refetch();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDirty]);

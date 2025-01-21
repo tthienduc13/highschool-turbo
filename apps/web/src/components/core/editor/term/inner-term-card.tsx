@@ -277,8 +277,6 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     if (isDirty && !focused) {
       setAdded(true);
 
-      console.log(getTermDelta());
-
       editTerm(
         flashcardContent.id,
         term,

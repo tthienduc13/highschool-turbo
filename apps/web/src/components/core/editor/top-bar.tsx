@@ -109,7 +109,7 @@ export const TopBar = () => {
         </div>
         <div className="flex flex-row items-center gap-2">
           <Button
-            disabled={isLoading}
+            disabled={isLoading || isSaving}
             onClick={() => {
               setIsLoading(true);
 

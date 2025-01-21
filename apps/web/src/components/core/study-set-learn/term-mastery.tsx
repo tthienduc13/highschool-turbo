@@ -12,15 +12,9 @@ export const TermMastery = ({
   unLearnCount,
   studyingCount,
   masteredCount,
-  excludeThisRound = false,
 }: TermMasteryProps) => {
   return (
-    <div
-      className={cn(
-        "grid w-full gap-4",
-        excludeThisRound ? "grid-cols-2" : "grid-cols-3",
-      )}
-    >
+    <div className={cn("grid w-full gap-4", "grid-cols-3")}>
       <GridStat label="Chưa học" value={unLearnCount ?? 0} />
       <GridStat label="Đang học" value={studyingCount ?? 0} />
       <GridStat label="Đã biết" value={masteredCount ?? 0} />

@@ -41,6 +41,7 @@ export const FlashcardPreview = () => {
   const _termOrder = data.terms
     .sort((a, b) => a.rank - b.rank)
     .map((t) => t.id);
+
   const [termOrder, setTermOrder] = useState<string[]>(
     shuffle ? shuffleArray(Array.from(_termOrder)) : _termOrder,
   );

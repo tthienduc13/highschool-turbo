@@ -12,7 +12,6 @@ import { TermMastery } from "./term-mastery";
 
 export const RoundSummary = () => {
   const { flashcard } = useSet();
-  const termsThisRound = useLearnContext((s) => s.termsThisRound);
   const { data, isLoading } = useLearnProgressQuery({
     flashcardId: flashcard.id,
   });

@@ -1,13 +1,8 @@
 "use client";
 
-import { toast } from "sonner";
-
-import { useEffect, useState } from "react";
-
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
-import { useNetworkStatus } from "@highschool/hooks";
 import { Toaster } from "@highschool/ui/components/ui/sonner";
 
 import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";

@@ -120,7 +120,7 @@ export const EditTermModal = ({
             {
               onSuccess: () => {
                 queryClient.invalidateQueries({
-                  queryKey: ["flashcard-content"],
+                  queryKey: ["flashcard-content-by-slug"],
                 });
               },
             },
@@ -146,7 +146,7 @@ export const EditTermModal = ({
           {
             onSuccess: () => {
               queryClient.invalidateQueries({
-                queryKey: ["flashcard-content"],
+                queryKey: ["flashcard-content-by-slug"],
               });
               onClose();
             },

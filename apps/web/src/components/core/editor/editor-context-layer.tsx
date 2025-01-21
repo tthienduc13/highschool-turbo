@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
 
 import { useEffect, useRef, useState } from "react";
@@ -22,7 +22,6 @@ import {
   reorderTerm,
 } from "@highschool/react-query/apis";
 
-import { SetLoading } from "@/components/core/study-set/set-loading";
 import { Context, editorEventChannel } from "@/events/editor";
 import {
   ClientTerm,
@@ -30,6 +29,8 @@ import {
   SetEditorStoreContext,
   createSetEditorStore,
 } from "@/stores/use-set-editor-store";
+
+import { EditorLoading } from "./editor-loading";
 
 interface EditorContextLayerProps {
   children: React.ReactNode;
@@ -44,16 +45,17 @@ export const EditorContextLayer = ({
 }: EditorContextLayerProps) => {
   const router = useRouter();
   const storeRef = useRef<SetEditorStore>(null);
+  const queryClient = useQueryClient();
   const [savedLocally, setSavedLocally] = useState(false);
 
   if (!data || !data.flashcardContents) {
-    return <SetLoading />;
+    return <EditorLoading />;
   }
 
   const apiEditSet = useMutation({
     mutationKey: ["update-flashcard"],
     mutationFn: patchFlashcard,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       storeRef.current!.getState().setSaveError(undefined);
       storeRef.current!.getState().setSlug(data.data!);
     },
@@ -94,6 +96,16 @@ export const EditorContextLayer = ({
 
   const apiEditTerm = useMutation({
     mutationFn: patchFlashcardContent,
+    onSuccess: (data) => {
+      if (data.status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ["flashcard-by-slug"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["flashcard-content-by-slug"],
+        });
+      }
+    },
   });
 
   const apiReorderTerm = useMutation({
@@ -104,13 +116,16 @@ export const EditorContextLayer = ({
   const apiCreate = useMutation({
     mutationKey: ["create-flashcard-status"],
     mutationFn: createFlashcardStatus,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      if (data.status === 400) {
+        const state = storeRef.current!.getState();
+        state.setSaveError(
+          data.message || "Đã có lỗi xảy ra, vui lòng thử lại",
+        );
+        state.setIsLoading(false);
+        return;
+      }
       router.push(`/study-set/${storeRef.current!.getState().slug}`);
-    },
-    onError: (e) => {
-      const state = storeRef.current!.getState();
-      state.setIsLoading(false);
-      state.setSaveError(e.message || "Đã có lỗi xảy ra, vui lòng thử lại");
     },
   });
 
@@ -125,17 +140,17 @@ export const EditorContextLayer = ({
   useEffect(() => {
     const state = storeRef.current!.getState();
     state.setIsSaving(isSaving);
-    if (isSaving) setSavedLocally(true);
 
-    if (!isSaving && savedLocally) {
-      state.setSavedAt(new Date());
-      state.setSaveError(undefined);
+    if (isSaving) {
+      setSavedLocally(true);
+    } else if (savedLocally) {
+      if (!state.saveError) {
+        state.setSavedAt(new Date());
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSaving]);
+  }, [isSaving, savedLocally]);
 
   useEffect(() => {
-    // Needed because IDs may be innacurate at the time the modal is opened
     const transform = (c: Context) => {
       const term = storeRef
         .current!.getState()
@@ -300,7 +315,7 @@ export const EditorContextLayer = ({
         },
         onComplete: () => {
           const state = storeRef.current!.getState();
-          const push = () => void router.push(`/study-set/${state.slug}`);
+          const push = () => router.push(`/study-set/${state.slug}`);
 
           if (mode == "edit") {
             state.created ? push() : apiCreate.mutate({ flashcardId: data.id });
