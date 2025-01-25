@@ -10,7 +10,12 @@ import { useRouter } from "next/navigation";
 import { useDeleteFlashcardMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { IconEditCircle, IconTrash, IconTrendingUp } from "@tabler/icons-react";
+import {
+  IconEditCircle,
+  IconStar,
+  IconTrash,
+  IconTrendingUp,
+} from "@tabler/icons-react";
 
 import { useSet } from "@/hooks/use-set";
 
@@ -69,16 +74,14 @@ export const HeadingArea = () => {
             <p>•</p>
             <p> {flashcard.numberOfFlashcardContent} thẻ ghi nhớ</p>
           </div>
-          {session && session.user.userId === flashcard.userId && (
+          {session && session.user.userId === flashcard.userId ? (
             <div className="bg-background flex w-fit flex-row overflow-hidden rounded-lg border">
               <Hint label="Chỉnh sửa bộ thẻ" side="bottom" sideOffset={10}>
                 <Button
                   size={"icon"}
                   variant={"ghost"}
                   className="rounded-none"
-                  onClick={() =>
-                    router.push(`/study-set/${flashcard.slug}/edit`)
-                  }
+                  onClick={() => router.push(`/study-set/edit/${flashcard.id}`)}
                 >
                   <IconEditCircle />
                 </Button>
@@ -94,6 +97,14 @@ export const HeadingArea = () => {
                 </Button>
               </Hint>
             </div>
+          ) : (
+            <Button
+              variant={"outline"}
+              onClick={() => toast.info("🤪 Đi chơi về làm")}
+            >
+              <IconStar />
+              Đánh giá
+            </Button>
           )}
         </div>
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">

@@ -10,6 +10,8 @@ import {
 } from "@highschool/interfaces";
 
 export interface ContainerStoreProps {
+    hideFlashcard: boolean;
+    flashcardHideWith: LimitedStudySetAnswerMode
   shuffleFlashcards: boolean;
   autoplayFlashcards: boolean;
   shuffleLearn: boolean;
@@ -27,6 +29,8 @@ export interface ContainerStoreProps {
 interface ContainerState extends ContainerStoreProps {
   toggleShuffleFlashcards: () => void;
   toggleAutoplayFlashcards: () => void;
+  toggleHideFlashcard: () => void;
+  setFlashcardHideWith: (flashcardHideWith: LimitedStudySetAnswerMode) => void;
   setShuffleLearn: (shuffleLearn: boolean) => void;
   setStudyStarred: (studyStarred: boolean) => void;
   setAnswerWith: (answerWith: StudySetAnswerMode) => void;
@@ -47,6 +51,8 @@ export const createContainerStore = (
 ) => {
   const DEFAULT_PROPS: ContainerStoreProps = {
     shuffleFlashcards: false,
+    hideFlashcard: false,
+    flashcardHideWith: LimitedStudySetAnswerMode.Definition,
     autoplayFlashcards: false,
     shuffleLearn: false,
     studyStarred: false,
@@ -78,6 +84,14 @@ export const createContainerStore = (
           };
         });
       },
+      toggleHideFlashcard: () => {
+        set((state) => {
+            return {
+              hideFlashcard: !state.hideFlashcard,
+            };
+          });
+      },
+      setFlashcardHideWith: (flashcardHideWith: LimitedStudySetAnswerMode) => {set({ flashcardHideWith })},
       setShuffleLearn: (shuffleLearn: boolean) => set({ shuffleLearn }),
       setStudyStarred: (studyStarred: boolean) => set({ studyStarred }),
       setAnswerWith: (answerWith: StudySetAnswerMode) => set({ answerWith }),

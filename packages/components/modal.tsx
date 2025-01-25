@@ -82,11 +82,22 @@ export const Modal = ({
         {!withoutFooter && (
           <CredenzaFooter className="px-5 py-6 md:px-10">
             {!withoutCancel && (
-              <Button variant="outline" onClick={onClose} disabled={isPending}>
+              <Button
+                className="!text-base"
+                size={"lg"}
+                variant="ghost"
+                onClick={onClose}
+                disabled={isPending}
+              >
                 Hủy
               </Button>
             )}
-            <Button disabled={isPending || isDisabled} onClick={onConfirm}>
+            <Button
+              size={"lg"}
+              className="!text-base"
+              disabled={isPending || isDisabled}
+              onClick={onConfirm}
+            >
               {isPending ? (
                 <IconLoader2 className="!size-5 animate-spin" />
               ) : (

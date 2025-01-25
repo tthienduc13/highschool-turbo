@@ -23,20 +23,6 @@ export const FlashcardList = () => {
   const profile = useProfile()!;
   const me = useMe();
 
-  const placeholder = !profile.isMe
-    ? "Người này không có bộ thẻ ghi nhớ nào công khai"
-    : "Bạn chưa tạo bộ thẻ ghi nhớ nào";
-
-  const { data, isLoading } = useUserFlashcardQuery({
-    username: profile.username,
-    pageNumber: 1,
-    pageSize: 100,
-  });
-
-  if (isLoading) {
-    return <FlashcardList.Skeleton />;
-  }
-
   const isMe = me?.username === profile.username;
 
   return <>{isMe ? <OwnFlashcard /> : <UserFlashcard />}</>;

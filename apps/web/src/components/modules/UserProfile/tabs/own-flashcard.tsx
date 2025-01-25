@@ -48,7 +48,7 @@ export const OwnFlashcard = () => {
                 url={
                   item.created
                     ? `/study-set/${item.slug}`
-                    : `/study-set/${item.slug}/edit`
+                    : `/study-set/edit/${item.id}`
                 }
                 visibility={item.status}
                 numValues={item.numberOfFlashcardContent}

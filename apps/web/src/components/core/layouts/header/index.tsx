@@ -61,21 +61,11 @@ export const Header = () => {
       setFolderChildSetId(setId);
       setFolderModalOpen(true);
     };
-    // const openImportDialog = (edit = false) => {
-    //     setImportIsEdit(edit);
-    //     setImportModalOpen(true);
-    // };
-    // const createClass = () => {
-    //     onClassClick();
-    // };
 
     menuEventChannel.on("createFolder", createFolder);
-    // menuEventChannel.on("openImportDialog", openImportDialog);
-    // menuEventChannel.on("createClass", createClass);
+
     return () => {
       menuEventChannel.off("createFolder", createFolder);
-      // menuEventChannel.off("openImportDialog", openImportDialog);
-      // menuEventChannel.off("createClass", createClass);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

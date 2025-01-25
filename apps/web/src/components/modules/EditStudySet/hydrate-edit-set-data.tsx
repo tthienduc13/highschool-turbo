@@ -2,12 +2,14 @@
 
 import { useSession } from "next-auth/react";
 
+import { useEffect } from "react";
+
 import { useParams, useRouter } from "next/navigation";
 
 import { DraftData } from "@highschool/interfaces";
 import {
-  useContentsBySlugQuery,
-  useFlashcardBySlugQuery,
+  useContentsByIdQuery,
+  useFlashcardByIdQuery,
 } from "@highschool/react-query/queries";
 
 import { EditorContextLayer } from "@/components/core/editor/editor-context-layer";
@@ -22,17 +24,25 @@ export const HydrateEditSetData = ({ children }: HydrateEditSetDataProps) => {
   const session = useSession();
   const router = useRouter();
 
-  const { data: flashcardData, isSuccess: flashcardSuccess } =
-    useFlashcardBySlugQuery({
-      slug: params.slug as string,
-    });
+  const {
+    data: flashcardData,
+    isSuccess: flashcardSuccess,
+    isFetching: flashcardFetching,
+    isLoading: flashcardLoading,
+  } = useFlashcardByIdQuery({
+    id: params.id as string,
+  });
 
-  const { data: flashcardContentData, isSuccess: flashcardContentSuccess } =
-    useContentsBySlugQuery({
-      slug: params.slug as string,
-      pageNumber: 1,
-      pageSize: 1000,
-    });
+  const {
+    data: flashcardContentData,
+    isSuccess: flashcardContentSuccess,
+    isFetching: flashcardContentFetching,
+    isLoading: flashcardContentLoading,
+  } = useContentsByIdQuery({
+    id: params.id as string,
+    pageNumber: 1,
+    pageSize: 1000,
+  });
 
   const data: DraftData | null =
     flashcardSuccess && flashcardContentSuccess
@@ -51,11 +61,20 @@ export const HydrateEditSetData = ({ children }: HydrateEditSetDataProps) => {
         }
       : null;
 
-  if (!flashcardData || !flashcardContentData) return <EditorLoading />;
+  const isLoading =
+    flashcardContentFetching ||
+    flashcardContentLoading ||
+    flashcardFetching ||
+    flashcardLoading;
 
-  if (flashcardData.userId !== session.data?.user?.userId) {
-    router.replace(`/study-set/${flashcardData.slug}`);
-  }
+  useEffect(() => {
+    if (flashcardData && flashcardData?.userId !== session.data?.user?.userId) {
+      router.replace(`/study-set/${flashcardData?.slug}`);
+    }
+  }, [flashcardData, router, session]);
+
+  if (!flashcardData || !flashcardContentData || isLoading)
+    return <EditorLoading />;
 
   return (
     <EditorContextLayer data={data!} mode="edit">

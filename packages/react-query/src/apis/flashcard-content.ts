@@ -43,6 +43,32 @@ export const getFlashcardContentsBySlug = async ({
   }
 };
 
+export const getFlashcardContentsById = async ({
+    id,
+    pageNumber,
+    pageSize,
+  }: {
+    id: string;
+    pageNumber: number;
+    pageSize: number;
+  }): Promise<FlashcardContent[]> => {
+    try {
+      const response = await axiosServices.get(
+        `${endpointFlashcardContent.GET_LIST_BY_ID(id)}`,
+        {
+          params: {
+            pageNumber,
+            pageSize,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Error in getFlashcardContentsByID", error);
+      throw error;
+    }
+  };
+
 // PATCH
 export const patchFlashcardContent = async ({
   flashcardId,

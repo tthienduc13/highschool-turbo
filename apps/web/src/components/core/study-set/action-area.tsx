@@ -28,6 +28,13 @@ const AddToFolderModal = dynamic(
   },
 );
 
+const ExportTermModal = dynamic(
+  () => import("./export-term-modal").then((mod) => mod.ExportTermModal),
+  {
+    ssr: false,
+  },
+);
+
 export const ActionArea = () => {
   const [addToFolder, setAddToFolder] = useState(false);
   const [share, setShare] = useState(false);
@@ -50,6 +57,10 @@ export const ActionArea = () => {
           }}
         />
       )}
+      <ExportTermModal
+        isOpen={exportOpen}
+        onClose={() => setExportOpen(false)}
+      />
       <div className="flex w-fit flex-row divide-x-[1px] overflow-hidden rounded-lg border">
         <ActionButton
           label="Thêm vào thư mục"

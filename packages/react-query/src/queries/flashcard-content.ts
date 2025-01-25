@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+    getFlashcardContentsById,
   getFlashcardContentsBySlug,
   patchFlashcardContent,
 } from "../apis/flashcard-content.ts";
@@ -19,6 +20,24 @@ export const useContentsBySlugQuery = ({
     queryFn: () => getFlashcardContentsBySlug({ slug, pageNumber, pageSize }),
   });
 };
+
+export const useContentsByIdQuery = ({
+    id,
+    pageNumber,
+    pageSize,
+  }: {
+    id: string;
+    pageNumber: number;
+    pageSize: number;
+  }) => {
+    return useQuery({
+      queryKey: ["flashcard-content-by-id", id, pageNumber, pageSize],
+      queryFn: () => getFlashcardContentsById({ id, pageNumber, pageSize }),
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+    });
+  };
+
 
 export const useEditFlashcardContentMutation = ({
   slug,

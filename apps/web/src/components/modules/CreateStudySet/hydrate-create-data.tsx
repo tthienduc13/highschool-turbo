@@ -23,7 +23,7 @@ export const HydrateCreateData = ({ children }: HydrateCreateDataProps) => {
     apiGetDraft.mutate(undefined, {
       onSuccess: (data) => {
         if (data.status === 400 && typeof data.data === "string") {
-          router.push(`/study-set/${data.data}/edit`);
+          router.push(`/study-set/edit/${data.data}`);
         }
       },
     });

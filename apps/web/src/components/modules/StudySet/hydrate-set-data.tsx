@@ -2,6 +2,7 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { boolean } from "zod";
 
 import { createContext, useEffect, useRef } from "react";
 
@@ -165,6 +166,8 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
 
   if (!storeRef.current) {
     storeRef.current = createContainerStore({
+      hideFlashcard: false,
+      flashcardHideWith: LimitedStudySetAnswerMode.Definition,
       shuffleFlashcards: false,
       autoplayFlashcards: false,
       shuffleLearn: false,

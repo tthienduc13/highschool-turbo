@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   deleteFlashcard,
   getDraftFlashcard,
+  getFlashcardById,
   getFlashcardBySlug,
   getOwnerFlashcard,
   getTopFlashcard,
@@ -55,6 +56,13 @@ export const useTopFlashcardQuery = () => {
   });
 };
 
+export const useRelatedFlashcard = () => {
+    return useQuery({
+      queryKey: ["related-flashcard"],
+      queryFn: getTopFlashcard,
+    });
+  };
+
 export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["flashcard-by-slug", slug],
@@ -62,6 +70,16 @@ export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
     enabled: !!slug,
   });
 };
+
+export const useFlashcardByIdQuery = ({ id }: { id: string }) => {
+    return useQuery({
+      queryKey: ["flashcard-by-id", id],
+      queryFn: () => getFlashcardById({ id }),
+      refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      enabled: !!id,
+    });
+  };
 
 export const useFlashcardDraftQuery = () => {
   return useQuery({

@@ -1,6 +1,12 @@
+import { Suspense } from "react";
+
 import type { Metadata } from "next";
 
 import "@highschool/ui/globals.css";
+import { cn } from "@highschool/ui/lib/utils";
+
+import { Loading } from "@/components/core/common/loading";
+import { sofiaFontVN } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,8 +19,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={``}>{children}</body>
+    <html lang="vi" suppressHydrationWarning>
+      <body
+        className={cn(
+          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50",
+          sofiaFontVN.variable,
+        )}
+      >
+        <Suspense fallback={<Loading />}>
+          {/* <AppProviders session={session ?? undefined}>{children}</AppProviders> */}
+          {children}
+        </Suspense>
+      </body>
     </html>
   );
 }

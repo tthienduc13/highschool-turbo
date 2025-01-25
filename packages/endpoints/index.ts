@@ -66,8 +66,11 @@ const endpointUserPersonalized = {
 const endpointFlashcard = {
   GET_TOP_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/top`,
   DRAFT: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/draft`,
+  RELATED:`${prefixDocumentServices}${prefixFirstVersion}/flashcard/related`,
   GET_BY_SLUG: (slug: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}`,
+  GET_BY_ID: (id: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}`,
   CREATE_FLASHCARD_FROM_DRAFT: (id: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/created/${id}`,
   EDIT_SET: (id: string) =>
@@ -79,6 +82,8 @@ const endpointFlashcard = {
 const endpointFlashcardContent = {
   GET_LIST_BY_SLUG: (slug: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}/contents`,
+  GET_LIST_BY_ID: (id: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}/contents`,
   EDIT_CONTENT: (flashcardId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/content`,
   CREATE_CONTENT: (flashcardId: string) =>

@@ -25,6 +25,7 @@ import {
 import { resize } from "@/utils/resize-image";
 
 import { PhotoView } from "../providers/photo-provider/photo-view";
+import { SetCreatorOnly } from "./creator-only";
 
 export interface FlashcardProps {
   term: FlashcardContent;
@@ -67,7 +68,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
   return (
     <Card
       style={{ height: h }}
-      className="w-full overflow-hidden rounded-xl border-none shadow-xl"
+      className="w-full overflow-hidden rounded-xl border-none bg-white shadow-xl dark:bg-gray-800"
     >
       <div
         className="h-[4px] min-h-[4px] bg-orange-300"
@@ -104,18 +105,20 @@ export const Flashcard: React.FC<FlashcardProps> = ({
           </div>
           <div className="flex flex-row justify-end">
             <div className="flex flex-row items-center gap-2">
-              <Button
-                aria-label="Edit"
-                variant="ghost"
-                size="icon"
-                className="rounded-full"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRequestEdit();
-                }}
-              >
-                <IconEditCircle className="!size-5" />
-              </Button>
+              <SetCreatorOnly>
+                <Button
+                  aria-label="Edit"
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onRequestEdit();
+                  }}
+                >
+                  <IconEditCircle className="!size-5" />
+                </Button>
+              </SetCreatorOnly>
             </div>
             <Button
               aria-label="Edit"

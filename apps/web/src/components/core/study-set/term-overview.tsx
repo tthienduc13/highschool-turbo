@@ -12,6 +12,7 @@ import { IconKeyframes, TablerIcon } from "@tabler/icons-react";
 import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
 
+import { TermsSortSelect } from "./term-sort-select";
 import { TermWrapper } from "./term-wrapper";
 
 interface TermsOverviewContextProps {
@@ -62,6 +63,7 @@ export const TermOverView = () => {
               <p>thẻ trong bộ này</p>
             </div>
           </h2>
+          <TermsSortSelect studiable={studiable} onChange={setSortType} />
         </div>
         {termsListComponent()}
       </div>

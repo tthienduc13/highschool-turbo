@@ -56,6 +56,18 @@ export const getTopFlashcard = async (): Promise<Flashcard[]> => {
   }
 };
 
+export const getRelatedFlashcard = async (): Promise<Flashcard[]> => {
+    try {
+      const { data } = await axiosServices.get(
+        endpointFlashcard.RELATED,
+      );
+      return data;
+    } catch (error) {
+      console.error("Error while getting related flashcard", error);
+      throw error;
+    }
+  };
+
 export const getFlashcardBySlug = async ({
   slug,
 }: {
@@ -71,6 +83,23 @@ export const getFlashcardBySlug = async ({
     throw error;
   }
 };
+
+
+export const getFlashcardById = async ({
+    id,
+  }: {
+    id: string;
+  }): Promise<Flashcard> => {
+    try {
+      const { data } = await axiosServices.get(
+        endpointFlashcard.GET_BY_ID(id),
+      );
+      return data;
+    } catch (error) {
+      console.error("Error while getting flashcard by id", error);
+      throw error;
+    }
+  };
 
 export const getDraftFlashcard = async (): Promise<
   ResponseModel<DraftData | string>

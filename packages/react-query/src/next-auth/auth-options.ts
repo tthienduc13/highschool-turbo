@@ -6,6 +6,7 @@ import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 
 import { googleAuthentication, login, verifyAccount } from "../apis/auth.ts";
+import { signOut } from "./index.ts";
 
 interface MagicLinkCredentials {
   email: string;
@@ -14,7 +15,6 @@ interface MagicLinkCredentials {
 
 const refreshAccessToken = async (token: JWT) => {
   try {
-    console.log("Refreshing token...");
     const response = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
       {

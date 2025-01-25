@@ -6,7 +6,10 @@ import { useSession } from "next-auth/react";
 import { memo, useEffect, useState } from "react";
 
 import { useOutsideClick } from "@highschool/hooks";
-import { FlashcardContent } from "@highschool/interfaces";
+import {
+  FlashcardContent,
+  LimitedStudySetAnswerMode,
+} from "@highschool/interfaces";
 import { Display } from "@highschool/lib/display";
 import {
   EditorTerm,
@@ -25,6 +28,7 @@ import { IconEditCircle, IconStar, IconStarFilled } from "@tabler/icons-react";
 
 import { editorEventChannel } from "@/events/editor";
 import { useSet } from "@/hooks/use-set";
+import { useContainerContext } from "@/stores/use-container-store";
 import { resize } from "@/utils/resize-image";
 
 import { CreatorOnly } from "../common/creator-only";
@@ -40,6 +44,9 @@ export interface DisplayableTermProps {
 export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
   const authed = useSession().status == "authenticated";
   const { flashcard } = useSet();
+
+  const hideFlashcard = useContainerContext((s) => s.hideFlashcard);
+  const flashcardHideWith = useContainerContext((s) => s.flashcardHideWith);
 
   // const starMutation = api.container.starTerm.useMutation();
   // const unstarMutation = api.container.unstarTerm.useMutation();
@@ -188,6 +195,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             <div className="flex w-full flex-col gap-2">
               <RichTextBar activeEditor={termEditor} />
               <EditorContent
+                className="text-lg"
                 editor={termEditor}
                 onKeyDown={(e) => {
                   if ([" ", "ArrowRight", "ArrowLeft"].includes(e.key))
@@ -196,7 +204,14 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
               />
             </div>
           ) : (
-            <div className="overflow-wrap-anywhere w-full whitespace-pre-wrap leading-[25px]">
+            <div
+              className={cn(
+                "overflow-wrap-anywhere w-full whitespace-pre-wrap text-lg leading-[25px]",
+                hideFlashcard &&
+                  flashcardHideWith === LimitedStudySetAnswerMode.Term &&
+                  "blur",
+              )}
+            >
               <Display text={cache.term} richText={cache.termRichText!} />
             </div>
           )}
@@ -205,6 +220,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             <div className="flex w-full flex-col gap-2">
               <RichTextBar activeEditor={definitionEditor} />
               <EditorContent
+                className="text-lg"
                 editor={definitionEditor}
                 onKeyDown={(e) => {
                   if ([" ", "ArrowRight", "ArrowLeft"].includes(e.key))
@@ -213,7 +229,14 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
               />
             </div>
           ) : (
-            <div className="overflow-wrap-anywhere w-full whitespace-pre-wrap leading-[25px]">
+            <div
+              className={cn(
+                "overflow-wrap-anywhere w-full whitespace-pre-wrap text-lg leading-[25px]",
+                hideFlashcard &&
+                  flashcardHideWith === LimitedStudySetAnswerMode.Definition &&
+                  "blur",
+              )}
+            >
               <Display
                 text={cache.definition}
                 richText={cache.definitionRichText!}
@@ -284,7 +307,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                   }}
                 >
                   <IconEditCircle size={18} />
-                  <span className="sr-only">Edit</span>
+                  <span className="sr-only">Chỉnh sửa</span>
                 </Button>
               </CreatorOnly>
             </div>

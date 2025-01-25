@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@highschool/ui/lib/utils";
 
@@ -70,6 +71,7 @@ export const Linkable: React.FC<LinkableProps> = ({
   requireAuth = false,
   comingSoon = false,
 }) => {
+  const router = useRouter();
   const authed = useSession().status == "authenticated";
   const authEnabled = requireAuth && !authed;
   const Wrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -79,9 +81,6 @@ export const Linkable: React.FC<LinkableProps> = ({
 
     return <Hint label="Sắp ra mắt">{children}</Hint>;
   };
-
-  const overlay =
-    !authEnabled && !comingSoon ? <Link href={href}>{name}</Link> : name;
 
   return (
     <Wrapper>
@@ -98,6 +97,9 @@ export const Linkable: React.FC<LinkableProps> = ({
               message: `Tạo tài khoản để tiếp tục với ${name}`,
               callbackUrl: href,
             });
+          else {
+            router.push(href);
+          }
         }}
       >
         {comingSoon && (
@@ -122,9 +124,7 @@ export const Linkable: React.FC<LinkableProps> = ({
               {icon}
             </div>
           </div>
-          <p className="font-bold text-gray-600 dark:text-gray-400">
-            {overlay}{" "}
-          </p>
+          <p className="font-bold text-gray-600 dark:text-gray-400">{name}</p>
         </div>
       </div>
     </Wrapper>
