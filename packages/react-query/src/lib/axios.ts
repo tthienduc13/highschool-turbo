@@ -4,7 +4,6 @@ import { getSession as getSessionClient } from "next-auth/react";
 import { signOut } from "next-auth/react";
 
 import { env } from "@highschool/env";
-
 import { auth } from "../next-auth/index.ts";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
@@ -28,8 +27,7 @@ const getSession = async ({ cache } = { cache: false }) => {
     return cachedSession;
   }
 
-  cachedSession = cachedSession! || makeSession();
-  cachedSession = await cachedSession;
+  cachedSession = cachedSession ?? (await makeSession());
 
   if (
     cachedSession &&
@@ -43,17 +41,17 @@ const getSession = async ({ cache } = { cache: false }) => {
 };
 
 const attachJwtToRequest = async (request: AxiosRequestConfig) => {
-  const session = await getSession({ cache: true });
+  cachedSession = await getSession({ cache: false }); // Force fresh session
 
-  if (!session) {
+  if (!cachedSession) {
     return;
   }
 
   if (request.headers) {
     if (request.url === "auth/refresh-token") {
-      request.headers["refresh-token"] = `Bearer ${session.user.refreshToken}`;
+      request.headers["refresh-token"] = `Bearer ${cachedSession.user.refreshToken}`;
     } else {
-      request.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
+      request.headers["Authorization"] = `Bearer ${cachedSession.user.accessToken}`;
     }
   }
 };
@@ -90,6 +88,7 @@ const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
         !originalRequest._retry &&
         useAuth
       ) {
+        cachedSession = null; // Clear cached session when unauthorized
         await signOut();
       }
       return Promise.reject(error);
@@ -99,6 +98,7 @@ const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
   return instance;
 };
 
+// Axios instances
 const axiosServices = createAxiosInstance("application/json", true);
 const axiosClientWithoutAuth = createAxiosInstance("application/json", false);
 const axiosClientUpload = createAxiosInstance("multipart/form-data", true);
