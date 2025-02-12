@@ -106,7 +106,15 @@ body {
     --ring: 222 100% 54.9%;
     --radius: 0.75rem;
   } */
+  :root {
+    --gradient-from: theme("colors.gray.50");
+    --gradient-to: theme("colors.blue.300");
+  }
 
+  .dark {
+    --gradient-from: theme("colors.gray.900");
+    --gradient-to: theme("colors.blue.900");
+  }
   :root {
     --sidebar-background: 100 100% 100%;
     --sidebar-foreground: 240 5.3% 26.1%;

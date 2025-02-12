@@ -60,7 +60,7 @@ export const HeadingArea = () => {
         destructive
       />
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold md:text-4xl">
+        <h1 className="break-all text-2xl font-bold md:text-4xl">
           {flashcard.flashcardName}
         </h1>
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">

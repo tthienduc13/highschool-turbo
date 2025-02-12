@@ -307,9 +307,15 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                   }}
                 >
                   <IconEditCircle size={18} />
-                  <span className="sr-only">Chỉnh sửa</span>
                 </Button>
               </CreatorOnly>
+              <Button
+                size="icon"
+                variant={isEditing ? "default" : "ghost"}
+                className="h-8 w-8 scale-75 rounded-full md:scale-100"
+              >
+                <IconStar size={18} />
+              </Button>
             </div>
           </div>
         </div>

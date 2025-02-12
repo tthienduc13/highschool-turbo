@@ -14,9 +14,9 @@ export const Container = ({
   return (
     <div
       className={cn(
+        className,
         "mx-auto w-full px-4 sm:px-8",
         `max-w-${maxWidth}`,
-        className,
       )}
     >
       {children}

@@ -1,6 +1,6 @@
 import { Metadata, Pagination } from "@highschool/interfaces";
 
-import axiosServices from "../lib/axios.ts";
+import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 
 type QueryParams = Record<string, string | number | boolean | undefined | null>;
 
@@ -35,3 +35,33 @@ async function fetchPaginatedData<T>(
 }
 
 export default fetchPaginatedData;
+
+export async function fetchUnauthedPaginatedData<T>(
+    endpoint: string,
+    params: QueryParams = {},
+  ): Promise<Pagination<T>> {
+    try {
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(
+          ([_, value]) => value !== undefined && value !== null && value !== "",
+        ),
+      );
+
+      const response = await axiosClientWithoutAuth.get(endpoint, {
+        params: filteredParams,
+      });
+      const paginationHeader = response.headers["x-pagination"];
+      const metadata: Metadata = JSON.parse(paginationHeader || "{}");
+
+      return {
+        data: response.data,
+        currentPage: metadata.CurrentPage,
+        pageSize: metadata.PageSize,
+        totalCount: metadata.TotalCount,
+        totalPages: metadata.TotalPages,
+      };
+    } catch (error) {
+      console.error("Error while fetching paginated data:", error);
+      throw error;
+    }
+  }

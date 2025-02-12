@@ -23,7 +23,7 @@ export const DescriptionArea = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-col items-center justify-start gap-8 sm:flex-row sm:justify-between sm:gap-0">
+      <div className="flex flex-col justify-start gap-8 sm:flex-row sm:justify-between sm:gap-0 md:items-center">
         {isLoading ? (
           <div className="flex flex-row items-center gap-x-4">
             <Skeleton className="h-12 w-12 rounded-full" />
@@ -82,9 +82,7 @@ export const DescriptionArea = () => {
           </div>
         </div>
       )}
-      <p className="whitespace-pre-wrap">
-        {data.flashcard.flashcardDescription}
-      </p>
+      <p className="break-all">{data.flashcard.flashcardDescription}</p>
     </div>
   );
 };

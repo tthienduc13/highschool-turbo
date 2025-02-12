@@ -13,27 +13,20 @@ const nextConfig: NextConfig = {
   ],
   images: {
     remotePatterns: [
-      {
-        protocol: "http",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "/dni30h5dy**",
-        search: "",
-      },
-      {
-        protocol: "https",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "/dyu2kc3bl/**",
-        search: "",
-      },
-      {
-        protocol: "http",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "/dagqmcswa/**",
-        search: "",
-      },
+        {
+            protocol: "https",
+            hostname: "res.cloudinary.com",
+            pathname: "/**",
+          },
+          {
+            protocol: "http",
+            hostname: "res.cloudinary.com",
+            pathname: "/**",
+          },{
+            protocol: "https",
+            hostname:"avatar.iran.liara.run",
+            pathname: "/**",
+          }
     ],
   },
 };

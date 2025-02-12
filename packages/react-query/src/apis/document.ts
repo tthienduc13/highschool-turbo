@@ -8,7 +8,7 @@ import {
 } from "@highschool/interfaces";
 
 import { axiosClientWithoutAuth } from "../lib/axios.ts";
-import fetchPaginatedData from "./common.ts";
+import fetchPaginatedData, { fetchUnauthedPaginatedData } from "./common.ts";
 
 export const getDocuments = async ({
   search,
@@ -23,7 +23,7 @@ export const getDocuments = async ({
   curriculumIds,
   subjectId,
 }: FilterPayload): Promise<Pagination<Document[]>> => {
-  return fetchPaginatedData<Document[]>(endpointDocument.GET_DOCUMENTS, {
+  return fetchUnauthedPaginatedData<Document[]>(endpointDocument.GET_DOCUMENTS, {
     search: search,
     pageNumber: pageNumber,
     pageSize: pageSize,

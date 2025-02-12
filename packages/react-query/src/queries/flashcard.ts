@@ -67,6 +67,7 @@ export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["flashcard-by-slug", slug],
     queryFn: () => getFlashcardBySlug({ slug }),
+    refetchOnMount: true,
     enabled: !!slug,
   });
 };

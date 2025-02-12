@@ -1,7 +1,7 @@
 import { endpointInformation } from "@highschool/endpoints";
 import { City, Pagination, School } from "@highschool/interfaces";
 
-import fetchPaginatedData from "./common.ts";
+import { fetchUnauthedPaginatedData } from "./common.ts";
 
 export const getCitySchools = async ({
   cityId,
@@ -14,7 +14,7 @@ export const getCitySchools = async ({
   pageNumber: number;
   pageSize: number;
 }): Promise<Pagination<School[]>> => {
-  return fetchPaginatedData<School[]>(
+  return fetchUnauthedPaginatedData<School[]>(
     endpointInformation.GET_ALL_CITY_SCHOOL(cityId),
     {
       search,
@@ -24,21 +24,6 @@ export const getCitySchools = async ({
   );
 };
 
-// export const getCities = async ({
-//   search,
-//   pageNumber,
-//   pageSize,
-// }: {
-//   search?: string;
-//   pageNumber: number;
-//   pageSize: number;
-// }): Promise<Pagination<City>> => {
-//   return fetchPaginatedData<City>(endpointInformation.GET_ALL_CITIES, {
-//     search,
-//     pageNumber,
-//     pageSize,
-//   });
-// };
 
 export const getCities = async ({
   search,
@@ -49,7 +34,7 @@ export const getCities = async ({
   pageNumber: number;
   pageSize: number;
 }): Promise<Pagination<City[]>> => {
-  return fetchPaginatedData<City[]>(endpointInformation.GET_ALL_CITIES, {
+  return fetchUnauthedPaginatedData<City[]>(endpointInformation.GET_ALL_CITIES, {
     search,
     pageNumber,
     pageSize,

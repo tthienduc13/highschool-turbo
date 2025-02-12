@@ -9,7 +9,7 @@ function HomeModule() {
     <>
       <Banner />
       <Features />
-      <FeedBack />
+      {/* <FeedBack /> */}
       <Info />
       <GettingStarted />
     </>

@@ -58,9 +58,6 @@ export const EditorContextLayer = ({
     onSuccess: async (data) => {
       storeRef.current!.getState().setSaveError(undefined);
       storeRef.current!.getState().setSlug(data.data!);
-      if (mode === "edit") {
-        router.replace(`/study-set/${data.data}/edit`);
-      }
     },
   });
 

@@ -163,20 +163,55 @@ export const SetContext = createContext<SetContextProps | undefined>(undefined);
 
 const ContextLayer = ({ data, children }: ContextLayerProps) => {
   const storeRef = useRef<ContainerStore>(null);
+  const { status } = useSession();
+  //   const extendedFeedbackBank = useFeature(EnabledFeature.ExtendedFeedbackBank);
 
+  const getVal = (data: Flashcard): Partial<ContainerStoreProps> => ({
+    shuffleFlashcards: data.container.shuffleFlashcards,
+    shuffleLearn: data.container.shuffleLearn,
+    studyStarred: data.container.studyStarred,
+    answerWith: data.container.answerWith,
+    // starredTerms: data.container.starredTerms,
+    multipleAnswerMode: data.container.multipleAnswerMode,
+    // extendedFeedbackBank:
+    //   data.container.extendedFeedbackBank && extendedFeedbackBank,
+    enableCardsSorting: data.container.enableCardsSorting,
+    cardsStudyStarred: data.container.cardsStudyStarred,
+    cardsAnswerWith: data.container.cardsAnswerWith,
+    matchStudyStarred: data.container.matchStudyStarred,
+  });
+
+  //   if (!storeRef.current) {
+  //     storeRef.current = createContainerStore({
+  //       hideFlashcard: false,
+  //       flashcardHideWith: LimitedStudySetAnswerMode.Definition,
+  //       shuffleFlashcards: false,
+  //       autoplayFlashcards: false,
+  //       shuffleLearn: false,
+  //       answerWith: StudySetAnswerMode.FlashcardContentDefinition,
+  //       multipleAnswerMode: MultipleAnswerMode.Unknown,
+  //       enableCardsSorting: false,
+  //       cardsAnswerWith: LimitedStudySetAnswerMode.Definition,
+  //     });
+  //   }
   if (!storeRef.current) {
-    storeRef.current = createContainerStore({
-      hideFlashcard: false,
-      flashcardHideWith: LimitedStudySetAnswerMode.Definition,
-      shuffleFlashcards: false,
-      autoplayFlashcards: false,
-      shuffleLearn: false,
-      answerWith: StudySetAnswerMode.FlashcardContentDefinition,
-      multipleAnswerMode: MultipleAnswerMode.Unknown,
-      enableCardsSorting: false,
-      cardsAnswerWith: LimitedStudySetAnswerMode.Definition,
-    });
+    storeRef.current = createContainerStore(
+      status == "authenticated" ? getVal(data.flashcard) : undefined,
+    );
   }
+
+  useEffect(() => {
+    const trigger = (data: SetData) => {
+      if (status == "authenticated")
+        storeRef.current?.setState(getVal(data.flashcard));
+    };
+
+    queryEventChannel.on("setQueryRefetched", trigger);
+    return () => {
+      queryEventChannel.off("setQueryRefetched", trigger);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SetContext.Provider value={{ data }}>

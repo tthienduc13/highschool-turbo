@@ -18,7 +18,7 @@ export const restrictedRoutes = ["/study-set/*/learn"];
  * These routes will redirect logged in users to /settings
  * @type {string[]}
  */
-export const authRoutes = ["/sign-in", "/verify"];
+export const authRoutes = ["/sign-in", "/verify", "/auth-error"];
 
 /**
  * The prefix for API authentication routes

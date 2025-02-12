@@ -48,9 +48,10 @@ export const Features = () => {
       description2:
         " Đề xuất các tài liệu và lộ trình học phù hợp với từng học sinh, giúp tối ưu hóa quá trình học tập.",
       externalLink: "https://app.highschool.vn",
-      backgroundColor: "#fed48b",
+      backgroundColor: "#fe9b8b",
+
       className: "",
-      imageUrl: "/images/ai.png",
+      imageUrl: "/images/ai-whale.png",
     },
     {
       title: "Lộ trình học",
@@ -59,7 +60,8 @@ export const Features = () => {
       description2:
         "Theo dõi tiến độ học tập và điều chỉnh kế hoạch khi cần thiết.",
       externalLink: "https://app.highschool.vn",
-      backgroundColor: "#fe9b8b",
+      backgroundColor: "#8beefe",
+      imageUrl: "/images/roadmap.svg",
     },
     {
       title: "Giải đố và ôn tập",
@@ -68,7 +70,8 @@ export const Features = () => {
       description2:
         "Nhiều phần quà hấp dẫn được gửi tặng cho bạn sau khi hoàn thành",
       externalLink: "",
-      backgroundColor: "#8beefe",
+      backgroundColor: "#fed48b",
+      imageUrl: "/images/quiz.svg",
     },
   ];
 

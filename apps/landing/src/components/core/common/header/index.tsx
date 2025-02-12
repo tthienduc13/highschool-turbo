@@ -3,7 +3,7 @@
 import { Fragment, useState } from "react";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -11,35 +11,38 @@ import { cn } from "@highschool/ui/lib/utils";
 
 import { IconArrowRight, IconMenu, IconX } from "@tabler/icons-react";
 
+import { AnimatedBackground } from "@/components/ui/animated-background";
+
 import { Logo } from "../logo";
 
 export interface NavigationBarProps {
-  title: string;
+  name: string;
   href: string;
 }
 
 export const Header = () => {
-  const pathName = usePathname();
+  const currentPathName = usePathname();
+  const router = useRouter();
   const [isOpenMobileMenu, setIsOpenMobileMenu] = useState<boolean>(false);
   const navbarItems: NavigationBarProps[] = [
     {
-      title: "Trang chủ",
+      name: "Trang chủ",
       href: "/",
     },
     {
-      title: "Tài liệu",
+      name: "Tài liệu",
       href: "/kho-tai-lieu",
     },
     {
-      title: "Tin tức",
+      name: "Tin tức",
       href: "/tin-tuc",
     },
     {
-      title: "Hướng nghiệp",
+      name: "Hướng nghiệp",
       href: "/huong-nghiep",
     },
     {
-      title: "Về chúng tôi",
+      name: "Về chúng tôi",
       href: "/ve-chung-toi",
     },
   ];
@@ -55,27 +58,36 @@ export const Header = () => {
       <div className="flex w-[150px] justify-start">
         <Logo />
       </div>
-      <div className="hidden flex-1 items-center justify-center md:flex">
-        <div className="flex items-center gap-2 lg:gap-5">
-          {navbarItems.map((item) => (
-            <Fragment key={item.href}>
-              <Link
-                className={cn(
-                  "hover:text-primary group relative rounded-md px-2 py-1 text-xs transition-all duration-150 lg:px-4 xl:text-base",
-                  isActive(pathName, item.href) && "bg-primary/30 text-primary",
-                )}
-                href={item.href}
-              >
-                <div className="group relative">
-                  {item.title}
-                  {!isActive(pathName, item.href) && (
-                    <div className="bg-primary/90 absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 ease-in-out group-hover:w-full"></div>
-                  )}
-                </div>
-              </Link>
-            </Fragment>
+      <div className="hidden flex-1 items-center justify-center gap-5 md:flex">
+        <AnimatedBackground
+          defaultValue={navbarItems[0].href}
+          className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+          transition={{
+            type: "spring",
+            bounce: 0.2,
+            duration: 0.3,
+          }}
+          enableHover
+        >
+          {navbarItems.map((tab, index) => (
+            <button
+              key={index}
+              onClick={() => router.push(tab.href)}
+              data-id={tab}
+              type="button"
+              className={cn(
+                "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
+                currentPathName === tab.href &&
+                  "text-blue-700 dark:text-blue-200",
+              )}
+            >
+              {tab.name}
+              {currentPathName === tab.href && (
+                <div className="absolute bottom-2 left-1/2 h-[3px] w-[calc(100%-30px)] -translate-x-1/2 bg-blue-500" />
+              )}
+            </button>
           ))}
-        </div>
+        </AnimatedBackground>
       </div>
       <div className="flex justify-end md:w-[150px]">
         <Button

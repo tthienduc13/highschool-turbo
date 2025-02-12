@@ -10,8 +10,8 @@ import {
 } from "@highschool/interfaces";
 
 export interface ContainerStoreProps {
-    hideFlashcard: boolean;
-    flashcardHideWith: LimitedStudySetAnswerMode
+hideFlashcard: boolean;
+flashcardHideWith: LimitedStudySetAnswerMode
   shuffleFlashcards: boolean;
   autoplayFlashcards: boolean;
   shuffleLearn: boolean;

@@ -7,6 +7,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import { useMediaQuery } from "@highschool/hooks";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   DropdownMenu,
@@ -17,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
+import { cn } from "@highschool/ui/lib/utils";
 
 import {
   IconBrain,
@@ -33,13 +35,17 @@ import { menuEventChannel } from "@/events/menu";
 import { useSet } from "@/hooks/use-set";
 
 export const InteractorModes = () => {
+  const isMobile = useMediaQuery("(max-width: 390px)");
   const [openDropdown, setOpenDropdown] = useState<boolean>(false);
   const { flashcard } = useSet();
 
   return (
     <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
       <DropdownMenuTrigger asChild>
-        <Button size={"lg"} className="!text-base">
+        <Button
+          size={isMobile ? "sm" : "lg"}
+          className={cn("", !isMobile && "!text-base")}
+        >
           Chọn chế độ học
           {openDropdown ? (
             <IconChevronUp className="!size-5" />

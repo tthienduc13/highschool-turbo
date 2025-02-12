@@ -96,6 +96,7 @@ export const patchFlashcardContent = async ({
       endpointFlashcardContent.EDIT_CONTENT(flashcardId),
       cleanValues,
     );
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error while patching flashcard content", error);
