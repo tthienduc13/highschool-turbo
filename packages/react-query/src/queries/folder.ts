@@ -48,13 +48,14 @@ export const useUpdateFolderMutation = () => {
 export const useUserFoldersQuery = ({
   pageSize,
   pageNumber,
+  userName,
   flashcardId,
   documentId,
-  isMyFolder,
+
 }: {
   pageSize: number;
   pageNumber: number;
-  isMyFolder?: boolean;
+userName?: string
   flashcardId?: string;
   documentId?: string;
 }) => {
@@ -65,12 +66,13 @@ export const useUserFoldersQuery = ({
       documentId,
       pageNumber,
       pageSize,
-      isMyFolder,
+      userName,
     ],
     queryFn: () =>
       getUserFolderList({
         pageNumber: pageNumber,
         pageSize: pageSize,
+        userName: userName,
         flashcardId: flashcardId,
         documentId: documentId,
       }),

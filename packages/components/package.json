@@ -1,24 +1,24 @@
 {
-  "name": "@highschool/components",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "@highschool/hooks": "workspace:*",
-    "@highschool/interfaces": "workspace:*",
-    "@highschool/ui": "workspace:*",
-    "@radix-ui/react-visually-hidden": "^1.1.0",
-    "@tabler/icons-react": "^3.26.0",
-    "compressorjs": "^1.2.1",
-    "date-fns": "^4.1.0",
-    "framer-motion": "^11.13.1",
-    "next": "15.1.0",
-    "react": "^19.0.0",
-    "react-day-picker": "8.10.1",
-    "tailwindcss": "^3.4.15"
-  },
-  "devDependencies": {
-    "@types/react": "^19"
-  }
+    "name": "@highschool/components",
+    "version": "1.0.0",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@highschool/hooks": "workspace:*",
+        "@highschool/interfaces": "workspace:*",
+        "@highschool/ui": "workspace:*",
+        "@radix-ui/react-visually-hidden": "^1.1.0",
+        "@tabler/icons-react": "^3.26.0",
+        "compressorjs": "^1.2.1",
+        "date-fns": "^4.1.0",
+        "framer-motion": "^11.13.1",
+        "next": "15.1.0",
+        "react": "^19.0.0",
+        "react-day-picker": "8.10.1",
+        "tailwindcss": "^3.4.15"
+    },
+    "devDependencies": {
+        "@types/react": "^19"
+    }
 }

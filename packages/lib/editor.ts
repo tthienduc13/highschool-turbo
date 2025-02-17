@@ -1,3 +1,5 @@
+import type { JSONContent } from "@tiptap/react";
+
 import Bold from "@tiptap/extension-bold";
 import Document from "@tiptap/extension-document";
 import HighlightRaw from "@tiptap/extension-highlight";
@@ -7,8 +9,6 @@ import Strike from "@tiptap/extension-strike";
 import Text from "@tiptap/extension-text";
 import Underline from "@tiptap/extension-underline";
 import { generateHTML, generateJSON } from "@tiptap/html";
-import type { JSONContent } from "@tiptap/react";
-
 import { FlashcardContent } from "@highschool/interfaces";
 
 export type EditorTerm = FlashcardContent & {
@@ -67,6 +67,7 @@ export const getPlainText = (json: JSONContent, delimeter = "\n"): string => {
         if (node.type === "paragraph") {
           return getPlainText(node, "");
         }
+
         return "";
       })
       .join(delimeter) || ""
@@ -75,12 +76,15 @@ export const getPlainText = (json: JSONContent, delimeter = "\n"): string => {
 
 export const plainTextToHtml = (text: string): string => {
   const paragraphs = text.split("\n").map((line) => `<p>${line}</p>`);
+
   return paragraphs.join("");
 };
 
 export const richTextToHtml = (json: JSONContent, breaks = false): string => {
   const raw = generateHTML(json, SERIALIZABLE_EXTENSIONS);
+
   if (!breaks) return raw;
+
   // Replace empty paragraphs with breaks
   return raw.replace(/<p><\/p>/g, "<p><br></p>");
 };
@@ -93,6 +97,7 @@ export const getRichTextJson = (
     return generateJSON(html, SERIALIZABLE_EXTENSIONS) as JSONContent;
   } catch (error) {
     console.error("Error generating rich text JSON:", error);
+
     return undefined; // Return undefined on error
   }
 };
@@ -100,6 +105,7 @@ export const getRichTextJson = (
 export const hasRichText = (json: JSONContent, plainText: string): boolean => {
   const plainHtml = plainTextToHtml(plainText);
   const richHtml = richTextToHtml(json);
+
   return plainHtml != richHtml;
 };
 

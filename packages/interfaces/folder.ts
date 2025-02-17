@@ -1,3 +1,4 @@
+import { Document } from "./document";
 import { Flashcard } from "./flashcard";
 
 export interface Folder {
@@ -20,7 +21,7 @@ export enum FolderVisibility {
 export interface UserFolder {
   folderUser: FolderUser;
   flashcards: Flashcard[];
-  documents: any[];
+  documents: Document[];
 }
 
 export interface FolderUser {

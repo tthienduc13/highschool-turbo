@@ -72,3 +72,5 @@ export const GRADING_MESSAGES = [
   "Chúng tôi đang kiểm tra, bạn kiên nhẫn nhé!",
   "Cùng xem bạn đạt được bao nhiêu điểm nào!",
 ];
+
+export const ACCESS_TOKEN = "access_token";

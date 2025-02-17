@@ -1,12 +1,13 @@
 import type { JSONContent } from "@tiptap/react";
-import { FilterXSS, escapeAttrValue, getDefaultWhiteList } from "xss";
 
+import { FilterXSS, escapeAttrValue, getDefaultWhiteList } from "xss";
 import React from "react";
 
 import { richTextToHtml } from "./editor";
 import { ScriptFormatter } from "./script-formatter";
 
 const whitelist = getDefaultWhiteList();
+
 // Style attribute should still be safe from xss, just saves compute time on other elements
 whitelist.mark?.push("style");
 

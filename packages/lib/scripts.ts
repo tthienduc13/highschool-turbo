@@ -36,6 +36,7 @@ export const formatScripts = (
   const split = text.split(/([₀₁₂₃₄₅₆₇₈₉₋₊⁰¹²³⁴⁵⁶⁷⁸⁹⁻⁺])/);
 
   let arr = [];
+
   for (const s of split) {
     if (s in supMap) {
       arr.push({

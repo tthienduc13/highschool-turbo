@@ -1,10 +1,8 @@
 "use client";
 
-import { format, getYear, setMonth, setYear } from "date-fns";
+import { format } from "date-fns";
 import { vi } from "date-fns/locale";
-
 import * as React from "react";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Popover,
@@ -12,7 +10,6 @@ import {
   PopoverTrigger,
 } from "@highschool/ui/components/ui/popover";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCalendar } from "@tabler/icons-react";
 
 import { Calendar } from "./calendar";
@@ -32,11 +29,11 @@ export function DatePicker({ selectedDate, setSelectedDate }: DatePickerProps) {
         className="h-12 border-2 border-gray-200 dark:border-gray-800"
       >
         <Button
-          variant={"outline"}
           className={cn(
             "w-[250px] justify-start text-left !text-base font-normal",
             !selectedDate && "text-muted-foreground",
           )}
+          variant={"outline"}
           onClick={() => setIsOpen(true)}
         >
           <IconCalendar className="mr-2 h-4 w-4" />
@@ -49,16 +46,16 @@ export function DatePicker({ selectedDate, setSelectedDate }: DatePickerProps) {
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
+          captionLayout="dropdown"
+          fromYear={2000}
           locale={vi}
           mode="single"
-          captionLayout="dropdown"
           selected={selectedDate}
+          toYear={new Date().getFullYear()}
+          onDayClick={() => setIsOpen(false)}
           onSelect={(selectedDate) => {
             setSelectedDate(selectedDate!);
           }}
-          onDayClick={() => setIsOpen(false)}
-          fromYear={2000}
-          toYear={new Date().getFullYear()}
         />
       </PopoverContent>
     </Popover>

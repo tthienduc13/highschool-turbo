@@ -1,20 +1,23 @@
 import { NextAuthConfig, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
-
 import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
+import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
+import { cookies } from "next/headers.js";
 
 import { googleAuthentication, login, verifyAccount } from "../apis/auth.ts";
-import { signOut } from "./index.ts";
 
 interface MagicLinkCredentials {
   email: string;
   token: string;
 }
 
+// TODO: ADD HTTPONLY FOR COOKIE
+
 const refreshAccessToken = async (token: JWT) => {
   try {
+    const cookieStore = await cookies();
     const response = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
       {
@@ -39,9 +42,14 @@ const refreshAccessToken = async (token: JWT) => {
       throw new Error("RefreshTokenFailed");
     }
 
+    cookieStore.set({
+      name: ACCESS_TOKEN,
+      value: result.data.accessToken,
+      httpOnly: true,
+    });
+
     return {
       ...token,
-      accessToken: result.data.accessToken,
       expiresAt: result.data.expiresAt,
       refreshToken: result.data.refreshToken || token.refreshToken,
       userId: token.userId,
@@ -52,7 +60,7 @@ const refreshAccessToken = async (token: JWT) => {
       sessionId: token.sessionId,
     };
   } catch (error) {
-    console.error("Error refreshing token:", error);
+    console.error("RefreshAccessTokenError", error);
 
     return {
       ...token,
@@ -73,7 +81,6 @@ export const AuthOptions: NextAuthConfig = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-
     }),
     {
       id: "magic-link",
@@ -98,10 +105,10 @@ export const AuthOptions: NextAuthConfig = {
             email: credentials.email,
             token: encodeURI(credentials.token),
           });
+
           return data!;
         } catch (error) {
-          console.error("Magic Link authorization failed:", error);
-          return null;
+          throw error;
         }
       },
     },
@@ -117,24 +124,43 @@ export const AuthOptions: NextAuthConfig = {
         };
 
         const response = await googleAuthentication(googleLoginInfo);
+
         if (!response.data) return false;
         const userInfo = response.data;
+
+        const cookieStore = await cookies();
+
+        cookieStore.set({
+          name: ACCESS_TOKEN,
+          value: userInfo.accessToken,
+          //   httpOnly: true,
+        });
+
         user.userId = userInfo.userId;
         user.email = userInfo.email;
         user.username = userInfo.username;
         user.fullname = userInfo.fullname;
         user.image = userInfo.image;
         user.roleName = userInfo.roleName;
-        user.accessToken = userInfo.accessToken;
         user.refreshToken = userInfo.refreshToken;
         user.sessionId = userInfo.sessionId;
         user.progressStage = userInfo.progressStage;
         user.roleName = userInfo.roleName;
         user.expiresAt = userInfo.expiresAt;
+
         return true;
       }
       if (account?.provider === "magic-link") {
         const userInfo = user;
+
+        const cookieStore = await cookies();
+
+        cookieStore.set({
+          name: ACCESS_TOKEN,
+          value: userInfo.accessToken,
+          //   httpOnly: true,
+        });
+
         Object.assign(user, {
           userId: userInfo.userId,
           email: userInfo.email,
@@ -142,12 +168,12 @@ export const AuthOptions: NextAuthConfig = {
           fullname: userInfo.fullname,
           image: userInfo.image,
           roleName: userInfo.roleName,
-          accessToken: userInfo.accessToken,
           refreshToken: userInfo.refreshToken,
           sessionId: userInfo.sessionId,
           progressStage: userInfo.progressStage,
           expiresAt: userInfo.expiresAt,
         });
+
         return true;
       }
 
@@ -185,10 +211,10 @@ export const AuthOptions: NextAuthConfig = {
         fullname: token.fullname,
         roleName: token.roleName,
         progressStage: token.progressStage,
-        accessToken: token.accessToken,
         refreshToken: token.refreshToken,
         expiresAt: token.expiresAt,
       };
+
       return session;
     },
   },
