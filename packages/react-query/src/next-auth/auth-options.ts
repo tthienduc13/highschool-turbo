@@ -5,6 +5,7 @@ import { env } from "@highschool/env";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 import { cookies } from "next/headers.js";
+import { setClientCookie } from "@highschool/lib/cookies.ts";
 
 import { googleAuthentication, login, verifyAccount } from "../apis/auth.ts";
 
@@ -41,12 +42,7 @@ const refreshAccessToken = async (token: JWT) => {
     if (!result.data) {
       throw new Error("RefreshTokenFailed");
     }
-
-    cookieStore.set({
-      name: ACCESS_TOKEN,
-      value: result.data.accessToken,
-      httpOnly: true,
-    });
+    setClientCookie(ACCESS_TOKEN, result.data.accessToken);
 
     return {
       ...token,
