@@ -26,9 +26,8 @@ export const AnswerOption = ({ goToNextQuestion }: AnswerOptionProps) => {
   return (
     <div className="flex w-full flex-col gap-4">
       {questions[currentQuestionIndex].options.map((answer) => (
-        <div
+        <button
           key={answer.option}
-          onClick={() => handleAnswerSelect(answer)}
           className={cn(
             buttonVariants({
               variant:
@@ -39,9 +38,10 @@ export const AnswerOption = ({ goToNextQuestion }: AnswerOptionProps) => {
             }),
             "h-full w-full cursor-pointer justify-start whitespace-normal py-2 text-left text-lg",
           )}
+          onClick={() => handleAnswerSelect(answer)}
         >
           {answer.text}
-        </div>
+        </button>
       ))}
     </div>
   );

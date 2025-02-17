@@ -17,14 +17,14 @@ export const LearnLoading = () => {
       <div className="h-1" />
       <div className="space-y-6 px-8 py-6">
         <div className="flex h-[30px] items-center">
-          <SkeletonWrapper></SkeletonWrapper>
+          <SkeletonWrapper />
         </div>
         <div className="min-h-[60px] md:min-h-[140px]">
-          <Skeleton className="w-fit rounded-lg"></Skeleton>
+          <Skeleton className="w-fit rounded-lg" />
         </div>
         <div className="space-y-3">
           <div className="mb-2">
-            <SkeletonWrapper></SkeletonWrapper>
+            <SkeletonWrapper />
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {Array.from({ length: 4 }).map((_, i) => (

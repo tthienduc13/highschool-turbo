@@ -21,7 +21,7 @@ export const RichPromptDisplay: React.FC<RichPromptDisplayProps> = ({
       <div className="min-h-[60px] md:min-h-[140px]">
         <div className="flex flex-row justify-between gap-4">
           <div className="whitespace-pre-wrap text-lg md:text-xl">
-            <Display text={text} richText={richText} />
+            <Display richText={richText} text={text} />
           </div>
           {extra}
         </div>

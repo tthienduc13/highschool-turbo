@@ -1,11 +1,8 @@
 import Cropper from "react-easy-crop";
-
 import { useCallback, useState } from "react";
-
 import { useFileReader } from "@highschool/hooks";
 import { Button, buttonVariants } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLoader2, IconUpload } from "@tabler/icons-react";
 
 import {
@@ -70,9 +67,10 @@ export const InnerModal = ({
         if (!crop) return;
         const croppedImage = await getCroppedImage(result as string, crop);
         const buffer = dataUrlToBuffer(croppedImage);
+
         onSubmitBuffer?.(buffer);
       } catch (e) {
-        console.error(e);
+        throw e;
       }
     },
     [onSubmitBuffer, result],
@@ -106,11 +104,11 @@ export const InnerModal = ({
               )}
             </div>
             <input
-              onChange={onInputFile}
+              accept="image/*"
+              id="upload-avatar-input"
               style={{ display: "none" }}
               type="file"
-              id="upload-avatar-input"
-              accept="image/*"
+              onChange={onInputFile}
             />
             <label htmlFor="upload-avatar-input">
               <span
@@ -127,7 +125,7 @@ export const InnerModal = ({
         <CredenzaFooter>
           <Button disabled={isLoading} onClick={() => submitBuffer(crop)}>
             {isLoading ? (
-              <IconLoader2 size={18} className="animate-spin" />
+              <IconLoader2 className="animate-spin" size={18} />
             ) : (
               "Thay đổi ảnh"
             )}
@@ -153,19 +151,19 @@ const CropContainer: React.FC<CropContainerProps> = ({ image, onComplete }) => {
   return (
     <div>
       <Cropper
-        image={image}
-        crop={crop}
-        zoom={zoom}
         aspect={1}
-        onCropChange={setCrop}
-        onCropComplete={(_, crop) => onComplete(crop)}
-        onZoomChange={setZoom}
+        crop={crop}
         cropShape="round"
+        image={image}
         style={{
           containerStyle: {
             borderRadius: "12px",
           },
         }}
+        zoom={zoom}
+        onCropChange={setCrop}
+        onCropComplete={(_, crop) => onComplete(crop)}
+        onZoomChange={setZoom}
       />
     </div>
   );
@@ -174,6 +172,7 @@ const CropContainer: React.FC<CropContainerProps> = ({ image, onComplete }) => {
 const createImage = (url: string) => {
   return new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
+
     image.addEventListener("load", () => resolve(image));
     image.addEventListener("error", (error) => reject(error));
     image.setAttribute("crossOrigin", "anonymous"); // needed to avoid cross-origin issues on CodeSandbox

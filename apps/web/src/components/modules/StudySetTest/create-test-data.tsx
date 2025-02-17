@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { FlashcardContent, SetData } from "@highschool/interfaces";
 
 import { queryEventChannel } from "@/events/query";
@@ -22,13 +20,16 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
   const { flashcard, terms } = useSet();
 
   const storeRef = useRef<TestStore>(null);
+
   if (!storeRef.current) {
     storeRef.current = createTestStore(undefined, {
       onAnswerDelegate: (index) => {
         const next = document.getElementById(`test-card-${index + 1}`);
+
         if (!next) return;
 
         const position = next.getBoundingClientRect();
+
         window.scrollTo({
           left: position.left,
           top: position.top + window.scrollY - 150,
@@ -36,6 +37,7 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
         });
 
         const input = document.getElementById(`write-card-input-${index + 1}`);
+
         if (input) {
           input.focus();
         }
@@ -73,6 +75,7 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
     };
 
     queryEventChannel.on("setQueryRefetched", onRefetch);
+
     return () => {
       queryEventChannel.off("setQueryRefetched", onRefetch);
     };

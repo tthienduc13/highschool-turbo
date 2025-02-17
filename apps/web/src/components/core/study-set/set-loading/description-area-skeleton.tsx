@@ -1,5 +1,4 @@
 import { memo } from "react";
-
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 export const DescriptionAreaSkeletonRaw = () => {

@@ -1,9 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import Image from "next/image";
-
 import { Button } from "@highschool/ui/components/ui/button";
 
 import {
@@ -32,10 +30,11 @@ function OnboardIntroModule() {
 
 const Intro = () => {
   const next = useNextStep();
+
   return (
     <section className="flex flex-col items-center justify-center gap-6 text-center">
       <motion.div {...ghost}>
-        <Image src={"/logo.svg"} alt="logo" width={96} height={96} />
+        <Image alt="logo" height={96} src={"/logo.svg"} width={96} />
       </motion.div>
       <h1 className="text-3xl font-bold md:text-5xl">
         Chào mừng đến với Highschool

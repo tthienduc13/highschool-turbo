@@ -4,9 +4,17 @@
  * See original source here: https://github.com/react-dropzone/react-dropzone
  * The original package is licensed under the MIT license.
  */
-import { fromEvent } from "file-selector";
-
 import type React from "react";
+import type {
+  DropEvent,
+  DropzoneMethods,
+  DropzoneOptions,
+  DropzoneState,
+  FileError,
+  FileRejection,
+} from "./types";
+
+import { fromEvent } from "file-selector";
 import {
   createRef,
   useCallback,
@@ -16,14 +24,6 @@ import {
   useRef,
 } from "react";
 
-import type {
-  DropEvent,
-  DropzoneMethods,
-  DropzoneOptions,
-  DropzoneState,
-  FileError,
-  FileRejection,
-} from "./types";
 import {
   ErrorCode,
   acceptPropAsAcceptAttr,
@@ -149,8 +149,10 @@ export function useDropzone(
       }, 300);
     }
   };
+
   useEffect(() => {
     window.addEventListener("focus", onWindowFocus, false);
+
     return () => {
       window.removeEventListener("focus", onWindowFocus, false);
     };
@@ -186,6 +188,7 @@ export function useDropzone(
     if (!disabled && autoFocus && rootRef.current) {
       rootRef.current.focus();
     }
+
     return noop;
   }, [rootRef, autoFocus, disabled]);
 
@@ -271,6 +274,7 @@ export function useDropzone(
       stopPropagation(event);
 
       const hasFiles = isEvtWithFiles(event);
+
       if (hasFiles && "dataTransfer" in event && event.dataTransfer !== null) {
         try {
           event.dataTransfer.dropEffect = "copy";
@@ -300,6 +304,7 @@ export function useDropzone(
       // Make sure to remove a target present multiple times only once
       // (Firefox may fire dragenter/dragleave multiple times on the same element)
       const targetIdx = targets.indexOf(event.target);
+
       if (targetIdx !== -1) {
         targets.splice(targetIdx, 1);
       }
@@ -441,6 +446,7 @@ export function useDropzone(
         multiple,
         types: pickerTypes,
       };
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
       (window as any)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -476,6 +482,7 @@ export function useDropzone(
             onErrCb(e);
           }
         });
+
       return;
     }
 

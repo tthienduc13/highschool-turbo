@@ -8,11 +8,11 @@ export interface ShortcutModalProps {
 
 export const ShortcutModal = ({ isOpen, onClose }: ShortcutModalProps) => {
   return (
-    <Modal withoutFooter isOpen={isOpen} onClose={onClose} title="Phím tắt">
+    <Modal withoutFooter isOpen={isOpen} title="Phím tắt" onClose={onClose}>
       <div className="mt-4 flex flex-col gap-6">
         <Shortcut
-          name="Thêm thẻ mới"
           label="Thêm thẻ bên dưới thẻ hiện tại"
+          name="Thêm thẻ mới"
           shortcut={
             <span className="flex gap-1">
               <Kbd>Ctrl</Kbd> + <Kbd>Shift</Kbd> + <Kbd>R</Kbd>

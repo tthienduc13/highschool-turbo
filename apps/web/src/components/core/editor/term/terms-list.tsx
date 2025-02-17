@@ -17,18 +17,16 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-
-import { Fragment, memo, useRef, useState } from "react";
-
+import { Fragment, useRef, useState } from "react";
 import { useShortcut } from "@highschool/hooks";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconPlus } from "@tabler/icons-react";
 
-import { useSetEditorContext } from "@/stores/use-set-editor-store";
-
 import { LanguageMenuWrapper } from "../language-menu";
+
 import { SortableTermCard } from "./sortable-term-card";
+
+import { useSetEditorContext } from "@/stores/use-set-editor-store";
 
 export const TermsList = () => {
   const MAX_TERMS = 10;
@@ -54,6 +52,7 @@ export const TermsList = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState<"term" | "definition">("term");
   const activeRef = useRef(active);
+
   activeRef.current = active;
 
   useShortcut(
@@ -61,6 +60,7 @@ export const TermsList = () => {
     () => {
       if (!current) return;
       const rank = terms.find((x) => x.id === current)!.rank;
+
       if (rank < terms.length - 1) reorderTerm(current, rank + 1);
     },
     {
@@ -73,6 +73,7 @@ export const TermsList = () => {
     () => {
       if (!current) return;
       const rank = terms.find((x) => x.id === current)!.rank;
+
       if (rank > 0) reorderTerm(current, rank - 1);
     },
     {
@@ -85,6 +86,7 @@ export const TermsList = () => {
     () => {
       if (!current) return;
       const currentRank = terms.find((x) => x.id === current)!.rank;
+
       addTerm(currentRank + 1);
     },
     {
@@ -95,6 +97,7 @@ export const TermsList = () => {
 
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
+
     setCurrentDrag(active.id.toString());
   };
 
@@ -103,6 +106,7 @@ export const TermsList = () => {
 
     if (over?.id && active.id !== over.id) {
       const rank = terms.find((x) => x.id == over.id)!.rank;
+
       reorderTerm(active.id as string, rank);
     }
 
@@ -111,13 +115,13 @@ export const TermsList = () => {
 
   const items = terms.sort((a, b) => a.rank - b.rank);
   const disableAdd = terms.length >= MAX_TERMS;
+
   // ||
   // terms.some((x) => x.flashcardContentTerm === "");
   return (
     <div className="flex flex-col gap-4">
       <LanguageMenuWrapper
         isOpen={menuOpen}
-        onClose={() => setMenuOpen(false)}
         selected={
           activeRef.current == "term" ? termLanguage : definitionLanguage
         }
@@ -128,13 +132,14 @@ export const TermsList = () => {
             setDefinitionLanguage(e);
           }
         }}
+        onClose={() => setMenuOpen(false)}
       >
         <DndContext
-          sensors={sensors}
           collisionDetection={closestCenter}
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
           modifiers={[restrictToVerticalAxis, restrictToParentElement]}
+          sensors={sensors}
+          onDragEnd={handleDragEnd}
+          onDragStart={handleDragStart}
         >
           <SortableContext items={items} strategy={verticalListSortingStrategy}>
             {items
@@ -142,25 +147,25 @@ export const TermsList = () => {
               .map((term, i) => (
                 <Fragment key={term.clientKey}>
                   <SortableTermCard
-                    justCreated={lastCreated === term.clientKey}
-                    isDragging={currentDrag === term.clientKey}
-                    isCurrent={current === term.clientKey}
-                    isLast={i === terms.length - 1}
-                    deletable={terms.length > 2}
                     key={term.clientKey}
-                    termLanguage={termLanguage}
+                    anyFocus={() => setCurrent(term.clientKey)}
                     definitionLanguage={definitionLanguage}
+                    deletable={terms.length > 2}
+                    deleteTerm={deleteTerm}
+                    editTerm={editTerm}
                     flashcardContent={term}
+                    isCurrent={current === term.clientKey}
+                    isDragging={currentDrag === term.clientKey}
+                    isLast={i === terms.length - 1}
+                    justCreated={lastCreated === term.clientKey}
                     openMenu={(type) => {
                       setActive(type);
                       setMenuOpen(true);
                     }}
-                    editTerm={editTerm}
-                    deleteTerm={deleteTerm}
+                    termLanguage={termLanguage}
                     onTabOff={() => {
                       if (i === terms.length - 1) addTerm(terms.length);
                     }}
-                    anyFocus={() => setCurrent(term.clientKey)}
                   />
                 </Fragment>
               ))}
@@ -169,13 +174,13 @@ export const TermsList = () => {
       </LanguageMenuWrapper>
       {!readonly && (
         <Button
+          className="h-24 w-full"
+          disabled={disableAdd}
           size="lg"
           variant="outline"
           onClick={() => addTerm(terms.length)}
-          disabled={disableAdd}
-          className="h-24 w-full"
         >
-          <IconPlus size={18} className="!size-[18px]" />
+          <IconPlus className="!size-[18px]" size={18} />
           Thêm thẻ
         </Button>
       )}

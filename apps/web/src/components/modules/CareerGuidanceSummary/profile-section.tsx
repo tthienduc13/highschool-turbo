@@ -1,16 +1,13 @@
 import { useSession } from "next-auth/react";
-
 import { University } from "@highschool/interfaces";
 import { CareerGuidanceBrief } from "@highschool/react-query/apis";
 import { useUserProfileQuery } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-
 import { IconBuilding, IconDownload } from "@tabler/icons-react";
 
 import { useMe } from "@/hooks/use-me";
-import { dtFormatter, formatDueDate } from "@/utils/time";
 
 interface ProfileSectionProps {
   brief: CareerGuidanceBrief;
@@ -29,6 +26,7 @@ export const ProfileSection = ({
     username: me?.username!,
     status: status,
   });
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col-reverse justify-between gap-4 md:flex-row md:items-center">
@@ -53,8 +51,8 @@ export const ProfileSection = ({
         <div className="flex flex-col gap-10 md:flex-row md:items-start">
           <Avatar className="-z-10 size-16 md:size-24">
             <AvatarImage
-              src={me?.image ?? "/logo.svg"}
               alt={me?.fullname ?? "Người dùng Highschool"}
+              src={me?.image ?? "/logo.svg"}
             />
           </Avatar>
           <div className="flex w-full flex-col gap-4 rounded-xl border-2 border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-gray-800">
@@ -103,7 +101,7 @@ export const ProfileSection = ({
                   </div>
                   <div className="flex flex-col gap-1 pl-4">
                     {brief.mbtiResponse.mbtiSummary.map((item, index) => (
-                      <p className="list-item text-gray-700" key={index}>
+                      <p key={index} className="list-item text-gray-700">
                         {item}
                       </p>
                     ))}
@@ -122,7 +120,7 @@ export const ProfileSection = ({
                   </div>
                   <div className="flex flex-col gap-1 pl-4">
                     {brief.hollandResponse.hollandSummary.map((item, index) => (
-                      <p className="list-item text-gray-700" key={index}>
+                      <p key={index} className="list-item text-gray-700">
                         {item}
                       </p>
                     ))}
@@ -139,7 +137,7 @@ export const ProfileSection = ({
                 </div>
                 <div className="flex flex-col gap-1 pl-4">
                   {brief.overallResponse.overallBrief.map((item, index) => (
-                    <p className="list-item text-gray-700" key={index}>
+                    <p key={index} className="list-item text-gray-700">
                       {item}
                     </p>
                   ))}

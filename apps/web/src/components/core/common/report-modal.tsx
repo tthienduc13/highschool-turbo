@@ -1,21 +1,20 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 "use client";
 
 import { toast } from "sonner";
-
 import { useEffect, useRef, useState } from "react";
-
 import { Modal } from "@highschool/components";
 import { useReportMutation } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 
-import { menuEventChannel } from "@/events/menu";
-
 import {
   AddImageButton,
   RemoveImageButton,
 } from "../study-set/image-component";
+
+import { menuEventChannel } from "@/events/menu";
 
 export const ReportModal = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -33,6 +32,7 @@ export const ReportModal = () => {
     };
 
     menuEventChannel.on("openReportModal", handler);
+
     return () => {
       menuEventChannel.off("openReportModal", handler);
     };
@@ -49,18 +49,22 @@ export const ReportModal = () => {
     }
 
     setErrors(validationErrors);
+
     return Object.keys(validationErrors).length === 0;
   };
 
   const handleAddImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+
     if (files) {
       const newImages = Array.from(files);
+
       if (images.length + newImages.length > 6) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           images: "Bạn chỉ có thể tải lên tối đa 5 ảnh.",
         }));
+
         return;
       }
       setImages((prevImages) => [...prevImages, ...newImages]);
@@ -104,14 +108,14 @@ export const ReportModal = () => {
 
   return (
     <Modal
-      title="Báo cáo"
-      description="Gửi báo cáo và mô tả giúp chúng tôi hoàn thiện hệ thống"
-      isOpen={open}
-      onClose={() => setOpen(false)}
       buttonLabel="Gửi báo cáo"
-      onConfirm={handleSubmit}
+      description="Gửi báo cáo và mô tả giúp chúng tôi hoàn thiện hệ thống"
       isDisabled={apiReport.isPending}
+      isOpen={open}
       isPending={apiReport.isPending}
+      title="Báo cáo"
+      onClose={() => setOpen(false)}
+      onConfirm={handleSubmit}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
@@ -119,8 +123,9 @@ export const ReportModal = () => {
             Tiêu đề
           </Label>
           <Input
-            value={title}
+            className="h-12 w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
             placeholder="Tiêu đề"
+            value={title}
             onChange={(e) => {
               setTitle(e.target.value);
               if (e.target.value.trim().length >= 10) {
@@ -130,7 +135,6 @@ export const ReportModal = () => {
                 }));
               }
             }}
-            className="h-12 w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
           />
           {errors.title && (
             <span className="text-xs text-red-500">{errors.title}</span>
@@ -141,10 +145,10 @@ export const ReportModal = () => {
             Nội dung
           </Label>
           <Textarea
+            className="w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 font-medium shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
+            placeholder="Nội dung"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Nội dung"
-            className="w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 font-medium shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -154,25 +158,25 @@ export const ReportModal = () => {
           <div className="flex flex-row items-start gap-4">
             <div className="flex flex-row">
               <AddImageButton
-                onClick={triggerFileInput}
                 className="h-20 w-20"
+                onClick={triggerFileInput}
               />
               <input
-                type="file"
-                accept="image/*"
-                multiple
                 ref={fileInputRef}
-                onChange={handleAddImage}
+                multiple
+                accept="image/*"
                 className="hidden"
+                type="file"
+                onChange={handleAddImage}
               />
             </div>
             <div className="flex flex-wrap gap-2">
               {images.map((file, index) => (
                 <div key={index} className="group relative">
                   <img
-                    src={URL.createObjectURL(file)}
                     alt={`Image ${index + 1}`}
                     className="h-20 w-20 object-cover"
+                    src={URL.createObjectURL(file)}
                   />
                   <RemoveImageButton
                     className="hidden group-hover:flex"

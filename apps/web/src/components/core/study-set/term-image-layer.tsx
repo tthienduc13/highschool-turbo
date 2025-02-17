@@ -1,11 +1,8 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-
 import { useEffect, useState } from "react";
-
 import dynamic from "next/dynamic";
-
 import { patchFlashcardContent } from "@highschool/react-query/apis";
 
 import { Context, editorEventChannel } from "@/events/editor";
@@ -64,6 +61,7 @@ export const TermImageLayer = () => {
     editorEventChannel.on("imageSelected", setImage);
     editorEventChannel.on("requestUploadUrl", requestUploadUrl);
     editorEventChannel.on("uploadComplete", complete);
+
     return () => {
       editorEventChannel.off("openSearchImages", open);
       editorEventChannel.off("imageSelected", setImage);

@@ -1,5 +1,4 @@
 import { Handle, Node, NodeProps, NodeResizer, Position } from "@xyflow/react";
-
 import { memo, useState } from "react";
 
 export type DefaultNodeData = {
@@ -18,109 +17,109 @@ const DefNode = ({
     <>
       <NodeResizer
         handleClassName="rounded-md"
-        lineClassName="rounded-md"
         isVisible={selected}
-        minWidth={100}
+        lineClassName="rounded-md"
         minHeight={30}
+        minWidth={100}
       />
       <div
+        className="rounded-md border-2 border-black bg-[#fdff00] px-8 py-2"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        className="rounded-md border-2 border-black bg-[#fdff00] px-8 py-2"
       >
         <div className="text-lg font-medium">{data.label}</div>
         <Handle
-          type="source"
-          position={Position.Top}
           id="def-source-top"
+          isConnectable={isConnectable}
+          position={Position.Top}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="source"
         />
         <Handle
-          type="source"
-          position={Position.Bottom}
           id="def-source-bottom"
+          isConnectable={isConnectable}
+          position={Position.Bottom}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="source"
         />
         <Handle
-          type="source"
-          position={Position.Left}
           id="def-source-left"
+          isConnectable={isConnectable}
+          position={Position.Left}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="source"
         />
         <Handle
-          type="source"
-          position={Position.Right}
           id="def-source-right"
+          isConnectable={isConnectable}
+          position={Position.Right}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="source"
         />
 
         <Handle
-          type="target"
-          position={Position.Top}
           id="def-target-top"
+          isConnectable={isConnectable}
           isConnectableStart={false}
+          position={Position.Top}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="target"
         />
         <Handle
-          type="target"
-          position={Position.Bottom}
           id="def-target-bottom"
+          isConnectable={isConnectable}
           isConnectableStart={false}
+          position={Position.Bottom}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="target"
         />
         <Handle
-          type="target"
-          position={Position.Left}
           id="def-target-left"
+          isConnectable={isConnectable}
           isConnectableStart={false}
+          position={Position.Left}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="target"
         />
         <Handle
-          type="target"
-          position={Position.Right}
           id="def-target-right"
+          isConnectable={isConnectable}
           isConnectableStart={false}
+          position={Position.Right}
           style={{
             opacity: isHovered ? 1 : 0,
             transition: "opacity 300ms ease-in-out",
             backgroundColor: "#1a5fff",
           }}
-          isConnectable={isConnectable}
+          type="target"
         />
       </div>
     </>

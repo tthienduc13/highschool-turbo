@@ -1,16 +1,14 @@
 "use client";
 
 import { motion, useAnimationControls } from "framer-motion";
-
 import { useContext, useEffect, useRef, useState } from "react";
-
 import { LimitedStudySetAnswerMode } from "@highschool/interfaces";
-
-import { useContainerContext } from "@/stores/use-container-store";
 
 import { Flashcard } from "./flashcard";
 import { FlashcardShorcutLayer } from "./flashcard-shortcut-layer";
 import { RootFlashcardContext } from "./root-flashcard-wrapper";
+
+import { useContainerContext } from "@/stores/use-container-store";
 
 export const DefaultFlashcardWrapper = () => {
   const { terms, termOrder, h, editTerm, starTerm } =
@@ -26,16 +24,19 @@ export const DefaultFlashcardWrapper = () => {
   const starredTerms = useContainerContext((s) => s.starredTerms);
 
   let sortedTerms = termOrder.map((id) => terms.find((t) => t.id === id));
+
   sortedTerms = cardsStudyStarred
     ? sortedTerms.filter((t) => t && starredTerms.includes(t.id))
     : sortedTerms;
 
   const [index, setIndex] = useState(0);
   const indexRef = useRef(index);
+
   indexRef.current = index;
 
   const [isFlipped, setIsFlipped] = useState(shouldFlip);
   const flippedRef = useRef(isFlipped);
+
   flippedRef.current = isFlipped;
 
   const term = sortedTerms[index];
@@ -125,21 +126,21 @@ export const DefaultFlashcardWrapper = () => {
     >
       <FlashcardShorcutLayer
         triggerFlip={flipCard}
-        triggerPrev={onPrev}
         triggerNext={onNext}
+        triggerPrev={onPrev}
       />
       {term && (
         <Flashcard
           h={h}
-          term={term}
           index={index}
           isFlipped={isFlipped}
           numTerms={sortedTerms.length}
-          onLeftAction={onPrev}
-          onRightAction={onNext}
           starred={starred}
+          term={term}
+          onLeftAction={onPrev}
           onRequestEdit={() => editTerm(term, isFlipped)}
           onRequestStar={() => starTerm(term)}
+          onRightAction={onNext}
         />
       )}
     </motion.div>

@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
-
 import { useEffect, useState } from "react";
-
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
-import { useLearnContext } from "@/stores/use-study-set-learn-store";
-
 import { ChoiceCard } from "./choice-card";
+
+import { useLearnContext } from "@/stores/use-study-set-learn-store";
 
 export const InteractionCard = () => {
   const timeline = useLearnContext((s) => s.roundTimeline);
@@ -37,11 +35,12 @@ export const InteractionCard = () => {
   const active = timeline[roundCounter];
 
   if (!active) return;
+
   return (
     <motion.div
       key={active.correctAnswerId}
-      initial={{ translateY: -20, opacity: 0.5 }}
       animate={{ translateY: 0, opacity: 1 }}
+      initial={{ translateY: -20, opacity: 0.5 }}
       style={{
         marginBottom: 100,
       }}
@@ -49,10 +48,10 @@ export const InteractionCard = () => {
       <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
         {status !== undefined && (
           <motion.div
-            initial={{ opacity: 0 }}
             animate={{ opacity: isVisible ? 0.2 : 0 }}
-            transition={{ duration: 0.3 }}
+            aria-hidden="true"
             className="absolute inset-0 z-[-1] rounded-2xl shadow-lg"
+            initial={{ opacity: 0 }}
             style={{
               backgroundColor:
                 status === "correct"
@@ -62,15 +61,15 @@ export const InteractionCard = () => {
                     : neutralColor,
               boxShadow: `0 5px 60px -5px ${status === "correct" ? correctColor : status === "incorrect" ? incorrectColor : neutralColor}`,
             }}
-            aria-hidden="true"
+            transition={{ duration: 0.3 }}
           />
         )}
         <CardContent className="h-full w-full overflow-hidden rounded-2xl p-0">
           <div className="h-1 w-full overflow-hidden bg-gray-200">
             <motion.div
+              animate={{ width: `${progress * 100}%` }}
               className="h-full bg-orange-300"
               initial={{ width: 0 }}
-              animate={{ width: `${progress * 100}%` }}
               transition={{ duration: 0.5, ease: "easeOut" }}
             />
           </div>

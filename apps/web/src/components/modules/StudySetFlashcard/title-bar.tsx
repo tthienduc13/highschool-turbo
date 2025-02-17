@@ -1,10 +1,8 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconX } from "@tabler/icons-react";
 
 import { useSet } from "@/hooks/use-set";
@@ -16,6 +14,7 @@ export const TitleBar = () => {
 
   const handleNavigate = () => {
     const newPath = pathName.replace("/flashcards", "");
+
     router.replace(newPath);
   };
 
@@ -29,10 +28,10 @@ export const TitleBar = () => {
       </h1>
       <div className="flex w-[110px] justify-end">
         <Button
-          onClick={handleNavigate}
+          className="rounded-full"
           size={"icon"}
           variant={"ghost"}
-          className="rounded-full"
+          onClick={handleNavigate}
         >
           <IconX />
         </Button>

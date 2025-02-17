@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { useCoursesQuery } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
 import {
@@ -44,19 +43,20 @@ export const TitleProperties = () => {
       <div className="flex flex-col">
         <div className="relative">
           <Input
+            className="h-full rounded-none border-none p-0 text-2xl font-bold shadow-none focus-visible:ring-0 md:text-3xl lg:text-4xl"
             placeholder="Tên bộ thẻ"
             value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
             onBlur={() => {
               if (title.trim().length === 0) {
                 setSaveError("Tên bộ thẻ không được để trống");
+
                 return;
               }
               apiSetTitle(title);
             }}
-            className="h-full rounded-none border-none p-0 text-2xl font-bold shadow-none focus-visible:ring-0 md:text-3xl lg:text-4xl"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
           />
           <div
             className={cn(
@@ -72,25 +72,26 @@ export const TitleProperties = () => {
           className="bg-background text-muted-foreground w-full rounded-lg border-gray-50 px-4 py-2 text-base shadow-sm dark:border-gray-700"
           placeholder="Thêm mô tả"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
           onBlur={() => {
             if (description.trim().length < 20) {
               setSaveError("Mô tả cần phải trên 10 kí tự");
+
               return;
             }
             apiSetDescription(description);
           }}
+          onChange={(e) => setDescription(e.target.value)}
         />
         <div className="md:max-w-1/2 flex w-full max-w-full flex-col">
           <div className="flex flex-col gap-2">
             <h2 className="text-lg font-bold md:text-xl">Môn học liên quan</h2>
             <Select
+              disabled={isLoading}
               value={courseId}
               onValueChange={(value) => {
                 setCourseId(value);
                 apiSetCourseId(value);
               }}
-              disabled={isLoading}
             >
               <SelectTrigger className="h-12 border-2 border-gray-200 bg-white px-4 py-2 text-lg dark:border-gray-700 dark:bg-gray-800">
                 <SelectValue placeholder="Chọn môn học gắn với bộ thẻ">
@@ -123,7 +124,7 @@ TitleProperties.Skeleton = function TitlePropertiesSkeleton() {
         <Skeleton className="h-[14px] w-28 rounded-md" />
       </div>
       <div className="flex flex-col gap-8 md:flex-row">
-        <Skeleton className="h-36 w-full"></Skeleton>
+        <Skeleton className="h-36 w-full" />
       </div>
     </div>
   );

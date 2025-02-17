@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { Modal } from "@highschool/components/modal";
 
 import { SelectCity } from "@/components/modules/Home/finish-profile/select-city";

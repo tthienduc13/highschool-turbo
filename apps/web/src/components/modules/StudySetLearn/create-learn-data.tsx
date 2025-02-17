@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-
 import { StudibaleTerms } from "@highschool/interfaces/flashcard-learn";
 import { useLearnDataQuery } from "@highschool/react-query/queries";
 
@@ -60,6 +59,7 @@ export const ContextLayer = ({
 
   useEffect(() => {
     const isCompleted = data.questions.length === 0;
+
     storeRef.current?.getState().initialize(data.questions, isCompleted);
   }, [data]);
 

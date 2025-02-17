@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import attrAccepts from "attr-accept";
-
 import type { AcceptProp, DropEvent, FileError } from "./types";
+
+import attrAccepts from "attr-accept";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const accepts: typeof attrAccepts =
@@ -22,6 +22,7 @@ export const getInvalidTypeRejectionErr = (accept: string | string[]) => {
   const messageSuffix = Array.isArray(accept)
     ? `one of ${accept.join(", ")}`
     : accept;
+
   return {
     code: ErrorCode.FILE_INVALID_TYPE,
     message: `File type must be ${messageSuffix}`,
@@ -52,6 +53,7 @@ export function fileAccepted(file: File, accept: string | string[]) {
   const isAcceptable =
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     file.type === "application/x-moz-file" || accepts(file, accept);
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return [
     isAcceptable,
@@ -69,6 +71,7 @@ export function fileMatchSize(file: File, minSize: number, maxSize: number) {
     else if (isDefined(maxSize) && file.size > maxSize)
       return [false, getTooLargeRejectionErr(maxSize)];
   }
+
   return [true, null];
 }
 
@@ -104,6 +107,7 @@ export function allFilesAccepted({
     const [accepted] = fileAccepted(file, accept);
     const [sizeMatch] = fileMatchSize(file, minSize, maxSize);
     const customErrors = validator ? validator(file) : null;
+
     return accepted && sizeMatch && !customErrors;
   });
 }
@@ -123,6 +127,7 @@ export function isPropagationStopped(event: DropEvent) {
   ) {
     return event.cancelBubble;
   }
+
   return false;
 }
 
@@ -130,6 +135,7 @@ export function isEvtWithFiles(event: DropEvent) {
   if (!("dataTransfer" in event && event.dataTransfer !== null)) {
     return !!event.target && "files" in event.target && !!event.target.files;
   }
+
   // https://developer.mozilla.org/en-US/docs/Web/API/DataTransfer/types
   // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#file
   return Array.prototype.some.call(
@@ -186,6 +192,7 @@ export function composeEventHandlers(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         fn(event, ...args);
       }
+
       return isPropagationStopped(event);
     });
 }
@@ -235,6 +242,7 @@ export function pickerOptionsFromAccept(accept?: AcceptProp) {
         }),
         {},
       );
+
     return [
       {
         // description is required due to https://crbug.com/1264708
@@ -243,6 +251,7 @@ export function pickerOptionsFromAccept(accept?: AcceptProp) {
       },
     ];
   }
+
   return accept;
 }
 

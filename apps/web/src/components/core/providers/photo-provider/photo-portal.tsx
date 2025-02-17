@@ -1,7 +1,6 @@
 "use client";
 
 import { createPortal } from "react-dom";
-
 import React from "react";
 
 interface PhotoPortalProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,6 +19,7 @@ export const PhotoPortal: React.FC<PhotoPortalProps> = ({
 
   React.useEffect(() => {
     setMounted(true);
+
     return () => setMounted(false);
   }, []);
 

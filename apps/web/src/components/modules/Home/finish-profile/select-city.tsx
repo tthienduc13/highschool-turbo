@@ -8,9 +8,9 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
 import { WizardLayout } from "./wizard-layout";
+
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 export const SelectCity = () => {
   const { data: cityData, isLoading: cityLoading } = useCitiesQuery({
@@ -23,10 +23,10 @@ export const SelectCity = () => {
 
   return (
     <WizardLayout
-      title="Chọn thành phố bạn sống"
+      currentStep={currentStep}
       description="Hãy chọn thành phố của bạn để có được thông tin chính xác theo vị trí"
       steps={6}
-      currentStep={currentStep}
+      title="Chọn thành phố bạn sống"
     >
       <div className="flex flex-col gap-6">
         <Select
@@ -36,6 +36,7 @@ export const SelectCity = () => {
             const selectedRegion = cityData?.data.find(
               (city) => String(city.provinceId) === id,
             );
+
             setSelectedCity({
               name: selectedRegion?.provinceName ?? null,
               id: selectedRegion?.provinceId ?? null,
@@ -43,11 +44,11 @@ export const SelectCity = () => {
           }}
         >
           <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
-            <SelectValue placeholder={"Bạn ở đâu?"} className="px-4" />
+            <SelectValue className="px-4" placeholder={"Bạn ở đâu?"} />
           </SelectTrigger>
           <SelectContent
-            onCloseAutoFocus={(e) => e.preventDefault()}
             className="placeholder:text-muted-foreground"
+            onCloseAutoFocus={(e) => e.preventDefault()}
           >
             {cityData?.data.map((region) => (
               <SelectItem

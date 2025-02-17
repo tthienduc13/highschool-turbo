@@ -1,26 +1,19 @@
 import React, { useContext, useRef } from "react";
+import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
 
-import {
-  FlashcardContent,
-  SetData,
-  StudiableTerm,
-} from "@highschool/interfaces";
+import { RootFlashcardContext } from "./root-flashcard-wrapper";
 
-import { queryEventChannel } from "@/events/query";
 import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
 import {
   SortFlashcardsContext,
   SortFlashcardsStore,
-  createSortFlashcardsStore,
 } from "@/stores/use-sort-flashcard-store";
-
-import { RootFlashcardContext } from "./root-flashcard-wrapper";
 
 export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { terms } = useSet();
+  const { terms, flashcard } = useSet();
   const { termOrder } = useContext(RootFlashcardContext);
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const storeRef = useRef<SortFlashcardsStore>(null);
@@ -38,6 +31,7 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     let flashcardTerms: StudiableTerm[] = termOrder.map((id) => {
       const term = terms.find((t) => t.id === id)!;
       const studiableTerm = studiableTerms.find((s) => s.id === term.id);
+
       return {
         ...term,
         correctness: studiableTerm?.correctness ?? 0,
@@ -58,8 +52,8 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
   //   if (!storeRef.current) {
   //     storeRef.current = createSortFlashcardsStore();
   //     initState(
-  //       container.cardsRound,
-  //       container.studiableTerms.filter((x) => x.mode == "Flashcards"),
+  //       flashcard.container.cardsRound,
+  //       flashcard.container.studiableTerms.filter((x) => x.mode == "Flashcards"),
   //       terms,
   //       termOrder,
   //       container.cardsStudyStarred,

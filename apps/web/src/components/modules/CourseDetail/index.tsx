@@ -1,12 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-
 import { useCourseBySlugQuery } from "@highschool/react-query/queries";
-
 import {
   IconEye,
   IconFileLike,
@@ -14,13 +11,13 @@ import {
   IconSchool,
 } from "@tabler/icons-react";
 
+import { ChapterList } from "./chapter-list";
+
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
 import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-moda";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
-
-import { ChapterList } from "./chapter-list";
 
 function CourseDetailModule() {
   const { slug } = useParams();

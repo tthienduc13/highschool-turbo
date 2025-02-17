@@ -1,14 +1,8 @@
-import { LoadingFlashcard } from "@/components/core/study-set/loading-flashcard";
-
 import { TitleBar } from "./title-bar";
 
-interface FlashcardsLoadingProps {
-  titlePlaceholder?: string;
-}
+import { LoadingFlashcard } from "@/components/core/study-set/loading-flashcard";
 
-export const FlashcardsLoading: React.FC<FlashcardsLoadingProps> = ({
-  titlePlaceholder,
-}) => {
+export const FlashcardsLoading = () => {
   return (
     <div className="h-[calc(100vh-80px)] min-h-[720px] w-full overflow-hidden p-0">
       <div className="mx-auto h-[calc(100vh-180px)] min-h-[620px] w-full max-w-7xl">

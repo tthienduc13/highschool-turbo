@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { usePathname, useRouter } from "next/navigation";
-
-import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 
 import {
@@ -32,10 +29,12 @@ export const SignUpModal = () => {
     };
 
     menuEventChannel.on("openSignup", handler);
+
     return () => {
       menuEventChannel.off("openSignup", handler);
     };
   }, []);
+
   return (
     <Credenza open={isOpen} onOpenChange={() => setIsOpen(false)}>
       <CredenzaContent className="w-full max-w-xl border-2 border-none border-gray-300 px-10 py-8 shadow-lg dark:border-gray-700">

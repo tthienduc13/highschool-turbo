@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Modal } from "@highschool/components/modal";
 import { Flashcard } from "@highschool/interfaces";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
@@ -31,37 +30,39 @@ export const AddToFolderModal = ({
 }: AddToFolderModalProps) => {
   const me = useMe();
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
   useEffect(() => {
     setSelectedIds([]);
   }, [isOpen]);
+
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={actionLabel}
-      isPending={isAddLoading}
-      onConfirm={() => onAdd(selectedIds)}
       isDisabled={!selectedIds.length || isAddLoading}
+      isOpen={isOpen}
+      isPending={isAddLoading}
+      title={actionLabel}
+      onClose={onClose}
+      onConfirm={() => onAdd(selectedIds)}
     >
       <div className="max-h-[500px] w-full overflow-y-scroll py-5">
         <div className="grid grid-cols-2 gap-4">
           {isEntitiesLoading &&
             Array.from({ length: 10 }).map((_, i) => (
               <div key={i}>
-                <Skeleton className="h-[100px] w-full"></Skeleton>
+                <Skeleton className="h-[100px] w-full" />
               </div>
             ))}
           {entities.map((entity) => (
             <div key={entity.id}>
               <SelectableGenericCard
-                type={"set"}
-                title={entity.flashcardName}
                 numItems={entity.numberOfFlashcardContent}
+                selected={selectedIds.includes(entity.id)}
+                title={entity.flashcardName}
+                type={"set"}
                 user={{
                   fullname: me?.fullname ?? "Chưa đặt tên",
                   image: me?.image!,
                 }}
-                selected={selectedIds.includes(entity.id)}
                 onSelect={() => {
                   setSelectedIds((s) => {
                     if (s.includes(entity.id)) {

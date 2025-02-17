@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-
 import { Modal } from "@highschool/components/modal";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
@@ -61,11 +60,11 @@ export const ImportTermModal = ({
 
   return (
     <Modal
-      title="Thêm thẻ"
-      isOpen={isOpen}
-      onClose={onClose}
-      isDisabled={!previewTerms.length}
       buttonLabel={`Thêm ${!!previewTerms.length ? previewTerms.length : ""} thẻ`}
+      isDisabled={!previewTerms.length}
+      isOpen={isOpen}
+      title="Thêm thẻ"
+      onClose={onClose}
       onConfirm={() => onImport(previewTerms)}
     >
       <div className="flex flex-col gap-6">
@@ -74,8 +73,8 @@ export const ImportTermModal = ({
             Copy và dán thuật ngữ theo định dạng sau
           </Label>
           <ImportTermTextArea
-            placeholder={generatePlaceholder()}
             allowTab
+            placeholder={generatePlaceholder()}
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
@@ -85,7 +84,7 @@ export const ImportTermModal = ({
             <div className="flex flex-col gap-0">
               <p className="font-bold">Ở giữa các thuật ngữ</p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Mặc định "Tab"
+                Mặc định &quot;Tab &quot;
               </p>
             </div>
             <Input
@@ -99,7 +98,7 @@ export const ImportTermModal = ({
             <div className="flex flex-col">
               <p className="font-bold">Ở giữa các thẻ</p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                Mặc định "dòng mới"
+                Mặc định &quot;dòng mới &quot;
               </p>
             </div>
             <Input

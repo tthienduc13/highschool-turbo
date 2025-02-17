@@ -1,7 +1,6 @@
 "use client";
 
 import { Session } from "next-auth";
-
 import dynamic from "next/dynamic";
 
 import { ReactQueryProvider } from "./query-provider";
@@ -18,11 +17,11 @@ interface AppProviderProps {
 
 export const AppProviders = ({ children, session }: AppProviderProps) => {
   return (
-    <SessionProvider session={session} refetchOnWindowFocus={false}>
+    <SessionProvider refetchOnWindowFocus={false} session={session}>
       <ThemeProvider
+        disableTransitionOnChange
         attribute="class"
         defaultTheme="light"
-        disableTransitionOnChange
       >
         <ReactQueryProvider> {children}</ReactQueryProvider>
       </ThemeProvider>

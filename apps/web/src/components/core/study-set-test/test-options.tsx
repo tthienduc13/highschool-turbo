@@ -1,8 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconRotate, IconSettings, IconX } from "@tabler/icons-react";
 
 export interface TestOptionsProps {
@@ -20,6 +18,7 @@ export const TestOptions: React.FC<TestOptionsProps> = ({
   const params = useParams();
   const SkeletonWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (!skeleton) return <>{children}</>;
+
     return (
       <div className="flex h-10 w-10 items-center justify-end">
         <Skeleton className="h-8 w-8 rounded-full" />
@@ -33,8 +32,8 @@ export const TestOptions: React.FC<TestOptionsProps> = ({
         <Button
           aria-label="restart"
           className="text-blue hover:text-blue rounded-full"
-          variant={"ghost"}
           size={"icon"}
+          variant={"ghost"}
           onClick={onResetClick}
         >
           <IconRotate className="!size-6" />
@@ -42,8 +41,8 @@ export const TestOptions: React.FC<TestOptionsProps> = ({
         <Button
           aria-label="restart"
           className="text-blue hover:text-blue rounded-full"
-          variant={"ghost"}
           size={"icon"}
+          variant={"ghost"}
           onClick={onSettingsClick}
         >
           <IconSettings className="!size-6" />
@@ -51,8 +50,8 @@ export const TestOptions: React.FC<TestOptionsProps> = ({
         <Button
           aria-label="restart"
           className="rounded-full"
-          variant={"ghost"}
           size={"icon"}
+          variant={"ghost"}
           onClick={() => router.replace(`/study-set/${params.slug}`)}
         >
           <IconX className="!size-6" />

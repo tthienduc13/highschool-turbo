@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-
 import { getFlashcardBySlug } from "@highschool/react-query/apis";
 
 import StudySetLearnModule from "@/components/modules/StudySetLearn";

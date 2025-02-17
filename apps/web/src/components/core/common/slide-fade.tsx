@@ -16,8 +16,10 @@ export const SlideFade: React.FC<SlideFadeProps> = ({
   useEffect(() => {
     if (!skeleton) {
       const timer = setTimeout(() => setIsVisible(true), delay);
+
       return () => clearTimeout(timer);
     }
+
     return;
   }, [delay, skeleton]);
 

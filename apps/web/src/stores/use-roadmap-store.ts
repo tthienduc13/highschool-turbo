@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import { createContext, useContext } from "react";
-
 import { RoadmapType } from "@highschool/interfaces";
 
 export type RoadmapTab = "general" | "specific";
@@ -55,6 +53,7 @@ export const useRoadMapContext = <T>(
   selector: (state: RoadMapState) => T,
 ): T => {
   const store = useContext(RoadMapContext);
+
   if (!store) throw new Error("Missing StudyContext.Provider in the tree");
 
   return useStore(store, selector);

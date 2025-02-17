@@ -1,12 +1,8 @@
 import { useSession } from "next-auth/react";
-
 import { forwardRef } from "react";
-
 import Image from "next/image";
-
 // import Watermark from "@uiw/react-watermark";
 import { MBTIResult } from "@highschool/interfaces";
-
 import { IconPointFilled } from "@tabler/icons-react";
 
 interface ResultPrintProps {
@@ -40,11 +36,11 @@ export const ResultPrintComponent = forwardRef<
         <div className="flex flex-row items-center gap-x-4">
           <div className="relative h-[200px] w-[200px] overflow-hidden rounded-full">
             <Image
-              src={data.imageUrl}
-              alt={data.title}
               fill
+              alt={data.title}
               className="object-cover"
               sizes="200px"
+              src={data.imageUrl}
             />
           </div>
           <h2 className="text-xl font-semibold">{data.title}</h2>

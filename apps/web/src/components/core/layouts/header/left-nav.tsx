@@ -2,12 +2,8 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
 import { useState } from "react";
-
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   DropdownMenu,
@@ -18,14 +14,12 @@ import {
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconCards,
   IconChevronDown,
   IconDice6,
   IconFileTypePdf,
   IconFolder,
-  IconHome,
   IconSparkles,
   TablerIcon,
 } from "@tabler/icons-react";
@@ -58,10 +52,6 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
   const handleItemClick = (label: string) => {
     toast(label, {
       description: "Sunday, December 03, 2023 at 9:00 AM",
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
     });
   };
 
@@ -112,26 +102,26 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
           <div className="flex flex-row gap-2">
             {isTeacher ? (
               <AnimatedBackground
-                defaultValue={STUDENT_TABS[0].href}
+                enableHover
                 className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+                defaultValue={STUDENT_TABS[0].href}
                 transition={{
                   type: "spring",
                   bounce: 0.2,
                   duration: 0.3,
                 }}
-                enableHover
               >
                 {TEACHER_TAB.map((tab, index) => (
                   <button
                     key={index}
-                    onClick={() => router.push(tab.href)}
-                    data-id={tab}
-                    type="button"
                     className={cn(
                       "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
                       currentPathName === tab.href &&
                         "text-blue-700 dark:text-blue-200",
                     )}
+                    data-id={tab}
+                    type="button"
+                    onClick={() => router.push(tab.href)}
                   >
                     {tab.name}
                     {currentPathName === tab.href && (
@@ -142,26 +132,26 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
               </AnimatedBackground>
             ) : (
               <AnimatedBackground
-                defaultValue={STUDENT_TABS[0].href}
+                enableHover
                 className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+                defaultValue={STUDENT_TABS[0].href}
                 transition={{
                   type: "spring",
                   bounce: 0.2,
                   duration: 0.3,
                 }}
-                enableHover
               >
                 {STUDENT_TABS.map((tab, index) => (
                   <button
                     key={index}
-                    onClick={() => router.push(tab.href)}
-                    data-id={tab}
-                    type="button"
                     className={cn(
                       "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
                       currentPathName === tab.href &&
                         "text-blue-700 dark:text-blue-200",
                     )}
+                    data-id={tab}
+                    type="button"
+                    onClick={() => router.push(tab.href)}
                   >
                     {tab.name}
                     {currentPathName === tab.href && (
@@ -186,10 +176,10 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              side="bottom"
               align="start"
-              style={{ zIndex: 10000 }}
               className="w-48"
+              side="bottom"
+              style={{ zIndex: 10000 }}
             >
               <DropdownMenuGroup>
                 {menuItems.map(
@@ -204,8 +194,8 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
                           onClick={onClick}
                         >
                           <Icon
-                            size={20}
                             className="transition-transform group-hover:rotate-[-20deg] group-hover:scale-125"
+                            size={20}
                           />
                           {label}
                         </DropdownMenuItem>
@@ -218,8 +208,8 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
                         onClick={onClick}
                       >
                         <Icon
-                          size={20}
                           className="transition-transform group-hover:rotate-[-10deg] group-hover:scale-110"
+                          size={20}
                         />
                         {label}
                         {separator && <DropdownMenuSeparator />}

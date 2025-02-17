@@ -1,11 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
 import { motion } from "framer-motion";
-
 import { useState } from "react";
-
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconArrowBarUp, IconLanguage } from "@tabler/icons-react";
 
 import { Language, getSuggestions, languageName } from "@/utils/language";
@@ -27,9 +25,10 @@ export const CharacterSuggestions = ({
   const [uppercased, setUppercased] = useState(false);
 
   if (!focused || !characters.length) return null;
+
   return (
     <div className="absolute top-[cacl(100%+1px)] z-20 w-full">
-      <motion.div initial={{ y: -10 }} animate={{ y: 0 }}>
+      <motion.div animate={{ y: 0 }} initial={{ y: -10 }}>
         <div
           className="rounded-b-xl border-2 border-t-0 border-gray-100 bg-white p-4 shadow-xl dark:border-gray-700 dark:bg-gray-800"
           onMouseDown={(e) => e.preventDefault()}
@@ -39,9 +38,9 @@ export const CharacterSuggestions = ({
               {characters.map((c, i) => (
                 <Button
                   key={i}
+                  className="m-1 inline-block"
                   size="sm"
                   variant="outline"
-                  className="m-1 inline-block"
                   onClick={() =>
                     onSelect(uppercased ? c.toLocaleUpperCase() : c)
                   }
@@ -53,25 +52,25 @@ export const CharacterSuggestions = ({
                 </Button>
               ))}
               <Button
-                size="sm"
-                className="m-1"
-                variant="outline"
                 aria-label="Toggle uppercase"
-                onMouseDown={(e) => e.preventDefault()}
+                className="m-1"
+                size="sm"
+                variant="outline"
                 onClick={() => {
                   setUppercased(!uppercased);
                 }}
+                onMouseDown={(e) => e.preventDefault()}
               >
-                <IconArrowBarUp size={18} className="!size-[18px]" />
+                <IconArrowBarUp className="!size-[18px]" size={18} />
               </Button>
             </div>
             <Button
-              size="sm"
               className="w-fit"
+              size="sm"
               variant="outline"
               onClick={onLanguageClick}
             >
-              <IconLanguage size={18} className="!size-[18px]" />
+              <IconLanguage className="!size-[18px]" size={18} />
               {languageName(language)}
             </Button>
           </div>

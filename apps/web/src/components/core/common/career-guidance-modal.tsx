@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { usePathname, useRouter } from "next/navigation";
-
 import { useOrientationStatusQuery } from "@highschool/react-query/queries";
 import { Button, buttonVariants } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCircleCheck } from "@tabler/icons-react";
 
 import {
@@ -41,6 +38,7 @@ export const CareerGuidanceModal = () => {
     };
 
     menuEventChannel.on("openCareerGuidanceModal", handler);
+
     return () => {
       menuEventChannel.off("openCareerGuidanceModal", handler);
     };
@@ -67,12 +65,12 @@ export const CareerGuidanceModal = () => {
             </div>
           ) : isBothDone ? (
             <Button
+              className="h-[150px] w-full border-gray-100 shadow-lg dark:border-gray-700"
+              variant={"outline"}
               onClick={() => {
                 router.push("/career-guidance/summary");
                 setOpen(false);
               }}
-              variant={"outline"}
-              className="h-[150px] w-full border-gray-100 shadow-lg dark:border-gray-700"
             >
               <div className="flex flex-col gap-y-2">
                 <div className="text-lg font-medium">
@@ -86,13 +84,7 @@ export const CareerGuidanceModal = () => {
             </Button>
           ) : (
             <div className="flex flex-col gap-5 md:flex-row">
-              <div
-                onClick={() => {
-                  if (!isDoneMbti) {
-                    router.push("/career-guidance/mbti");
-                    setOpen(false);
-                  }
-                }}
+              <button
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "flex min-h-[150px] w-full cursor-pointer",
@@ -100,6 +92,12 @@ export const CareerGuidanceModal = () => {
                     ? "relative border-emerald-500 bg-emerald-500/10"
                     : "border-gray-100 shadow-lg dark:border-gray-700",
                 )}
+                onClick={() => {
+                  if (!isDoneMbti) {
+                    router.push("/career-guidance/mbti");
+                    setOpen(false);
+                  }
+                }}
               >
                 <div className="flex flex-col items-center justify-center gap-y-2">
                   <div className="text-lg font-medium">
@@ -123,18 +121,12 @@ export const CareerGuidanceModal = () => {
                 {isDoneMbti && (
                   <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
                     <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
-                      <IconCircleCheck size={24} className="!size-6" />
+                      <IconCircleCheck className="!size-6" size={24} />
                     </div>
                   </div>
                 )}
-              </div>
-              <div
-                onClick={() => {
-                  if (!isDoneHolland) {
-                    router.push("/career-guidance/holland");
-                    setOpen(false);
-                  }
-                }}
+              </button>
+              <button
                 className={cn(
                   buttonVariants({ variant: "outline" }),
                   "min-h-[150px] w-full cursor-pointer",
@@ -142,6 +134,12 @@ export const CareerGuidanceModal = () => {
                     ? "relative border-emerald-500 bg-emerald-500/10"
                     : "border-gray-100 shadow-lg dark:border-gray-700",
                 )}
+                onClick={() => {
+                  if (!isDoneHolland) {
+                    router.push("/career-guidance/holland");
+                    setOpen(false);
+                  }
+                }}
               >
                 <div className="flex flex-col items-center justify-center gap-y-2">
                   <div className="text-lg font-medium">
@@ -165,23 +163,23 @@ export const CareerGuidanceModal = () => {
                 {isDoneHolland && (
                   <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
                     <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
-                      <IconCircleCheck size={24} className="!size-6" />
+                      <IconCircleCheck className="!size-6" size={24} />
                     </div>
                   </div>
                 )}
-              </div>
+              </button>
             </div>
           )}
         </CredenzaBody>
         <CredenzaFooter>
           <CredenzaClose asChild>
             <Button
+              variant="ghost"
               onClick={() => {
                 if (testRouters.includes(pathName)) {
                   router.replace("/");
                 }
               }}
-              variant="ghost"
             >
               Huỷ
             </Button>

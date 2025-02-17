@@ -3,6 +3,7 @@
 import { memo } from "react";
 
 import { Container } from "../../layouts/container";
+
 import { DescriptionAreaSkeleton } from "./description-area-skeleton";
 import { FlashcardPreviewSkeleton } from "./flashcard-preview-skeleton";
 import { HeadingAreaSkeleton } from "./heading-skeleton";
@@ -15,8 +16,8 @@ export const SetLoadingRaw = () => {
           <HeadingAreaSkeleton />
         </div>
       </Container>
-      <Container maxWidth="full" className="overflow-hidden px-0">
-        <Container maxWidth="7xl" className="py-4">
+      <Container className="overflow-hidden px-0" maxWidth="full">
+        <Container className="py-4" maxWidth="7xl">
           <div className="flex w-full flex-col space-y-10">
             <FlashcardPreviewSkeleton />
             <DescriptionAreaSkeleton />

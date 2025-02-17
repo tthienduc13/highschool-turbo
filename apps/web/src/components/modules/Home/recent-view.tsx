@@ -1,21 +1,20 @@
 "use client";
 
 import Link from "next/link";
-
 import { DocumentType } from "@highschool/interfaces";
 import { useRecentViewQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconBooks, IconCards, IconFileTypePdf } from "@tabler/icons-react";
-
-import { getRelativeTime } from "@/utils/time";
 
 import { EmptyRecent } from "./empty-recent";
 import { Wrapper } from "./wrapper";
 
+import { getRelativeTime } from "@/utils/time";
+
 export const RecentView = () => {
   const { data, isLoading } = useRecentViewQuery();
+
   if (isLoading) {
     return (
       <Wrapper title="Xem gần đây">
@@ -39,13 +38,15 @@ export const RecentView = () => {
   if (!data?.items.length) {
     return <EmptyRecent />;
   }
+
   return (
     <Wrapper title={"Xem gần đây"}>
       <div className="grid grid-cols-1 md:grid-cols-2">
         {data?.items.slice(0, 4).map((item) => (
           <Link
+            key={item.idDocument}
+            passHref
             className="w-full"
-            key={String(item.time)}
             href={
               item.typeDocument === DocumentType.Subject
                 ? `/courses/${item.slugDocument}`
@@ -53,11 +54,10 @@ export const RecentView = () => {
                   ? `/study-set/${item.slugDocument}`
                   : `/document/${item.slugDocument}`
             }
-            passHref
           >
             <Button
-              variant={"ghost"}
               className="group h-full w-full justify-start whitespace-pre-wrap p-4"
+              variant={"ghost"}
             >
               <div className="flex w-full flex-row gap-4">
                 <div className="bg-primary/20 text-primary rounded-md p-2">

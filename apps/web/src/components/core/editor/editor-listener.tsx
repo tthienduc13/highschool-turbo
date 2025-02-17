@@ -1,7 +1,6 @@
 "use client";
 
 import { shallow } from "zustand/shallow";
-
 import React, { useCallback, useContext, useEffect } from "react";
 
 import { SetEditorStoreContext } from "@/stores/use-set-editor-store";

@@ -2,14 +2,10 @@
 
 import { Panel } from "@xyflow/react";
 import { motion } from "framer-motion";
-
 import { useState } from "react";
-
 import { usePathname } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
 import { IconMoodLookDown, IconMoodLookUp } from "@tabler/icons-react";
 
 import { Hint } from "@/components/core/common/hint";
@@ -23,21 +19,22 @@ export const UserPanel = () => {
   const activeTab = useRoadMapContext((s) => s.activeTab);
   const [openShareModal, setOpenShareModal] = useState<boolean>(false);
   const pathName = usePathname();
+
   return (
     <>
       <ShareModal
         open={openShareModal}
-        onClose={() => setOpenShareModal(false)}
         pathName={pathName}
+        onClose={() => setOpenShareModal(false)}
       />
       <Panel
-        position="top-right"
         className="bg-background flex flex-row items-center gap-x-2 rounded-md border px-4 py-2 shadow-xl"
+        position="top-right"
       >
         <Hint label="Tài liệu liên quan">
           <Button
-            variant={"ghost"}
             size={"icon"}
+            variant={"ghost"}
             onClick={() => {
               if (openResource && activeTab !== "general") {
                 setActiveTab("general");
@@ -54,7 +51,7 @@ export const UserPanel = () => {
             </motion.div>
           </Button>
         </Hint>
-        <Separator orientation="vertical" className="h-8" />
+        <Separator className="h-8" orientation="vertical" />
         <Button variant={"default"} onClick={() => setOpenShareModal(true)}>
           Share
         </Button>

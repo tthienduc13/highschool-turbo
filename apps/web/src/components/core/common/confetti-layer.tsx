@@ -1,5 +1,4 @@
 import ReactCanvasConfetti from "react-canvas-confetti";
-
 import React from "react";
 
 import { effectChannel } from "@/events/effect";
@@ -34,6 +33,7 @@ export const ConfettiLayer: React.FC = () => {
 
   // Render ConfettiPlayer if confetti is active
   if (!confetti) return null;
+
   return <ConfettiPlayer onEnd={() => setConfetti(false)} />;
 };
 

@@ -3,7 +3,6 @@
 import { Modal } from "@highschool/components/modal";
 import { StudySetVisibility } from "@highschool/interfaces";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLink, IconLock, IconWorld } from "@tabler/icons-react";
 
 import { visibilityText } from "../common/renderer/visibility-text";
@@ -29,11 +28,11 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Thay đổi trạng thái hiển thị"
-      className="w-full max-w-lg"
       withoutFooter
+      className="w-full max-w-lg"
+      isOpen={isOpen}
+      title="Thay đổi trạng thái hiển thị"
+      onClose={onClose}
     >
       <div className="flex w-[400px] flex-col overflow-hidden rounded-xl border-2 border-gray-200 dark:border-gray-700">
         {[
@@ -59,7 +58,7 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
             icon: <IconLock size={20} />,
           },
         ].map((option) => (
-          <div
+          <button
             key={option.visibility}
             className={cn(
               "h-full cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800",
@@ -69,12 +68,12 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
             onClick={() => handleChangeVisibility(option.visibility)}
           >
             <VisibilityOption
-              name={option.name}
               description={option.description}
               icon={option.icon}
+              name={option.name}
               selected={visibility === option.visibility}
             />
-          </div>
+          </button>
         ))}
       </div>
     </Modal>

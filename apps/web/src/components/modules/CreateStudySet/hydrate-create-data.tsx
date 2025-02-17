@@ -1,12 +1,7 @@
 import { useEffect } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { DraftData } from "@highschool/interfaces";
-import {
-  useFlashcardDraftMutation,
-  useFlashcardDraftQuery,
-} from "@highschool/react-query/queries";
+import { useFlashcardDraftMutation } from "@highschool/react-query/queries";
 
 import { EditorContextLayer } from "@/components/core/editor/editor-context-layer";
 import { EditorLoading } from "@/components/core/editor/editor-loading";
@@ -39,8 +34,8 @@ export const HydrateCreateData = ({ children }: HydrateCreateDataProps) => {
 
   return (
     <EditorContextLayer
-      mode="create"
       data={apiGetDraft.data?.data as DraftData}
+      mode="create"
     >
       {children}
     </EditorContextLayer>

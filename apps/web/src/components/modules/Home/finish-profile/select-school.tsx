@@ -8,9 +8,9 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
 import { WizardLayout } from "./wizard-layout";
+
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 export const SelectSchool = () => {
   const {
@@ -25,12 +25,13 @@ export const SelectSchool = () => {
     pageNumber: 1,
     pageSize: 100,
   });
+
   return (
     <WizardLayout
-      title="Chọn trường của bạn"
+      currentStep={currentStep}
       description=""
       steps={6}
-      currentStep={currentStep}
+      title="Chọn trường của bạn"
     >
       <div className="flex flex-col gap-6">
         <Select
@@ -41,11 +42,11 @@ export const SelectSchool = () => {
           }}
         >
           <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
-            <SelectValue placeholder={"Bạn học trường nào?"} className="px-4" />
+            <SelectValue className="px-4" placeholder={"Bạn học trường nào?"} />
           </SelectTrigger>
           <SelectContent
-            onCloseAutoFocus={(e) => e.preventDefault()}
             className="placeholder:text-muted-foreground"
+            onCloseAutoFocus={(e) => e.preventDefault()}
           >
             {schoolData?.data.map((school) => (
               <SelectItem key={school.id} value={school.schoolName}>

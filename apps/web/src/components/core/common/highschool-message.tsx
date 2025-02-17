@@ -1,7 +1,5 @@
 import Link from "next/link";
-
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconArrowBackUp } from "@tabler/icons-react";
 
 import { GhostGroup } from "./ghost-group";

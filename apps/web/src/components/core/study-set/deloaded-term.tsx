@@ -7,7 +7,7 @@ interface DeloadedTermProps {
   creator?: boolean;
 }
 
-export const DeloadedTerm = ({ term, creator }: DeloadedTermProps) => {
+export const DeloadedTerm = ({ term }: DeloadedTermProps) => {
   return (
     <Card
       className={cn(

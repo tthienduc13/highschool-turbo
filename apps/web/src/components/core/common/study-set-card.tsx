@@ -1,5 +1,4 @@
 import { Flashcard, StudySetVisibility } from "@highschool/interfaces";
-
 import { IconPointFilled, IconProgress } from "@tabler/icons-react";
 
 import { GenericCard } from "./generic-card";
@@ -34,14 +33,7 @@ export const StudySetCard = ({
 }: StudySetCardProps) => {
   return (
     <GenericCard
-      title={studySet.flashcardName || "Chưa đặt tên"}
-      numItems={numTerms}
       grade={studySet.grade}
-      url={
-        !draft
-          ? `/study-set/${studySet.slug}`
-          : `/study-set/${studySet.slug}/edit`
-      }
       itemsLabel={"thẻ"}
       label={
         draft ? (
@@ -55,14 +47,24 @@ export const StudySetCard = ({
           </>
         ) : undefined
       }
+      numItems={numTerms}
+      removable={removable}
       reverseTitle={draft}
       rightIcon={
         studySet.status !== StudySetVisibility.Public
           ? visibilityIcon(studySet.status, 16)
           : undefined
       }
+      title={studySet.flashcardName || "Chưa đặt tên"}
+      url={
+        !draft
+          ? `/study-set/${studySet.slug}`
+          : `/study-set/${studySet.slug}/edit`
+      }
       user={user}
       userLoading={userLoading}
+      verified={verified}
+      onRemove={onRemove}
       // bottom={
       //     studySet.type == "Collab" ? (
       //         <GenericCollaboratorsFooter
@@ -71,9 +73,6 @@ export const StudySetCard = ({
       //         />
       //     ) : undefined
       // }
-      verified={verified}
-      removable={removable}
-      onRemove={onRemove}
     />
   );
 };

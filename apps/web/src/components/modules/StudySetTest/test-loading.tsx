@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import { Card } from "@highschool/ui/components/ui/card";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
@@ -11,17 +10,17 @@ export const TestLoading = () => {
   return (
     <div className="container mt-0 max-w-4xl md:mt-10">
       <div className="w-full space-y-0 pb-20">
-        <TestCardGap type="start" title="Highschool" skeleton />
+        <TestCardGap skeleton title="Highschool" type="start" />
         <div className="space-y-0">
           {Array.from({ length: 5 }).map((_, i) => (
             <React.Fragment key={i}>
               <TestCardGap
-                type="question"
-                index={i}
-                startingIndex={i}
-                numQuestions={500}
-                count={1}
                 skeleton
+                count={1}
+                index={i}
+                numQuestions={500}
+                startingIndex={i}
+                type="question"
               />
               <QuestionSkeleton />
             </React.Fragment>
@@ -42,7 +41,7 @@ const SkeletonPromptDisplay: React.FC<{ label: string }> = ({ label }) => {
   return (
     <div className="w-full">
       <div className="flex h-[21px] items-center">
-        <Skeleton className="h-3.5 rounded opacity-35"></Skeleton>
+        <Skeleton className="h-3.5 rounded opacity-35" />
       </div>
       <div className="min-h-[60px] md:min-h-[140px]">
         {label === "Definition" ? (
@@ -75,7 +74,7 @@ export const QuestionSkeleton = () => {
         <div className="space-y-2">
           <div className="mb-2">
             <div className="h-[21px]">
-              <Skeleton className="h-3.5 rounded-md opacity-35"></Skeleton>
+              <Skeleton className="h-3.5 rounded-md opacity-35" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-4 md:gap-6">

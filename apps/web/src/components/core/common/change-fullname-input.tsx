@@ -2,14 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
 import { useEffect, useRef, useState } from "react";
-
 import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 export interface ChangeFullnameInputProps {
@@ -25,6 +22,7 @@ export const ChangeFullnameInput = ({
     session?.user?.fullname || "",
   );
   const fullnameRef = useRef(fullnameValue);
+
   fullnameRef.current = fullnameValue;
 
   const isTooLong = fullnameValue.trim().length > 80;
@@ -49,6 +47,7 @@ export const ChangeFullnameInput = ({
         });
         toast.success("Tên người dùng được cập nhật");
       };
+
       updateSession();
     }
   }, [changeUsername.isSuccess]);
@@ -65,20 +64,20 @@ export const ChangeFullnameInput = ({
           )}
         >
           <Input
+            className="h-full w-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
             disabled={changeUsername.isPending}
+            placeholder="Nhập tên người dùng"
             value={fullnameValue}
             onChange={(e) => {
               if (!changeUsername.isPending) setFullnameValue(e.target.value);
             }}
-            placeholder="Nhập tên người dùng"
-            className="h-full w-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
           />
         </div>
         <Button
-          size="lg"
-          variant="outline"
           className="h-12 w-full sm:w-[120px]"
           disabled={isDisabled || changeUsername.isPending}
+          size="lg"
+          variant="outline"
           onClick={async () => {
             changeUsername.mutateAsync({
               fullName: fullnameValue,

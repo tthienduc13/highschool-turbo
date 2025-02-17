@@ -1,5 +1,4 @@
 import Link from "next/link";
-
 import { StudySetVisibility } from "@highschool/interfaces";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
@@ -24,7 +23,7 @@ export const ProfileLinkable = ({
 }: ProfileLinkableProps) => {
   return (
     <Link href={url}>
-      <div className="h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-4 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 hover:border-b-blue-400 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-b-blue-300">
+      <div className="h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-4 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 hover:border-b-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-b-blue-300">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row items-center justify-between">
             <p className="text-sm text-gray-600 dark:text-gray-400">

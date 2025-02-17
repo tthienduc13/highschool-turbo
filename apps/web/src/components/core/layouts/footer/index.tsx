@@ -1,15 +1,11 @@
 "use client";
 
 import { useTheme } from "next-themes";
-
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBrandFacebook,
   IconBrandGithub,
@@ -18,10 +14,10 @@ import {
   IconSun,
 } from "@tabler/icons-react";
 
+import { Logo } from "../../common/logo";
+
 import { useMe } from "@/hooks/use-me";
 import { MOD } from "@/lib/tiny-key";
-
-import { Logo } from "../../common/logo";
 
 export const Footer = () => {
   const [initialized, setInitialized] = useState(false);
@@ -32,6 +28,7 @@ export const Footer = () => {
   }, []);
 
   if (!initialized) return null;
+
   return (
     <div className="w-full max-w-[100vw] border-t-[1px] border-t-gray-200 bg-white dark:border-t-gray-800/50 dark:bg-gray-900/50">
       <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8">
@@ -47,8 +44,8 @@ export const Footer = () => {
             <div className="flex flex-row items-center gap-4">
               {me && (
                 <Button
-                  variant={"outline"}
                   className="hidden md:flex"
+                  variant={"outline"}
                   onClick={() => {
                     window.dispatchEvent(
                       new KeyboardEvent("keydown", {
@@ -133,7 +130,7 @@ const ThemeButton = ({ mode }: { mode: "light" | "dark" }) => {
   const selected = theme == mode;
 
   return (
-    <div
+    <button
       className={cn(
         "cursor-pointer rounded-full p-[7px] transition-colors duration-150 ease-in-out hover:text-gray-900 dark:hover:text-gray-50",
         selected
@@ -143,7 +140,7 @@ const ThemeButton = ({ mode }: { mode: "light" | "dark" }) => {
       onClick={() => setTheme(mode)}
     >
       <Icon size={18} />
-    </div>
+    </button>
   );
 };
 
@@ -181,7 +178,7 @@ const SocialLink: React.FC<React.PropsWithChildren<{ href: string }>> = ({
 
 const FooterLink: React.FC<FooterLinkProps> = ({ href, text }) => {
   return (
-    <Link href={href} className="w-fit">
+    <Link className="w-fit" href={href}>
       <p className="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-900 dark:hover:text-gray-50">
         {text}
       </p>

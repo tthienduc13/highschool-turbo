@@ -1,21 +1,20 @@
 import { useQueryClient } from "@tanstack/react-query";
-
 import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
   useCoursesQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconLoader2 } from "@tabler/icons-react";
+
+import { WizardLayout } from "./wizard-layout";
 
 import { MultiSelect } from "@/components/ui/multi-select";
 import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
-import { WizardLayout } from "./wizard-layout";
-
 export const convertToClass = (grade: Grade): number => {
   const number = classNumberMap[grade];
+
   if (number !== undefined) {
     return number;
   }
@@ -73,28 +72,28 @@ export const SelectSubject = () => {
 
   return (
     <WizardLayout
-      title="Chọn các môn học "
+      currentStep={currentStep}
       description="Hãy chọn đủ 4 môn mà bạn đang chuẩn bị cho kì thi THPTQG"
       steps={6}
-      currentStep={currentStep}
+      title="Chọn các môn học "
     >
       <div className="flex flex-col gap-6 pt-4">
         <MultiSelect
-          disabled={isLoading || updateUser.isPending}
-          options={transformData}
-          onValueChange={setSelectedSubjects}
+          animation={2}
           defaultValue={selectedSubjects}
+          disabled={isLoading || updateUser.isPending}
+          limit={4}
+          maxCount={3}
+          options={transformData}
           placeholder="Chọn môn học "
           variant="inverted"
-          animation={2}
-          maxCount={3}
-          limit={4}
+          onValueChange={setSelectedSubjects}
         />
         <div className="grid grid-cols-2 gap-2 md:gap-4">
           <div className="w-full">
             <Button
-              disabled={updateUser.isPending}
               className="w-fit"
+              disabled={updateUser.isPending}
               variant={"ghost"}
               onClick={() => setCurrentStep(currentStep - 1)}
             >

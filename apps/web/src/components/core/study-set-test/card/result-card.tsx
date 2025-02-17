@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-
 import {
   IconCircleCheck,
   IconCircleX,
   IconHourglassLow,
 } from "@tabler/icons-react";
+
+import AnimatedCircularProgressBar from "../../common/animated-progress-bar";
+import { getQuestionTypeIcon, getQuestionTypeName } from "../utils";
 
 import { effectChannel } from "@/events/effect";
 import {
@@ -14,9 +15,6 @@ import {
   useTestContext,
 } from "@/stores/use-study-set-test-store";
 import { formatElapsedTime } from "@/utils/time";
-
-import AnimatedCircularProgressBar from "../../common/animated-progress-bar";
-import { getQuestionTypeIcon, getQuestionTypeName } from "../utils";
 
 export const ResultCard = () => {
   const result = useTestContext((s) => s.result!);
@@ -26,9 +24,11 @@ export const ResultCard = () => {
   const endedAt = useTestContext((s) => s.endedAt);
 
   const [perc, setPerc] = useState(0);
+
   useEffect(() => {
     requestAnimationFrame(() => {
       const computedPerc = (result.score / questionCount) * 100;
+
       setPerc(Math.floor(computedPerc));
 
       if ((result.score * 1.0) / questionCount >= 0.93) {
@@ -55,11 +55,11 @@ export const ResultCard = () => {
           <div className="flex flex-row items-center gap-4">
             <AnimatedCircularProgressBar
               className="h-[140px] w-[140px]"
-              max={100}
-              value={perc}
-              min={0}
               gaugePrimaryColor="#7faeff"
               gaugeSecondaryColor="#f3f4f6"
+              max={100}
+              min={0}
+              value={perc}
             />
             <div className="flex h-full w-full items-center justify-center">
               <div className="flex flex-col gap-2">
@@ -119,8 +119,8 @@ const ByTypeComponent: React.FC<
 
   return (
     <div
-      className="flex flex-row items-center justify-between gap-6"
       key={type}
+      className="flex flex-row items-center justify-between gap-6"
     >
       <div className="flex flex-row gap-2">
         <div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import {
   useAuthorsQuery,
   useTopFlashcardQuery,
@@ -14,9 +13,9 @@ import {
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
 
-import { StudySetCard } from "@/components/core/common/study-set-card";
-
 import { Wrapper } from "./wrapper";
+
+import { StudySetCard } from "@/components/core/common/study-set-card";
 
 export const TopFlascard = () => {
   const [userIds, setUserIds] = useState<string[]>([]);
@@ -33,6 +32,7 @@ export const TopFlascard = () => {
       const uniqueUserIds = Array.from(
         new Set(data.map((flashcard: { userId: string }) => flashcard.userId)),
       );
+
       setUserIds(uniqueUserIds);
     }
   }, [isSuccess]);
@@ -51,18 +51,19 @@ export const TopFlascard = () => {
     <Wrapper title="Bộ thẻ ghi nhớ nổi bật">
       <div className="group w-full">
         <Carousel
+          className="w-full px-4"
           opts={{
             dragFree: true,
 
             align: "start",
           }}
-          className="w-full px-4"
         >
           <CarouselContent>
             {data?.map((flashcard) => {
               const matchedUser = user?.find(
                 (user) => user.id === flashcard.userId,
               );
+
               return (
                 <CarouselItem
                   key={flashcard.id}
@@ -70,13 +71,13 @@ export const TopFlascard = () => {
                 >
                   <div className="py-4">
                     <StudySetCard
-                      studySet={flashcard}
                       numTerms={flashcard.numberOfFlashcardContent}
-                      userLoading={userLoading}
+                      studySet={flashcard}
                       user={{
                         fullname: matchedUser?.fullname!,
                         image: matchedUser?.profilePicture!,
                       }}
+                      userLoading={userLoading}
                       onRemove={() => {}}
                     />
                   </div>
@@ -85,16 +86,16 @@ export const TopFlascard = () => {
             })}
           </CarouselContent>
           <CarouselPrevious
+            className="left-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="left-0 hidden group-hover:flex"
           />
           <CarouselNext
+            className="right-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="right-0 hidden group-hover:flex"
           />
         </Carousel>
       </div>

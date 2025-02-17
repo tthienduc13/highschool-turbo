@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useShortcut } from "@highschool/hooks";
 import { cn } from "@highschool/ui/lib/utils";
 
@@ -22,21 +24,21 @@ export const InternalView: React.FC<InternalViewProps> = ({
   return (
     <PhotoPortal pointerEvents={visible ? "auto" : "none"}>
       <div
-        style={{ backdropFilter: "8px" }}
         className={cn(
           "dark:bg-[#00000033]transition-opacity relative flex h-full w-full items-center justify-center bg-[#FFFFFF80] duration-200 ease-in-out",
           visible ? "opacity-100" : "opacity-0",
         )}
+        style={{ backdropFilter: "8px" }}
         onClick={() => {
           setVisible(false);
         }}
       >
         {visible && <EscLayer onClose={() => setVisible(false)} />}
         <PhotoContainer
-          visible={visible}
-          src={currentSrc}
-          origin={currentRef}
           borderRadius={borderRadius}
+          origin={currentRef}
+          src={currentSrc}
+          visible={visible}
         />
       </div>
     </PhotoPortal>

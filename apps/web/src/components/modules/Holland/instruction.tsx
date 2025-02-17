@@ -1,12 +1,9 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-
 import Image from "next/image";
-
 import { getHollandTest } from "@highschool/react-query/apis";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconCheck } from "@tabler/icons-react";
 
 interface InstructionProps {
@@ -26,6 +23,7 @@ export const Instruction = ({ onClose }: InstructionProps) => {
   const handleCancelPrefetch = () => {
     queryClient.cancelQueries({ queryKey: ["holland-test"] });
   };
+
   return (
     <div className="flex h-[calc(100vh-80px-32px)] items-center">
       <div className="relative mx-auto w-full max-w-2xl pb-20 sm:pb-24 md:pb-28">
@@ -60,10 +58,10 @@ export const Instruction = ({ onClose }: InstructionProps) => {
           </div>
           <div className="flex justify-end bg-gray-50 px-4 py-3 sm:px-6 sm:py-4 dark:bg-gray-700">
             <Button
-              onMouseLeave={handleCancelPrefetch}
-              onMouseEnter={handlePrefetch}
-              onClick={onClose}
               className="px-4 sm:px-6"
+              onClick={onClose}
+              onMouseEnter={handlePrefetch}
+              onMouseLeave={handleCancelPrefetch}
             >
               Bắt đầu
             </Button>
@@ -71,11 +69,11 @@ export const Instruction = ({ onClose }: InstructionProps) => {
         </div>
         <div className="absolute bottom-0 left-0 h-[100px] w-[150px] sm:h-[120px] sm:w-[180px] md:h-[150px] md:w-[220px]">
           <Image
-            src="/images/mascot/laptop-whale.png"
-            alt="Laptop whale mascot"
             fill
-            sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 220px"
+            alt="Laptop whale mascot"
             className="object-bottom-left object-contain"
+            sizes="(max-width: 640px) 150px, (max-width: 768px) 180px, 220px"
+            src="/images/mascot/laptop-whale.png"
           />
         </div>
       </div>

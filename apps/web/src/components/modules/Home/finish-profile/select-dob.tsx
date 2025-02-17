@@ -1,9 +1,9 @@
 import { DatePicker } from "@highschool/components";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
 import { WizardLayout } from "./wizard-layout";
+
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 export const SelectDob = () => {
   const { currentStep, setCurrentStep, selectedDob, setSelectedDob } =
@@ -11,10 +11,10 @@ export const SelectDob = () => {
 
   return (
     <WizardLayout
-      title="Ngày sinh của bạn"
+      currentStep={currentStep}
       description=""
       steps={6}
-      currentStep={currentStep}
+      title="Ngày sinh của bạn"
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
@@ -24,7 +24,7 @@ export const SelectDob = () => {
           />
         </div>
         <div className="grid grid-cols-2 gap-2 md:gap-4">
-          <div className="w-full"></div>
+          <div className="w-full" />
           <Button
             disabled={!selectedDob}
             onClick={() => setCurrentStep(currentStep + 1)}

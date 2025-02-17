@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import {
   useAuthorsQuery,
   useRelatedFlashcard,
@@ -11,7 +10,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
-
 import { IconUsersGroup } from "@tabler/icons-react";
 
 import { StudySetCard } from "@/components/core/common/study-set-card";
@@ -32,6 +30,7 @@ export const RelatedResoucrces = () => {
           ),
         ),
       );
+
       setUserIds(uniqueUserIds);
     }
   }, [relatedFlashcard]);
@@ -54,18 +53,19 @@ export const RelatedResoucrces = () => {
       </div>
       <div className="group w-full rounded-xl bg-gray-100">
         <Carousel
+          className="w-full px-4"
           opts={{
             dragFree: true,
 
             align: "start",
           }}
-          className="w-full px-4"
         >
           <CarouselContent>
             {relatedFlashcard?.map((flashcard) => {
               const matchedUser = user?.find(
                 (user) => user.id === flashcard.userId,
               );
+
               return (
                 <CarouselItem
                   key={flashcard.id}
@@ -73,13 +73,13 @@ export const RelatedResoucrces = () => {
                 >
                   <div className="py-4">
                     <StudySetCard
-                      studySet={flashcard}
                       numTerms={flashcard.numberOfFlashcardContent}
-                      userLoading={userLoading}
+                      studySet={flashcard}
                       user={{
                         fullname: matchedUser?.fullname!,
                         image: matchedUser?.profilePicture!,
                       }}
+                      userLoading={userLoading}
                       onRemove={() => {}}
                     />
                   </div>
@@ -88,16 +88,16 @@ export const RelatedResoucrces = () => {
             })}
           </CarouselContent>
           <CarouselPrevious
+            className="left-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="left-0 hidden group-hover:flex"
           />
           <CarouselNext
+            className="right-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="right-0 hidden group-hover:flex"
           />
         </Carousel>
       </div>

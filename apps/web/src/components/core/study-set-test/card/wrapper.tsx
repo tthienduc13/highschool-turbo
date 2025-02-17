@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
-
 import { TestQuestionType } from "@highschool/interfaces";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
@@ -42,12 +41,12 @@ export const CardWrapper = ({ i, type, correctness }: CardWrapperProps) => {
   return (
     <div id={`test-card-${i}`}>
       <Card
-        style={{
-          zIndex: 1000,
-        }}
         className={cn(
           "relative rounded-2xl border-2 border-gray-50 bg-white dark:border-gray-700 dark:bg-gray-800/50",
         )}
+        style={{
+          zIndex: 1000,
+        }}
       >
         {correctness !== undefined && (
           <motion.div

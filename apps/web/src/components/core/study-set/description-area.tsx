@@ -1,19 +1,18 @@
 "use client";
 
 import Link from "next/link";
-
 import { useAuthorQuery } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconBooks, IconDiscountCheck, IconSchool } from "@tabler/icons-react";
-
-import { useSet } from "@/hooks/use-set";
 
 import { Hint } from "../common/hint";
 import { gradeTextRenderer } from "../common/renderer/grade";
 import { UsernameLink } from "../common/username-link";
+
 import { ActionArea } from "./action-area";
+
+import { useSet } from "@/hooks/use-set";
 
 export const DescriptionArea = () => {
   const data = useSet();
@@ -36,8 +35,8 @@ export const DescriptionArea = () => {
           <div className="flex flex-row items-center gap-4">
             <Avatar className="size-12">
               <AvatarImage
-                src={authorData?.data?.profilePicture ?? "/logo.svg"}
                 alt={authorData?.data?.username ?? "Người dùng Highschool"}
+                src={authorData?.data?.profilePicture ?? "/logo.svg"}
               />
             </Avatar>
             <div className="flex flex-col">
@@ -51,9 +50,9 @@ export const DescriptionArea = () => {
                 {!authorData?.data?.isStudent && (
                   <Hint label="Giáo viên">
                     <IconDiscountCheck
-                      size={20}
-                      className="text-blue-700"
                       aria-label="teacher"
+                      className="text-blue-700"
+                      size={20}
                     />
                   </Hint>
                 )}
@@ -69,8 +68,8 @@ export const DescriptionArea = () => {
       {data.flashcard.subjectName && (
         <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
           <Link
-            href={"/course"}
             className="hover:text-primary flex flex-row items-center gap-2 transition-all duration-200 ease-in-out"
+            href={"/course"}
           >
             <IconBooks size={20} />
             {data.flashcard.subjectName}

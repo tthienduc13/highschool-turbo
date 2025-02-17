@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
 import { LessonDetail } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconHeart, IconLoader2, IconNote } from "@tabler/icons-react";
 
 interface VideoPlayerProps {
@@ -23,17 +21,17 @@ export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
       <div className="relative aspect-video overflow-hidden rounded-xl">
         {!isReady && (
           <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-slate-800">
-            <IconLoader2 size={32} className="text-secondary animate-spin" />
+            <IconLoader2 className="text-secondary animate-spin" size={32} />
           </div>
         )}
         <video
-          title={lesson.lessonName}
-          className="h-full w-full"
-          onCanPlay={() => setIsReady(true)}
-          onEnded={() => console.log("Video ended")}
           autoPlay
-          muted
           controls
+          muted
+          className="h-full w-full"
+          title={lesson.lessonName}
+          onCanPlay={() => setIsReady(true)}
+          //   onEnded={() => console.log("Video ended")}
         >
           <source src={lesson.videoUrl} />
         </video>

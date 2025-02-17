@@ -1,9 +1,9 @@
 import { TypeExam, examDescriptions } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
 import { WizardLayout } from "./wizard-layout";
+
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 export const SelectExamType = () => {
   const {
@@ -16,22 +16,24 @@ export const SelectExamType = () => {
     const newTypes = selectedExamTypes.includes(examType)
       ? selectedExamTypes.filter((type: TypeExam) => type !== examType)
       : [...selectedExamTypes, examType];
+
     setSelectedExamTypes(newTypes);
   };
+
   return (
     <WizardLayout
-      title="Chọn loại kì thi"
+      currentStep={currentStep}
       description="Hãy chọn loại kì thi mà bạn đang hoặc sẽ quan tâm tới"
       steps={6}
-      currentStep={currentStep}
+      title="Chọn loại kì thi"
     >
       <div className="flex flex-col gap-6 pt-4">
         <div className="flex flex-row flex-wrap items-center justify-center gap-2">
           {Object.keys(examDescriptions).map((key) => (
             <Button
-              size={"sm"}
               key={key}
               className="rounded-full"
+              size={"sm"}
               variant={
                 selectedExamTypes.includes(key as TypeExam)
                   ? "default"

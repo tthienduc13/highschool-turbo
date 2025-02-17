@@ -1,13 +1,13 @@
 import Link from "next/link";
-
 import { useUserFlashcardQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 
+import { ProfileLinkable } from "../profile-linkable";
+
+import { FlashcardList } from "./flashcard";
+
 import { useProfile } from "@/hooks/use-profile";
 import { groupIntoTimeline } from "@/utils/grouping";
-
-import { ProfileLinkable } from "../profile-linkable";
-import { FlashcardList } from "./flashcard";
 
 export const UserFlashcard = () => {
   const profile = useProfile()!;
@@ -36,17 +36,17 @@ export const UserFlashcard = () => {
             <div className="whitespace-nowrap text-2xl font-bold">
               {group.label}
             </div>
-            <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700"></div>
+            <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700" />
           </div>
           <div className="flex flex-col gap-6">
             {group.items.map((item) => (
               <ProfileLinkable
                 key={item.id}
+                label="thẻ ghi nhớ"
+                numValues={item.numberOfFlashcardContent}
                 title={item.flashcardName}
                 url={`/study-set/${item.slug}`}
                 visibility={item.status}
-                numValues={item.numberOfFlashcardContent}
-                label="thẻ ghi nhớ"
               />
             ))}
           </div>

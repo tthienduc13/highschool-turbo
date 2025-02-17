@@ -1,5 +1,9 @@
 "use client";
 
+import { HydrateSetData } from "../StudySet/hydrate-set-data";
+
+import { CreateLearnData } from "./create-learn-data";
+
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 import { Container } from "@/components/core/layouts/container";
 import { ActionBar } from "@/components/core/study-set-learn/action-bar";
@@ -11,9 +15,6 @@ import { TitleBar } from "@/components/core/study-set-learn/title-bar";
 import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { useLearnContext } from "@/stores/use-study-set-learn-store";
 
-import { HydrateSetData } from "../StudySet/hydrate-set-data";
-import { CreateLearnData } from "./create-learn-data";
-
 function StudySetLearnModule() {
   return (
     <>
@@ -23,7 +24,7 @@ function StudySetLearnModule() {
         disallowDirty
         withDistractors
         placeholder={
-          <Container maxWidth="4xl" className="md:mt-10">
+          <Container className="md:mt-10" maxWidth="4xl">
             <div className="flex w-full flex-col gap-8">
               <TitleBar.Skeleton />
               <LearnLoading />
@@ -32,7 +33,7 @@ function StudySetLearnModule() {
         }
       >
         <CreateLearnData>
-          <Container maxWidth="4xl" className="md:mt-10">
+          <Container className="md:mt-10" maxWidth="4xl">
             <div className="flex flex-col gap-8">
               <TitleBar />
               <LearnContainer />
@@ -48,6 +49,7 @@ function StudySetLearnModule() {
 const LearnContainer = () => {
   const completed = useLearnContext((s) => s.completed);
   const roundSummary = useLearnContext((s) => s.roundSummary);
+
   if (completed) return <Completed />;
 
   if (roundSummary) return <RoundSummary />;

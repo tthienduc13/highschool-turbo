@@ -1,14 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { createContext, useState } from "react";
 import React from "react";
-
 import { FlashcardContent } from "@highschool/interfaces";
-
-import { menuEventChannel } from "@/events/menu";
-import { useContainerContext } from "@/stores/use-container-store";
 
 import { CreateSortFlashcardsData } from "./create-sort-flashcard-data";
 import { DefaultFlashcardWrapper } from "./default-flashcard-wrapper";
@@ -16,6 +11,9 @@ import { EditTermModal } from "./edit-term-modal";
 import { FlashcardsEmpty } from "./flashcard-empty";
 import { LoadingFlashcard } from "./loading-flashcard";
 import { SortFlashcardWrapper } from "./sort-flashcard-wrapper";
+
+import { useContainerContext } from "@/stores/use-container-store";
+import { menuEventChannel } from "@/events/menu";
 
 export interface RootFlashcardWrapperProps {
   terms: FlashcardContent[];
@@ -56,7 +54,7 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
 
   const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
 
-  const FlashcardWrapper = enableCardsSorting
+  const FlashcardWrapper = !enableCardsSorting
     ? SortFlashcardWrapper
     : DefaultFlashcardWrapper;
 
@@ -64,6 +62,7 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
 
   if (isDirty) return <LoadingFlashcard h={h} />;
   if (!termOrder.length) return <FlashcardsEmpty h={h} />;
+
   return (
     <RootFlashcardContext.Provider
       value={{
@@ -80,6 +79,7 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
             menuEventChannel.emit("openSignup", {
               message: "Create an account for free to customize and star terms",
             });
+
             return;
           }
 
@@ -108,12 +108,12 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
     >
       <Wrapper>
         <div
-          style={{ minHeight: h, zIndex: 100 }}
           className="relative h-full w-full"
+          style={{ minHeight: h, zIndex: 100 }}
         >
           <EditTermModal
-            term={editTerm}
             isOpen={editModalOpen}
+            term={editTerm}
             onClose={() => {
               setEditModalOpen(false);
             }}

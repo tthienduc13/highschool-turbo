@@ -1,5 +1,4 @@
 import { Grade } from "@highschool/interfaces";
-
 import {
   IconNumber10Small,
   IconNumber11Small,

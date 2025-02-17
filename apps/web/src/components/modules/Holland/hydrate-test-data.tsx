@@ -1,5 +1,4 @@
 import { useRef } from "react";
-
 import { useHollandTestQuery } from "@highschool/react-query/queries";
 
 import { Loading } from "@/components/core/common/loading";
@@ -31,6 +30,7 @@ export const HydrateHollandTestData = ({
 
   if (isError) {
     console.error("Failed to load Holland test data:", error);
+
     return <div>Error loading Holland test data. Please try again later.</div>;
   }
 

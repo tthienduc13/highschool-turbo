@@ -1,12 +1,10 @@
 "use client";
 
 import { Fragment, memo, useMemo, useRef, useState } from "react";
-
 import { Input } from "@highschool/ui/components/ui/input";
 import { Popover, PopoverContent } from "@highschool/ui/components/ui/popover";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconCheck,
   IconHelpHexagon,
@@ -31,7 +29,7 @@ export interface LanguageMenuProps {
 
 export const LanguageMenuWrapper: React.FC<
   React.PropsWithChildren<LanguageMenuProps>
-> = ({ isOpen, onClose, selected, onChange, isLazy, children }) => {
+> = ({ isOpen, onClose, selected, onChange, children }) => {
   const allLanguages = Object.entries(languages) as [Language, string][];
   const [query, setQuery] = useState("");
 
@@ -40,6 +38,7 @@ export const LanguageMenuWrapper: React.FC<
 
   function filterFn<T extends { name: string }>(item: T) {
     const q = query.toLowerCase();
+
     return item.name.toLowerCase().includes(q);
   }
 
@@ -89,6 +88,7 @@ export const LanguageMenuWrapper: React.FC<
     onChange(l);
     onClose();
   };
+
   return (
     <Popover open={isOpen} onOpenChange={onClose}>
       {children}
@@ -102,10 +102,10 @@ export const LanguageMenuWrapper: React.FC<
               <IconSearch size={16} />
             </div>
             <Input
-              placeholder="Tìm kiếm ngôn ngữ "
-              className="h-full w-full rounded-none border-none px-4 py-0 !text-lg shadow-none focus-visible:ring-0"
-              value={query}
               ref={inputRef}
+              className="h-full w-full rounded-none border-none px-4 py-0 !text-lg shadow-none focus-visible:ring-0"
+              placeholder="Tìm kiếm ngôn ngữ "
+              value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && allFiltered.length == 1) {
@@ -114,20 +114,20 @@ export const LanguageMenuWrapper: React.FC<
               }}
             />
           </div>
-          <div className="h-[350px] overflow-y-scroll" ref={containerRef}>
+          <div ref={containerRef} className="h-[350px] overflow-y-scroll">
             <LanguageGroupPure
-              name="Ngôn ngữ nổi bật"
               languagesProps={topLanguagesGroup}
+              name="Ngôn ngữ nổi bật"
               onSelect={onSelect}
             />
             <LanguageGroupPure
-              name="Ngôn ngữ đặc biệt"
               languagesProps={specialLanguagesGroup}
+              name="Ngôn ngữ đặc biệt"
               onSelect={onSelect}
             />
             <LanguageGroupPure
-              name="Tất cả ngôn ngữ"
               languagesProps={allLanguagesGroup}
+              name="Tất cả ngôn ngữ"
               onSelect={onSelect}
             />
             {!allFiltered.length && (
@@ -200,7 +200,7 @@ const LanguageItem: React.FC<LanguageItemProps> = ({
 }) => {
   return useMemo(
     () => (
-      <div
+      <button
         className="cursor-pointer px-4 py-2 transition-all duration-100 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-700"
         id={`language-menu-opt-${value}`}
         onClick={onClick}
@@ -215,7 +215,7 @@ const LanguageItem: React.FC<LanguageItemProps> = ({
           )}
           <div className={cn(isSelected && "font-bold")}>{name}</div>
         </div>
-      </div>
+      </button>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [isSelected, name, value],

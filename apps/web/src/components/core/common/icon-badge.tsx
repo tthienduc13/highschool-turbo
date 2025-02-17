@@ -1,7 +1,5 @@
 import { type VariantProps, cva } from "class-variance-authority";
-
 import { cn } from "@highschool/ui/lib/utils";
-
 import { TablerIcon } from "@tabler/icons-react";
 
 // Trying to replicate Shadcn's Component Styling System

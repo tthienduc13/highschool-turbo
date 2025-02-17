@@ -1,13 +1,11 @@
-import { useEffect, useMemo } from "react";
-
+import { useMemo } from "react";
 import { useSubmitMBTITestMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
-import { useMBTITestContext } from "@/stores/use-mbti-store";
-
 import { AnswerOption } from "./answer-option";
+
+import { useMBTITestContext } from "@/stores/use-mbti-store";
 
 interface TestViewProps {
   submitAnswer: ReturnType<typeof useSubmitMBTITestMutation>;
@@ -47,6 +45,7 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
   const handleSubmit = async () => {
     if (!isUserAlreadyPickAnswer) {
       alert("Vui lòng trả lời toàn bộ câu hỏi");
+
       return;
     }
 
@@ -66,7 +65,7 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
         <div
           className={`h-2.5 rounded-full bg-blue-500`}
           style={{ width: `${progress ?? 0}%` }}
-        ></div>
+        />
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-center text-lg font-bold">
@@ -79,22 +78,22 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
       <AnswerOption goToNextQuestion={handleNextButtonClick} />
       <div className="flex w-full flex-row gap-5">
         <Button
-          disabled={currentQuestionIndex === 0 || submitAnswer.isPending}
-          onClick={handlePreviousButtonClick}
-          size={"lg"}
           className="w-full"
+          disabled={currentQuestionIndex === 0 || submitAnswer.isPending}
+          size={"lg"}
           variant={"outline"}
+          onClick={handlePreviousButtonClick}
         >
           Câu trước
         </Button>
         {isUserAlreadyPickAnswer &&
         currentQuestionIndex === questions.length - 1 ? (
           <Button
-            disabled={submitAnswer.isPending}
-            onClick={handleSubmit}
-            size={"lg"}
             className="w-full"
+            disabled={submitAnswer.isPending}
+            size={"lg"}
             variant={"default"}
+            onClick={handleSubmit}
           >
             {submitAnswer.isPending ? (
               <IconLoader2 className="animate-spin" />
@@ -104,11 +103,11 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
           </Button>
         ) : (
           <Button
-            disabled={!isUserAlreadyPickAnswer}
-            onClick={handleNextButtonClick}
-            size={"lg"}
             className="w-full"
+            disabled={!isUserAlreadyPickAnswer}
+            size={"lg"}
             variant={"outline"}
+            onClick={handleNextButtonClick}
           >
             Câu tiếp theo
           </Button>

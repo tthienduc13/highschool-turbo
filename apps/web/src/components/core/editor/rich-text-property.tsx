@@ -17,11 +17,11 @@ export const RichTextProperty: React.FC<RichTextPropertyProps> = ({
   return (
     <Button
       aria-label={label}
-      onMouseDown={(e: any) => e.preventDefault()}
-      onClick={onClick}
-      variant={"ghost"}
-      size={"icon"}
       className={cn("h-6 w-6 rounded-full", isActive && "bg-gray-100")}
+      size={"icon"}
+      variant={"ghost"}
+      onClick={onClick}
+      onMouseDown={(e: any) => e.preventDefault()}
     >
       {icon}
     </Button>

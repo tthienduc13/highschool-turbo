@@ -3,26 +3,22 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-
 import { useEffect, useState } from "react";
-
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
-
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconMenu, IconSearch, IconX } from "@tabler/icons-react";
-
-import { menuEventChannel } from "@/events/menu";
-import { MOD } from "@/lib/tiny-key";
 
 import { LeftNav } from "./left-nav";
 import { MobileMenu } from "./mobile-menu";
 import { UserMenu } from "./user-menu";
 import { UserNotification } from "./user-notification";
+
+import { MOD } from "@/lib/tiny-key";
+import { menuEventChannel } from "@/events/menu";
 
 const CreateFolderModal = dynamic(
   () =>
@@ -51,6 +47,7 @@ export const Header = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -78,28 +75,28 @@ export const Header = () => {
       )}
     >
       <CreateFolderModal
+        childSetId={folderChildSetId}
         isOpen={folderModalOpen}
         onClose={() => {
           setFolderModalOpen(false);
           setFolderChildSetId(undefined);
         }}
-        childSetId={folderChildSetId}
       />
       <AnimatePresence>
         {isScrolled && (
           <motion.div
-            className="absolute -bottom-1 left-0 z-10 h-2 w-full"
-            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
+            className="absolute -bottom-1 left-0 z-10 h-2 w-full"
             exit={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.1, ease: "easeInOut" }}
           >
             <Image
-              src={theme === "dark" ? "/dark-wave.svg" : "/wave.svg"}
               alt=""
-              width={1440}
-              height={8}
               className="h-full w-full object-cover"
+              height={8}
+              src={theme === "dark" ? "/dark-wave.svg" : "/wave.svg"}
+              width={1440}
             />
           </motion.div>
         )}
@@ -110,14 +107,14 @@ export const Header = () => {
           <div className="flex flex-row gap-2">
             <Avatar className="size-8">
               <AvatarImage
-                src={user?.image ?? ""}
                 alt={user?.fullname ?? "Un set"}
+                src={user?.image ?? ""}
               />
             </Avatar>
             <Button
+              className="rounded-xl"
               size={"icon"}
               variant={"ghost"}
-              className="rounded-xl"
               onClick={() => {
                 setIsMobileMenuOpen(!isMobileMenuOpen);
               }}
@@ -160,12 +157,12 @@ export const Header = () => {
           {status !== "loading" && !session && (
             <div className="grid grid-cols-2 gap-2">
               <Link href={"/sign-in"}>
-                <Button size="lg" variant={"outline"} className="w-full">
+                <Button className="w-full" size="lg" variant={"outline"}>
                   Đăng nhập
                 </Button>
               </Link>
               <Link href={"/sign-up"}>
-                <Button size={"lg"} className="w-full">
+                <Button className="w-full" size={"lg"}>
                   Đăng kí ngay
                 </Button>
               </Link>

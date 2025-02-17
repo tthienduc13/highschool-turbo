@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 
-import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
-import { PhotoViewProvider } from "@/components/core/providers/photo-provider";
-import { SettingModal } from "@/components/core/study-set/setting-modal";
-
 import { HydrateSetData } from "../StudySet/hydrate-set-data";
+
 import { ControlsBar } from "./control-bar";
 import { FlashcardArea } from "./flashcard-area";
 import { FlashcardsLoading } from "./flashcard-loading";
 import { TitleBar } from "./title-bar";
 
+import { SettingModal } from "@/components/core/study-set/setting-modal";
+import { PhotoViewProvider } from "@/components/core/providers/photo-provider";
+import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
+
 function StudySetFlashcardModule() {
   const [settingsOpen, setSettingsOpen] = useState(false);
+
   return (
     <>
       <EditorGlobalStyles />

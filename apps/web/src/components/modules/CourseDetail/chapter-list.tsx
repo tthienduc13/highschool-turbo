@@ -1,10 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
-
 import { Chapter } from "@highschool/interfaces";
 import {
   useChapterListQuery,
@@ -14,7 +12,6 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBook,
   IconHistory,
@@ -95,7 +92,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
         <h2 className="text-xl font-semibold md:text-2xl">
           Chương trong khoá học ({chapters.length})
         </h2>
-        <Button onClick={() => setSelectOpen(true)} variant="outline">
+        <Button variant="outline" onClick={() => setSelectOpen(true)}>
           <IconSettings />
           Chọn chương trình học
         </Button>
@@ -111,8 +108,8 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
         </h2>
         {chapters.length > 0 ? (
           <Button
-            variant={isEnroll ? "destructive" : "default"}
             disabled={isPending}
+            variant={isEnroll ? "destructive" : "default"}
             onClick={isEnroll ? handleUnEnroll : handleEnroll}
           >
             {isPending ? (
@@ -124,7 +121,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
             )}
           </Button>
         ) : (
-          <Button onClick={() => setSelectOpen(true)} variant="outline">
+          <Button variant="outline" onClick={() => setSelectOpen(true)}>
             <IconSettings />
             Chọn chương trình khác
           </Button>
@@ -136,19 +133,19 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
           {enrollmentProgress && (
             <div className="flex justify-center">
               <AnimatedCircularProgressBar
-                min={0}
-                max={100}
-                value={enrollmentProgress.subjectProgressPercent}
                 gaugePrimaryColor="#7faeff"
                 gaugeSecondaryColor="#f3f4f6"
+                max={100}
+                min={0}
+                value={enrollmentProgress.subjectProgressPercent}
               />
             </div>
           )}
           {chapters.map((chapter, index) => (
             <ChapterCard
               key={chapter.id}
-              href={`${pathName}/chapters/${chapter.id}`}
               chapter={chapter}
+              href={`${pathName}/chapters/${chapter.id}`}
               index={index}
               isEnroll={isEnroll}
             />
@@ -157,10 +154,10 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
       ) : (
         <div className="flex flex-col items-center justify-center">
           <Image
-            src="/icons/empty-chapters.svg"
             alt="No study sets"
-            width={350}
             height={100}
+            src="/icons/empty-chapters.svg"
+            width={350}
           />
           <h2 className="text-center text-lg font-medium">
             Chưa có chương nào, bạn vui lòng chờ hệ thống cập nhật
@@ -183,7 +180,7 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
     const isClickable = isEnroll || index < 2;
 
     return isClickable ? (
-      <Link href={href} passHref>
+      <Link passHref href={href}>
         <div
           className={cn(
             "flex flex-col gap-y-4 rounded-xl border-2 p-4 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg",

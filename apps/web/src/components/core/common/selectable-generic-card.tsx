@@ -27,15 +27,16 @@ export const SelectableGenericCard = ({
   onSelect,
 }: SelectableGenericCardProps) => {
   const reverseTitle = type == "folder";
+
   return (
-    <div
-      onClick={onSelect}
+    <button
       className={cn(
         "h-full w-full cursor-pointer rounded-lg border-2 bg-white p-5 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:bg-gray-800/50",
         selected
           ? "border-emerald-500"
           : "border-gray-200 dark:border-gray-700",
       )}
+      onClick={onSelect}
     >
       <div className="flex h-full w-full flex-col justify-between gap-4">
         <div
@@ -58,7 +59,7 @@ export const SelectableGenericCard = ({
           {user && (
             <div className="flex flex-row items-center gap-2">
               <Avatar className="size-6">
-                <AvatarImage src={user.image ?? ""} alt={user.fullname ?? ""} />
+                <AvatarImage alt={user.fullname ?? ""} src={user.image ?? ""} />
               </Avatar>
               <div className="flex flex-row items-center gap-1">
                 <div className="text-sm font-semibold">{user.fullname}</div>
@@ -67,6 +68,6 @@ export const SelectableGenericCard = ({
           )}
         </div>
       </div>
-    </div>
+    </button>
   );
 };

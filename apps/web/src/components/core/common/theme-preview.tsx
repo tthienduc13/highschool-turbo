@@ -7,6 +7,7 @@ export interface ThemePreviewProps {
 
 export const ThemePreview = ({ variant, selected }: ThemePreviewProps) => {
   const light = variant == "light";
+
   return (
     <div
       className={cn(
@@ -50,11 +51,11 @@ export const ThemePreview = ({ variant, selected }: ThemePreviewProps) => {
             <div className="flex flex-row items-stretch gap-1">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div
+                  key={i}
                   className={cn(
                     "h-3 w-full rounded-[2px] shadow-sm",
                     light ? "bg-white" : "bg-gray-800/50",
                   )}
-                  key={i}
                 />
               ))}
             </div>

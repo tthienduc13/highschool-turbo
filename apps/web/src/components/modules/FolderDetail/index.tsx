@@ -1,11 +1,11 @@
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-
 import { DocumentList } from "./document-list";
 import { FlashcardList } from "./flashcard-list";
 import { FolderHeading } from "./folder-heading";
 import { FolderLoading } from "./folder-loading";
 import { HydrateFolderData } from "./hydrate-folder-data";
+
+import { Container } from "@/components/core/layouts/container";
+import { WithFooter } from "@/components/core/common/with-footer";
 
 function FolderDetailModule() {
   return (

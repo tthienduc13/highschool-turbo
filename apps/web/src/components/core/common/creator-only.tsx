@@ -13,5 +13,6 @@ export const CreatorOnly = ({ userId, children }: CreatorOnlyProps) => {
   if (session?.user.userId == userId) {
     return <>{children}</>;
   }
+
   return null;
 };

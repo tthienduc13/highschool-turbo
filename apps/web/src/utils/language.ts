@@ -29,5 +29,6 @@ export const placeholderLanguage = (
     answerMode == StudySetAnswerMode.FlashcardContentDefinition
       ? definitionLanguage
       : termLanguage;
+
   return language !== "en" ? languageName(language) : "answer";
 };

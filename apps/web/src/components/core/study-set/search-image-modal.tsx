@@ -1,10 +1,7 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import Compressor from "compressorjs";
-
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-
 import Link from "next/link";
-
 import { useDebounceValue } from "@highschool/hooks";
 import { useUnsplashQuery } from "@highschool/react-query/queries";
 import {
@@ -15,7 +12,6 @@ import {
   DialogTitle,
 } from "@highschool/ui/components/ui/dialog";
 import { Input } from "@highschool/ui/components/ui/input";
-
 import {
   IconAlertCircle,
   IconCloudUpload,
@@ -46,6 +42,7 @@ export const SearchImagesModal = ({
 }: SearchImagesModalProps) => {
   const [currentContext, setCurrentContext] = useState<Context>();
   const currentContextRef = useRef(currentContext);
+
   currentContextRef.current = currentContext;
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -60,6 +57,7 @@ export const SearchImagesModal = ({
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const fileRef = useRef(file);
+
   fileRef.current = file;
 
   const [progress, setProgress] = useState<number | null>(null);
@@ -82,6 +80,7 @@ export const SearchImagesModal = ({
         if (result.size > 5_000_000) {
           setUploadError("File quá to (> 5 MB)");
           reset();
+
           return;
         }
 
@@ -106,11 +105,13 @@ export const SearchImagesModal = ({
         if (!jwt) return;
 
         const result = (await doUpload(jwt, fileRef.current!)) as boolean;
+
         if (!result) {
           setUploadError(
             "Something went wrong while uploading. Please try again.",
           );
           reset();
+
           return;
         }
 
@@ -123,6 +124,7 @@ export const SearchImagesModal = ({
 
     editorEventChannel.on("openSearchImages", setCurrentContext);
     editorEventChannel.on("startUpload", upload);
+
     return () => {
       editorEventChannel.off("openSearchImages", setCurrentContext);
       editorEventChannel.off("startUpload", upload);
@@ -144,6 +146,7 @@ export const SearchImagesModal = ({
       xhr.upload.addEventListener("progress", (e) => {
         if (e.lengthComputable) {
           const progress = e.loaded / e.total;
+
           setProgress(progress);
         }
       });
@@ -165,11 +168,13 @@ export const SearchImagesModal = ({
 
       const getFilesFromClipboardEvent = (event: ClipboardEvent) => {
         const dataTransferItems = event.clipboardData?.items;
+
         if (!dataTransferItems) return;
 
         const files = Array.from(dataTransferItems).reduce<File[]>(
           (acc, curr) => {
             const f = curr.getAsFile();
+
             return f ? [...acc, f] : acc;
           },
           [],
@@ -179,12 +184,14 @@ export const SearchImagesModal = ({
       };
 
       const pastedFiles = getFilesFromClipboardEvent(event);
+
       if (!pastedFiles?.length) return;
 
       start(pastedFiles[0]!);
     };
 
     window.addEventListener("paste", handlePaste);
+
     return () => {
       window.removeEventListener("paste", handlePaste);
     };
@@ -192,12 +199,14 @@ export const SearchImagesModal = ({
   }, []);
 
   const expanded = !!data || isLoading;
+
   return (
     <ResultsContext.Provider
       value={{
         data,
         onClick: (index) => {
           const url = data?.response?.results[index]?.urls.small;
+
           if (!url) return;
 
           editorEventChannel.emit("imageSelected", {
@@ -225,8 +234,8 @@ export const SearchImagesModal = ({
             <div className="px-5 py-4">
               <Input
                 ref={inputRef}
-                placeholder="Tìm kiếm ảnh"
                 className="border-none px-0 !text-xl text-gray-900 placeholder-gray-500 shadow-none focus-visible:ring-0 dark:text-white"
+                placeholder="Tìm kiếm ảnh"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />
@@ -247,8 +256,8 @@ export const SearchImagesModal = ({
           <p className="ml-3 mt-3 text-xs text-gray-500 opacity-75">
             Ảnh bởi{" "}
             <Link
-              href="https://unsplash.com/?utm_source=quenti&utm_medium=referral"
               className="font-semibold text-gray-600 transition-colors duration-150 ease-in-out hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              href="https://unsplash.com/?utm_source=quenti&utm_medium=referral"
             >
               Unsplash
             </Link>
@@ -373,7 +382,7 @@ function Thumbnail({ index }: ThumbnailProps) {
   return (
     <div className="aspect-square h-full w-full overflow-hidden rounded-lg">
       {image && (
-        <div
+        <button
           className="group relative cursor-pointer"
           style={{ backgroundColor: image.color || "transparent" }}
           onClick={(e) => {
@@ -382,15 +391,15 @@ function Thumbnail({ index }: ThumbnailProps) {
           }}
         >
           <img
-            src={image.urls.small}
             alt={image.alt_description || "Image"}
             className="aspect-square h-full w-full object-cover"
+            src={image.urls.small}
           />
           <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-gradient-to-t from-[hsl(230,21%,11%)] to-transparent px-[7px] py-1 pt-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <div className="w-full overflow-hidden text-ellipsis">
               <Link
-                href={`${image.user.links.html}?utm_source=quenti&utm_medium=referral`}
                 className="overflow-hidden whitespace-nowrap text-[10px] font-medium text-gray-50"
+                href={`${image.user.links.html}?utm_source=quenti&utm_medium=referral`}
                 target="_blank"
               >
                 {image.user.first_name} {image.user.last_name}
@@ -398,7 +407,7 @@ function Thumbnail({ index }: ThumbnailProps) {
             </div>
           </div>
           <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-white opacity-0 transition-opacity duration-200 group-hover:opacity-10" />
-        </div>
+        </button>
       )}
     </div>
   );

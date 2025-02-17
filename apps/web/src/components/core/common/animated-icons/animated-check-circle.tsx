@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 const draw = {
@@ -23,23 +22,23 @@ export const AnimatedCheckCircle = ({
 }: AnimatedCheckCircleProps) => {
   return (
     <motion.svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="currentColor"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      initial="hidden"
       animate="visible"
       className={cn("min-h-[24px] min-w-[24px]", className)}
+      fill="none"
+      height="24"
+      initial="hidden"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <motion.path
-        stroke="none"
         d="M0 0h24v24H0z"
         fill="none"
+        stroke="none"
         variants={draw}
       />
       <motion.path

@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import { auth } from "@highschool/react-query/auth";
 
 import {
@@ -15,8 +14,10 @@ const isRouteMatch = (pathname: string, routes: string[]): boolean => {
   return routes.some((route) => {
     if (route.endsWith("*")) {
       const baseRoute = route.slice(0, -1);
+
       return pathname.startsWith(baseRoute);
     }
+
     return pathname === route;
   });
 };
@@ -48,6 +49,7 @@ export default auth((req) => {
           new URL(DEFAULT_ONBOARDING_REDIRECT, nextUrl),
         );
       }
+
       return; // Allow access to onboarding routes for new users
     }
 
@@ -68,6 +70,7 @@ export default auth((req) => {
     if (!isPublicRoute && !isSignInRoute && !isAuthRoute) {
       // Redirect unauthorized users to the sign-in page
       let callbackUrl = nextUrl.pathname;
+
       if (nextUrl.search) {
         callbackUrl += nextUrl.search;
       }

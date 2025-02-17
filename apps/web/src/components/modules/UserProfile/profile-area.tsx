@@ -1,17 +1,17 @@
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconDiscountCheck } from "@tabler/icons-react";
 
 import { useProfile } from "@/hooks/use-profile";
 
 export const ProfileArea = () => {
   const profile = useProfile();
+
   return (
     <div className="flex flex-row items-center gap-4 md:gap-6">
       <Avatar className="size-16">
-        <AvatarImage src={profile.profilePicture} alt={profile.fullname} />
+        <AvatarImage alt={profile.fullname} src={profile.profilePicture} />
       </Avatar>
       <div
         className={cn(
@@ -26,8 +26,8 @@ export const ProfileArea = () => {
             </h1>
             {profile.roleName.toLowerCase() === "teacher" && (
               <IconDiscountCheck
-                className="text-blue-700"
                 aria-label="Giáo viên"
+                className="text-blue-700"
               />
             )}
           </div>

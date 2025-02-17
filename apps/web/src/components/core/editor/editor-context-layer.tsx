@@ -2,11 +2,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { nanoid } from "nanoid";
-
 import { useEffect, useRef, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import {
   DraftData,
   FlashcardContent,
@@ -22,6 +19,8 @@ import {
   reorderTerm,
 } from "@highschool/react-query/apis";
 
+import { EditorLoading } from "./editor-loading";
+
 import { Context, editorEventChannel } from "@/events/editor";
 import {
   ClientTerm,
@@ -29,8 +28,6 @@ import {
   SetEditorStoreContext,
   createSetEditorStore,
 } from "@/stores/use-set-editor-store";
-
-import { EditorLoading } from "./editor-loading";
 
 interface EditorContextLayerProps {
   children: React.ReactNode;
@@ -48,10 +45,6 @@ export const EditorContextLayer = ({
   const queryClient = useQueryClient();
   const [savedLocally, setSavedLocally] = useState(false);
 
-  if (!data || !data.flashcardContents) {
-    return <EditorLoading />;
-  }
-
   const apiEditSet = useMutation({
     mutationKey: ["update-flashcard"],
     mutationFn: patchFlashcard,
@@ -66,17 +59,20 @@ export const EditorContextLayer = ({
     onSuccess: (response, { values: termInput }) => {
       if (!response || !response.data) {
         console.error("Invalid response data:", response);
+
         return;
       }
 
       const state = storeRef.current!.getState();
 
       const termToUpdate = state.terms.find((x) => x.rank === termInput.rank);
+
       if (termToUpdate) {
         state.setServerTermId(termToUpdate.clientKey, response.data.id);
       }
 
       const termIds = [response.data.id];
+
       state.addServerTerms(termIds);
     },
     onError: (error) => {
@@ -89,7 +85,9 @@ export const EditorContextLayer = ({
     mutationFn: deleteFlashcardContent,
     onSuccess: (data, value) => {
       const state = storeRef.current!.getState();
+
       state.removeServerTerms([value.flashcardContentId]);
+
       return data;
     },
   });
@@ -119,10 +117,12 @@ export const EditorContextLayer = ({
     onSuccess: (data) => {
       if (data.status === 400) {
         const state = storeRef.current!.getState();
+
         state.setSaveError(
           data.message || "Đã có lỗi xảy ra, vui lòng thử lại",
         );
         state.setIsLoading(false);
+
         return;
       }
       router.push(`/study-set/${storeRef.current!.getState().slug}`);
@@ -139,6 +139,7 @@ export const EditorContextLayer = ({
 
   useEffect(() => {
     const state = storeRef.current!.getState();
+
     state.setIsSaving(isSaving);
 
     if (isSaving) {
@@ -191,6 +192,7 @@ export const EditorContextLayer = ({
     editorEventChannel.on("imageSelected", setImage);
     editorEventChannel.on("requestUploadUrl", requestUploadUrl);
     editorEventChannel.on("uploadComplete", complete);
+
     return () => {
       editorEventChannel.off("imageSelected", setImage);
       editorEventChannel.off("requestUploadUrl", requestUploadUrl);
@@ -198,6 +200,10 @@ export const EditorContextLayer = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!data || !data.flashcardContents) {
+    return <EditorLoading />;
+  }
 
   if (!storeRef.current) {
     storeRef.current = createSetEditorStore(

@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import { getRandom } from "@highschool/lib/array";
 import { GRADING_MESSAGES } from "@highschool/lib/constants";
 import { Progress } from "@highschool/ui/components/ui/progress";
@@ -31,9 +30,9 @@ const LoadingViewRaw = () => {
           >
             <Progress
               indeterminate
+              className="h-1 w-48 rounded-full bg-gray-50 dark:bg-gray-900"
               indicatorColor="bg-blue-500"
               value={20}
-              className="h-1 w-48 rounded-full bg-gray-50 dark:bg-gray-900"
             />
           </div>
           <h2

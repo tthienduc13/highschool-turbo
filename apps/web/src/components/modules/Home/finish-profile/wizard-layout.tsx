@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 import { SegmentedProgress } from "@/components/core/common/onboard/segmented-progress";
@@ -23,7 +22,7 @@ export const WizardLayout: React.FC<
   currentStep,
   children,
   enableSkeleton,
-  isLoaded,
+  //   isLoaded,
   cardIn = true,
 }) => {
   const description = (
@@ -31,13 +30,14 @@ export const WizardLayout: React.FC<
       {_description}
     </p>
   );
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col">
         <div className="text-base font-medium text-gray-600 md:text-lg dark:text-gray-400">
           Bước {currentStep + 1} trên {steps}
         </div>
-        <SegmentedProgress steps={steps} currentStep={currentStep} />
+        <SegmentedProgress currentStep={currentStep} steps={steps} />
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-bold md:text-xl">{title}</h2>

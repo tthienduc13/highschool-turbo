@@ -2,22 +2,21 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
-
 import React, { useEffect, useState } from "react";
-
 import { Question } from "@highschool/interfaces";
 import { getRandom } from "@highschool/lib/array";
 import { updateLearnProgress } from "@highschool/react-query/apis";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { useSet } from "@/hooks/use-set";
-import { useLearnContext } from "@/stores/use-study-set-learn-store";
-
 import { AnimatedCheckCircle } from "../common/animated-icons/animated-check-circle";
 import { AnimatedXCircle } from "../common/animated-icons/animated-x-icon";
+
 import { ChoiceShortcutLayer } from "./choice-shorcut-layer";
 import { GenericLabel } from "./generic-label";
+
+import { useLearnContext } from "@/stores/use-study-set-learn-store";
+import { useSet } from "@/hooks/use-set";
 
 interface ChoiceCardProps {
   active: Question;
@@ -100,11 +99,13 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
     if (!answered) return "gray";
     if (isCorrectTerm(id)) return "green";
     else if (isIncorrectTerm(id)) return "red";
+
     return "gray";
   };
 
   const colorForTerm = (id: string) => {
     const scheme = colorSchemeForTerm(id);
+
     switch (scheme) {
       case "green":
         return greenBorder;
@@ -134,10 +135,10 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
         />
         {active.options.map((option, i) => {
           const colorScheme = colorSchemeForTerm(option.id);
+
           return (
             <Button
               key={option.id}
-              variant="outline"
               className={cn(
                 "h-auto w-full rounded-xl px-8 py-5 disabled:cursor-not-allowed",
                 `border-2 ${colorForTerm(option.id)}`,
@@ -151,6 +152,7 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
                 option.id !== active.correctAnswerId &&
                 option.id !== answered
               }
+              variant="outline"
               onClick={() => choose(option.id)}
             >
               <div className="flex w-full items-center gap-4">
@@ -166,15 +168,15 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
                   </div>
                 ) : isCorrectTerm(option.id) ? (
                   <div
-                    style={{ color: "green", transform: "scale(1.1)" }}
                     className="h-6 w-6 scale-110 transform"
+                    style={{ color: "green", transform: "scale(1.1)" }}
                   >
                     <AnimatedCheckCircle />
                   </div>
                 ) : (
                   <div
-                    style={{ color: "red", transform: "scale(1.1)" }}
                     className="h-6 w-6 scale-110 transform"
+                    style={{ color: "red", transform: "scale(1.1)" }}
                   >
                     <AnimatedXCircle />
                   </div>

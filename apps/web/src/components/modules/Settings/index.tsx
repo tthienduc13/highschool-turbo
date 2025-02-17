@@ -1,18 +1,19 @@
 import { IconSettings } from "@tabler/icons-react";
 
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-
 import { AvatarSetting } from "./avatar";
 import { DangerZone } from "./danger";
 import { Notification } from "./notification";
 import { Profile } from "./profile";
 import { Theme } from "./theme";
 
+import { Container } from "@/components/core/layouts/container";
+import { WithFooter } from "@/components/core/common/with-footer";
+
 function SettingsModule() {
   const Divider = () => {
     return <div className="h-[1px] w-full bg-gray-400 dark:bg-gray-600" />;
   };
+
   return (
     <WithFooter>
       {" "}

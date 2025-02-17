@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import {
   Select,
   SelectContent,
@@ -54,8 +53,8 @@ export const TermsSortSelect: React.FC<TermsSortSelectProps> = ({
       <SelectContent className="border-gray-200 bg-gray-100 dark:border-gray-800/50 dark:bg-gray-800">
         {options.map((option) => (
           <SelectItem
-            className="text-base"
             key={option.value}
+            className="text-base"
             value={option.value}
           >
             {option.label}

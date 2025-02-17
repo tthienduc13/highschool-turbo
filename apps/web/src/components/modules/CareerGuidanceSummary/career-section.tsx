@@ -2,7 +2,6 @@ import { CareerPath } from "@highschool/interfaces";
 import { useRecommendMajorQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-
 import {
   IconArrowRight,
   IconCashBanknote,
@@ -50,9 +49,9 @@ export const CareerSection = ({
         {data?.data?.map((career) => {
           return (
             <RecommendCard
-              selectedMajor={selectedMajor ?? ""}
               key={career.name}
               career={career}
+              selectedMajor={selectedMajor ?? ""}
               setSelectedMajor={setSelectedMajor}
             />
           );
@@ -103,13 +102,13 @@ const RecommendCard = ({
                   <div className="cursor-pointer rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700">
                     {selectedMajor === major.majorCode ? (
                       <IconMinus
-                        onClick={() => setSelectedMajor(null)}
                         size={16}
+                        onClick={() => setSelectedMajor(null)}
                       />
                     ) : (
                       <IconPlus
-                        onClick={() => setSelectedMajor(major.majorCode)}
                         size={16}
+                        onClick={() => setSelectedMajor(major.majorCode)}
                       />
                     )}
                   </div>
@@ -119,8 +118,8 @@ const RecommendCard = ({
           </div>
           <div className="mt-auto flex w-full justify-end">
             <Button
-              size="sm"
               className="group w-fit transition-all duration-300"
+              size="sm"
             >
               Tìm hiểu thêm
               <IconArrowRight className="hidden group-hover:block" />

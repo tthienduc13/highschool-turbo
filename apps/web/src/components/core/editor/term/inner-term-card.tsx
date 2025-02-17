@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 "use client";
 
 import { DraggableAttributes } from "@dnd-kit/core";
@@ -10,19 +11,11 @@ import {
   useEditor,
 } from "@tiptap/react";
 import { motion } from "framer-motion";
-
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-
 import { editorInput, getPlainText, hasRichText } from "@highschool/lib/editor";
 import { Button } from "@highschool/ui/components/ui/button";
 import { PopoverAnchor } from "@highschool/ui/components/ui/popover";
-
 import { IconGripHorizontal, IconTrash } from "@tabler/icons-react";
-
-import { editorEventChannel } from "@/events/editor";
-import { useSetEditorContext } from "@/stores/use-set-editor-store";
-import { languageName } from "@/utils/language";
-import { resize } from "@/utils/resize-image";
 
 import { PhotoView } from "../../providers/photo-provider/photo-view";
 import {
@@ -32,8 +25,14 @@ import {
 import { CharacterSuggestions } from "../character-suggestion";
 import { editorAttributes, editorConfig } from "../editor-config";
 import { RichTextBar } from "../rich-text-bar";
+
 import { DeloadedDisplayable } from "./deloaded-card";
 import { SortableTermCardProps } from "./sortable-term-card";
+
+import { resize } from "@/utils/resize-image";
+import { languageName } from "@/utils/language";
+import { useSetEditorContext } from "@/stores/use-set-editor-store";
+import { editorEventChannel } from "@/events/editor";
 
 export interface InnerTermCardProps extends SortableTermCardProps {
   attributes: DraggableAttributes;
@@ -68,8 +67,10 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
   const [definitionFocused, setDefinitionFocused] = useState(false);
 
   const termFocusedRef = useRef(termFocused);
+
   termFocusedRef.current = termFocused;
   const definitionFocusedRef = useRef(definitionFocused);
+
   definitionFocusedRef.current = definitionFocused;
 
   const [lastFocused, setLastFocused] = useState<"term" | "definition" | null>(
@@ -105,6 +106,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     },
   });
   const termRef = useRef(termEditor);
+
   termRef.current = termEditor;
 
   const definitionEditor = useEditor({
@@ -119,6 +121,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     },
   });
   const definitionRef = useRef(definitionEditor);
+
   definitionRef.current = definitionEditor;
 
   const activeEditor = termFocused
@@ -141,6 +144,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     const definitionContent = flashcardContent
       ? editorInput(flashcardContent, "definition")
       : "";
+
     termEditor?.commands.setContent(termContent as Content);
     definitionEditor?.commands.setContent(definitionContent as Content);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,6 +168,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
 
   const handleInsert = (c: string, editor: Editor) => {
     const cursor = editor.state.selection.$anchor.pos;
+
     editor.commands.insertContentAt(cursor, c);
   };
 
@@ -173,8 +178,8 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     return (
       <PopoverAnchor asChild>
         <Button
-          size="sm"
           className="text-primary hover:text-primary/80 hover:bg-primary/10 py-0 text-sm"
+          size="sm"
           variant="ghost"
           onPointerDown={() => {
             openMenu(type);
@@ -218,6 +223,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     const definitionJson = definitionEditor!.getJSON();
     const term = getPlainText(termJson);
     const definition = getPlainText(definitionJson);
+
     return { term, definition, termJson, definitionJson };
   };
 
@@ -234,6 +240,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     ) => {
       const left = JSON.stringify(one || "");
       const right = JSON.stringify(two || "");
+
       return left === right;
     };
 
@@ -294,13 +301,13 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
   return (
     <motion.div
       ref={cardRef}
-      initial={{
-        opacity: 0,
-      }}
       animate={{
         opacity: 1,
       }}
       className="flex flex-col gap-2"
+      initial={{
+        opacity: 0,
+      }}
     >
       <div className="flex items-center justify-between rounded-t-xl border border-b-2 border-gray-50 px-5 py-[10px] dark:border-gray-700">
         <div className="w-[72px] font-bold">{flashcardContent.rank + 1}</div>
@@ -312,20 +319,20 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             variant={"ghost"}
             {...attributes}
             {...listeners}
-            disabled={readonly}
             className="cursor-grab rounded-full"
+            disabled={readonly}
           >
-            <IconGripHorizontal size={18} className="!size-[18px]" />
+            <IconGripHorizontal className="!size-[18px]" size={18} />
           </Button>
           <Button
-            className="rounded-full"
             aria-label="Delete"
-            variant="ghost"
-            size={"icon"}
+            className="rounded-full"
             disabled={readonly || !deletable}
+            size={"icon"}
+            variant="ghost"
             onClick={() => deleteTerm(flashcardContent.id)}
           >
-            <IconTrash size={18} className="!size-[18px]" />
+            <IconTrash className="!size-[18px]" size={18} />
           </Button>
         </div>
       </div>
@@ -335,8 +342,8 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             {(initialized || justCreated) && !readonly ? (
               <EditorContent
                 editor={termEditor}
-                onFocus={() => setTermFocused(true)}
                 onBlur={blurWord}
+                onFocus={() => setTermFocused(true)}
               >
                 {termEmpty && (
                   <div className="editor-placeholder pointer-events-none absolute left-0 top-[7px] text-gray-500">
@@ -351,10 +358,10 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             )}
             {isCurrent && (
               <CharacterSuggestions
-                language={termLanguage}
                 focused={termFocused}
-                onSelect={insertTerm}
+                language={termLanguage}
                 onLanguageClick={() => openMenu("term")}
+                onSelect={insertTerm}
               />
             )}
           </div>
@@ -369,8 +376,8 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
               <EditorContent
                 editor={definitionEditor}
                 placeholder={`Nhập định nghĩa`}
-                onFocus={() => setDefinitionFocused(true)}
                 onBlur={blurDefinition}
+                onFocus={() => setDefinitionFocused(true)}
                 onKeyDown={(e) => {
                   if (isLast && e.key == "Tab" && !e.shiftKey) {
                     e.preventDefault();
@@ -391,10 +398,10 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             )}
             {isCurrent && !readonly && (
               <CharacterSuggestions
-                language={definitionLanguage}
                 focused={definitionFocused}
-                onSelect={insertDefinition}
+                language={definitionLanguage}
                 onLanguageClick={() => openMenu("definition")}
+                onSelect={insertDefinition}
               />
             )}
           </div>
@@ -407,21 +414,19 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
           {flashcardContent.image ? (
             <>
               <PhotoView
+                borderRadius={12}
                 src={resize({
                   src: flashcardContent.image,
                   width: 500,
                 })}
-                borderRadius={12}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  width="80x"
+                  alt={`Image for ${flashcardContent.flashcardContentDefinition}`}
                   height="60px"
                   src={resize({
                     src: flashcardContent.image,
                     width: 500,
                   })}
-                  alt={`Image for ${flashcardContent.flashcardContentDefinition}`}
                   style={{
                     cursor: "zoom-in",
                     objectFit: "cover",
@@ -429,6 +434,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
                     height: "60px",
                     borderRadius: "0.75rem",
                   }}
+                  width="80x"
                 />
               </PhotoView>
               {!readonly && (

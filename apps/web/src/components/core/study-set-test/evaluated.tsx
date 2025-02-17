@@ -1,5 +1,4 @@
 import { ScriptFormatter } from "@highschool/lib/script-formatter";
-
 import { IconCircleCheckFilled, IconCircleX } from "@tabler/icons-react";
 
 import { Clickable } from "./clickable";

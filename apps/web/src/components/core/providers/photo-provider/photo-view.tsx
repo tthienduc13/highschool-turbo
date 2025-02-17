@@ -27,5 +27,6 @@ export const PhotoView: React.FC<PhotoViewProps> = ({
       }),
     );
   }
+
   return null;
 };

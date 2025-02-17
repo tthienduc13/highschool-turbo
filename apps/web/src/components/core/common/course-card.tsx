@@ -1,10 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { Course } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
 import { IconEye, IconSchool, IconUser } from "@tabler/icons-react";
 
 import { gradeRenderer } from "./renderer/grade";
@@ -19,12 +17,12 @@ export const CourseCard = ({ course }: CourseCardProps) => {
       <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700 dark:bg-gray-800">
         <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
           <Image
+            fill
+            alt="thumbnail"
+            className="transition-transform duration-300 group-hover:scale-105"
+            priority={true}
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
             src={course?.image ?? "/logo.svg"}
-            className="transition-transform duration-300 group-hover:scale-105"
-            alt="thumbnail"
-            fill
-            priority={true}
           />
         </div>
         <div className="flex flex-grow flex-col gap-2">

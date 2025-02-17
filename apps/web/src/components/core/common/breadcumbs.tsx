@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,7 +7,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@highschool/ui/components/ui/breadcrumb";
-
 import { IconSlash } from "@tabler/icons-react";
 
 type BreadcrumbItemProps = {

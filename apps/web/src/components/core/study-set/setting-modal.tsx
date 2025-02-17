@@ -7,7 +7,7 @@ interface SettingModal {
 
 export const SettingModal = ({ isOpen, onClose }: SettingModal) => {
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Cài đặt">
+    <Modal isOpen={isOpen} title="Cài đặt" onClose={onClose}>
       <div> flascard setting modal</div>
     </Modal>
   );

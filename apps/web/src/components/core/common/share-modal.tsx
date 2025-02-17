@@ -2,8 +2,9 @@
 
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconLink } from "@tabler/icons-react";
+
+import { AnimatedCopyButton } from "./animated-copy-button";
 
 import {
   Credenza,
@@ -14,8 +15,6 @@ import {
   CredenzaFooter,
   CredenzaTitle,
 } from "@/components/ui/credenza";
-
-import { AnimatedCopyButton } from "./animated-copy-button";
 
 interface ShareModalProps {
   open: boolean;

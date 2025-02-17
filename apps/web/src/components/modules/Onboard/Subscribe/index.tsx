@@ -1,6 +1,5 @@
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-
 import { IconBrandFacebookFilled } from "@tabler/icons-react";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
@@ -10,8 +9,8 @@ function OnboardSubscribeModule() {
   return (
     <PresentWrapper>
       <DefaultLayout
-        heading="Đăng kí để nhận cập nhật"
         description="Chúng tôi luôn thêm tính năng và phát triển mới. Hãy đăng kí nhận tin mới nhất"
+        heading="Đăng kí để nhận cập nhật"
       >
         <Card className="mx-4 w-full max-w-md bg-white p-6 shadow-lg dark:bg-gray-800/50">
           <CardContent className="p-0">

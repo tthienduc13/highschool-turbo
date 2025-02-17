@@ -1,5 +1,4 @@
 import React from "react";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 export interface ClickableProps {
@@ -28,6 +27,7 @@ export const Clickable: React.FC<ClickableProps> = ({
     if (isSelected) {
       return "border-blue-800 dark:border-blue-700";
     }
+
     return "border-gray-200 dark:border-gray-600";
   };
 
@@ -40,6 +40,7 @@ export const Clickable: React.FC<ClickableProps> = ({
     if (isSelected) {
       return "text-blue-800 dark:text-blue-700";
     }
+
     return "text-gray-600 dark:text-gray-200";
   };
 
@@ -54,8 +55,8 @@ export const Clickable: React.FC<ClickableProps> = ({
           : "hover:bg-gray-50 dark:hover:bg-gray-800",
         hasIcon ? "px-4" : "px-6",
       )}
-      onClick={disabled ? undefined : onClick}
       disabled={disabled}
+      onClick={disabled ? undefined : onClick}
     >
       {children}
     </button>

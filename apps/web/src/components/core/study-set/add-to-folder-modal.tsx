@@ -2,11 +2,8 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-
 import { Modal } from "@highschool/components/modal";
 import {
   useAddTofolderMutation,
@@ -16,7 +13,6 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import {
   IconFolder,
   IconFolderPlus,
@@ -53,17 +49,19 @@ export const AddToFolderModal = ({
     };
 
     menuEventChannel.on("folderWithSetCreated", onFolderCreated);
+
     return () => {
       menuEventChannel.off("folderWithSetCreated", onFolderCreated);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <Modal
-      title="Thêm vào thư mục"
-      isOpen={isOpen}
-      onClose={onClose}
       buttonLabel="Xong"
+      isOpen={isOpen}
+      title="Thêm vào thư mục"
+      onClose={onClose}
     >
       <div className="flex flex-col gap-3">
         {isLoading ? (
@@ -84,10 +82,10 @@ export const AddToFolderModal = ({
         )}
         {data?.data?.map((folder) => (
           <FolderCard
-            id={folder.id}
             key={folder.id}
-            title={folder.name}
+            id={folder.id}
             includes={folder.isFlashcardInclude}
+            title={folder.name}
           />
         ))}
       </div>
@@ -123,6 +121,7 @@ const FolderCard = ({
       });
     }
   }, [removeFlashcard.isSuccess, addToFolder.isSuccess]);
+
   return (
     <Card className="group rounded-lg border-2 border-gray-100 px-4 py-3 shadow-sm transition-all duration-200 ease-in-out focus-visible:border-blue-500 dark:border-gray-700 dark:focus-visible:border-blue-500">
       <CardContent className="p-0">
@@ -130,8 +129,8 @@ const FolderCard = ({
           <div className="flex flex-row items-center gap-4 overflow-hidden">
             <IconFolder size={18} />
             <Link
-              href={`/profile/${user.username}/folder/${folderId}`}
               className="hover:text-primary transition-all duration-200 ease-in-out"
+              href={`/profile/${user.username}/folder/${folderId}`}
             >
               <div className="line-clamp-1 overflow-hidden whitespace-nowrap text-lg">
                 {title}
@@ -139,8 +138,8 @@ const FolderCard = ({
             </Link>
           </div>
           <Button
-            size={"icon"}
             aria-label="add"
+            size={"icon"}
             variant={"ghost"}
             onClick={async () => {
               setIncludes(!includes);

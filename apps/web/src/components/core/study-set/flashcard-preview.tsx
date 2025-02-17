@@ -1,24 +1,21 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import dynamic from "next/dynamic";
-
 import { shuffleArray } from "@highschool/lib/array";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconArrowsShuffle,
   IconPlayerPlay,
   IconSettings,
 } from "@tabler/icons-react";
 
+import { LinkArea } from "./link-area";
+import { RootFlashcardWrapper } from "./root-flashcard-wrapper";
+
 import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
-
-import { LinkArea } from "./link-area";
-import { RootFlashcardWrapper } from "./root-flashcard-wrapper";
 
 const SettingModal = dynamic(
   () => import("./setting-modal").then((mod) => mod.SettingModal),
@@ -30,7 +27,6 @@ export const FlashcardPreview = () => {
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
-  const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
 
   const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
   const shuffle = useContainerContext((s) => s.shuffleFlashcards);
@@ -64,9 +60,9 @@ export const FlashcardPreview = () => {
         <div className="flex flex-1">
           <div className="relative z-10 w-full">
             <RootFlashcardWrapper
-              terms={data.terms}
-              termOrder={termOrder}
               isDirty={isDirty}
+              termOrder={termOrder}
+              terms={data.terms}
             />
           </div>
         </div>
@@ -96,20 +92,20 @@ export const FlashcardPreview = () => {
                 Trộn thẻ
               </Button>
               <Button
-                variant={autoPlay ? "default" : "outline"}
-                onClick={toggleAutoplay}
+                className="w-full"
                 disabled={enableCardsSorting}
                 size={"lg"}
-                className="w-full"
+                variant={autoPlay ? "default" : "outline"}
+                onClick={toggleAutoplay}
               >
                 <IconPlayerPlay />
                 Tự động chạy
               </Button>
             </div>
             <Button
-              variant="ghost"
-              size={"lg"}
               className="hidden lg:flex"
+              size={"lg"}
+              variant="ghost"
               onClick={() => setSettingsOpen(true)}
             >
               <IconSettings />
@@ -118,10 +114,10 @@ export const FlashcardPreview = () => {
           </div>
           <div className="mt-4 flex w-full justify-end lg:justify-start">
             <Button
-              className="flex rounded-full lg:hidden"
-              variant="ghost"
-              size={"icon"}
               aria-label="Settings"
+              className="flex rounded-full lg:hidden"
+              size={"icon"}
+              variant="ghost"
               onClick={() => setSettingsOpen(true)}
             >
               <IconSettings className="!size-6" />

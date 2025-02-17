@@ -37,9 +37,9 @@ const TheoryItem = ({ theory }: TheoryItemProps) => {
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl font-bold"># {theory.theoryTitle}</h2>
       <div
-        className="py-4 text-lg"
         dangerouslySetInnerHTML={{ __html: theory.theoryContentHtml }}
-      ></div>
+        className="py-4 text-lg"
+      />
     </div>
   );
 };

@@ -1,16 +1,13 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { useEffect } from "react";
-
 import {
   StudentProgressState,
   TeacherProgressState,
 } from "@highschool/interfaces";
 import { useProgressStageQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconArrowMergeAltLeft,
   IconCircleCheck,
@@ -44,6 +41,7 @@ export const FinishProfile = () => {
           },
         });
       };
+
       if (me?.progressStage !== data.data) {
         handleUpdate();
       }

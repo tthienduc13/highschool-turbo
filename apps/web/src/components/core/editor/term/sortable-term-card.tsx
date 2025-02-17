@@ -3,10 +3,10 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
+import { TermCard } from "./term-card";
+
 import { ClientTerm, useSetEditorContext } from "@/stores/use-set-editor-store";
 import { Language } from "@/utils/language";
-
-import { TermCard } from "./term-card";
 
 export interface SortableTermCardProps {
   isCurrent: boolean;
@@ -45,10 +45,10 @@ export const SortableTermCard: React.FC<SortableTermCardProps> = (props) => {
   return (
     <TermCard
       {...props}
-      style={style}
+      ref={setNodeRef}
       attributes={attributes}
       listeners={!readonly ? listeners : undefined}
-      ref={setNodeRef}
+      style={style}
     />
   );
 };

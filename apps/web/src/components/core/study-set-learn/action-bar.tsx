@@ -1,12 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-
 import { Button } from "@highschool/ui/components/ui/button";
+
+import { AnyKeyPressLayer } from "./any-key-press-layer";
 
 import { useSet } from "@/hooks/use-set";
 import { useLearnContext } from "@/stores/use-study-set-learn-store";
-
-import { AnyKeyPressLayer } from "./any-key-press-layer";
 
 export const ActionBar = () => {
   const { flashcard } = useSet();
@@ -35,17 +34,17 @@ export const ActionBar = () => {
       <AnimatePresence>
         {visible && (
           <motion.div
-            style={{ position: "fixed", bottom: 0, width: "100%", left: 0 }}
-            initial={{ translateY: 80 }}
             animate={{ translateY: 0 }}
             exit={{ translateY: 80 }}
+            initial={{ translateY: 80 }}
+            style={{ position: "fixed", bottom: 0, width: "100%", left: 0 }}
           >
             <div className="dark:border-t-800 bg-background w-full border-t-2 border-t-gray-100">
               <div className="mx-auto flex max-w-4xl flex-row justify-between px-4 py-4 md:px-0">
                 <p className="hidden font-medium text-gray-500 md:flex">
                   Bấm nút bất kì để tiếp tục
                 </p>
-                <Button onClick={handleAction} className="w-full md:w-auto">
+                <Button className="w-full md:w-auto" onClick={handleAction}>
                   Vòng tiếp theo
                 </Button>
               </div>

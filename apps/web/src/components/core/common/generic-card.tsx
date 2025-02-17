@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
-
 import { Grade } from "@highschool/interfaces";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -16,7 +14,6 @@ import {
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconDiscountCheck,
   IconDotsVertical,
@@ -51,9 +48,9 @@ export const GenericCard = ({
   numItems,
   grade,
   userLoading = false,
-  itemsLabel,
+  //   itemsLabel,
   label,
-  bottom,
+  //   bottom,
   url,
   user,
   reverseTitle = false,
@@ -64,8 +61,9 @@ export const GenericCard = ({
   onRemove,
 }: GenericCardProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <Link href={url} passHref>
+    <Link passHref href={url}>
       <div
         className="hover:border-b-primary h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-5 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:border-gray-700 dark:bg-gray-800"
         style={{ zIndex: menuOpen ? 30 : 25 }}
@@ -102,8 +100,8 @@ export const GenericCard = ({
               <div className="flex flex-row items-center gap-2">
                 <Avatar className="size-6">
                   <AvatarImage
-                    src={user.image ?? "/logo.svg"}
                     alt={user.fullname ?? "Người dùng Highschool"}
+                    src={user.image ?? "/logo.svg"}
                   />
                 </Avatar>
                 <div className="flex flex-row items-center gap-1">

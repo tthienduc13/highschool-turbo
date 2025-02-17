@@ -1,18 +1,18 @@
 import { MultipleChoiceData, StudySetAnswerMode } from "@highschool/interfaces";
 import { ScriptFormatter } from "@highschool/lib/script-formatter";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCircleCheckFilled, IconCircleX } from "@tabler/icons-react";
-
-import { useCardSelector } from "@/hooks/use-card-selector";
-import { useTestContext } from "@/stores/use-study-set-test-store";
-import { richWord, word } from "@/utils/terms";
 
 import { SquareAssetPreview } from "../../study-set/square-asset-preview";
 import { Clickable } from "../clickable";
 import { GenericLabel } from "../generic-label";
 import { RichPromptDisplay } from "../rich-prompt-display";
+
 import { CardProps } from "./common";
+
+import { richWord, word } from "@/utils/terms";
+import { useTestContext } from "@/stores/use-study-set-test-store";
+import { useCardSelector } from "@/hooks/use-card-selector";
 
 export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
   const { question, answered, data, remarks } =
@@ -28,6 +28,7 @@ export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
     if (evaluation == undefined) return undefined;
     if (term == data.answer) return evaluation;
     if (term == data.term.id) return true;
+
     return undefined;
   };
 
@@ -52,6 +53,7 @@ export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
     React.PropsWithChildren<{ evaluation: boolean | undefined }>
   > = ({ evaluation, children }) => {
     if (evaluation === undefined) return <>{children}</>;
+
     return (
       <EvaluationWrapper evaluation={evaluation}>{children}</EvaluationWrapper>
     );
@@ -60,11 +62,6 @@ export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
   return (
     <>
       <RichPromptDisplay
-        label={
-          question.answerMode == StudySetAnswerMode.FlashcardContentDefinition
-            ? "Thuật ngữ"
-            : "Định nghĩa"
-        }
         extra={
           question.answerMode == StudySetAnswerMode.FlashcardContentTerm &&
           data.term.image && (
@@ -74,6 +71,11 @@ export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
               src={data.term.image || ""}
             />
           )
+        }
+        label={
+          question.answerMode == StudySetAnswerMode.FlashcardContentDefinition
+            ? "Thuật ngữ"
+            : "Định nghĩa"
         }
         {...richWord(question.answerMode, data.term, "prompt")}
       />
@@ -87,9 +89,9 @@ export const MultipleChoiceCard: React.FC<CardProps> = ({ i, result }) => {
             return (
               <div key={choice.id} className="h-auto">
                 <Clickable
-                  isSelected={answered && data.answer == choice.id}
                   disabled={result}
                   evaluation={evaluateTerm(choice.id)}
+                  isSelected={answered && data.answer == choice.id}
                   onClick={() => {
                     if (data.answer !== choice.id)
                       answerQuestion<MultipleChoiceData>(i, choice.id);

@@ -1,11 +1,11 @@
 "use client";
 
+import { HydrateCreateData } from "./hydrate-create-data";
+
 import { WithFooter } from "@/components/core/common/with-footer";
 import { EditorListener } from "@/components/core/editor/editor-listener";
 import { SetEditor } from "@/components/core/editor/set-editor";
 import { Container } from "@/components/core/layouts/container";
-
-import { HydrateCreateData } from "./hydrate-create-data";
 
 function CreateStudySetModule() {
   return (

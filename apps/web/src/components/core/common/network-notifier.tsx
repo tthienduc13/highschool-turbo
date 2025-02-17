@@ -1,7 +1,5 @@
 import { toast } from "sonner";
-
 import { useEffect, useState } from "react";
-
 import { IconCheck, IconRefresh, IconWifiOff } from "@tabler/icons-react";
 
 function useNetwork() {
@@ -32,24 +30,25 @@ export const NetworkStatusNotifier = () => {
     if (!isOnline) {
       setWasOffline(true); // Track if the user went offline
       const now = new Date();
+
       toast("Bạn bị mất kết nối mạng", {
         description: `Kiểm tra lần cuối vào lúc ${now.toLocaleTimeString()}`,
-        icon: <IconWifiOff size={20} className="text-destructive" />,
+        icon: <IconWifiOff className="text-destructive" size={20} />,
         action: {
           label: "Thử lại",
           onClick: () => {
             toast("Đang kết nối lại...", {
               description: "Vui lòng chờ...",
-              icon: <IconRefresh size={20} className="animate-spin" />,
+              icon: <IconRefresh className="animate-spin" size={20} />,
             });
             setTimeout(() => {
               if (navigator.onLine) {
                 toast.success("Kết nối lại thành công!", {
-                  icon: <IconCheck size={20} className="text-emerald-700" />,
+                  icon: <IconCheck className="text-emerald-700" size={20} />,
                 });
               } else {
                 toast.error("Vẫn không có kết nối. Vui lòng thử lại.", {
-                  icon: <IconWifiOff size={20} className="text-destructive" />,
+                  icon: <IconWifiOff className="text-destructive" size={20} />,
                 });
               }
             }, 1000);
@@ -58,7 +57,7 @@ export const NetworkStatusNotifier = () => {
       });
     } else if (wasOffline) {
       toast.success("Bạn đã kết nối mạng trở lại", {
-        icon: <IconCheck size={20} className="text-emerald-700" />,
+        icon: <IconCheck className="text-emerald-700" size={20} />,
       });
       setWasOffline(false);
     }

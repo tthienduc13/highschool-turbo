@@ -4,7 +4,6 @@ import {
   ThemeProvider as NextThemesProvider,
   ThemeProviderProps,
 } from "next-themes";
-
 import * as React from "react";
 import { useEffect, useState } from "react";
 

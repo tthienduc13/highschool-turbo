@@ -1,9 +1,9 @@
 import { memo } from "react";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 import { LoadingFlashcard } from "../loading-flashcard";
+
 import { LinkAreaSkeleton } from "./link-area-skeleton";
 
 export const FlashcardPreviewSkeletonRaw = () => {
@@ -18,27 +18,27 @@ export const FlashcardPreviewSkeletonRaw = () => {
           <div className="flex w-full flex-row gap-3 lg:flex-col">
             <Skeleton className="w-full rounded-lg">
               <Button
+                className="flex w-full items-center gap-x-2"
                 size={"lg"}
                 variant={"ghost"}
-                className="flex w-full items-center gap-x-2"
-              ></Button>
+              />
             </Skeleton>
             <Skeleton className="w-full rounded-lg">
               <Button
+                className="flex w-full items-center gap-x-2"
                 size={"lg"}
                 variant={"ghost"}
-                className="flex w-full items-center gap-x-2"
-              ></Button>
+              />
             </Skeleton>
           </div>
         </div>
         <div className="mt-4 flex justify-end lg:justify-start">
           <Skeleton className="w-full rounded-lg">
             <Button
+              className="flex w-full items-center gap-x-2"
               size={"lg"}
               variant={"ghost"}
-              className="flex w-full items-center gap-x-2"
-            ></Button>
+            />
           </Skeleton>
         </div>
       </div>

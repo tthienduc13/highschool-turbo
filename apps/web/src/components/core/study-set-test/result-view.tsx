@@ -1,22 +1,18 @@
 import { motion } from "framer-motion";
-
 import React from "react";
-
 import { useParams, useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconArrowLeft,
   IconArrowUp,
   IconRotateClockwise2,
 } from "@tabler/icons-react";
 
-import { useTestContext } from "@/stores/use-study-set-test-store";
-
 import { TestCardGapRaw } from "./card/card-gap";
 import { ResultCard } from "./card/result-card";
 import { CardWrapper } from "./card/wrapper";
+
+import { useTestContext } from "@/stores/use-study-set-test-store";
 
 export const ResultView = () => {
   const params = useParams();
@@ -74,20 +70,20 @@ export const ResultView = () => {
               }}
             >
               <TestCardGapRaw
-                type="question"
-                index={index}
-                startingIndex={startingIndex}
-                numQuestions={questionCount}
-                count={count}
                 correctness={result.byQuestion[index]!.correct}
+                count={count}
+                index={index}
+                numQuestions={questionCount}
+                startingIndex={startingIndex}
+                type="question"
               />
             </motion.div>
             <motion.div
-              initial={{
-                transform: "translateY(20px)",
-              }}
               animate={{
                 transform: "translateY(0px)",
+              }}
+              initial={{
+                transform: "translateY(20px)",
               }}
               transition={{
                 enter: {
@@ -96,9 +92,9 @@ export const ResultView = () => {
               }}
             >
               <CardWrapper
-                type={type}
-                i={index}
                 correctness={result.byQuestion[index]!.correct}
+                i={index}
+                type={type}
               />
             </motion.div>
           </React.Fragment>

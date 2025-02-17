@@ -85,7 +85,9 @@ function parse(str: string): KeyBindingPress[] {
     .map((press) => {
       let mods = press.split(/\b\+/);
       const key = mods.pop() as string;
+
       mods = mods.map((mod) => (mod === "$mod" ? MOD : mod));
+
       return [mods, key];
     });
 }

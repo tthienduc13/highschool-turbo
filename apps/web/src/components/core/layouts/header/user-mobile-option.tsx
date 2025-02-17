@@ -2,12 +2,9 @@
 
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-
 import Link from "next/link";
-
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconLogout,
   IconMoon,
@@ -15,6 +12,8 @@ import {
   IconSun,
   IconUser,
 } from "@tabler/icons-react";
+import { deleteClientCookie } from "@highschool/lib/cookies";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 interface UserMobileOptionProps {
   onClose: () => void;
@@ -24,13 +23,14 @@ export const UserMobileOption = ({ onClose }: UserMobileOptionProps) => {
   const { data: session } = useSession();
   const { theme, setTheme } = useTheme();
   const user = session?.user;
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row items-center gap-2">
         <Avatar className="size-8">
           <AvatarImage
-            src={user?.image ?? ""}
             alt={user?.fullname ?? "Chưa đặt tên"}
+            src={user?.image ?? ""}
           />
         </Avatar>
         <p className="font-semibold">{user?.fullname ?? "Chưa đặt tên"}</p>
@@ -39,51 +39,52 @@ export const UserMobileOption = ({ onClose }: UserMobileOptionProps) => {
         <Link href={`/profile/${user?.username}`}>
           <Button
             className="w-full text-base"
-            variant="outline"
             size={"lg"}
+            variant="outline"
             onClick={onClose}
           >
-            <IconUser size={18} className="!size-[18px]" />
+            <IconUser className="!size-[18px]" size={18} />
             Thông tin cá nhân
           </Button>
         </Link>
         <Link href={`/settings`}>
           <Button
             className="w-full text-base"
-            variant="outline"
             size={"lg"}
+            variant="outline"
             onClick={onClose}
           >
-            <IconSettings size={18} className="!size-[18px]" />
+            <IconSettings className="!size-[18px]" size={18} />
             Cài đặt
           </Button>
         </Link>
         <Button
           className="w-full text-base"
-          variant="outline"
           size={"lg"}
+          variant="outline"
           onClick={() => {
             setTheme(theme === "dark" ? "light" : "dark");
             onClose();
           }}
         >
           {theme === "dark" ? (
-            <IconSun size={18} className="!size-[18px]" />
+            <IconSun className="!size-[18px]" size={18} />
           ) : (
-            <IconMoon size={18} className="!size-[18px]" />
+            <IconMoon className="!size-[18px]" size={18} />
           )}
           Chế độ {theme === "light" ? "tối" : "sáng"}
         </Button>
         <Button
           className="w-full text-base"
-          variant="outline"
           size={"lg"}
+          variant="outline"
           onClick={async () => {
+            await deleteClientCookie(ACCESS_TOKEN);
             await signOut();
             onClose();
           }}
         >
-          <IconLogout size={18} className="!size-[18px]" />
+          <IconLogout className="!size-[18px]" size={18} />
           Đăng xuất
         </Button>
       </div>

@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Content, EditorContent, useEditor } from "@tiptap/react";
-
 import { useEffect, useState } from "react";
-
 import { Modal } from "@highschool/components/modal";
 import { FlashcardContent } from "@highschool/interfaces";
 import {
@@ -14,13 +12,14 @@ import {
 } from "@highschool/lib/editor";
 import { patchFlashcardContent } from "@highschool/react-query/apis";
 
-import { editorEventChannel } from "@/events/editor";
-import { resize } from "@/utils/resize-image";
-
 import { editorConfig } from "../editor/editor-config";
 import { RichTextBar } from "../editor/rich-text-bar";
 import { PhotoView } from "../providers/photo-provider/photo-view";
+
 import { AddImageButton, RemoveImageButton } from "./image-component";
+
+import { resize } from "@/utils/resize-image";
+import { editorEventChannel } from "@/events/editor";
 
 export interface EditTermModalProps {
   term: FlashcardContent | null;
@@ -81,6 +80,7 @@ export const EditTermModal = ({
     };
 
     editorEventChannel.on("propagateImageUrl", handle);
+
     return () => {
       editorEventChannel.off("propagateImageUrl", handle);
     };
@@ -94,9 +94,9 @@ export const EditTermModal = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
       isPending={apiEditTerm.isPending}
       title="Chỉnh sửa thẻ"
+      onClose={onClose}
       onConfirm={async () => {
         if (!term) return;
 
@@ -178,11 +178,9 @@ export const EditTermModal = ({
         {cachedAssetUrl ? (
           <div className="relative mt-3 h-[80px] w-[100px] md:mt-0">
             <PhotoView src={resize({ src: cachedAssetUrl, width: 500 })}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                width={100}
-                height={80}
                 alt="Term asset"
+                height={80}
                 src={resize({ src: cachedAssetUrl, width: 500 })}
                 style={{
                   cursor: "zoom-in",
@@ -192,6 +190,7 @@ export const EditTermModal = ({
                   aspectRatio: "5 / 4",
                   borderRadius: "6px",
                 }}
+                width={100}
               />
             </PhotoView>
             <RemoveImageButton

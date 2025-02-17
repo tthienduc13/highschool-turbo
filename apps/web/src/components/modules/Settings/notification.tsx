@@ -1,9 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
-
 import { useState } from "react";
-
 import {
   Select,
   SelectContent,
@@ -58,15 +56,15 @@ export const Notification = () => {
 
   return (
     <Wrapper
-      heading="Lời nhắc học tập"
       description="Chọn thời điểm nhận lời nhắc học tập"
+      heading="Lời nhắc học tập"
     >
       <div className="flex flex-col items-end gap-2">
         <Switch checked={isEnabled} onCheckedChange={handleToggle} />
         <Select
+          disabled={!isEnabled}
           value={selectedTime}
           onValueChange={handleTimeChange}
-          disabled={!isEnabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Chọn thời gian" />

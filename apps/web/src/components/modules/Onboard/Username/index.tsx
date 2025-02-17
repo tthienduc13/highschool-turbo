@@ -1,12 +1,9 @@
 "use client";
 
 import { useState } from "react";
-
 import { useSearchParams } from "next/navigation";
-
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconUpload } from "@tabler/icons-react";
 
 import { ChangeUsernameInput } from "@/components/core/common/change-username-input";
@@ -20,20 +17,19 @@ import { getSafeRedirectUrl } from "@/utils/urls";
 function OnboardUsernameModule() {
   const me = useMe();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
   const returnUrl = searchParams.get("returnUrl");
-  const [image, setImage] = useState<string | null>(null);
   const callback = returnUrl ? getSafeRedirectUrl(returnUrl as string) : null;
 
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const [changeAvatarOpen, setChangeAvatarOpen] = useState(false);
+
   return (
     <PresentWrapper>
       <DefaultLayout
-        heading="Chọn tên người dùng"
-        description="Bạn có thể thay đổi tên người dùng và hình đại diện bất kỳ lúc nào trong cài đặt."
         defaultNext={!callback}
+        description="Bạn có thể thay đổi tên người dùng và hình đại diện bất kỳ lúc nào trong cài đặt."
+        heading="Chọn tên người dùng"
         nextDisabled={disabled}
         nextLoading={loading}
         onNext={async () => {
@@ -54,20 +50,20 @@ function OnboardUsernameModule() {
             onClose={() => setChangeAvatarOpen(false)}
           />
           <ChangeUsernameInput
+            disabledIfUnchanged={false}
             showButton={false}
+            onActionStateChange={(disabled) => setDisabled(disabled)}
             onChange={async () => {
               // await utils.user.me.invalidate();
             }}
-            disabledIfUnchanged={false}
-            onActionStateChange={(disabled) => setDisabled(disabled)}
             onLoadingChange={(loading) => setLoading(loading)}
           />
           <div className="mt-3 flex w-full flex-row items-center gap-6">
             <Avatar className="h-[60px] w-[60px]">
               <AvatarImage
-                src={me?.image!}
                 alt={me?.fullname ?? "Highschool User"}
-              ></AvatarImage>
+                src={me?.image!}
+              />
             </Avatar>
             <div className="flex flex-col gap-[10px]">
               <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -75,14 +71,14 @@ function OnboardUsernameModule() {
               </div>
               <div className="flex flex-row items-center gap-2">
                 <Button
-                  onClick={() => setChangeAvatarOpen(true)}
-                  variant={"outline"}
                   size={"sm"}
+                  variant={"outline"}
+                  onClick={() => setChangeAvatarOpen(true)}
                 >
                   <IconUpload />
                   Tải lên ảnh đại diện
                 </Button>
-                <Button variant={"outline"} size={"sm"}>
+                <Button size={"sm"} variant={"outline"}>
                   Xoá ảnh đại diện
                 </Button>
               </div>

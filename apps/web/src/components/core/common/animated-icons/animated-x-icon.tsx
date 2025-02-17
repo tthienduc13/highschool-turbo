@@ -15,18 +15,18 @@ const draw = {
 export const AnimatedXCircle = () => {
   return (
     <motion.svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      strokeWidth="2"
-      stroke="currentColor"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      initial="hidden"
       animate="visible"
       className="min-h-[24px] min-w-[24px]"
+      fill="none"
+      height="24"
+      initial="hidden"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <motion.path
         d="M0 0h24v24H0z"

@@ -1,8 +1,6 @@
 import { memo } from "react";
-
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconCircleCheckFilled,
   IconCircleXFilled,
@@ -11,10 +9,10 @@ import {
   IconReport,
 } from "@tabler/icons-react";
 
-import { useTestContext } from "@/stores/use-study-set-test-store";
-
 import { SlideFade } from "../../common/slide-fade";
 import { TestOptions } from "../test-options";
+
+import { useTestContext } from "@/stores/use-study-set-test-store";
 
 export interface TestCardGapProps {
   type: "start" | "question" | "finish";
@@ -75,6 +73,7 @@ export const TestCardGapRaw = ({
       </div>
     );
   };
+
   return (
     <div
       className={cn(
@@ -101,7 +100,7 @@ export const TestCardGapRaw = ({
           )}
         >
           {!skeleton ? (
-            <GapIcon type={type} correctness={correctness} index={index} />
+            <GapIcon correctness={correctness} index={index} type={type} />
           ) : (
             <IconPoint size={24} />
           )}
@@ -133,9 +132,9 @@ export const TestCardGapRaw = ({
             </SlideFade>
           </div>
           <TestOptions
+            skeleton={skeleton}
             onResetClick={() => onResetClick?.()}
             onSettingsClick={() => onSettingsClick?.()}
-            skeleton={skeleton}
           />
         </div>
       )}

@@ -1,11 +1,8 @@
 "use client";
 
 import * as SliderPrimitive from "@radix-ui/react-slider";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-
 import * as React from "react";
 import { useRef } from "react";
-
 import { Modal } from "@highschool/components/modal";
 import { StudySetAnswerMode, TestQuestionType } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -19,10 +16,11 @@ import {
 } from "@highschool/ui/components/ui/select";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { useTestContext } from "@/stores/use-study-set-test-store";
-
 import { Hint } from "../common/hint";
+
 import { getQuestionTypeIcon, getQuestionTypeName } from "./utils";
+
+import { useTestContext } from "@/stores/use-study-set-test-store";
 
 export interface TestSettingsModalProps {
   isOpen: boolean;
@@ -59,6 +57,7 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
 
   const ButtonWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
     if (enabled) return <>{children}</>;
+
     return <Hint label="Chọn ít nhất 1 loại bài kiểm tra">{children}</Hint>;
   };
 
@@ -170,11 +169,11 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
     // </Credenza>
     <Modal
       withoutCancel
-      isOpen={isOpen}
-      onClose={onClose}
-      title=" Tùy chọn bài kiểm tra"
       buttonLabel="Bắt đầu làm"
       isDisabled={!enabled}
+      isOpen={isOpen}
+      title=" Tùy chọn bài kiểm tra"
+      onClose={onClose}
       onConfirm={() => {
         onReset();
         onClose();
@@ -185,17 +184,17 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
           <div className="flex flex-row items-center gap-8">
             <p className="whitespace-nowrap text-lg font-semibold">Số câu</p>
             <Slider
-              questionCount={questionCount}
-              min={1}
+              className="w-full"
               max={allTerms}
+              min={1}
+              questionCount={questionCount}
               step={1}
+              thumbClassName="group"
               value={[questionCount]}
               onValueChange={(value) => {
                 setSettings({ questionCount: value[0] });
               }}
-              className="w-full"
-              thumbClassName="group"
-            ></Slider>
+            />
           </div>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -269,14 +268,15 @@ const Slider = React.forwardRef<
       )}
     >
       <div
-        style={{ zIndex: 1000 }}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full px-2 py-1 text-sm font-bold transition-all group-hover:scale-110 group-active:scale-110"
+        style={{ zIndex: 1000 }}
       >
         {questionCount}
       </div>
     </SliderPrimitive.Thumb>
   </SliderPrimitive.Root>
 ));
+
 Slider.displayName = SliderPrimitive.Root.displayName;
 
 const QuestionTypeComponent: React.FC<{ type: TestQuestionType }> = ({
@@ -301,18 +301,18 @@ const QuestionTypeComponent: React.FC<{ type: TestQuestionType }> = ({
 
   return (
     <Button
-      onClick={() => {
-        if (checked) disable();
-        else enable();
-      }}
-      variant={"outline"}
-      size={"lg"}
       className={cn(
         "w-full justify-start rounded-xl border-2",
         checked
           ? "border-blue-500 dark:border-blue-700"
           : "border-gray-200 dark:border-gray-600",
       )}
+      size={"lg"}
+      variant={"outline"}
+      onClick={() => {
+        if (checked) disable();
+        else enable();
+      }}
     >
       <div
         className={cn(

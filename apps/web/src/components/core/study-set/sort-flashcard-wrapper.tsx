@@ -2,20 +2,18 @@
 
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import throttle from "lodash.throttle";
-
 import { useCallback, useContext, useEffect, useState } from "react";
-
 import {
   LimitedStudySetAnswerMode,
   StudiableTerm,
 } from "@highschool/interfaces";
 
+import { Flashcard } from "./flashcard";
+import { RootFlashcardContext } from "./root-flashcard-wrapper";
+
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
 import { useSortFlashcardsContext } from "@/stores/use-sort-flashcard-store";
-
-import { Flashcard } from "./flashcard";
-import { RootFlashcardContext } from "./root-flashcard-wrapper";
 
 export const SortFlashcardWrapper = () => {
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
@@ -117,6 +115,7 @@ export const SortFlashcardWrapper = () => {
   const goBack = () => {
     const newIndex = index - 1;
     const studiableTerm = termsThisRound[newIndex];
+
     if (!studiableTerm) return;
     setState(studiableTerm.correctness == 1 ? "known" : "stillLearning");
 
@@ -164,12 +163,13 @@ export const SortFlashcardWrapper = () => {
     //   });
     // })();
   };
+
   return (
     <div
+      className="relative w-full"
       style={{
         height: h,
       }}
-      className="relative w-full"
     >
       {/* {progressView ? (
         <SortFlashcardProgress
@@ -190,27 +190,8 @@ export const SortFlashcardWrapper = () => {
       <AnimatePresence>
         {visibleFlashcards.map((t, i) => (
           <motion.div
-            id="sortable-flashcard"
             key={`flashcard-${t.id}-${i}`}
             animate={controls}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transformPerspective: 1500,
-              zIndex: 100,
-              borderRadius: "12px",
-              outlineWidth: "3px",
-              outlineStyle: "solid",
-              outlineColor:
-                state == "known"
-                  ? "rgba(104, 211, 145, 0)"
-                  : "rgba(252, 129, 129, 0)",
-              transformOrigin: "center",
-              scale: 1,
-            }}
-            onClick={() => flipCard(t.id)}
             exit={
               hasUserEngaged
                 ? {
@@ -231,20 +212,39 @@ export const SortFlashcardWrapper = () => {
                   }
                 : undefined
             }
+            id="sortable-flashcard"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              transformPerspective: 1500,
+              zIndex: 100,
+              borderRadius: "12px",
+              outlineWidth: "3px",
+              outlineStyle: "solid",
+              outlineColor:
+                state == "known"
+                  ? "rgba(104, 211, 145, 0)"
+                  : "rgba(252, 129, 129, 0)",
+              transformOrigin: "center",
+              scale: 1,
+            }}
+            onClick={() => flipCard(t.id)}
           >
             <Flashcard
               h={h}
-              term={t}
               index={t.index}
               isFlipped={t.isFlipped}
               numTerms={termsThisRound.length}
-              onLeftAction={() => markCardCallback(term!, false)}
-              onRightAction={() => markCardCallback(term!, true)}
-              onBackAction={goBack}
               starred={starredTerms.includes(t.id)}
+              term={t}
+              variant="sortable"
+              onBackAction={goBack}
+              onLeftAction={() => markCardCallback(term!, false)}
               onRequestEdit={() => editTerm(t, t.isFlipped)}
               onRequestStar={() => starTerm(t)}
-              variant="sortable"
+              onRightAction={() => markCardCallback(term!, true)}
             />
           </motion.div>
         ))}

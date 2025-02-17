@@ -1,23 +1,19 @@
 "use client";
 
 import { toast } from "sonner";
-
 import { useRef, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useDeleteFlashcardMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconEditCircle, IconLoader2, IconTrash } from "@tabler/icons-react";
+
+import { ConfirmModal } from "../common/confirm-modal";
 
 import { editorEventChannel } from "@/events/editor";
 import { useSetEditorContext } from "@/stores/use-set-editor-store";
 import { getRelativeTime } from "@/utils/time";
-
-import { ConfirmModal } from "../common/confirm-modal";
 
 export const TopBar = () => {
   const router = useRouter();
@@ -32,6 +28,7 @@ export const TopBar = () => {
 
   const isSaving = useSetEditorContext((s) => s.isSaving);
   const isSavingRef = useRef(isSaving);
+
   isSavingRef.current = isSaving;
 
   const errorState = saveError && !isSaving;
@@ -45,6 +42,7 @@ export const TopBar = () => {
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const deleteSet = useDeleteFlashcardMutation();
+
   return (
     <div
       className={cn(
@@ -55,9 +53,8 @@ export const TopBar = () => {
       )}
     >
       <ConfirmModal
-        isOpen={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
-        heading={mode == "edit" ? "Xoa bộ thẻ này?" : "Huỷ bản nháp?"}
+        destructive
+        actionText={mode == "edit" ? "Xoá bộ thẻ " : "Xoá bản nháp"}
         body={
           mode == "edit" ? (
             <p>
@@ -68,7 +65,10 @@ export const TopBar = () => {
             "Bạn có chắc chắn muốn hủy bản nháp này không? Hành động này không thể hoàn tác."
           )
         }
-        actionText={mode == "edit" ? "Xoá bộ thẻ " : "Xoá bản nháp"}
+        heading={mode == "edit" ? "Xoa bộ thẻ này?" : "Huỷ bản nháp?"}
+        isLoading={false}
+        isOpen={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
         onConfirm={() => {
           deleteSet.mutate(
             { flashcardId: id },
@@ -84,8 +84,6 @@ export const TopBar = () => {
             },
           );
         }}
-        isLoading={false}
-        destructive
       />
       <div className="flex w-full items-center justify-between">
         <div className="flex flex-col gap-y-2">
@@ -96,7 +94,7 @@ export const TopBar = () => {
             </h2>
           </div>
           <div className="flex flex-row items-center gap-4 text-gray-600 dark:text-gray-400">
-            {isSaving && <IconLoader2 size="18" className="animate-spin" />}
+            {isSaving && <IconLoader2 className="animate-spin" size="18" />}
             <p
               className={cn(
                 "text-sm",
@@ -119,6 +117,7 @@ export const TopBar = () => {
                   else complete();
                 }, 100);
               };
+
               complete();
             }}
           >
@@ -131,9 +130,9 @@ export const TopBar = () => {
             )}
           </Button>
           <Button
-            onClick={() => setDeleteOpen(true)}
             size={"icon"}
             variant={"ghost"}
+            onClick={() => setDeleteOpen(true)}
           >
             <IconTrash />
           </Button>

@@ -1,6 +1,7 @@
-import { resize } from "@/utils/resize-image";
-
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import { PhotoView } from "../providers/photo-provider/photo-view";
+
+import { resize } from "@/utils/resize-image";
 
 export interface SquareAssetPreviewProps {
   src: string;
@@ -18,13 +19,11 @@ export const SquareAssetPreview: React.FC<SquareAssetPreviewProps> = ({
   const url = resize({ src, width: 500 });
 
   return (
-    <PhotoView src={url} borderRadius={rounded}>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+    <PhotoView borderRadius={rounded} src={url}>
       <img
-        width={size}
+        alt="Image preview"
         height={size}
         src={url}
-        alt="Image preview"
         style={{
           cursor: "zoom-in",
           pointerEvents: disablePointerEvents ? "none" : "all",
@@ -34,6 +33,7 @@ export const SquareAssetPreview: React.FC<SquareAssetPreviewProps> = ({
           minWidth: size,
           borderRadius: rounded,
         }}
+        width={size}
       />
     </PhotoView>
   );

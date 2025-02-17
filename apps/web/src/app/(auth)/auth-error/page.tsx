@@ -1,14 +1,11 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconArrowLeft } from "@tabler/icons-react";
 
 import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
@@ -56,11 +53,11 @@ export default function AuthErrorPage() {
       <div className="absolute top-0 -z-10 h-full w-[400%] max-w-[2200px] opacity-5 blur-[30px] lg:w-[150%]">
         <div className="relative h-full w-full">
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 pb-[31.25%]" />
-          <div className="bg-custom-gradient absolute bottom-0 left-0 right-0 top-0 flex h-full w-full items-center justify-center overflow-hidden"></div>
+          <div className="bg-custom-gradient absolute bottom-0 left-0 right-0 top-0 flex h-full w-full items-center justify-center overflow-hidden" />
         </div>
       </div>
       <EnterWrapper>
-        <Container maxWidth="xl" className="z-10 h-full w-full">
+        <Container className="z-10 h-full w-full" maxWidth="xl">
           <div className="flex h-full w-full flex-col items-center justify-center gap-8 text-center">
             <div
               className="relative hidden hover:opacity-80 lg:block"
@@ -68,12 +65,12 @@ export default function AuthErrorPage() {
             >
               <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>
                 <Image
-                  src={"/logo.svg"}
-                  alt="logo"
-                  height={80}
-                  width={80}
                   priority
+                  alt="logo"
                   className="object-contain"
+                  height={80}
+                  src={"/logo.svg"}
+                  width={80}
                 />
               </Link>
             </div>

@@ -1,19 +1,16 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { createContext, useContext, useEffect, useState } from "react";
-
 import { FlashcardContent } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-
-import { IconKeyframes, TablerIcon } from "@tabler/icons-react";
-
-import { useSet } from "@/hooks/use-set";
-import { useContainerContext } from "@/stores/use-container-store";
+import { IconKeyframes } from "@tabler/icons-react";
 
 import { TermsSortSelect } from "./term-sort-select";
 import { TermWrapper } from "./term-wrapper";
+
+import { useSet } from "@/hooks/use-set";
+import { useContainerContext } from "@/stores/use-container-store";
 
 interface TermsOverviewContextProps {
   starredOnly: boolean;
@@ -131,7 +128,7 @@ export const TermOverView = () => {
 const TermsByOriginal = () => {
   const { terms } = useSet();
 
-  return <TermsList terms={terms} slice={20} />;
+  return <TermsList slice={20} terms={terms} />;
 };
 
 const TermsByAlphabetical = () => {
@@ -142,7 +139,7 @@ const TermsByAlphabetical = () => {
     )
     .map((x) => x.id);
 
-  return <TermsList terms={terms} sortOrder={sortOrder} slice={20} />;
+  return <TermsList slice={20} sortOrder={sortOrder} terms={terms} />;
 };
 
 // interface TermsCategoryProps {
@@ -236,7 +233,7 @@ const TermsList: React.FC<TermsListProps> = ({ terms, sortOrder, slice }) => {
           )
           .slice(0, showSlice || terms.length)
           .map((term) => (
-            <TermWrapper term={term} key={term.id} creator={creator} />
+            <TermWrapper key={term.id} creator={creator} term={term} />
           ))}
       </div>
       {showSlice !== undefined && showSlice < terms.length && (

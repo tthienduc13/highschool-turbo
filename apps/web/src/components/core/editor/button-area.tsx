@@ -1,23 +1,20 @@
 "use client";
 
 import { useState } from "react";
-
 import dynamic from "next/dynamic";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import {
   IconChevronDown,
   IconKeyboard,
   IconKeyframes,
 } from "@tabler/icons-react";
 
-import { useSetEditorContext } from "@/stores/use-set-editor-store";
-
 import { Hint } from "../common/hint";
 import { visibilityIcon } from "../common/renderer/visibility-icon";
 import { visibilityText } from "../common/renderer/visibility-text";
+
+import { useSetEditorContext } from "@/stores/use-set-editor-store";
 
 const VisibilityModal = dynamic(
   () => import("./visibility-modal").then((mod) => mod.VisibilityModal),
@@ -43,6 +40,7 @@ export const ButtonArea = ({ onImportOpen }: ButtonAreaProps) => {
 
   const [visibilityModalOpen, setVisibilityModalOpen] = useState(false);
   const [shortcutModalOpen, setShortcutModalOpen] = useState(false);
+
   return (
     <>
       <VisibilityModal
@@ -68,12 +66,12 @@ export const ButtonArea = ({ onImportOpen }: ButtonAreaProps) => {
         </Button>
         <div className="flex w-full items-center justify-end gap-2">
           <Button
+            className="text-base"
             size={"lg"}
             variant="ghost"
             onClick={() => {
               setVisibilityModalOpen(true);
             }}
-            className="text-base"
           >
             {visibilityIcon(visibility, 24)}
             {visibilityText(visibility)}
@@ -81,9 +79,9 @@ export const ButtonArea = ({ onImportOpen }: ButtonAreaProps) => {
           </Button>
           <Hint label="Phím tắt" side="bottom">
             <Button
-              onClick={() => setShortcutModalOpen(true)}
-              size={"icon"}
               className="!h-10 !w-10 rounded-full"
+              size={"icon"}
+              onClick={() => setShortcutModalOpen(true)}
             >
               <IconKeyboard className="!size-6" />
             </Button>

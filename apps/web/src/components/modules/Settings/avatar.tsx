@@ -2,13 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
 import { useState } from "react";
-
 import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconPlus } from "@tabler/icons-react";
 
 import { UploadAvatarModal } from "@/components/core/common/upload-avatar";
@@ -41,6 +38,7 @@ export const AvatarSetting = () => {
       },
     });
   };
+
   return (
     <>
       <UploadAvatarModal
@@ -52,8 +50,8 @@ export const AvatarSetting = () => {
         <div className="flex flex-row gap-5">
           <Avatar className="size-24">
             <AvatarImage
-              src={me?.image ?? "/logo.svg"}
               alt={me?.fullname ?? "Highschool Avatar"}
+              src={me?.image ?? "/logo.svg"}
             />
           </Avatar>
           <div className="flex flex-row flex-wrap gap-2">
@@ -67,13 +65,13 @@ export const AvatarSetting = () => {
                   className="bg-primary/50 size-12 cursor-pointer hover:opacity-80"
                   onClick={() => updateUser(avatar.image)}
                 >
-                  <AvatarImage src={avatar.image} alt={avatar.name} />
+                  <AvatarImage alt={avatar.name} src={avatar.image} />
                 </Avatar>
               ))}
             <Button
+              className="!size-12 rounded-full"
               size={"icon"}
               variant={"outline"}
-              className="!size-12 rounded-full"
               onClick={() => setOpenUpload(true)}
             >
               <IconPlus className="!size-6" />

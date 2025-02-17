@@ -1,7 +1,5 @@
 import omit from "lodash.omit";
-
 import React from "react";
-
 import { Textarea, TextareaProps } from "@highschool/ui/components/ui/textarea";
 
 interface AutoResizeTextareaProps extends TextareaProps {
@@ -53,12 +51,12 @@ export const ImportTermTextArea = React.forwardRef<
 
   return (
     <Textarea
-      className="min-h-[100px]"
       ref={ref}
+      className="min-h-[100px]"
       {...omit(props, ["allowTab"])}
-      onKeyDown={onKeyDownHandler}
-      onChange={onChangeHandler}
       value={value}
+      onChange={onChangeHandler}
+      onKeyDown={onKeyDownHandler}
     />
   );
 });

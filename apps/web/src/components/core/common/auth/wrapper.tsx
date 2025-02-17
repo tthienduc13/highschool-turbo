@@ -4,12 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn, useSession } from "next-auth/react";
 import { Control, SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { useSignInMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -20,7 +17,6 @@ import {
 } from "@highschool/ui/components/ui/form";
 import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBrandGoogleFilled,
   IconLoader2,
@@ -64,6 +60,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
   const calculateMargin = () => {
     const vh = window.innerHeight;
     const margin = vh / 2 - 200;
+
     return margin;
   };
 
@@ -78,6 +75,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
     };
 
     window.addEventListener("resize", handleResize);
+
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -114,15 +112,15 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
       >
         {!loading ? (
           <div className="mx-auto flex w-full max-w-sm flex-col items-center justify-center gap-8 px-4 md:px-8">
-            <Image src={"/logo.svg"} alt="logo" width={96} height={96} />
+            <Image alt="logo" height={96} src={"/logo.svg"} width={96} />
             <div className="text-2xl font-bold">{title}</div>
             <div className="flex w-full flex-col gap-3">
               <Button
-                size={"lg"}
                 className="flex h-12 w-full items-center gap-x-2"
-                variant={"default"}
+                size={"lg"}
                 type={undefined}
-                onClick={async (e) => {
+                variant={"default"}
+                onClick={async () => {
                   await signIn("google", {
                     callbackUrl: callbackUrl,
                     redirect: false,
@@ -155,8 +153,8 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                             <FormItem>
                               <FormControl>
                                 <Input
-                                  type="email"
                                   placeholder="Nhập địa chỉ email"
+                                  type="email"
                                   {...field}
                                   ref={emailInputRef}
                                   className="mt-2 min-h-10 border-gray-300 text-sm focus-within:border-blue-600 dark:border-gray-600"
@@ -168,7 +166,12 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                       </div>
                       <Button
                         className="h-12 w-full overflow-hidden text-sm"
+                        disabled={
+                          (expanded && !emailMethods.formState.isValid) ||
+                          apiSignIn.isPending
+                        }
                         size="lg"
+                        type={animationFinished ? "submit" : undefined}
                         variant="outline"
                         onClick={() => {
                           if (!expanded) {
@@ -179,11 +182,6 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                             }, 200);
                           }
                         }}
-                        type={animationFinished ? "submit" : undefined}
-                        disabled={
-                          (expanded && !emailMethods.formState.isValid) ||
-                          apiSignIn.isPending
-                        }
                       >
                         {apiSignIn.isPending ? (
                           <IconLoader2

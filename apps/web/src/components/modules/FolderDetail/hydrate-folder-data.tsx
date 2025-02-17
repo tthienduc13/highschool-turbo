@@ -1,15 +1,13 @@
 "use client";
 
 import { createContext } from "react";
-
 import { useParams } from "next/navigation";
-
 import { UserFolder } from "@highschool/interfaces";
 import { useFolderDetailQuery } from "@highschool/react-query/queries";
 
-import { Loading } from "@/components/core/common/loading";
-
 import { FolderNotPublic } from "./folder-not-public";
+
+import { Loading } from "@/components/core/common/loading";
 
 interface HydrateFolderDataProps {
   children: React.ReactNode;

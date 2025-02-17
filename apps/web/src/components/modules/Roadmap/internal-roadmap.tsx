@@ -19,15 +19,15 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/base.css";
-
 import { useCallback, useEffect, useMemo, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
 import { IconArrowBackUp } from "@tabler/icons-react";
+
+import { HydrateRoadMapData } from "./hydrate-roadmap-data";
+import { ResourcePanel } from "./resource-panel";
+import { UserPanel } from "./user-panel";
 
 import { Logo } from "@/components/core/common/logo";
 import CustomConnectionLine from "@/components/core/roadmap/custom-connection-line";
@@ -37,10 +37,6 @@ import { DefaultNode } from "@/components/core/roadmap/default-node";
 import { InitNode } from "@/components/core/roadmap/init-node";
 import { SecondaryNode } from "@/components/core/roadmap/secondary-node";
 import { useRoadMapContext } from "@/stores/use-roadmap-store";
-
-import { HydrateRoadMapData } from "./hydrate-roadmap-data";
-import { ResourcePanel } from "./resource-panel";
-import { UserPanel } from "./user-panel";
 
 export type EdgeType = "custom" | "dashed";
 
@@ -77,9 +73,9 @@ function Roadmap() {
 
   const [nodes, setNodes] = useState<Node[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-  const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
-  console.log(rfInstance);
   const { setViewport } = useReactFlow();
 
   const roadmapData = useRoadMapContext((s) => s.roadmapData);
@@ -101,6 +97,7 @@ function Roadmap() {
         viewport: Viewport;
       };
       const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+
       setNodes(flow.nodes || []);
       setEdges(flow.edges || []);
       setViewport({ x, y, zoom });
@@ -132,41 +129,41 @@ function Roadmap() {
       style={{ zIndex: 40 }}
     >
       <ReactFlow
-        nodes={nodes}
+        fitView
+        connectionLineComponent={CustomConnectionLine}
+        connectionLineStyle={connectionLineStyle}
+        draggable={false}
+        edgeTypes={edgeTypes}
         edges={edges}
-        onNodesChange={onNodesChange}
+        fitViewOptions={fitViewOptions}
+        nodeTypes={nodeTypes}
+        nodes={nodes}
+        nodesDraggable={false}
+        style={{ cursor: "pointer" }}
         onEdgesChange={onEdgesChange}
         onInit={setRfInstance}
         onNodeClick={onNodeClick}
-        fitView
-        fitViewOptions={fitViewOptions}
-        connectionLineStyle={connectionLineStyle}
-        connectionLineComponent={CustomConnectionLine}
-        nodeTypes={nodeTypes}
-        edgeTypes={edgeTypes}
-        draggable={false}
+        onNodesChange={onNodesChange}
         onPaneClick={closeResource}
-        nodesDraggable={false}
-        style={{ cursor: "pointer" }}
       >
         <Panel
-          position={"top-left"}
           className="bg-background flex flex-row items-center gap-x-2 rounded-md border px-4 py-2 shadow-xl"
+          position={"top-left"}
         >
-          <Button variant={"ghost"} size={"icon"} onClick={() => router.back()}>
+          <Button size={"icon"} variant={"ghost"} onClick={() => router.back()}>
             <IconArrowBackUp />
           </Button>
-          <Separator orientation="vertical" className="h-8" />
+          <Separator className="h-8" orientation="vertical" />
           <Logo />
-          <Separator orientation="vertical" className="h-8" />
+          <Separator className="h-8" orientation="vertical" />
         </Panel>
         <UserPanel />
         <ResourcePanel selectedNodeId={selectedNodeId ?? ""} />
         <Background />
         <Controls
           className="bg-background border"
-          position="bottom-left"
           orientation="horizontal"
+          position="bottom-left"
           showInteractive={false}
         />
       </ReactFlow>

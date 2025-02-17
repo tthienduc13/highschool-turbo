@@ -1,13 +1,10 @@
 import { useQueries } from "@tanstack/react-query";
-
 import Link from "next/link";
-
 import { Course, Document } from "@highschool/interfaces";
 import {
   useGetDocumentsQuery,
   useGetSubjectsQuery,
 } from "@highschool/react-query/queries";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import { useRoadMapContext } from "@/stores/use-roadmap-store";
@@ -51,13 +48,13 @@ export const GeneralResource = () => {
       ) : (
         <>
           <ResourceSection
-            title="Subjects resources"
             data={subjectData ?? []}
+            title="Subjects resources"
             type="subject"
           />
           <ResourceSection
-            title="Document resources"
             data={documentData ?? []}
+            title="Document resources"
             type="document"
           />
         </>
@@ -75,11 +72,11 @@ interface ResourceSectionProps {
 const ResourceSection = ({ title, data, type }: ResourceSectionProps) => (
   <div className="mt-4 flex flex-col gap-y-4">
     <div className="flex items-center">
-      <div className="w-4 border-t border-green-500"></div>
+      <div className="w-4 border-t border-green-500" />
       <div className="flex items-center rounded-md border border-green-500 px-2 py-1">
         <span className="text-sm font-medium text-green-500">{title}</span>
       </div>
-      <div className="ml-2 flex-grow border-t border-green-500"></div>
+      <div className="ml-2 flex-grow border-t border-green-500" />
     </div>
     {data && data.length > 0 ? (
       <ul className="list-disc pl-5">
@@ -88,8 +85,8 @@ const ResourceSection = ({ title, data, type }: ResourceSectionProps) => (
           .map((item) => (
             <li key={item.id}>
               <Link
-                href={`/${type}/${itemSlug(item, type)}`}
                 className="font-medium underline"
+                href={`/${type}/${itemSlug(item, type)}`}
               >
                 {itemName(item, type)}
               </Link>

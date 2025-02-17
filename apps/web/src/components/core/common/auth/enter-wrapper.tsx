@@ -7,10 +7,6 @@ export const EnterWrapper: React.FC<React.PropsWithChildren> = ({
 }) => {
   return (
     <motion.div
-      initial={{
-        opacity: -1,
-        transform: "translateY(-16px)",
-      }}
       animate={{
         opacity: 1,
         transform: "translateY(0)",
@@ -19,6 +15,10 @@ export const EnterWrapper: React.FC<React.PropsWithChildren> = ({
           duration: 0.3,
           ease: "easeOut",
         },
+      }}
+      initial={{
+        opacity: -1,
+        transform: "translateY(-16px)",
       }}
     >
       {children}

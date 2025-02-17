@@ -3,9 +3,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-
 import { Metadata } from "next";
-
 import { Course } from "@highschool/interfaces";
 import { getCourseBySlug } from "@highschool/react-query/apis";
 
@@ -22,6 +20,7 @@ export const generateMetadata = async ({
 
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
+
     return {
       title: cachedData?.subjectName,
       description: cachedData?.subjectDescription,
@@ -29,6 +28,7 @@ export const generateMetadata = async ({
   }
 
   const data = await getCourseBySlug({ slug });
+
   if (!data) return;
 
   metadataCache.set(slug, data);
@@ -45,6 +45,7 @@ async function CourseDetail({ params }: { params: Promise<{ slug: string }> }) {
   const queryClient = new QueryClient();
 
   const cachedData = metadataCache.get(slug);
+
   if (cachedData) {
     queryClient.setQueryData(["course", slug], cachedData);
   } else {
@@ -53,6 +54,7 @@ async function CourseDetail({ params }: { params: Promise<{ slug: string }> }) {
       queryFn: () => getCourseBySlug({ slug }),
     });
   }
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <CourseDetailModule />

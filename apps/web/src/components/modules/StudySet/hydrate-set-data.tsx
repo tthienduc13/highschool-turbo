@@ -1,21 +1,14 @@
 "use client";
 
-import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { boolean } from "zod";
-
 import { createContext, useEffect, useRef } from "react";
-
 import { useParams } from "next/navigation";
-
 import {
   Flashcard,
   FlashcardContent,
   LimitedStudySetAnswerMode,
-  MultipleAnswerMode,
   SetData,
   StudiableTerm,
-  StudySetAnswerMode,
 } from "@highschool/interfaces";
 import {
   useContentsBySlugQuery,
@@ -47,7 +40,7 @@ export const HydrateSetData: React.FC<
 > = ({
   isPublic,
   withDistractors = false,
-  withCollab = false,
+  //   withCollab = false,
   disallowDirty = false,
   requireFresh,
   placeholder,
@@ -55,7 +48,6 @@ export const HydrateSetData: React.FC<
 }) => {
   const params = useParams();
   const { data: session, status } = useSession();
-  const queryClient = useQueryClient();
 
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
@@ -125,6 +117,7 @@ export const HydrateSetData: React.FC<
       await refetchFlashcard();
       await refetchFlashcardContent();
     };
+
     if (isDirty) {
       refetch();
     }
@@ -147,6 +140,7 @@ export const HydrateSetData: React.FC<
     flashcardData,
     flashcardContentData,
   );
+
   return <ContextLayer data={setData}>{children}</ContextLayer>;
 };
 
@@ -167,6 +161,8 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
   //   const extendedFeedbackBank = useFeature(EnabledFeature.ExtendedFeedbackBank);
 
   const getVal = (data: Flashcard): Partial<ContainerStoreProps> => ({
+    hideFlashcard: false,
+    flashcardHideWith: LimitedStudySetAnswerMode.Definition,
     shuffleFlashcards: data.container.shuffleFlashcards,
     shuffleLearn: data.container.shuffleLearn,
     studyStarred: data.container.studyStarred,
@@ -207,6 +203,7 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
     };
 
     queryEventChannel.on("setQueryRefetched", trigger);
+
     return () => {
       queryEventChannel.off("setQueryRefetched", trigger);
     };

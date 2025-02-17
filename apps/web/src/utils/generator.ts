@@ -17,6 +17,7 @@ export const getAnswerMode = (
     return Math.random() > 0.5
       ? StudySetAnswerMode.FlashcardContentTerm
       : StudySetAnswerMode.FlashcardContentDefinition;
+
   return answerMode;
 };
 
@@ -69,9 +70,6 @@ export const generateMcqQuestion = (
   const mode = getAnswerMode(answerMode);
 
   const mappedType = mapStudySetAnswerModeToDistractorType(mode);
-
-  console.log(term.distractors, "twd");
-  console.log(allTerms, "alt");
 
   const distractors = shuffleArray(
     term.distractors?.filter((d) => mappedType && d.type === mappedType) || [],

@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import React from "react";
-
 import {
   type CortexGraderResponse,
   type DefaultData,
@@ -195,6 +193,7 @@ export const createTestStore = (
               for (const type of questionTypes) {
                 if (remainder == 0) break;
                 const insertionPoint = outline.findLastIndex((t) => t == type);
+
                 outline.splice(insertionPoint + 1, 0, type);
                 remainder--;
               }
@@ -205,6 +204,7 @@ export const createTestStore = (
         };
 
         let outline = generateOutline(types);
+
         if (outline.filter((t) => t == TestQuestionType.Match).length < 2) {
           types = types.filter((t) => t != TestQuestionType.Match);
           outline = generateOutline(types);
@@ -217,6 +217,7 @@ export const createTestStore = (
             consolidated.push({ type, startingIndex: i, count: 1 });
           } else {
             const last = consolidated[consolidated.length - 1];
+
             if (last?.type == TestQuestionType.Match && last?.count < 10)
               last.count++;
             else
@@ -230,6 +231,7 @@ export const createTestStore = (
 
         for (let i = consolidated.length - 1; i >= 0; i--) {
           const entry = consolidated[i]!;
+
           if (entry.type == TestQuestionType.Match && entry.count < 2) {
             consolidated[i - 1]!.count += entry.count;
             consolidated.splice(i, 1);
@@ -242,6 +244,7 @@ export const createTestStore = (
           switch (type) {
             case TestQuestionType.TrueFalse: {
               const term = pool.pop()!;
+
               timeline.push(
                 generateTrueFalseQuestion(term, answerMode, allTerms),
               );
@@ -249,17 +252,20 @@ export const createTestStore = (
             }
             case TestQuestionType.MultipleChoice: {
               const term = pool.pop()!;
+
               timeline.push(generateMcqQuestion(term, answerMode, allTerms));
               break;
             }
             case TestQuestionType.Match: {
               const terms = takeNRandom(pool, count);
+
               pool = pool.filter((t) => !terms.find((x) => x.id == t.id));
               timeline.push(generateMatchQuestion(terms, answerMode));
               break;
             }
             case TestQuestionType.Write: {
               const term = pool.pop()!;
+
               timeline.push(generateWriteQuestion(term, answerMode));
               break;
             }
@@ -289,6 +295,7 @@ export const createTestStore = (
       },
       getMaxQuestions: () => {
         const state = get();
+
         return state.allTerms.length;
       },
       answerQuestion: (
@@ -299,19 +306,23 @@ export const createTestStore = (
       ) => {
         set((state) => {
           const question = state.timeline[index]!;
+
           question.answered = completed;
           question.data.answer = data;
 
           if (completed && !ignoreDelegate)
             behaviors?.onAnswerDelegate?.(index);
+
           return { timeline: [...state.timeline] };
         });
       },
       clearAnswer: (index) => {
         set((state) => {
           const question = state.timeline[index]!;
+
           question.answered = false;
           question.data.answer = undefined;
+
           return { timeline: [...state.timeline] };
         });
       },
@@ -327,6 +338,7 @@ export const createTestStore = (
               const data = state.timeline
                 .filter((q) => q.type == type)
                 .map((q) => q.data as MatchData);
+
               return data.reduce((acc, cur) => acc + cur.terms.length, 0);
             }
             default:
@@ -375,6 +387,7 @@ export const createTestStore = (
           switch (question.type) {
             case TestQuestionType.TrueFalse: {
               const data = question.data as TrueFalseData;
+
               if (data.answer == !data.distractor) {
                 increment(question.type);
                 answerCorrectly(index);
@@ -392,6 +405,7 @@ export const createTestStore = (
             }
             case TestQuestionType.MultipleChoice: {
               const data = question.data as MultipleChoiceData;
+
               if (data.answer == data.term.id) {
                 increment(question.type);
                 answerCorrectly(index);
@@ -444,6 +458,7 @@ export const createTestStore = (
               }>();
               // Start with the assumption that all answers are correct if everything is answered
               let allCorrect = data.answer.length == data.terms.length;
+
               for (const { term, zone } of data.answer) {
                 if (term == zone) {
                   increment(question.type);
@@ -486,6 +501,7 @@ export const createTestStore = (
         });
 
         const state = get();
+
         state.initialize(
           state.allTerms,
           state.settings.questionCount,
@@ -504,6 +520,7 @@ export const TestContext = React.createContext<TestStore | null>(null);
 
 export const useTestContext = <T>(selector: (state: TestState) => T): T => {
   const store = React.useContext(TestContext);
+
   if (!store) throw new Error("Missing TestContext.Provider in the tree");
 
   return useStore(store, selector);

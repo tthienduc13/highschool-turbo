@@ -1,8 +1,6 @@
 // src/components/multi-select.tsx
 import { type VariantProps, cva } from "class-variance-authority";
-
 import * as React from "react";
-
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -21,7 +19,6 @@ import {
 } from "@highschool/ui/components/ui/popover";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCheck, IconChevronDown, IconX } from "@tabler/icons-react";
 
 /**

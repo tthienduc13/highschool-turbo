@@ -1,7 +1,5 @@
 import { motion } from "framer-motion";
-
 import { useState } from "react";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 interface SegmentedProgressProps {
@@ -20,14 +18,16 @@ export const SegmentedProgress = ({
   onClick,
 }: SegmentedProgressProps) => {
   const [currentHover, setCurrentHover] = useState<number | null>(null);
+
   return (
     <div className="flex h-12 w-full flex-row items-center gap-2">
       {Array.from({ length: steps }).map((_, i) => (
         <Segment
           key={i}
-          step={i}
-          currentStep={currentStep}
           clickable={clickable && (!disableFrom || i < disableFrom)}
+          currentStep={currentStep}
+          height={i == currentHover ? "12px" : "6px"}
+          step={i}
           width={
             i == currentHover
               ? "120%"
@@ -40,15 +40,14 @@ export const SegmentedProgress = ({
                   ? "80%"
                   : "100%"
           }
-          height={i == currentHover ? "12px" : "6px"}
+          onClick={() => {
+            if (!clickable || (disableFrom && i >= disableFrom)) return;
+            onClick?.(i);
+          }}
           onHover={(hover) => {
             if (!clickable || (disableFrom && i >= disableFrom)) return;
             if (hover) setCurrentHover(i);
             else setCurrentHover(null);
-          }}
-          onClick={() => {
-            if (!clickable || (disableFrom && i >= disableFrom)) return;
-            onClick?.(i);
           }}
         />
       ))}
@@ -76,29 +75,28 @@ const Segment = ({
   onClick,
 }: SegmentProps) => {
   return (
-    <div
-      style={{ width: width }}
-      onPointerEnter={() => onHover(true)}
-      onPointerLeave={() => onHover(false)}
-      onClick={onClick}
+    <button
       className={
         (cn(
           "ease-cubic-ease group flex flex-row items-center gap-2 transition-all duration-200",
         ),
         clickable ? "cursor-pointer" : "cursor-default")
       }
+      style={{ width: width }}
+      onClick={onClick}
+      onPointerEnter={() => onHover(true)}
+      onPointerLeave={() => onHover(false)}
     >
       <div
-        style={{ height: height }}
         className={cn(
           "ease-cubic-ease relative w-full overflow-hidden rounded-full bg-gray-200 transition-all duration-200 dark:bg-gray-800/50",
           clickable && "group-hover:bg-gray-200 dark:group-hover:bg-gray-700",
         )}
+        style={{ height: height }}
       >
         <motion.div
-          initial={step >= currentStep ? { width: 0 } : { width: "100%" }}
           animate={step > currentStep ? { width: 0 } : { width: "100%" }}
-          transition={{ easings: ["easeOut"], duration: 0.1 }}
+          initial={step >= currentStep ? { width: 0 } : { width: "100%" }}
           style={{
             position: "absolute",
             transition: "all 0.2s ease",
@@ -108,8 +106,9 @@ const Segment = ({
             backgroundColor: "#4b83ff",
             borderRadius: "3px",
           }}
+          transition={{ easings: ["easeOut"], duration: 0.1 }}
         />
       </div>
-    </div>
+    </button>
   );
 };

@@ -20,27 +20,27 @@ export const RichTextBar: React.FC<RichTextBarProps> = ({ activeEditor }) => {
       <div className="bg-secondary/50 flex w-fit flex-row gap-x-1 rounded-full p-1 shadow-sm">
         <RichTextProperty
           icon={<IconBold size={16} />}
+          isActive={activeEditor?.isActive("bold")}
           label="bold"
           onClick={() => activeEditor?.chain().focus().toggleBold().run()}
-          isActive={activeEditor?.isActive("bold")}
         />
         <RichTextProperty
           icon={<IconItalic size={16} />}
+          isActive={activeEditor?.isActive("italic")}
           label="Italic"
           onClick={() => activeEditor?.chain().focus().toggleItalic().run()}
-          isActive={activeEditor?.isActive("italic")}
         />
         <RichTextProperty
           icon={<IconUnderline size={16} />}
+          isActive={activeEditor?.isActive("underline")}
           label="Underline"
           onClick={() => activeEditor?.chain().focus().toggleUnderline().run()}
-          isActive={activeEditor?.isActive("underline")}
         />
         <RichTextProperty
           icon={<IconStrikethrough size={16} />}
+          isActive={activeEditor?.isActive("strike")}
           label="Strikethrough"
           onClick={() => activeEditor?.chain().focus().toggleStrike().run()}
-          isActive={activeEditor?.isActive("strike")}
         />
         <HighlightColorPopover activeEditor={activeEditor} />
       </div>

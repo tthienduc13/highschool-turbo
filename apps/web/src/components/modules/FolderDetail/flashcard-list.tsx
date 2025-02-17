@@ -1,22 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import {
   useAddTofolderMutation,
   useRemoveFlashcardMutation,
   useUserFlashcardQuery,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconCards, IconPlus } from "@tabler/icons-react";
+
+import { AddToFolderModal } from "./add-to-folder-modal";
 
 import { GenericCard } from "@/components/core/common/generic-card";
 import { StudySetCard } from "@/components/core/common/study-set-card";
 import { useFolder } from "@/hooks/use-folder";
 import { useMe } from "@/hooks/use-me";
-
-import { AddToFolderModal } from "./add-to-folder-modal";
 
 export const FlashcardList = () => {
   const folder = useFolder();
@@ -43,23 +41,23 @@ export const FlashcardList = () => {
   return (
     <>
       <AddToFolderModal
-        isOpen={addSetsModalOpen}
-        onClose={() => setAddSetsModalOpen(false)}
         actionLabel="Thêm thẻ ghi nhớ"
-        isAddLoading={addToFolder.isPending}
-        isEntitiesLoading={isLoading}
         entities={
           data?.data.filter(
             (x) =>
               !folder.flashcards.some((flashcard) => flashcard.id === x.id),
           ) ?? []
         }
+        isAddLoading={addToFolder.isPending}
+        isEntitiesLoading={isLoading}
+        isOpen={addSetsModalOpen}
         onAdd={async (ids: string[]) => {
           await addToFolder.mutateAsync({
             folderId: folder.folderUser.id,
             flashcardIds: ids,
           });
         }}
+        onClose={() => setAddSetsModalOpen(false)}
       />
       <div className="flex flex-col gap-6">
         <div className="flex flex-row items-center gap-2">
@@ -77,20 +75,20 @@ export const FlashcardList = () => {
                 fullname: me?.fullname!,
                 image: me?.image!,
               }}
-              numTerms={flashcard.numberOfFlashcardContent}
-              // collaborators={studySet.collaborators}
-              removable={true}
               onRemove={() => {
                 removeFlashcard.mutate({
                   folderId: folder.folderUser.id,
                   flashcardId: flashcard.id,
                 });
               }}
+              numTerms={flashcard.numberOfFlashcardContent}
+              // collaborators={studySet.collaborators}
+              removable={true}
             />
           ))}
           <Button
-            variant={"outline"}
             className="text-primary h-full min-h-[120px] text-lg"
+            variant={"outline"}
             onClick={() => {
               setAddSetsModalOpen(true);
               setHasOpenedSets(true);

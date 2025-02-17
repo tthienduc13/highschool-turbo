@@ -1,7 +1,5 @@
 import Link from "next/link";
-
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconHelpHexagon } from "@tabler/icons-react";
 
 export const ProfileNotFound = () => {

@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import React from "react";
-
 import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
 
 export interface SortFlashcardsStoreProps {
@@ -55,35 +53,41 @@ export const createSortFlashcardsStore = (
 
         set((state) => {
           state.nextRound(true);
+
           return {};
         });
       },
       markStillLearning: (termId) => {
         set((state) => {
           const active = state.termsThisRound[state.index]!;
+
           if (active.id != termId) throw new Error("Mismatched term id");
           active.correctness = -1;
           active.incorrectCount++;
           active.appearedInRound = state.currentRound;
 
           state.endSortCallback();
+
           return {};
         });
       },
       markKnown: (termId) => {
         set((state) => {
           const active = state.termsThisRound[state.index]!;
+
           if (active.id != termId) throw new Error("Mismatched term id");
           active.correctness = 1;
           active.appearedInRound = state.currentRound;
 
           state.endSortCallback();
+
           return {};
         });
       },
       goBack: (fromProgress = false) => {
         set((state) => {
           if (state.index == 0 && !fromProgress) return {};
+
           return {
             progressView: false,
             index: Math.min(
@@ -100,6 +104,7 @@ export const createSortFlashcardsStore = (
               progressView: true,
             };
           }
+
           return {
             index: state.index + 1,
           };
@@ -164,6 +169,7 @@ export const useSortFlashcardsContext = <T>(
   selector: (state: SortFlashcardsState) => T,
 ): T => {
   const store = React.useContext(SortFlashcardsContext);
+
   if (!store)
     throw new Error("Missing SortFlashcardsContext.Provider in the tree");
 

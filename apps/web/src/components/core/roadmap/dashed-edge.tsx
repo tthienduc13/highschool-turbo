@@ -1,5 +1,4 @@
 import { EdgeProps, getBezierPath } from "@xyflow/react";
-
 import React, { memo } from "react";
 
 function Edge({
@@ -24,15 +23,15 @@ function Edge({
 
   return (
     <path
+      className="react-flow__edge-path"
+      d={edgePath}
       id={id}
+      markerEnd={markerEnd}
       style={{
         ...style,
         strokeDasharray: "5, 5",
         strokeWidth: 2,
       }}
-      className="react-flow__edge-path"
-      d={edgePath}
-      markerEnd={markerEnd}
     />
   );
 }

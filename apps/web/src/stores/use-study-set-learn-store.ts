@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import { createContext, useContext } from "react";
-
 import { Question } from "@highschool/interfaces";
 import { CORRECT, INCORRECT } from "@highschool/lib/constants";
 
@@ -73,6 +71,7 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
 
         set((state) => {
           state.nextRound(true);
+
           return {};
         });
       },
@@ -85,6 +84,7 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
         setTimeout(() => {
           set((state) => {
             state.endQuestionCallback(true);
+
             return {};
           });
         }, 1000);
@@ -108,6 +108,7 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
             // active.term.correctness = active.type == 'choice' ? 1 : 2
 
             state.endQuestionCallback(true);
+
             return {};
           });
         }, 1000);
@@ -115,6 +116,7 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
       acknowledgeIncorrect: () => {
         set((state) => {
           state.endQuestionCallback(false);
+
           return {};
         });
       },
@@ -141,12 +143,14 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
         set((state) => {
           const roundCounter = state.roundCounter + 1;
           const roundProgress = state.roundProgress + (correct ? 1 : 0);
+
           if (state.roundProgress === state.termsThisRound - 1) {
             return {
               roundSummary: true,
               status: undefined,
             };
           }
+
           return {
             roundCounter,
             roundProgress,
@@ -169,6 +173,7 @@ export const LearnContext = createContext<LearnStore | null>(null);
 
 export const useLearnContext = <T>(selector: (state: LearnState) => T): T => {
   const store = useContext(LearnContext);
+
   if (!store) throw new Error("Missing LearnContext.Provider in the tree");
 
   return useStore(store, selector);

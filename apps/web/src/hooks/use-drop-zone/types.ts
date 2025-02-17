@@ -11,7 +11,6 @@ export type DropEvent =
 
 export type FileError = {
   message: string;
-  // eslint-disable-next-line @typescript-eslint/ban-types
   code: ErrorCode | (string & {});
 };
 export interface FileRejection {

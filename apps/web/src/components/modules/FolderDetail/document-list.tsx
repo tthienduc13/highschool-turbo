@@ -6,6 +6,7 @@ import { useFolder } from "@/hooks/use-folder";
 
 export const DocumentList = () => {
   const folder = useFolder();
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-row items-center gap-2">

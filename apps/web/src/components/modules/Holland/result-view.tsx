@@ -1,14 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
-
 import { useEffect, useRef, useState } from "react";
-
-import { useRouter } from "next/navigation";
-
 import { useUpdateStudentHollandMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconDownload, IconLoader2 } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
@@ -21,7 +16,6 @@ export const ResultView = () => {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const printRef = useRef(null);
   const queryClient = useQueryClient();
-  const router = useRouter();
 
   const updateStudent = useUpdateStudentHollandMutation();
 
@@ -69,7 +63,7 @@ export const ResultView = () => {
             <IconLoader2 className="animate-spin" />
           ) : (
             <>
-              <IconDownload size={18} className="mr-2" />
+              <IconDownload className="mr-2" size={18} />
               Tải xuống kết quả
             </>
           )}
@@ -83,13 +77,13 @@ export const ResultView = () => {
       <div className="relative mt-5 w-full">
         <div className="flex flex-row items-center border-b-2 py-2">
           {result?.map((item) => (
-            <div
+            <button
               key={item.title}
-              onClick={() => setActiveTab(item.title)}
               className={`w-1/3 cursor-pointer text-center ${activeTab === item.title ? "font-bold text-blue-700" : ""}`}
+              onClick={() => setActiveTab(item.title)}
             >
               {item.title}
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -124,7 +118,7 @@ export const ResultView = () => {
       <div className="mt-4 flex items-center justify-end">
         <Button disabled={updateStudent.isPending} onClick={handleSave}>
           {updateStudent.isPending ? (
-            <IconLoader2 size={18} className="animate-spin" />
+            <IconLoader2 className="animate-spin" size={18} />
           ) : (
             "Lưu kết quả"
           )}

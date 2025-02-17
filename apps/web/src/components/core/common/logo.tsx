@@ -1,10 +1,8 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import Image from "next/image";
 import Link from "next/link";
-
 import { env } from "@highschool/env";
 
 export const Logo = () => {
@@ -18,12 +16,12 @@ export const Logo = () => {
       >
         <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>
           <Image
-            src={"/logo-with-text.svg"}
-            alt="logo"
-            height={40}
-            width={160}
             priority
+            alt="logo"
             className="object-contain"
+            height={40}
+            src={"/logo-with-text.svg"}
+            width={160}
           />
         </Link>
       </div>
@@ -33,12 +31,12 @@ export const Logo = () => {
       >
         <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>
           <Image
-            src={"/logo.svg"}
-            alt="logo"
-            height={32}
-            width={32}
             priority
+            alt="logo"
             className="object-contain"
+            height={32}
+            src={"/logo.svg"}
+            width={32}
           />
         </Link>
       </div>

@@ -1,3 +1,5 @@
+import type { Extension, useEditor } from "@tiptap/react";
+
 import Bold from "@tiptap/extension-bold";
 import Document from "@tiptap/extension-document";
 import History from "@tiptap/extension-history";
@@ -7,8 +9,6 @@ import Strike from "@tiptap/extension-strike";
 import Text from "@tiptap/extension-text";
 import Typography from "@tiptap/extension-typography";
 import Underline from "@tiptap/extension-underline";
-import type { Extension, useEditor } from "@tiptap/react";
-
 import { HighlightExtension } from "@highschool/lib/editor";
 
 import { EmojiReplacer } from "./extensions/emoji-replacer";

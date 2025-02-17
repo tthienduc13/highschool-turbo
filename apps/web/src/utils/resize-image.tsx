@@ -1,5 +1,6 @@
 const transform = (src: string, transformation: string) => {
   const cloudinaryBase = "https://res.cloudinary.com/";
+
   if (!src.startsWith(cloudinaryBase)) {
     throw new Error("Invalid Cloudinary URL");
   }
@@ -23,6 +24,7 @@ export const resize = ({
 
   // Build the Cloudinary transformation string
   let transformations = "c_fit";
+
   if (width) transformations += `,w_${width}`;
   if (height) transformations += `,h_${height}`;
 

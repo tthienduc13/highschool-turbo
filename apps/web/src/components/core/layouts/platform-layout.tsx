@@ -2,13 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-
 import { Toaster } from "@highschool/ui/components/ui/sonner";
+
+import { Header } from "./header";
 
 import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";
 import TopLoadingBar from "@/components/core/common/top-loading-bar";
-
-import { Header } from "./header";
 
 const SignupModal = dynamic(
   () =>
@@ -66,6 +65,7 @@ const NetworkStatusNotifier = dynamic(
     ),
   { ssr: false },
 );
+
 function PlatformLayout({
   children,
 }: Readonly<{

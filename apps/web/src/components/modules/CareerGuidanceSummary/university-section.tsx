@@ -1,21 +1,18 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
-
 import { University, UniversityCity } from "@highschool/interfaces";
 import { useUniversitiesQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconFilter, IconHeart, IconLink } from "@tabler/icons-react";
+
+import { FilterModal, cityRender } from "./filter-modal";
 
 import { Hint } from "@/components/core/common/hint";
 import { Loading } from "@/components/core/common/loading";
-
-import { FilterModal, cityRender } from "./filter-modal";
 
 interface UniversitySectionProps {
   selectedMajor: string | null;
@@ -71,6 +68,7 @@ export const UniversitySection = ({
     city: filterState.city!,
   });
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+
   if (!selectedMajor) {
     return (
       <div className="flex flex-col gap-8">
@@ -108,14 +106,15 @@ export const UniversitySection = ({
       </div>
     );
   }
+
   return (
     <>
       <FilterModal
+        clearFilter={clearFilter}
         filterState={filterState}
         isOpen={openFilter}
-        onClose={() => setOpenFilter(false)}
         updateFilterState={updateFilterState}
-        clearFilter={clearFilter}
+        onClose={() => setOpenFilter(false)}
       />
       <div className="flex flex-col gap-8">
         <div className="flex flex-row items-center justify-between">
@@ -138,9 +137,9 @@ export const UniversitySection = ({
             return (
               <UniversityCard
                 key={university.id}
+                isSaved={isSaved(university)}
                 university={university}
                 onToggleSave={toggleSaveUni}
-                isSaved={isSaved(university)}
               />
             );
           })}
@@ -169,11 +168,11 @@ const UniversityCard = ({
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-row items-start gap-2">
                 <img
-                  src={university.logoUrl}
                   alt={university.name}
-                  height={32}
-                  width={64}
                   className="h-8 object-contain"
+                  height={32}
+                  src={university.logoUrl}
+                  width={64}
                 />
                 <Link href={university.websiteLink}>
                   <h2 className="hover:text-primary text-lg font-semibold">
@@ -185,26 +184,26 @@ const UniversityCard = ({
                 <Hint label="Trang web">
                   <Link href={university.websiteLink}>
                     <Button
+                      className="rounded-full"
                       size={"icon"}
                       variant={"ghost"}
-                      className="rounded-full"
                     >
                       <IconLink className="!size-5" />
                     </Button>
                   </Link>
                 </Hint>
                 <Button
-                  size={"icon"}
-                  variant={"ghost"}
                   className={cn(
                     "rounded-full",
                     isSaved ? "fill-red-500 text-red-500" : "",
                   )}
+                  size={"icon"}
+                  variant={"ghost"}
                   onClick={() => onToggleSave(university)}
                 >
                   <IconHeart
-                    fill={isSaved ? "red" : "white"}
                     className="!size-5"
+                    fill={isSaved ? "red" : "white"}
                   />
                 </Button>
               </div>
@@ -218,8 +217,8 @@ const UniversityCard = ({
               <div>
                 SĐT:{" "}
                 <a
-                  href={`tel:${university.contactPhone}`}
                   className="text-blue-500"
+                  href={`tel:${university.contactPhone}`}
                 >
                   {university.contactPhone}
                 </a>
@@ -227,8 +226,8 @@ const UniversityCard = ({
               <div>
                 Email:{" "}
                 <a
-                  href={`mailto:${university.contactEmail}`}
                   className="text-blue-500"
+                  href={`mailto:${university.contactEmail}`}
                 >
                   {university.contactEmail}
                 </a>

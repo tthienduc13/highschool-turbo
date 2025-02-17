@@ -2,11 +2,8 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-
 import { useEffect, useState } from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
-
 import {
   StudentProgressState,
   TeacherProgressState,
@@ -52,23 +49,25 @@ function OnboardDoneModule() {
   });
 
   const next = useNextStep();
+
   useEffect(() => {
     if (session?.user.progressStage !== "NewUser") return;
     next();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.user?.progressStage]);
+
   return (
     <PresentWrapper>
       <DefaultLayout
-        heading="Bạn đã hoàn tất! 🎉"
-        description="Bây giờ mọi thứ đã xong, bạn đã sẵn sàng bắt đầu sử dụng Highschool"
         action="Xong"
+        description="Bây giờ mọi thứ đã xong, bạn đã sẵn sàng bắt đầu sử dụng Highschool"
+        heading="Bạn đã hoàn tất! 🎉"
         nextLoading={startedLoading}
         onNext={async () => {
           setStartedLoading(true);
           await completedOnboard.mutateAsync();
         }}
-      ></DefaultLayout>
+      />
     </PresentWrapper>
   );
 }

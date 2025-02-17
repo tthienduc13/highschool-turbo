@@ -1,8 +1,6 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import {

@@ -2,9 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
 import { useEffect, useRef, useState } from "react";
-
 import { useDebounceValue } from "@highschool/hooks";
 import {
   useCheckUsernameQuery,
@@ -13,14 +11,13 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLoader2 } from "@tabler/icons-react";
-
-import { mutationEventChannel } from "@/events/mutation";
-import { USERNAME_REGEXP } from "@/lib/constants/constants";
 
 import { AnimatedCheckCircle } from "./animated-icons/animated-check-circle";
 import { AnimatedXCircle } from "./animated-icons/animated-x-icon";
+
+import { mutationEventChannel } from "@/events/mutation";
+import { USERNAME_REGEXP } from "@/lib/constants/constants";
 
 export interface ChangeUsernameInputProps {
   showButton?: boolean;
@@ -41,6 +38,7 @@ export const ChangeUsernameInput = ({
     session?.user?.username || "",
   );
   const usernameRef = useRef(usernameValue);
+
   usernameRef.current = usernameValue;
 
   const debouncedUsername = useDebounceValue(usernameValue, 500);
@@ -78,6 +76,7 @@ export const ChangeUsernameInput = ({
     };
 
     mutationEventChannel.on("submitUsername", mutate);
+
     return () => {
       mutationEventChannel.off("submitUsername", mutate);
     };
@@ -101,6 +100,7 @@ export const ChangeUsernameInput = ({
         });
         toast.success("Tên người dùng được cập nhật");
       };
+
       updateSession();
     }
   }, [changeUsername.isSuccess]);
@@ -109,6 +109,7 @@ export const ChangeUsernameInput = ({
     onLoadingChange?.(changeUsername.isPending);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changeUsername.isPending]);
+
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex w-full flex-col items-center gap-2 sm:flex-row">
@@ -121,13 +122,13 @@ export const ChangeUsernameInput = ({
           )}
         >
           <Input
+            className="h-full w-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
             disabled={changeUsername.isPending}
+            placeholder="Nhập tên người dùng"
             value={usernameValue}
             onChange={(e) => {
               if (!changeUsername.isPending) setUsernameValue(e.target.value);
             }}
-            placeholder="Nhập tên người dùng"
-            className="h-full w-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
           />
           <div
             className={cn(
@@ -157,10 +158,10 @@ export const ChangeUsernameInput = ({
         </div>
         {showButton && (
           <Button
-            size="lg"
-            variant="outline"
             className="h-12 w-full sm:w-[120px]"
             disabled={isDisabled || changeUsername.isPending}
+            size="lg"
+            variant="outline"
             onClick={async () => {
               changeUsername.mutateAsync({
                 userName: usernameValue,

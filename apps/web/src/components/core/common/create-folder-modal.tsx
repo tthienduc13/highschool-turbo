@@ -1,11 +1,8 @@
 "use client";
 
 import { toast } from "sonner";
-
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { Modal } from "@highschool/components/modal";
 import { useCreateFolderMutation } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
@@ -46,26 +43,40 @@ export const CreateFolderModal = ({
     }
   }, [createFolder.isSuccess, createFolder.data]);
 
+  const handleCreateFolder = async () => {
+    await createFolder.mutateAsync({
+      folderName: title,
+      flashcardIds: childSetId ? [childSetId] : [],
+    });
+  };
+
+  const handleEnter = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!title || title === "") {
+      return;
+    }
+    if (e.key === "Enter") {
+      await handleCreateFolder();
+    }
+  };
+
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Tạo thư mục"
       buttonLabel="Tạo ngay"
-      isPending={createFolder.isPending}
       isDisabled={isDisabled}
+      isOpen={isOpen}
+      isPending={createFolder.isPending}
+      title="Tạo thư mục"
+      onClose={onClose}
       onConfirm={async () => {
-        await createFolder.mutateAsync({
-          folderName: title,
-          flashcardIds: childSetId ? [childSetId] : [],
-        });
+        await handleCreateFolder();
       }}
     >
       <Input
-        value={title}
-        placeholder="Tiêu đề"
-        onChange={(e) => setTitle(e.target.value)}
         className="h-12 w-full border-0 border-b-4 border-b-blue-300 border-b-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
+        placeholder="Tiêu đề"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        onKeyDown={(e) => handleEnter(e)}
       />
     </Modal>
   );

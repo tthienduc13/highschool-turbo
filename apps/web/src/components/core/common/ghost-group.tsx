@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-
 import { IconGhost3 } from "@tabler/icons-react";
 
 const mainGhost = {
@@ -39,13 +38,13 @@ export const GhostGroup = () => {
   return (
     <div className="relative flex flex-row gap-[-12px]">
       <motion.div {...leftGhost}>
-        <IconGhost3 size={30} strokeWidth="3px" opacity="0.8" />
+        <IconGhost3 opacity="0.8" size={30} strokeWidth="3px" />
       </motion.div>
       <motion.div {...mainGhost}>
         <IconGhost3 size={100} strokeWidth="2px" />
       </motion.div>
       <motion.div {...rightGhost}>
-        <IconGhost3 size={40} strokeWidth="3px" opacity="0.9" />
+        <IconGhost3 opacity="0.9" size={40} strokeWidth="3px" />
       </motion.div>
       <div className="-z-1 absolute left-0 top-10 h-full w-full rounded-full bg-gradient-to-b from-gray-500 to-transparent opacity-50" />
     </div>

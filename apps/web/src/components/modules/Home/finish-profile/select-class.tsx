@@ -8,19 +8,20 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
-import { useAccountInformationStore } from "@/stores/use-profile-information-store";
-
 import { WizardLayout } from "./wizard-layout";
+
+import { useAccountInformationStore } from "@/stores/use-profile-information-store";
 
 export const SelectClass = () => {
   const { currentStep, setCurrentStep, selectedClass, setSelectedClass } =
     useAccountInformationStore();
+
   return (
     <WizardLayout
-      title="Chọn lớp của bạn"
+      currentStep={currentStep}
       description=""
       steps={6}
-      currentStep={currentStep}
+      title="Chọn lớp của bạn"
     >
       <div className="flex flex-col gap-6">
         <Select
@@ -30,11 +31,11 @@ export const SelectClass = () => {
           }}
         >
           <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
-            <SelectValue placeholder={"Bạn học lớp mấy?"} className="px-4" />
+            <SelectValue className="px-4" placeholder={"Bạn học lớp mấy?"} />
           </SelectTrigger>
           <SelectContent
-            onCloseAutoFocus={(e) => e.preventDefault()}
             className="placeholder:text-muted-foreground"
+            onCloseAutoFocus={(e) => e.preventDefault()}
           >
             {Object.values(Grade).map((grade) => (
               <SelectItem key={grade} value={grade}>

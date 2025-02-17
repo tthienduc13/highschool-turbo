@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 "use client";
 
 import { Highlight } from "@highschool/lib/editor";
@@ -6,7 +7,7 @@ export const EditorGlobalStyles: React.FC<{ small?: boolean }> = ({
   small = false,
 }) => {
   return (
-    <style jsx global>{`
+    <style global jsx>{`
       mark {
         background-color: ${Highlight.Yellow};
         border-radius: 0.25em;

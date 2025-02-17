@@ -1,16 +1,14 @@
 "use client";
 
 import { toast } from "sonner";
-
 import { useEffect, useMemo, useState } from "react";
-
 import { Modal } from "@highschool/components";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 
-import { useSet } from "@/hooks/use-set";
-
 import { AnimatedCheckCircle } from "../common/animated-icons/animated-check-circle";
+
+import { useSet } from "@/hooks/use-set";
 
 interface ExportTermModalProps {
   isOpen: boolean;
@@ -61,8 +59,8 @@ export const ExportTermModal = ({ isOpen, onClose }: ExportTermModalProps) => {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
       title="Xuất thẻ ghi nhớ"
+      onClose={onClose}
       onConfirm={handleCopy}
     >
       <div className="flex flex-col gap-6">
@@ -71,7 +69,7 @@ export const ExportTermModal = ({ isOpen, onClose }: ExportTermModalProps) => {
             <div className="flex flex-col gap-0">
               <p className="font-bold">Ở giữa các thuật ngữ</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                Mặc định "Tab"
+                Mặc định &quot;Tab&quot;
               </p>
             </div>
             <Input
@@ -85,7 +83,7 @@ export const ExportTermModal = ({ isOpen, onClose }: ExportTermModalProps) => {
             <div className="flex flex-col">
               <p className="font-bold">Ở giữa các thẻ</p>
               <p className="text-xs text-gray-600 dark:text-gray-400">
-                Mặc định "dòng mới"
+                Mặc định &quot;dòng mới&quot;
               </p>
             </div>
             <Input
@@ -98,9 +96,9 @@ export const ExportTermModal = ({ isOpen, onClose }: ExportTermModalProps) => {
         </div>
         <div className="flex flex-col gap-6">
           <Textarea
+            readOnly
             className="h-[300px] bg-gray-50 text-base dark:bg-gray-800/50"
             value={result}
-            readOnly
           />
         </div>
       </div>

@@ -1,9 +1,6 @@
 import { toast } from "sonner";
-
 import { useEffect, useRef } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { RoadmapType } from "@highschool/interfaces";
 import { useGetUserRoadmapQuery } from "@highschool/react-query/queries";
 

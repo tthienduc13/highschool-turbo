@@ -1,12 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconBooks,
   IconCards,
@@ -55,16 +52,17 @@ const folder = {
 export const EmptyRecent = () => {
   const router = useRouter();
   const isTeacher = useIsTeacher();
+
   return (
     <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white px-6 py-10 md:p-12 dark:border-gray-800/50 dark:bg-gray-800">
       <div className="relative flex flex-col items-center justify-center gap-10 text-center">
         <div
-          className="bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 via-transparent to-transparent opacity-50 blur-2xl"
           aria-hidden="true"
+          className="bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 via-transparent to-transparent opacity-50 blur-2xl"
         />
         <div className="relative z-10 flex flex-row gap-[-12px]">
           <motion.div {...studySet} className="opacity-50">
-            <IconCards size={40} strokeWidth="2px" opacity="0.8" />
+            <IconCards opacity="0.8" size={40} strokeWidth="2px" />
           </motion.div>
           <motion.div {...logo} className="p-3">
             <div
@@ -72,17 +70,17 @@ export const EmptyRecent = () => {
               style={{ height: `${100}px`, width: "100px" }}
             >
               <Image
-                src={"/logo.svg"}
-                alt="logo"
-                height={100}
-                width={100}
                 priority
+                alt="logo"
                 className="object-contain"
+                height={100}
+                src={"/logo.svg"}
+                width={100}
               />
             </div>
           </motion.div>
           <motion.div {...folder} className="opacity-50">
-            <IconFolder size={40} strokeWidth="2px" opacity="0.9" />
+            <IconFolder opacity="0.9" size={40} strokeWidth="2px" />
           </motion.div>
           <div className="absolute left-0 top-10 -z-10 h-full w-full rounded-full bg-gradient-to-b from-gray-500 to-transparent" />
         </div>
@@ -102,26 +100,26 @@ export const EmptyRecent = () => {
         </div>
         <div className="z-10 flex flex-col gap-4">
           <Button
-            onClick={() => router.push("/study-set/create")}
-            size="lg"
             className="h-12 rounded-xl !text-base shadow-lg"
+            size="lg"
+            onClick={() => router.push("/study-set/create")}
           >
             <IconPlus className="!size-6" /> Tạo bộ thẻ mới
           </Button>
           {isTeacher ? (
             <Button
-              onClick={() => router.push("/courses")}
-              size="lg"
               className="h-12 rounded-xl !text-base shadow-lg"
+              size="lg"
+              onClick={() => router.push("/courses")}
             >
               <IconFileTypePdf className="!size-6" />
               Tạo tài liệu
             </Button>
           ) : (
             <Button
-              onClick={() => router.push("/courses")}
-              size="lg"
               className="h-12 rounded-xl !text-base shadow-lg"
+              size="lg"
+              onClick={() => router.push("/courses")}
             >
               <IconBooks className="!size-6" />
               Xem các môn học

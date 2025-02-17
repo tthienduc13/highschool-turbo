@@ -1,16 +1,12 @@
-import {
-  useUserFlashcardQuery,
-  useUserFoldersQuery,
-} from "@highschool/react-query/queries";
-
+import { useUserFoldersQuery } from "@highschool/react-query/queries";
 import { IconFolder } from "@tabler/icons-react";
 
-import { Loading } from "@/components/core/common/loading";
+import { ProfileLinkable } from "../profile-linkable";
+
+import { FlashcardList } from "./flashcard";
+
 import { useProfile } from "@/hooks/use-profile";
 import { groupIntoTimeline } from "@/utils/grouping";
-
-import { ProfileLinkable } from "../profile-linkable";
-import { FlashcardList } from "./flashcard";
 
 export const FolderList = () => {
   const profile = useProfile()!;
@@ -20,7 +16,7 @@ export const FolderList = () => {
     : "Bạn chưa tạo thư mục nhớ nào";
 
   const { data, isLoading } = useUserFoldersQuery({
-    isMyFolder: profile.isMe,
+    userName: profile.username,
     pageNumber: 1,
     pageSize: 100,
   });
@@ -39,17 +35,17 @@ export const FolderList = () => {
             <div className="whitespace-nowrap text-2xl font-bold">
               {group.label}
             </div>
-            <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700"></div>
+            <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700" />
           </div>
           <div className="flex flex-col gap-6">
             {group.items.map((item) => (
               <ProfileLinkable
                 key={item.id}
+                label="mục"
+                leftIcon={<IconFolder className="min-w-[18px]" size="18" />}
+                numValues={item.countFlashCard ?? 0 + item.countDocument ?? 0}
                 title={item.name}
                 url={`/profile/${profile.username}/folder/${item.id}`}
-                numValues={item.countFlashCard ?? 0 + item.countDocument ?? 0}
-                label="mục"
-                leftIcon={<IconFolder size="18" className="min-w-[18px]" />}
               />
             ))}
           </div>

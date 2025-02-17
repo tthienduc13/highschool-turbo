@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-
 import { useSubmitMBTITestMutation } from "@highschool/react-query/queries";
-
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-import { useMBTITestContext } from "@/stores/use-mbti-store";
 
 import { HydrateMBTITestData } from "./hydrate-mbti-test-data";
 import { Instruction } from "./instruction";
 import { LoadingView } from "./loading-view";
 import { ResultView } from "./result-view";
 import { TestView } from "./test";
+
+import { useMBTITestContext } from "@/stores/use-mbti-store";
+import { Container } from "@/components/core/layouts/container";
+import { WithFooter } from "@/components/core/common/with-footer";
 
 function MBTIModule() {
   return (

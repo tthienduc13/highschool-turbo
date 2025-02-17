@@ -1,13 +1,11 @@
 import { useMemo } from "react";
-
 import { useSubmitHollandMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
-import { useHollandTestContext } from "@/stores/use-holland-store";
-
 import { AnswerOption } from "./answer-option";
+
+import { useHollandTestContext } from "@/stores/use-holland-store";
 
 interface TestViewProps {
   submitAnswer: ReturnType<typeof useSubmitHollandMutation>;
@@ -26,6 +24,7 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
 
   const isUserAlreadyPickAnswer = useMemo(() => {
     const currentAnswer = userAnswers[currentQuestionIndex];
+
     return (currentAnswer?.answerOption?.length ?? 0) >= 3;
   }, [userAnswers, currentQuestionIndex]);
 
@@ -48,6 +47,7 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
   const handleSubmit = () => {
     if (!isUserAlreadyPickAnswer) {
       alert("Vui lòng trả lời toàn bộ câu hỏi");
+
       return;
     }
     submitAnswer.mutate(userAnswers, {
@@ -59,13 +59,14 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
       },
     });
   };
+
   return (
     <div className="flex w-full flex-col gap-8">
       <div className="mt-5 h-2.5 w-full rounded-full bg-gray-200 dark:bg-gray-700">
         <div
           className={`h-2.5 rounded-full bg-blue-500`}
           style={{ width: `${progress ?? 0}%` }}
-        ></div>
+        />
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-center text-lg font-bold">
@@ -78,22 +79,22 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
       <AnswerOption />
       <div className="flex w-full flex-row gap-5">
         <Button
-          disabled={currentQuestionIndex === 0 || submitAnswer.isPending}
-          onClick={handlePreviousButtonClick}
-          size={"lg"}
           className="w-full"
+          disabled={currentQuestionIndex === 0 || submitAnswer.isPending}
+          size={"lg"}
           variant={"outline"}
+          onClick={handlePreviousButtonClick}
         >
           Câu trước
         </Button>
         {isUserAlreadyPickAnswer &&
         currentQuestionIndex === questions.length - 1 ? (
           <Button
-            disabled={submitAnswer.isPending}
-            onClick={handleSubmit}
-            size={"lg"}
             className="w-full"
+            disabled={submitAnswer.isPending}
+            size={"lg"}
             variant={"default"}
+            onClick={handleSubmit}
           >
             {submitAnswer.isPending ? (
               <IconLoader2 className="animate-spin" />
@@ -103,11 +104,11 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
           </Button>
         ) : (
           <Button
-            disabled={!isUserAlreadyPickAnswer}
-            onClick={handleNextButtonClick}
-            size={"lg"}
             className="w-full"
+            disabled={!isUserAlreadyPickAnswer}
+            size={"lg"}
             variant={"outline"}
+            onClick={handleNextButtonClick}
           >
             Câu tiếp theo
           </Button>

@@ -1,13 +1,10 @@
 import dynamic from "next/dynamic";
-import Link from "next/link";
-
-import { useUserFlashcardQuery } from "@highschool/react-query/queries";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
+
+import { ProfileLinkable } from "../profile-linkable";
 
 import { useMe } from "@/hooks/use-me";
 import { useProfile } from "@/hooks/use-profile";
-
-import { ProfileLinkable } from "../profile-linkable";
 
 const OwnFlashcard = dynamic(
   () => import("./own-flashcard").then((c) => c.OwnFlashcard),
@@ -35,7 +32,7 @@ FlashcardList.Skeleton = function FlashcardListSkeleton() {
         <div className="flex h-7 flex-row items-center">
           <Skeleton className="h-[26px] w-[100px] rounded-md" />
         </div>
-        <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700"></div>
+        <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700" />
       </div>
       <div className="flex flex-col gap-4">
         {Array.from({ length: numSets }, (_, i) => (
@@ -44,6 +41,7 @@ FlashcardList.Skeleton = function FlashcardListSkeleton() {
       </div>
     </div>
   );
+
   return (
     <div className="flex flex-col gap-8">
       <Group numSets={3} />

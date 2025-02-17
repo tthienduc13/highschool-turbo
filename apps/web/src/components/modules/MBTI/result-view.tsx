@@ -2,11 +2,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
-
 import { useRef, useState } from "react";
-
 import Image from "next/image";
-
 import { Modal } from "@highschool/components/modal";
 import { MBTIResult } from "@highschool/interfaces";
 import {
@@ -15,17 +12,16 @@ import {
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
-
 import {
   IconDownload,
   IconLoader2,
   IconPointFilled,
 } from "@tabler/icons-react";
 
+import { ResultPrintComponent } from "./result-print-component";
+
 import { menuEventChannel } from "@/events/menu";
 import { useMBTITestContext } from "@/stores/use-mbti-store";
-
-import { ResultPrintComponent } from "./result-print-component";
 
 export const ResultView = () => {
   const result = useMBTITestContext((s) => s.result);
@@ -49,9 +45,6 @@ export const ResultView = () => {
         });
         menuEventChannel.emit("openCareerGuidanceModal");
       },
-      onError: () => {
-        console.log("error");
-      },
     });
   };
 
@@ -72,12 +65,12 @@ export const ResultView = () => {
   return (
     <>
       <Modal
-        title="Nhập email của bạn"
         description="Để xem được bản tóm tắt giúp bạn có thể chọn được ngôi trường phù hợp, hãy nhập vào email của bạn"
-        isOpen={openConfirm}
-        onClose={() => setOpenConfirm(false)}
-        isPending={savePersonalResult.isPending}
         isDisabled={email.length === 0}
+        isOpen={openConfirm}
+        isPending={savePersonalResult.isPending}
+        title="Nhập email của bạn"
+        onClose={() => setOpenConfirm(false)}
         onConfirm={() => {
           savePersonalResult.mutate(
             { email: email, mbtiType: mbtiType },
@@ -91,11 +84,11 @@ export const ResultView = () => {
         }}
       >
         <Input
-          value={email}
-          type="email"
-          placeholder="Nhập email của bạn"
-          onChange={(e) => setEmail(e.target.value)}
           className="h-12 w-full border-0 border-b-4 border-b-blue-300 border-b-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
+          placeholder="Nhập email của bạn"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
       </Modal>
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-y-5">

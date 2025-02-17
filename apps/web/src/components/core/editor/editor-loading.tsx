@@ -12,7 +12,7 @@ export const EditorLoading = () => {
       <ButtonArea.Skeleton />
       <div className="flex flex-col gap-4">
         {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton className="h-[150px] w-full rounded-xl" key={i} />
+          <Skeleton key={i} className="h-[150px] w-full rounded-xl" />
         ))}
       </div>
     </div>

@@ -1,13 +1,10 @@
 import { useSession } from "next-auth/react";
-
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
 import {
   useUpdateBaseUserInfoMutation,
   useUploadUserImageMutation,
 } from "@highschool/react-query/queries";
 
-import { AnimatedXCircle } from "../animated-icons/animated-x-icon";
 import { InnerModal } from "./upload-avatar-modal";
 
 interface UploadAvatarModalProps {
@@ -31,7 +28,6 @@ export const UploadAvatarModal: React.FC<UploadAvatarModalProps> = ({
         await updateUserImage.mutateAsync({
           profilePicture: uploadUserImage.data,
         });
-        console.log(uploadUserImage.data);
         await update({
           ...session,
           user: {
@@ -41,12 +37,14 @@ export const UploadAvatarModal: React.FC<UploadAvatarModalProps> = ({
         });
         onClose();
       };
+
       updateUser();
     }
   }, [uploadUserImage.isSuccess, uploadUserImage.data]);
 
   return (
     <InnerModal
+      isLoading={uploadUserImage.isPending || updateUserImage.isPending}
       isOpen={isOpen}
       onClose={onClose}
       onError={() => {
@@ -62,9 +60,9 @@ export const UploadAvatarModal: React.FC<UploadAvatarModalProps> = ({
         const file = new File([new Blob([buffer])], "avatar.png", {
           type: "image/png",
         });
+
         uploadUserImage.mutate(file);
       }}
-      isLoading={uploadUserImage.isPending || updateUserImage.isPending}
     />
   );
 };

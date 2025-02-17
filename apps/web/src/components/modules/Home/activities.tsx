@@ -1,13 +1,11 @@
 import Link from "next/link";
-
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconDeviceGamepad2, IconMap } from "@tabler/icons-react";
 
-import { menuEventChannel } from "@/events/menu";
-
 import { Wrapper } from "./wrapper";
+
+import { menuEventChannel } from "@/events/menu";
 
 export const Activities = () => {
   return (
@@ -20,8 +18,8 @@ export const Activities = () => {
               size={50}
             />
             <div
-              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
               aria-hidden="true"
+              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">
@@ -32,8 +30,8 @@ export const Activities = () => {
             </p>
             <div className="mt-2 flex flex-row justify-end">
               <Button
-                onClick={() => menuEventChannel.emit("openCareerGuidanceModal")}
                 size="sm"
+                onClick={() => menuEventChannel.emit("openCareerGuidanceModal")}
               >
                 Thử ngay
               </Button>
@@ -47,8 +45,8 @@ export const Activities = () => {
               size={50}
             />
             <div
-              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
               aria-hidden="true"
+              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">

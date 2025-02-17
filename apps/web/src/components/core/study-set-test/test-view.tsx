@@ -1,19 +1,16 @@
 import { motion } from "framer-motion";
-
 import { Fragment, useContext, useEffect, useState } from "react";
-
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
+
+import { TestCardGap } from "./card/card-gap";
+import { CardWrapper } from "./card/wrapper";
+import { TestSettingsModal } from "./setting-modal";
 
 import { QuestionSkeleton } from "@/components/modules/StudySetTest/test-loading";
 import { useSet } from "@/hooks/use-set";
 import { TestContext, useTestContext } from "@/stores/use-study-set-test-store";
 import { pushQueryParams } from "@/utils/test/params";
-
-import { TestCardGap } from "./card/card-gap";
-import { CardWrapper } from "./card/wrapper";
-import { TestSettingsModal } from "./setting-modal";
 
 interface TestViewProps {
   onSubmit: () => void;
@@ -69,10 +66,10 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
           }}
         >
           <TestCardGap
-            type="start"
             title={flashcard.flashcardName}
-            onSettingsClick={() => setSettingsOpen(true)}
+            type="start"
             onResetClick={manualReset}
+            onSettingsClick={() => setSettingsOpen(true)}
           />
         </motion.div>
         {!enter && (
@@ -87,12 +84,12 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
               {Array.from({ length: 5 }).map((_, i) => (
                 <Fragment key={i}>
                   <TestCardGap
-                    type="question"
-                    index={i}
-                    startingIndex={i}
-                    numQuestions={500}
-                    count={1}
                     skeleton
+                    count={1}
+                    index={i}
+                    numQuestions={500}
+                    startingIndex={i}
+                    type="question"
                   />
                   <QuestionSkeleton />
                 </Fragment>
@@ -104,10 +101,6 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
         {outline.map(({ type, count, startingIndex }, index) => (
           <Fragment key={index}>
             <motion.div
-              initial={{
-                opacity: 0,
-                transform: "translateY(-20px)",
-              }}
               animate={
                 enter
                   ? {
@@ -127,23 +120,23 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
                       }
                     : {}
               }
+              initial={{
+                opacity: 0,
+                transform: "translateY(-20px)",
+              }}
               style={{
                 zIndex: -1,
               }}
             >
               <TestCardGap
-                type="question"
-                index={index}
-                startingIndex={startingIndex}
-                numQuestions={questionCount}
                 count={count}
+                index={index}
+                numQuestions={questionCount}
+                startingIndex={startingIndex}
+                type="question"
               />
             </motion.div>
             <motion.div
-              initial={{
-                opacity: 0,
-                transform: "translateY(-20px)",
-              }}
               animate={
                 enter
                   ? {
@@ -155,16 +148,16 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
                     }
                   : {}
               }
+              initial={{
+                opacity: 0,
+                transform: "translateY(-20px)",
+              }}
             >
-              <CardWrapper type={type} i={index} />
+              <CardWrapper i={index} type={type} />
             </motion.div>
           </Fragment>
         ))}
         <motion.div
-          initial={{
-            opacity: 0,
-            transform: "translateY(-20px)",
-          }}
           animate={
             enter
               ? {
@@ -176,16 +169,20 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
                 }
               : {}
           }
+          initial={{
+            opacity: 0,
+            transform: "translateY(-20px)",
+          }}
         >
           <div className="relative w-full">
             <TestCardGap type="finish" />
             <div className="relative mt-10 flex h-24 w-full flex-col items-center justify-center gap-6">
               <p className="text-xl font-bold">Sẵn sàng để kiểm tra kết quả?</p>
               <Button
-                size="lg"
-                onClick={onSubmit}
                 className="w-fit"
+                size="lg"
                 variant={allAnswered ? "default" : "outline"}
+                onClick={onSubmit}
               >
                 Xem kết quả
               </Button>

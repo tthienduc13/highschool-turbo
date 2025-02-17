@@ -1,9 +1,7 @@
 import { nanoid } from "nanoid";
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import { createContext, useContext } from "react";
-
 import { FlashcardContent, StudySetVisibility } from "@highschool/interfaces";
 
 import { Language } from "@/utils/language";
@@ -109,6 +107,7 @@ export const createSetEditorStore = (
     serverTerms: [],
     readonly: false,
   };
+
   return createStore<SetEditorState>()(
     subscribeWithSelector((set) => ({
       ...DEFAULT_PROPS,
@@ -161,7 +160,9 @@ export const createSetEditorStore = (
               const keep =
                 !!x.flashcardContentTerm.length ||
                 !!x.flashcardContentDefinition.length;
+
               if (!keep && state.serverTerms.includes(x.id)) deleted.push(x.id);
+
               return keep;
             })
             .map((x, i) => ({ ...x, rank: i }));
@@ -191,6 +192,7 @@ export const createSetEditorStore = (
       deleteTerm: (id: string) => {
         set((state) => {
           const active = state.terms.find((t) => t.id === id);
+
           if (!active) return {};
 
           return {
@@ -270,6 +272,7 @@ export const createSetEditorStore = (
           const term = state.terms.find((t) => t.id === id)!;
 
           const newTerms = state.terms.filter((t) => t.id !== id);
+
           newTerms.splice(rank, 0, term);
 
           return {
@@ -334,6 +337,7 @@ export const useSetEditorContext = <T>(
   selector: (state: SetEditorState) => T,
 ): T => {
   const store = useContext(SetEditorStoreContext);
+
   if (!store) throw new Error("Missing SetEditorContext.Provider in the tree");
 
   return useStore(store, selector);

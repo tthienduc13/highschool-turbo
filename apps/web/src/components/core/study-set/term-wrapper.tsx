@@ -1,7 +1,5 @@
 import { useInView } from "framer-motion";
-
 import React from "react";
-
 import { FlashcardContent } from "@highschool/interfaces";
 
 import { DeloadedTerm } from "./deloaded-term";
@@ -21,7 +19,7 @@ export const TermWrapper: React.FC<TermWrapperProps> = ({ term, creator }) => {
       {inView ? (
         <DisplayableTermPure flashcardContent={term} />
       ) : (
-        <DeloadedTerm term={term} creator={creator} />
+        <DeloadedTerm creator={creator} term={term} />
       )}
     </div>
   );

@@ -25,17 +25,18 @@ export const Hint = ({
   if (!label) {
     return children;
   }
+
   return (
     <TooltipProvider>
       <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
         <TooltipContent
           asChild
+          align={align}
+          alignOffset={alignOffset}
           className="border-black bg-black text-white dark:bg-white dark:text-slate-900"
           side={side}
-          align={align}
           sideOffset={sideOffset}
-          alignOffset={alignOffset}
         >
           <div className="font-medium capitalize">{label}</div>
         </TooltipContent>

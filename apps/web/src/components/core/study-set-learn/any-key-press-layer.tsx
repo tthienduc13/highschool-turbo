@@ -6,5 +6,6 @@ export const AnyKeyPressLayer = ({ onSubmit }: { onSubmit: () => void }) => {
     anyKey: true,
     allowInput: true,
   });
+
   return null;
 };

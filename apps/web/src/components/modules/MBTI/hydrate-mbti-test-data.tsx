@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-
 import { useMBTITestQuery } from "@highschool/react-query/queries";
 
 import { Loading } from "@/components/core/common/loading";
@@ -16,7 +15,7 @@ interface HydrateMBTITestDataProps {
 }
 
 export const HydrateMBTITestData = ({ children }: HydrateMBTITestDataProps) => {
-  const { data, isLoading, isError, error } = useMBTITestQuery();
+  const { data, isLoading, isError } = useMBTITestQuery();
   const storeRef = useRef<MBTITestStore | null>(null);
 
   if (data && !storeRef.current) {
@@ -30,7 +29,6 @@ export const HydrateMBTITestData = ({ children }: HydrateMBTITestDataProps) => {
   }
 
   if (isError) {
-    console.error("Failed to load MBTI test data:", error);
     return <div>Error loading MBTI test data. Please try again later.</div>;
   }
 

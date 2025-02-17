@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import dynamic from "next/dynamic";
 
 const InternalView = dynamic(
@@ -39,11 +38,11 @@ export const PhotoViewProvider: React.FC<React.PropsWithChildren> = ({
       }}
     >
       <InternalView
-        visible={visible}
-        setVisible={setVisible}
+        borderRadius={borderRadius}
         currentRef={currentRef}
         currentSrc={currentSrc}
-        borderRadius={borderRadius}
+        setVisible={setVisible}
+        visible={visible}
       />
       {children}
     </PhotoViewContext.Provider>

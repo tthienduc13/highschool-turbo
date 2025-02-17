@@ -1,12 +1,9 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { useState } from "react";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import { useMediaQuery } from "@highschool/hooks";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -19,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBrain,
   IconCards,
@@ -43,8 +39,8 @@ export const InteractorModes = () => {
     <DropdownMenu open={openDropdown} onOpenChange={setOpenDropdown}>
       <DropdownMenuTrigger asChild>
         <Button
-          size={isMobile ? "sm" : "lg"}
           className={cn("", !isMobile && "!text-base")}
+          size={isMobile ? "sm" : "lg"}
         >
           Chọn chế độ học
           {openDropdown ? (
@@ -65,23 +61,23 @@ export const InteractorModes = () => {
             Trò chơi và hoạt động
           </DropdownMenuLabel>
           <InteractorMode
-            name="Nối"
+            comingSoon
+            requireAuth
             icon={<IconLayersSubtract />}
+            name="Nối"
             // href={`/study-set/${flashcard.slug}/match?intro=true`}
-            requireAuth
-            comingSoon
           />
           <InteractorMode
-            name="Ô chữ"
+            comingSoon
+            requireAuth
             icon={<IconGridDots />}
-            comingSoon
-            requireAuth
+            name="Ô chữ"
           />
           <InteractorMode
-            name=" Gravity"
-            icon={<IconMeteor />}
             comingSoon
             requireAuth
+            icon={<IconMeteor />}
+            name=" Gravity"
           />
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -90,21 +86,21 @@ export const InteractorModes = () => {
             Ôn tập
           </DropdownMenuLabel>
           <InteractorMode
-            name="Học"
-            icon={<IconBrain />}
+            requireAuth
             href={`/study-set/${flashcard.slug}/learn`}
-            requireAuth
+            icon={<IconBrain />}
+            name="Học"
           />
           <InteractorMode
-            name="Thẻ"
-            icon={<IconCards />}
             href={`/study-set/${flashcard.slug}/flashcards`}
+            icon={<IconCards />}
+            name="Thẻ"
           />
           <InteractorMode
-            name="Kiểm tra"
-            icon={<IconReport />}
-            href={`/study-set/${flashcard.slug}/test`}
             requireAuth
+            href={`/study-set/${flashcard.slug}/test`}
+            icon={<IconReport />}
+            name="Kiểm tra"
           />
         </DropdownMenuGroup>
       </DropdownMenuContent>
@@ -140,9 +136,11 @@ export const InteractorMode = ({
 
     return <>{children}</>;
   };
+
   return (
     <Wrapper>
       <DropdownMenuItem
+        className="text-base"
         onClick={() => {
           if (authEnabled)
             menuEventChannel.emit("openSignup", {
@@ -153,7 +151,6 @@ export const InteractorMode = ({
             router.push(href);
           }
         }}
-        className="text-base"
       >
         {icon}
         {name}

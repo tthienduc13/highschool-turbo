@@ -40,21 +40,21 @@ export default function AnimatedCircularProgressBar({
       }
     >
       <svg
-        fill="none"
         className="size-full"
+        fill="none"
         strokeWidth="2"
         viewBox="0 0 100 100"
       >
         {currentPercent <= 90 && currentPercent >= 0 && (
           <circle
+            className="opacity-100"
             cx="50"
             cy="50"
             r="45"
-            strokeWidth="10"
             strokeDashoffset="0"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="opacity-100"
+            strokeWidth="10"
             style={
               {
                 stroke: gaugeSecondaryColor,
@@ -72,14 +72,14 @@ export default function AnimatedCircularProgressBar({
           />
         )}
         <circle
+          className="opacity-100"
           cx="50"
           cy="50"
           r="45"
-          strokeWidth="10"
           strokeDashoffset="0"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="opacity-100"
+          strokeWidth="10"
           style={
             {
               stroke: gaugePrimaryColor,
@@ -98,8 +98,8 @@ export default function AnimatedCircularProgressBar({
         />
       </svg>
       <span
-        data-current-value={currentPercent}
         className="animate-in fade-in absolute inset-0 m-auto size-fit delay-[var(--delay)] duration-[var(--transition-length)] ease-linear"
+        data-current-value={currentPercent}
       >
         {currentPercent} %
       </span>

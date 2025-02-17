@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { useRouter } from "next/navigation";
 
 import { WithFooter } from "@/components/core/common/with-footer";
@@ -14,6 +13,7 @@ function CareerGuidanceModule() {
   if (session?.user) {
     router.push("/");
   }
+
   return (
     <WithFooter>
       <Container maxWidth="7xl">

@@ -1,5 +1,4 @@
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 interface LoadingProps {

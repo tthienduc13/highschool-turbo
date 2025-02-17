@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import React from "react";
-
 import {
   LimitedStudySetAnswerMode,
   MultipleAnswerMode,
@@ -10,8 +8,8 @@ import {
 } from "@highschool/interfaces";
 
 export interface ContainerStoreProps {
-hideFlashcard: boolean;
-flashcardHideWith: LimitedStudySetAnswerMode
+  hideFlashcard: boolean;
+  flashcardHideWith: LimitedStudySetAnswerMode;
   shuffleFlashcards: boolean;
   autoplayFlashcards: boolean;
   shuffleLearn: boolean;
@@ -86,12 +84,14 @@ export const createContainerStore = (
       },
       toggleHideFlashcard: () => {
         set((state) => {
-            return {
-              hideFlashcard: !state.hideFlashcard,
-            };
-          });
+          return {
+            hideFlashcard: !state.hideFlashcard,
+          };
+        });
       },
-      setFlashcardHideWith: (flashcardHideWith: LimitedStudySetAnswerMode) => {set({ flashcardHideWith })},
+      setFlashcardHideWith: (flashcardHideWith: LimitedStudySetAnswerMode) => {
+        set({ flashcardHideWith });
+      },
       setShuffleLearn: (shuffleLearn: boolean) => set({ shuffleLearn }),
       setStudyStarred: (studyStarred: boolean) => set({ studyStarred }),
       setAnswerWith: (answerWith: StudySetAnswerMode) => set({ answerWith }),
@@ -132,9 +132,9 @@ export const ContainerContext = React.createContext<ContainerStore | null>(
 // Hook to use the container context
 export const useContainerContext = <T>(
   selector: (state: ContainerState) => T,
-  equalityFn?: (left: T, right: T) => boolean,
 ): T => {
   const store = React.useContext(ContainerContext);
+
   if (!store) throw new Error("Missing ContainerContext.Provider in the tree");
 
   return useStore(store, selector);

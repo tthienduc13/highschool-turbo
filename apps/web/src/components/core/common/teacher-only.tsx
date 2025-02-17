@@ -7,5 +7,6 @@ export const TeacherOnly: React.FC<React.PropsWithChildren> = ({
   const isTeacher = session?.user?.roleName?.toLocaleLowerCase() == "teacher";
 
   if (isTeacher) return <>{children}</>;
+
   return null;
 };

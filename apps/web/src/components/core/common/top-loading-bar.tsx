@@ -1,9 +1,7 @@
 "use client";
 
 import LoadingBar, { type LoadingBarRef } from "react-top-loading-bar";
-
 import React, { useEffect } from "react";
-
 import { usePathname, useSearchParams } from "next/navigation";
 
 export const TopLoadingBar = () => {
@@ -49,8 +47,8 @@ export const TopLoadingBar = () => {
       ref={barRef}
       color="#ffa54c"
       height={4}
-      waitingTime={500}
       transitionTime={500}
+      waitingTime={500}
     />
   );
 };

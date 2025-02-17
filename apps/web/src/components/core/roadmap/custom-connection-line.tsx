@@ -1,5 +1,4 @@
 import { ConnectionLineComponentProps } from "@xyflow/react";
-
 import React from "react";
 
 function CustomConnectionLine({
@@ -11,11 +10,11 @@ function CustomConnectionLine({
   return (
     <g>
       <path
+        className="animated"
+        d={`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`}
         fill="none"
         stroke={"#1a5fff"}
         strokeWidth={1.5}
-        className="animated"
-        d={`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`}
       />
       <circle
         cx={toX}

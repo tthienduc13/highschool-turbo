@@ -3,6 +3,7 @@
 import { useLessonsQuery } from "@highschool/react-query/queries";
 
 import { Loading } from "../common/loading";
+
 import { LearnSidebar } from "./learn-sidebar";
 
 function LearnLayout({
@@ -17,6 +18,7 @@ function LearnLayout({
     pageNumber: 1,
     pageSize: 10,
   });
+
   if (isLoading) {
     return <Loading />;
   }
@@ -24,6 +26,7 @@ function LearnLayout({
   if (!data) {
     return;
   }
+
   return (
     <div className="h-[calc(100vh-80px)] w-full border-t border-gray-200 dark:border-gray-700">
       <div className="fixed inset-y-0 left-0 top-20 z-50 hidden h-full w-80 flex-col md:flex">

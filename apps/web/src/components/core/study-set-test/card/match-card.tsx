@@ -11,25 +11,23 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-
 import React from "react";
-
 import { MatchData, StudySetAnswerMode } from "@highschool/interfaces";
 import { ScriptFormatter } from "@highschool/lib/script-formatter";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconX } from "@tabler/icons-react";
+
+import { SquareAssetPreview } from "../../study-set/square-asset-preview";
+import { EvaluatedFalse, EvaluatedTrue } from "../evaluated";
+import { GenericLabel } from "../generic-label";
+
+import { CardProps } from "./common";
 
 import { useCardSelector } from "@/hooks/use-card-selector";
 import { InteractivePointerSensor } from "@/lib/sensor";
 import { useTestContext } from "@/stores/use-study-set-test-store";
 import { word } from "@/utils/terms";
-
-import { SquareAssetPreview } from "../../study-set/square-asset-preview";
-import { EvaluatedFalse, EvaluatedTrue } from "../evaluated";
-import { GenericLabel } from "../generic-label";
-import { CardProps } from "./common";
 
 type _Over = Over & { id: string };
 type _Active = Active & { id: string };
@@ -59,6 +57,7 @@ const Header: React.FC<Pick<CardProps, "i">> = ({ i }) => {
 
 export const MatchCard: React.FC<CardProps> = ({ i, result }) => {
   if (result) return <ResultsMatchCard i={i} />;
+
   return <InteractiveMatchCard i={i} />;
 };
 
@@ -90,6 +89,7 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
         if (oldIndex !== -1) {
           // Swap the two elements in the array
           const oldZone = newAnswer[oldIndex]!.zone;
+
           newAnswer[oldIndex]!.zone = newAnswer[newIndex]!.zone;
           newAnswer[newIndex]!.zone = oldZone;
         } else {
@@ -131,13 +131,13 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
   );
 
   return (
-    <DndContext onDragEnd={handleDragEnd} sensors={sensors}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <div className="flex flex-col gap-2">
         <Header i={i} />
         <div className="mt-4 flex flex-col gap-2">
           <div className="flex flex-row flex-wrap gap-3">
             {options.map((term) => (
-              <Draggable id={term.id} key={term.id}>
+              <Draggable key={term.id} id={term.id}>
                 <ExternalWrapper id={term.id}>
                   <div className="whitespace-pre-wrap">
                     <ScriptFormatter>
@@ -154,7 +154,7 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
                 <div
                   className={`flex items-center order-[${id + 1}] md:order-[${id}]`}
                 >
-                  <Droppable id={term.id} answerMode={question.answerMode}>
+                  <Droppable answerMode={question.answerMode} id={term.id}>
                     {!!getInZone(term.id) && (
                       <Draggable id={getInZone(term.id)!.term}>
                         <InternalWrapper
@@ -192,9 +192,9 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
                       StudySetAnswerMode.FlashcardContentTerm &&
                       term.image && (
                         <SquareAssetPreview
-                          src={term.image}
-                          size={56}
                           rounded={8}
+                          size={56}
+                          src={term.image}
                         />
                       )}
                   </div>
@@ -213,17 +213,22 @@ const ResultsMatchCard: React.FC<CardProps> = ({ i }) => {
 
   const evaluateZone = (id: string): boolean => {
     const term = answer.find((a) => a.zone === id);
+
     if (!term) return false;
+
     return term.term === id;
   };
   const getAnswer = (id: string) => {
     const termId = answer.find((a) => a.zone === id)?.term;
+
     if (!termId) return undefined;
+
     return data.terms.find((t) => t.id === termId);
   };
 
   const remark = (id: string) =>
     remarks?.find((r) => r.id === id)?.remark ?? "";
+
   return (
     <div className="flex flex-col gap-2">
       <Header i={i} />
@@ -241,9 +246,9 @@ const ResultsMatchCard: React.FC<CardProps> = ({ i }) => {
                   StudySetAnswerMode.FlashcardContentTerm &&
                   term.image && (
                     <SquareAssetPreview
-                      src={term.image}
-                      size={80}
                       rounded={8}
+                      size={80}
+                      src={term.image}
                     />
                   )}
               </div>
@@ -406,7 +411,7 @@ const InternalWrapper: React.FC<
             onRemove();
           }}
         >
-          <IconX style={{ pointerEvents: "none" }} size={18} />
+          <IconX size={18} style={{ pointerEvents: "none" }} />
         </Button>
       </div>
     </div>

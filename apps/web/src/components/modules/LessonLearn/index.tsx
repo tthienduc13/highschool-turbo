@@ -2,11 +2,8 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-
 import { useState } from "react";
-
 import { useParams, useRouter } from "next/navigation";
-
 import { Lesson, Pagination } from "@highschool/interfaces";
 import {
   useCourseBySlugQuery,
@@ -15,16 +12,15 @@ import {
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconCircleCheck, IconCircleX, IconLoader2 } from "@tabler/icons-react";
+
+import { Quiz } from "./quiz";
+import { TheoryList } from "./theory-list";
 
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { Loading } from "@/components/core/common/loading";
 import { VideoPlayer } from "@/components/core/common/video-player";
 import { Container } from "@/components/core/layouts/container";
-
-import { Quiz } from "./quiz";
-import { TheoryList } from "./theory-list";
 
 function LessonLearnModule() {
   const router = useRouter();
@@ -56,8 +52,6 @@ function LessonLearnModule() {
     (lesson) => lesson.id === params.lessonId,
   );
 
-  console.log(matchedLesson);
-
   if (lessonLoading) {
     return <Loading />;
   }
@@ -67,7 +61,7 @@ function LessonLearnModule() {
   }
 
   return (
-    <Container maxWidth="7xl" className="flex w-full flex-col gap-8 pb-10 pt-8">
+    <Container className="flex w-full flex-col gap-8 pb-10 pt-8" maxWidth="7xl">
       {isLoading ? (
         <Skeleton className="h-5 w-[100px]" />
       ) : (
@@ -87,6 +81,7 @@ function LessonLearnModule() {
           </Button>
           {!matchedLesson?.isDone ? (
             <button
+              className="flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:opacity-80"
               disabled={markDone.isPending}
               onClick={() => {
                 markDone.mutate(
@@ -110,7 +105,6 @@ function LessonLearnModule() {
                   },
                 );
               }}
-              className="flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:opacity-80"
             >
               {markDone.isPending ? (
                 <IconLoader2 className="animate-spin" />
@@ -121,7 +115,7 @@ function LessonLearnModule() {
               )}
             </button>
           ) : (
-            <Button variant={"destructive"} size={"lg"}>
+            <Button size={"lg"} variant={"destructive"}>
               Chưa hoàn thành <IconCircleX size={18} />
             </Button>
           )}

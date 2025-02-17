@@ -38,6 +38,7 @@ export function eventBus<E extends EventMap>(
 
   const off: EventBus<E>["off"] = (key, handler) => {
     const index = bus[key]?.indexOf(handler) ?? -1;
+
     bus[key]?.splice(index >>> 0, 1);
   };
 

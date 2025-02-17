@@ -35,9 +35,8 @@ export const AnswerOption = () => {
   return (
     <div className="flex w-full flex-col gap-4">
       {answers.map((answer) => (
-        <div
+        <button
           key={answer.option}
-          onClick={() => handleAnswerSelect(answer)}
           className={cn(
             buttonVariants({
               variant: selectedAnswers.includes(answer.option)
@@ -47,9 +46,10 @@ export const AnswerOption = () => {
             }),
             "h-full w-full cursor-pointer justify-start whitespace-normal py-2 text-left text-lg",
           )}
+          onClick={() => handleAnswerSelect(answer)}
         >
           {answer.text}
-        </div>
+        </button>
       ))}
     </div>
   );

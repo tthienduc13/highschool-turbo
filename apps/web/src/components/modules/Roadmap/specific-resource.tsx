@@ -1,10 +1,7 @@
 import { useReactFlow } from "@xyflow/react";
-
 import Link from "next/link";
-
 import { useGetNodeResourceQuery } from "@highschool/react-query/queries";
 import { Badge } from "@highschool/ui/components/ui/badge";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import { useRoadMapContext } from "@/stores/use-roadmap-store";
@@ -42,6 +39,7 @@ export const SpecificResource = ({ selectedNodeId }: SpecificResourceProps) => {
       </div>
     );
   }
+
   return (
     <>
       <div className="flex flex-row justify-between">

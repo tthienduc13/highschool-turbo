@@ -1,13 +1,18 @@
 "use client";
 
 import { useContext, useState } from "react";
-
 import {
   MultipleAnswerMode,
   StudySetAnswerMode,
   TestQuestionType,
   WriteData,
 } from "@highschool/interfaces";
+
+import { LoadingView } from "../../core/study-set-test/loading-view";
+import { HydrateSetData } from "../StudySet/hydrate-set-data";
+
+import { CreateTestData } from "./create-test-data";
+import { TestLoading } from "./test-loading";
 
 import { ConfirmModal } from "@/components/core/common/confirm-modal";
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
@@ -18,20 +23,15 @@ import { TestContext, useTestContext } from "@/stores/use-study-set-test-store";
 import { EvaluationResult, evaluate } from "@/utils/evaluator";
 import { bulkGradeAnswers } from "@/utils/grader";
 
-import { LoadingView } from "../../core/study-set-test/loading-view";
-import { HydrateSetData } from "../StudySet/hydrate-set-data";
-import { CreateTestData } from "./create-test-data";
-import { TestLoading } from "./test-loading";
-
 function StudySetTestModule() {
   return (
     <PhotoViewProvider>
       <EditorGlobalStyles />
       <HydrateSetData
-        isPublic
-        placeholder={<TestLoading />}
-        withDistractors
         disallowDirty
+        isPublic
+        withDistractors
+        placeholder={<TestLoading />}
       >
         <CreateTestData>
           <TestContainer />
@@ -103,6 +103,7 @@ const TestContainer = () => {
           question.answerMode == StudySetAnswerMode.FlashcardContentDefinition
             ? data.term.flashcardContentDefinition
             : data.term.flashcardContentTerm;
+
         if (original.split(" ").length < 3) return false;
 
         if (
@@ -120,6 +121,7 @@ const TestContainer = () => {
       })
       .map((question) => {
         const data = question.data as WriteData;
+
         return {
           index: question.index,
           answer:
@@ -135,12 +137,15 @@ const TestContainer = () => {
     const firstUnanswered = store
       .getState()
       .timeline.findIndex((question) => !question.answered);
+
     if (firstUnanswered == -1) return;
 
     const elem = document.getElementById(`test-card-${firstUnanswered}`);
+
     if (!elem) return;
 
     const position = elem.getBoundingClientRect();
+
     window.scrollTo({
       left: position.left,
       top: position.top + window.scrollY - 150,
@@ -151,6 +156,7 @@ const TestContainer = () => {
   const onSubmit = async (bypass = false) => {
     if (!checkAllAnswered() && !bypass) {
       setHasUnansweredOpen(true);
+
       return;
     }
 
@@ -158,6 +164,7 @@ const TestContainer = () => {
     setLoading(true);
 
     const cortexEligible = getCortexEligible();
+
     if (!cortexEligible.length) stateSubmit([], 0);
     else {
       await bulkGradeAnswers(cortexEligible);
@@ -167,15 +174,15 @@ const TestContainer = () => {
   return (
     <>
       <ConfirmModal
-        isOpen={hasUnansweredOpen}
-        onClose={() => setHasUnansweredOpen(false)}
         actionText="Xem lại câu hỏi"
+        body="Bạn có muốn xem lại các câu hỏi hoặc xem kết quả luôn?"
         cancelText="Xem kết quả"
         heading="Một vài câu hỏi chưa được trả lời"
-        body="Bạn có muốn xem lại các câu hỏi hoặc xem kết quả luôn?"
+        isOpen={hasUnansweredOpen}
         onCancel={() => {
           void onSubmit(true);
         }}
+        onClose={() => setHasUnansweredOpen(false)}
         onConfirm={() => {
           setHasUnansweredOpen(false);
           scrollToFirstUnanswered();

@@ -5,9 +5,7 @@ import {
   Position,
   useConnection,
 } from "@xyflow/react";
-
 import { memo, useCallback, useState } from "react";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 export type InitNodeData = {
@@ -36,13 +34,13 @@ const Init = ({ data, id }: NodeProps<Node<InitNodeData>>) => {
         <div>{label}</div>
       </div>
       <Handle
-        type="source"
-        position={Position.Bottom}
         id="init-source-bottom"
+        position={Position.Bottom}
         style={{
           opacity: isHovered ? 1 : 0,
           transition: "opacity 300ms ease-in-out",
         }}
+        type="source"
       />
     </div>
   );

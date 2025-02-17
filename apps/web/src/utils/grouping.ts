@@ -21,6 +21,7 @@ export const groupIntoTimeline = <
   })) {
     const label = relevantLabel(new Date(item[key]));
     const group = groups.find((group) => group.label === label);
+
     if (group) {
       group.items.push(item);
     } else {

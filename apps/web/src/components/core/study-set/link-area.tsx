@@ -1,10 +1,7 @@
 import { useSession } from "next-auth/react";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBrain,
   IconCards,
@@ -15,41 +12,42 @@ import {
   IconReport,
 } from "@tabler/icons-react";
 
+import { Hint } from "../common/hint";
+
 import { menuEventChannel } from "@/events/menu";
 import { useSet } from "@/hooks/use-set";
 
-import { Hint } from "../common/hint";
-
 export const LinkArea = () => {
   const { flashcard } = useSet();
+
   return (
     <div className="grid h-fit w-full grid-cols-2 gap-4 md:grid-cols-3 lg:w-[160px] lg:grid-cols-1">
       <Linkable
-        name="Học"
-        icon={<IconBrain />}
+        requireAuth
         href={`/study-set/${flashcard.slug}/learn`}
-        requireAuth
+        icon={<IconBrain />}
+        name="Học"
       />
       <Linkable
-        name="Thẻ"
-        icon={<IconCards />}
         href={`/study-set/${flashcard.slug}/flashcards`}
+        icon={<IconCards />}
+        name="Thẻ"
       />
       <Linkable
-        name="Kiểm tra"
-        icon={<IconReport />}
+        requireAuth
         href={`/study-set/${flashcard.slug}/test`}
-        requireAuth
+        icon={<IconReport />}
+        name="Kiểm tra"
       />
       <Linkable
-        name="Nối"
-        icon={<IconLayersSubtract />}
-        // href={`/study-set/${flashcard.slug}/match?intro=true`}
-        requireAuth
         comingSoon
+        requireAuth
+        icon={<IconLayersSubtract />}
+        name="Nối"
+        // href={`/study-set/${flashcard.slug}/match?intro=true`}
       />
-      <Linkable name="Ô chữ" icon={<IconGridDots />} comingSoon />
-      <Linkable name="Gravity" icon={<IconMeteor />} comingSoon />
+      <Linkable comingSoon icon={<IconGridDots />} name="Ô chữ" />
+      <Linkable comingSoon icon={<IconMeteor />} name="Gravity" />
     </div>
   );
 };
@@ -84,7 +82,7 @@ export const Linkable: React.FC<LinkableProps> = ({
 
   return (
     <Wrapper>
-      <div
+      <button
         className={cn(
           "group relative cursor-pointer rounded-xl border-b-[3px] border-gray-200 bg-white px-5 py-4 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:border-gray-700 dark:bg-gray-800/50",
           !disabled
@@ -126,7 +124,7 @@ export const Linkable: React.FC<LinkableProps> = ({
           </div>
           <p className="font-bold text-gray-600 dark:text-gray-400">{name}</p>
         </div>
-      </div>
+      </button>
     </Wrapper>
   );
 };

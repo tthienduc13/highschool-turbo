@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useDeleteFolderMutation } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import {
   IconCards,
   IconEditCircle,
@@ -17,12 +14,12 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import { EditFolderModal } from "./edit-folder-modal";
+
 import { ConfirmModal } from "@/components/core/common/confirm-modal";
 import { UsernameLink } from "@/components/core/common/username-link";
 import { useFolder } from "@/hooks/use-folder";
 import { useMe } from "@/hooks/use-me";
-
-import { EditFolderModal } from "./edit-folder-modal";
 
 export const FolderHeading = () => {
   const me = useMe();
@@ -38,6 +35,7 @@ export const FolderHeading = () => {
       router.push(`/`);
     }
   }, [deleteFolderMutation.isSuccess]);
+
   return (
     <>
       <EditFolderModal
@@ -46,23 +44,23 @@ export const FolderHeading = () => {
         onClose={() => setEditOpen(false)}
       />
       <ConfirmModal
-        isOpen={deleteOpen}
-        onClose={() => setDeleteOpen(false)}
-        heading="Xoá thư mục này?"
+        destructive
+        actionText="Xoá thư mục"
         body={
           <p className="text-muted-foreground">
             Bạn có chắc chắn muốn xoá thư mục này? Hành động này không thể hoàn
             tác.
           </p>
         }
-        actionText="Xoá thư mục"
+        heading="Xoá thư mục này?"
         isLoading={deleteFolderMutation.isPending}
+        isOpen={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
         onConfirm={() => {
           deleteFolderMutation.mutate({
             folderId: folder.folderUser.id,
           });
         }}
-        destructive
       />
       <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end md:gap-4">
         <div className="flex flex-col gap-3">
@@ -73,8 +71,8 @@ export const FolderHeading = () => {
             <div className="flex flex-row items-center gap-2">
               <Avatar className="size-5">
                 <AvatarImage
-                  src={me?.image ?? ""}
                   alt={me?.fullname ?? me?.username}
+                  src={me?.image ?? ""}
                 />
               </Avatar>
               <UsernameLink
@@ -84,14 +82,14 @@ export const FolderHeading = () => {
             </div>
             <div className="flex flex-row items-center gap-4">
               <div className="flex flex-row items-center gap-2">
-                <IconCards size={18} className="text-muted-foreground" />
+                <IconCards className="text-muted-foreground" size={18} />
                 <p className="text-muted-foreground">
                   {folder.folderUser.countFlashCard} thẻ ghi nhớ
                 </p>
               </div>
-              <Separator orientation="vertical" className="h-full w-[0.5px]" />
+              <Separator className="h-full w-[0.5px]" orientation="vertical" />
               <div className="flex flex-row items-center gap-2">
-                <IconFileTypePdf size={18} className="text-muted-foreground" />
+                <IconFileTypePdf className="text-muted-foreground" size={18} />
                 <p className="text-muted-foreground">
                   {folder.folderUser.countDocument} tài liệu
                 </p>
@@ -101,17 +99,17 @@ export const FolderHeading = () => {
         </div>
         <div className="flex flex-row overflow-hidden rounded-lg border">
           <Button
+            className="rounded-none"
             size={"icon"}
             variant={"ghost"}
-            className="rounded-none"
             onClick={() => setEditOpen(true)}
           >
             <IconEditCircle />
           </Button>
           <Button
+            className="rounded-none"
             size={"icon"}
             variant={"ghost"}
-            className="rounded-none"
             onClick={() => setDeleteOpen(true)}
           >
             <IconTrash />

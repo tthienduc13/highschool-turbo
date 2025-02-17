@@ -8,5 +8,6 @@ export default async function RootChapterLearnLayout({
   params: Promise<{ chapterId: string }>;
 }>) {
   const { chapterId } = await params;
+
   return <LearnLayout chapterId={chapterId}>{children}</LearnLayout>;
 }

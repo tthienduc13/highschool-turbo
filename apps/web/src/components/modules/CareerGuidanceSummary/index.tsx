@@ -1,34 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-
 import { University, UniversityCity } from "@highschool/interfaces";
 import { useUserBriefQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-import { cn } from "@highschool/ui/lib/utils";
-
-import {
-  IconArrowUp,
-  IconHeart,
-  IconLink,
-  IconTrash,
-  IconX,
-} from "@tabler/icons-react";
-
-import { Hint } from "@/components/core/common/hint";
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-import { effectChannel } from "@/events/effect";
-import { menuEventChannel } from "@/events/menu";
+import { IconArrowUp, IconTrash, IconX } from "@tabler/icons-react";
 
 import { CareerSection } from "./career-section";
 import { cityRender } from "./filter-modal";
 import { LoadingView } from "./loading-view";
 import { ProfileSection } from "./profile-section";
 import { UniversitySection } from "./university-section";
+
+import { Hint } from "@/components/core/common/hint";
+import { WithFooter } from "@/components/core/common/with-footer";
+import { Container } from "@/components/core/layouts/container";
+import { effectChannel } from "@/events/effect";
+import { menuEventChannel } from "@/events/menu";
 
 function CareerGuidanceSummaryModule() {
   const { data, isLoading, isSuccess } = useUserBriefQuery();
@@ -72,8 +62,8 @@ function CareerGuidanceSummaryModule() {
               </div>
               <Button
                 className="rounded-full"
-                variant={"outline"}
                 size={"icon"}
+                variant={"outline"}
                 onClick={() => setViewSaved(false)}
               >
                 <IconX className="!size-6" />
@@ -95,6 +85,7 @@ function CareerGuidanceSummaryModule() {
       </WithFooter>
     );
   }
+
   return (
     <>
       <WithFooter>
@@ -106,20 +97,20 @@ function CareerGuidanceSummaryModule() {
               onViewSaved={() => setViewSaved(true)}
             />
             <CareerSection
-              setSelectedMajor={setSelectedMajor}
               selectedMajor={selectedMajor}
+              setSelectedMajor={setSelectedMajor}
             />
             <UniversitySection
+              savedUniversities={savedUniversity}
               selectedMajor={selectedMajor}
               setSavedUniversity={setSavedUniversity}
-              savedUniversities={savedUniversity}
             />
             <div className="mt-5 flex w-full flex-col items-center justify-center gap-2">
               <p>Bạn không hài lòng với kết quả?</p>
               <Button
+                className="!text-base text-blue-700 hover:text-blue-600"
                 size={"lg"}
                 variant={"ghost"}
-                className="!text-base text-blue-700 hover:text-blue-600"
                 onClick={() => {
                   menuEventChannel.emit("openCareerGuidanceModal");
                 }}
@@ -160,11 +151,11 @@ const UniversityCard = ({ university, onRemove }: UniversityCardProps) => {
             <div className="flex flex-row items-center justify-between">
               <div className="flex flex-row items-start gap-2">
                 <img
-                  src={university.logoUrl}
                   alt={university.name}
-                  height={32}
-                  width={64}
                   className="h-8 object-contain"
+                  height={32}
+                  src={university.logoUrl}
+                  width={64}
                 />
                 <Link href={university.websiteLink}>
                   <h2 className="hover:text-primary text-lg font-semibold">
@@ -191,8 +182,8 @@ const UniversityCard = ({ university, onRemove }: UniversityCardProps) => {
               <div>
                 SĐT:{" "}
                 <a
-                  href={`tel:${university.contactPhone}`}
                   className="text-blue-500"
+                  href={`tel:${university.contactPhone}`}
                 >
                   {university.contactPhone}
                 </a>
@@ -200,8 +191,8 @@ const UniversityCard = ({ university, onRemove }: UniversityCardProps) => {
               <div>
                 Email:{" "}
                 <a
-                  href={`mailto:${university.contactEmail}`}
                   className="text-blue-500"
+                  href={`mailto:${university.contactEmail}`}
                 >
                   {university.contactEmail}
                 </a>

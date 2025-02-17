@@ -2,10 +2,6 @@
 
 import { useRecommendedDataQuery } from "@highschool/react-query/queries";
 
-import { WithFooter } from "@/components/core/common/with-footer";
-import { Container } from "@/components/core/layouts/container";
-import { useMe } from "@/hooks/use-me";
-
 import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
 import { RecentView } from "./recent-view";
@@ -13,6 +9,10 @@ import { RecommendCourse } from "./recommend-course";
 import { RecommendDocument } from "./recommend-document";
 import { RecommendFlashcard } from "./recommend-flashcard";
 import { TopFlascard } from "./top-flashcard";
+
+import { useMe } from "@/hooks/use-me";
+import { Container } from "@/components/core/layouts/container";
+import { WithFooter } from "@/components/core/common/with-footer";
 
 function HomeModule() {
   const me = useMe();
@@ -23,7 +23,7 @@ function HomeModule() {
   if (isLoading || me?.roleName?.toLocaleLowerCase() === "teacher") {
     return (
       <WithFooter>
-        <Container maxWidth="7xl" className="flex flex-col gap-12">
+        <Container className="flex flex-col gap-12" maxWidth="7xl">
           <FinishProfile />
           <RecentView />
           <TopFlascard />
@@ -32,9 +32,10 @@ function HomeModule() {
       </WithFooter>
     );
   }
+
   return (
     <WithFooter>
-      <Container maxWidth="7xl" className="flex flex-col gap-12">
+      <Container className="flex flex-col gap-12" maxWidth="7xl">
         <FinishProfile />
         <RecentView />
         {data?.subjects && <RecommendCourse data={data?.subjects!} />}

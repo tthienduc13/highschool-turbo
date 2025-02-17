@@ -1,5 +1,4 @@
 import { useTheme } from "next-themes";
-
 import { useEffect, useState } from "react";
 
 export function useColorMode(lightColor: string, darkColor: string) {

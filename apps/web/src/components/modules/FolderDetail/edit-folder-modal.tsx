@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { Modal } from "@highschool/components/modal";
 import { useUpdateFolderMutation } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
@@ -30,12 +29,12 @@ export const EditFolderModal = ({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Chỉnh sửa thư mục"
       buttonLabel="Lưu"
-      isPending={updateFolderMutation.isPending}
       isDisabled={isDisabled}
+      isOpen={isOpen}
+      isPending={updateFolderMutation.isPending}
+      title="Chỉnh sửa thư mục"
+      onClose={onClose}
       onConfirm={async () => {
         await updateFolderMutation.mutateAsync({
           folderName: title,
@@ -45,10 +44,10 @@ export const EditFolderModal = ({
       }}
     >
       <Input
+        className="h-12 w-full border-0 border-b-4 border-b-blue-300 border-b-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
         placeholder="Tiêu đề"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="h-12 w-full border-0 border-b-4 border-b-blue-300 border-b-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
       />
     </Modal>
   );

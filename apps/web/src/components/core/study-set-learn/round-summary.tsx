@@ -1,14 +1,11 @@
 import { motion } from "framer-motion";
-
 import { useLearnProgressQuery } from "@highschool/react-query/queries";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconKeyframes } from "@tabler/icons-react";
 
-import { useSet } from "@/hooks/use-set";
-import { useLearnContext } from "@/stores/use-study-set-learn-store";
-
 import { TermMastery } from "./term-mastery";
+
+import { useSet } from "@/hooks/use-set";
 
 export const RoundSummary = () => {
   const { flashcard } = useSet();
@@ -23,6 +20,7 @@ export const RoundSummary = () => {
   if (!data) {
     return;
   }
+
   return (
     <div className="flex flex-col gap-12">
       <div className="flex flex-col gap-6">
@@ -34,11 +32,11 @@ export const RoundSummary = () => {
         </div>
         <div className="h-1 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
           <motion.div
+            animate={{ width: `${data?.masteryPercentage}%` }}
+            initial={{ width: 0 }}
             style={{
               height: "100%",
             }}
-            initial={{ width: 0 }}
-            animate={{ width: `${data?.masteryPercentage}%` }}
             transition={{
               duration: 1,
               stiffness: 0,
@@ -46,14 +44,14 @@ export const RoundSummary = () => {
               mass: 100,
             }}
           >
-            <div className="bg-blue h-full w-full"></div>
+            <div className="bg-blue h-full w-full" />
           </motion.div>
         </div>
       </div>
       <TermMastery
-        unLearnCount={data.unLearnTerm ?? 0}
-        studyingCount={data.studyingTermNumber ?? 0}
         masteredCount={data.masteredTerms ?? 0}
+        studyingCount={data.studyingTermNumber ?? 0}
+        unLearnCount={data.unLearnTerm ?? 0}
       />
       <div className="no-scrollbar flex flex-col gap-6 overflow-scroll pb-20">
         <div className="flex flex-row items-center gap-1">

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 import { Grade, TypeExam } from "@highschool/interfaces";
 
 export interface ICity {

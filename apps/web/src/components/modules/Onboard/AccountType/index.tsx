@@ -1,14 +1,13 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import { UserType } from "@highschool/interfaces";
 import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconBooks, IconSchool } from "@tabler/icons-react";
+import { setClientCookie } from "@highschool/lib/cookies";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
 import {
@@ -27,8 +26,8 @@ function OnboardAccountTypeModule() {
   return (
     <PresentWrapper>
       <DefaultLayout
-        heading="Bạn là học sinh hay giáo viên?"
         description="Hãy chọn đúng để có trải nghiệm tốt nhất"
+        heading="Bạn là học sinh hay giáo viên?"
         nextLoading={loading}
         onNext={async () => {
           setLoading(true);
@@ -38,6 +37,7 @@ function OnboardAccountTypeModule() {
             },
             {
               onSuccess: async (data) => {
+                await setClientCookie(ACCESS_TOKEN, data.data?.accessToken!);
                 await update({
                   ...session,
                   user: {
@@ -53,12 +53,12 @@ function OnboardAccountTypeModule() {
         }}
       >
         <div className="grid grid-cols-2 overflow-hidden rounded-xl border-2">
-          <div
-            onClick={() => setSelectedType("Student")}
+          <button
             className={cn(
               "flex h-24 w-36 cursor-pointer items-center justify-center md:h-32 md:w-48",
               selectedType === "Student" && "bg-gray-200 dark:bg-gray-700",
             )}
+            onClick={() => setSelectedType("Student")}
           >
             <div
               className={cn(
@@ -70,13 +70,13 @@ function OnboardAccountTypeModule() {
               <IconBooks size={18} />
               <div className="font-semibold">Học sinh</div>
             </div>
-          </div>
-          <div
-            onClick={() => setSelectedType("Teacher")}
+          </button>
+          <button
             className={cn(
               "flex h-24 w-36 cursor-pointer items-center justify-center md:h-32 md:w-48",
               selectedType === "Teacher" && "bg-gray-200 dark:bg-gray-700",
             )}
+            onClick={() => setSelectedType("Teacher")}
           >
             <div
               className={cn(
@@ -88,7 +88,7 @@ function OnboardAccountTypeModule() {
               <IconSchool size={18} />
               <div className="font-semibold">Giáo viên</div>
             </div>
-          </div>
+          </button>
         </div>
       </DefaultLayout>
     </PresentWrapper>

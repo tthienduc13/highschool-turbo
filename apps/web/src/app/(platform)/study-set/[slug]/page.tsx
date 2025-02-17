@@ -3,9 +3,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-
 import { Metadata } from "next";
-
 import { getFlashcardBySlug } from "@highschool/react-query/apis";
 
 import StudySetModule from "@/components/modules/StudySet";
@@ -21,6 +19,7 @@ export const generateMetadata = async ({
 
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
+
     return {
       title: cachedData.flashcardName,
       description: cachedData.flashcardDescription,
@@ -28,6 +27,7 @@ export const generateMetadata = async ({
   }
 
   const data = await getFlashcardBySlug({ slug });
+
   if (!data) return;
 
   metadataCache.set(slug, data);
@@ -43,6 +43,7 @@ async function StudySet({ params }: { params: Promise<{ slug: string }> }) {
   const queryClient = new QueryClient();
 
   const cachedData = metadataCache.get(slug);
+
   if (cachedData) {
     queryClient.setQueryData(["flashcard-by-slug", slug], cachedData);
   } else {

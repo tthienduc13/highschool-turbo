@@ -1,10 +1,7 @@
 "use client";
 
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
-import { useSession } from "next-auth/react";
-
 import { memo, useEffect, useState } from "react";
-
 import { useOutsideClick } from "@highschool/hooks";
 import {
   FlashcardContent,
@@ -23,26 +20,25 @@ import { useEditFlashcardContentMutation } from "@highschool/react-query/queries
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
-
-import { IconEditCircle, IconStar, IconStarFilled } from "@tabler/icons-react";
-
-import { editorEventChannel } from "@/events/editor";
-import { useSet } from "@/hooks/use-set";
-import { useContainerContext } from "@/stores/use-container-store";
-import { resize } from "@/utils/resize-image";
+import { IconEditCircle, IconStar } from "@tabler/icons-react";
 
 import { CreatorOnly } from "../common/creator-only";
 import { editorConfig } from "../editor/editor-config";
 import { RichTextBar } from "../editor/rich-text-bar";
 import { PhotoView } from "../providers/photo-provider/photo-view";
+
 import { AddImageButton, RemoveImageButton } from "./image-component";
+
+import { resize } from "@/utils/resize-image";
+import { useContainerContext } from "@/stores/use-container-store";
+import { useSet } from "@/hooks/use-set";
+import { editorEventChannel } from "@/events/editor";
 
 export interface DisplayableTermProps {
   flashcardContent: FlashcardContent;
 }
 
 export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
-  const authed = useSession().status == "authenticated";
   const { flashcard } = useSet();
 
   const hideFlashcard = useContainerContext((s) => s.hideFlashcard);
@@ -73,6 +69,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
     };
 
     editorEventChannel.on("propagateImageUrl", handle);
+
     return () => {
       editorEventChannel.off("propagateImageUrl", handle);
     };
@@ -126,6 +123,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
     const definitionJson = definitionEditor!.getJSON();
     const term = getPlainText(termJson);
     const definition = getPlainText(definitionJson);
+
     return { term, definition, termJson, definitionJson };
   };
 
@@ -212,7 +210,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                   "blur",
               )}
             >
-              <Display text={cache.term} richText={cache.termRichText!} />
+              <Display richText={cache.termRichText!} text={cache.term} />
             </div>
           )}
           <div className="h-full w-[4px] rounded-full bg-gray-100 dark:bg-gray-700" />
@@ -238,8 +236,8 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
               )}
             >
               <Display
-                text={cache.definition}
                 richText={cache.definitionRichText!}
+                text={cache.definition}
               />
             </div>
           )}
@@ -247,11 +245,9 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             {assetUrl && (
               <div className="relative mt-3 h-[80px] min-w-[100px] md:mt-0">
                 <PhotoView src={resize({ src: assetUrl, width: 500 })}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    width={100}
-                    height={80}
                     alt="Term asset"
+                    height={80}
                     src={resize({
                       src: assetUrl,
                       width: 500,
@@ -264,6 +260,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                       aspectRatio: "5 / 4",
                       borderRadius: "6px",
                     }}
+                    width={100}
                   />
                 </PhotoView>
                 {isEditing && (
@@ -296,9 +293,9 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             <div className="flex h-6 w-full items-center justify-between md:justify-end md:space-x-1">
               <CreatorOnly userId={flashcard.userId}>
                 <Button
+                  className="h-8 w-8 scale-75 rounded-full md:scale-100"
                   size="icon"
                   variant={isEditing ? "default" : "ghost"}
-                  className="h-8 w-8 scale-75 rounded-full md:scale-100"
                   onClick={() => {
                     if (isEditing) {
                       doEdit();
@@ -310,9 +307,9 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                 </Button>
               </CreatorOnly>
               <Button
+                className="h-8 w-8 scale-75 rounded-full md:scale-100"
                 size="icon"
                 variant={isEditing ? "default" : "ghost"}
-                className="h-8 w-8 scale-75 rounded-full md:scale-100"
               >
                 <IconStar size={18} />
               </Button>

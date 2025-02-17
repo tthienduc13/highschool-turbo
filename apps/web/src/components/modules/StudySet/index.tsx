@@ -1,8 +1,10 @@
 "use client";
 
 import { AnimatePresence } from "framer-motion";
-
 import { useEffect, useState } from "react";
+
+import { HydrateSetData } from "./hydrate-set-data";
+import { RelatedResoucrces } from "./related-resource";
 
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 import { WithFooter } from "@/components/core/common/with-footer";
@@ -16,9 +18,6 @@ import { SetLoading } from "@/components/core/study-set/set-loading";
 import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { TermOverView } from "@/components/core/study-set/term-overview";
 
-import { HydrateSetData } from "./hydrate-set-data";
-import { RelatedResoucrces } from "./related-resource";
-
 function StudySetModule() {
   const [isScrollPast, setIsScrollPast] = useState(false);
   const handleScroll = () => {
@@ -31,15 +30,17 @@ function StudySetModule() {
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     <PhotoViewProvider>
-      <HydrateSetData placeholder={<SetLoading />} isPublic>
+      <HydrateSetData isPublic placeholder={<SetLoading />}>
         <EditorGlobalStyles />
         <TermImageLayer />
         <WithFooter>
-          <Container maxWidth="7xl" className="relative">
+          <Container className="relative" maxWidth="7xl">
             <div className="flex flex-col gap-12">
               <HeadingArea />
             </div>

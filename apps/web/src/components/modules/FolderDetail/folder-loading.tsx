@@ -1,7 +1,7 @@
-import { Container } from "@/components/core/layouts/container";
-
 import { FlashcardListSkeleton } from "./flashcard-list";
 import { FolderHeadingSkeleton } from "./folder-heading";
+
+import { Container } from "@/components/core/layouts/container";
 
 export const FolderLoading = () => {
   return (

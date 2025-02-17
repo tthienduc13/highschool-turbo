@@ -1,5 +1,4 @@
 import { JSONContent } from "@tiptap/react";
-
 import { StudySetAnswerMode } from "@highschool/interfaces";
 import { TermWithDistractors } from "@highschool/interfaces/distractors";
 

@@ -1,12 +1,9 @@
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";
-
 import Image from "next/image";
-
 import { getMBTITest } from "@highschool/react-query/apis";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconCheck } from "@tabler/icons-react";
 
 interface InstructionProps {

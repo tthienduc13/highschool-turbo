@@ -1,11 +1,8 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   DropdownMenu,
@@ -16,7 +13,6 @@ import {
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconCards,
   IconChevronDown,
@@ -26,6 +22,7 @@ import {
 } from "@tabler/icons-react";
 
 import { TeacherOnly } from "../../common/teacher-only";
+
 import { UserMobileOption } from "./user-mobile-option";
 
 export interface MobileMenuProps {
@@ -44,9 +41,10 @@ export const MobileMenu = ({
   const router = useRouter();
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <>
-      <div
+      <button
         className={cn(
           "ease-cubic-ease absolute left-0 top-20 z-40 h-[calc(100vh-80px)] w-full bg-[rgba(247,250,252,0.75)] backdrop-blur-sm transition-opacity duration-200 dark:bg-[rgba(23,25,35,0.75)]",
           isOpen
@@ -66,9 +64,9 @@ export const MobileMenu = ({
         <div className="w flex w-full flex-col items-center gap-4">
           {session?.user && (
             <Button
+              className="w-full"
               size={"lg"}
               variant={"outline"}
-              className="w-full"
               onClick={() => {
                 onClose();
                 router.push("/");
@@ -80,8 +78,8 @@ export const MobileMenu = ({
           <DropdownMenu open={menuOpen} onOpenChange={() => setMenuOpen(false)}>
             <DropdownMenuTrigger asChild className="w-full">
               <Button
-                size={"lg"}
                 className="w-full"
+                size={"lg"}
                 onClick={() => setMenuOpen(!menuOpen)}
               >
                 Tạo mới
@@ -94,26 +92,26 @@ export const MobileMenu = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
+              className="w-full p-0"
               side="bottom"
               sideOffset={10}
               style={{
                 zIndex: 10000,
                 width: "var(--radix-dropdown-menu-trigger-width)",
               }}
-              className="w-full p-0"
             >
               <DropdownMenuGroup>
                 <DropdownMenuItem className="px-3 py-2 text-base">
-                  <IconCards size={20} className="!size-5" />
+                  <IconCards className="!size-5" size={20} />
                   Bộ thẻ mới
                 </DropdownMenuItem>
                 <DropdownMenuItem className="px-3 py-2 text-base">
-                  <IconSparkles size={20} className="!size-5" />
+                  <IconSparkles className="!size-5" size={20} />
                   Bộ thẻ mới với AI
                 </DropdownMenuItem>
                 <TeacherOnly>
                   <DropdownMenuItem className="px-3 py-2 text-base">
-                    <IconFile size={20} className="!size-5" />
+                    <IconFile className="!size-5" size={20} />
                     Tài liệu
                   </DropdownMenuItem>
                 </TeacherOnly>
@@ -126,7 +124,7 @@ export const MobileMenu = ({
                   onFolderClick();
                 }}
               >
-                <IconFolder size={20} className="!size-5" />
+                <IconFolder className="!size-5" size={20} />
                 Thư mục mới
               </DropdownMenuItem>
             </DropdownMenuContent>

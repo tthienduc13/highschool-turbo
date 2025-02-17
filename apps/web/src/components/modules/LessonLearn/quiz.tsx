@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-
 import { useParams } from "next/navigation";
-
 import { QuizCategory, QuizSubmission } from "@highschool/interfaces";
 import {
   useQuizQuery,
@@ -20,7 +18,6 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@highschool/ui/components/ui/radio-group";
-
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -84,6 +81,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
         }),
       ),
     };
+
     submitQuiz.mutate(submission, {
       onSuccess: () => {
         setQuizCompleted(true);
@@ -97,7 +95,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
 
   if (!data?.data?.questions || data?.data?.questions.length === 0) {
     return (
-      <Container maxWidth="4xl" className="flex flex-col gap-10 pt-10">
+      <Container className="flex flex-col gap-10 pt-10" maxWidth="4xl">
         <h2 className="text-2xl font-bold">No questions available</h2>
       </Container>
     );
@@ -105,7 +103,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
 
   if (showSummary) {
     return (
-      <Container maxWidth="4xl" className="p-10">
+      <Container className="p-10" maxWidth="4xl">
         <Card className="mx-auto w-full max-w-2xl">
           <CardHeader>
             <CardTitle className="text-lg font-bold">Tổng kết</CardTitle>
@@ -155,12 +153,12 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
 
   if (quizCompleted) {
     return (
-      <Container maxWidth="4xl" className="p-10">
+      <Container className="p-10" maxWidth="4xl">
         <Card className="mx-auto w-full max-w-2xl">
           <CardHeader>
             <CardTitle className="text-lg font-bold">Tổng kết</CardTitle>
           </CardHeader>
-          <CardContent></CardContent>
+          <CardContent />
           <CardFooter className="flex justify-end">
             <Button onClick={() => setShowQuiz(false)}>Xong</Button>
           </CardFooter>
@@ -170,7 +168,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
   }
 
   return (
-    <Container maxWidth="4xl" className="flex flex-col gap-10 p-10">
+    <Container className="flex flex-col gap-10 p-10" maxWidth="4xl">
       <h2 className="text-2xl font-bold">Câu hỏi</h2>
       <Card className="mx-auto w-full max-w-2xl">
         <CardHeader>
@@ -185,7 +183,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
           >
             {currentQuestion?.answers.map((answer) => (
               <div key={answer.id} className="flex items-center space-x-2">
-                <RadioGroupItem value={answer.id} id={answer.id} />
+                <RadioGroupItem id={answer.id} value={answer.id} />
                 <Label htmlFor={answer.id}>{answer.answerContent}</Label>
               </div>
             ))}
@@ -197,8 +195,8 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
           </div>
           <div className="flex space-x-2">
             <Button
-              onClick={handlePreviousQuestion}
               disabled={currentQuestionIndex === 0}
+              onClick={handlePreviousQuestion}
             >
               <IconChevronLeft className="h-4 w-4" />
               Câu trước

@@ -2,11 +2,8 @@
 
 import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { env } from "@highschool/env";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import {
@@ -17,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
-
 import {
   IconBug,
   IconChevronDown,
@@ -29,6 +25,8 @@ import {
   IconUser,
   TablerIcon,
 } from "@tabler/icons-react";
+import { deleteClientCookie } from "@highschool/lib/cookies";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { menuEventChannel } from "@/events/menu";
 
@@ -86,8 +84,8 @@ export const UserMenu = () => {
           <div className="flex cursor-pointer items-center gap-2 hover:opacity-95">
             <Avatar className="size-8">
               <AvatarImage
-                src={user?.image ?? ""}
                 alt={user?.fullname ?? "Chưa đặt tên"}
+                src={user?.image ?? ""}
               />
             </Avatar>
             <p className="font-semibold">{user?.fullname ?? "Chưa đặt tên"}</p>
@@ -108,10 +106,10 @@ export const UserMenu = () => {
             {menuItems.map(({ label, icon: Icon, action }, index) => (
               <DropdownMenuItem
                 key={index}
-                onClick={action}
                 className="cursor-pointer"
+                onClick={action}
               >
-                <Icon size={18} className="text-base" />
+                <Icon className="text-base" size={18} />
                 {label}
               </DropdownMenuItem>
             ))}
@@ -121,22 +119,23 @@ export const UserMenu = () => {
             {supportItems.map(({ label, icon: Icon, action }, index) => (
               <DropdownMenuItem
                 key={index}
-                onClick={action}
                 className="cursor-pointer"
+                onClick={action}
               >
-                <Icon size={18} className="text-base" />
+                <Icon className="text-base" size={18} />
                 {label}
               </DropdownMenuItem>
             ))}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem
+            className="cursor-pointer"
             onClick={async () => {
+              deleteClientCookie(ACCESS_TOKEN);
               await signOut();
             }}
-            className="cursor-pointer"
           >
-            <IconLogout size={18} className="text-base" />
+            <IconLogout className="text-base" size={18} />
             Đăng xuất
           </DropdownMenuItem>
         </DropdownMenuContent>

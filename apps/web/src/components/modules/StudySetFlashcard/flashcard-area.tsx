@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { shuffleArray } from "@highschool/lib/array";
 
 import { RootFlashcardWrapper } from "@/components/core/study-set/root-flashcard-wrapper";
@@ -10,6 +9,7 @@ import { useContainerContext } from "@/stores/use-container-store";
 
 export const FlashcardArea = () => {
   const { terms } = useSet();
+
   if (!terms) throw new Error("Terms data is missing in unison!");
 
   const _termOrder = terms.sort((a, b) => a.rank - b.rank).map((t) => t.id);
@@ -27,8 +27,8 @@ export const FlashcardArea = () => {
   return (
     <RootFlashcardWrapper
       h="max(calc(100vh - 240px), 560px)"
-      terms={terms}
       termOrder={termOrder}
+      terms={terms}
     />
   );
 };

@@ -1,8 +1,6 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
-
 import { createContext, useContext } from "react";
-
 import {
   HollandAnswerOptions,
   HollandQuestion,
@@ -40,28 +38,31 @@ export const DEFAULT_PROPS: HollandTestStoreProps = {
 
 export const createHollandTestStore = (
   initProps?: Partial<HollandTestStoreProps>,
-  behaviors?: Partial<HollandTestState>,
 ) => {
   return createStore<HollandTestState>()(
-    subscribeWithSelector((set, get) => ({
+    subscribeWithSelector((set) => ({
       ...DEFAULT_PROPS,
       ...initProps,
       setAnswerForQuestion: (questionIndex, questionId, answers) =>
         set((state) => {
           const updatedAnswers = [...state.userTestAnswers];
+
           updatedAnswers[questionIndex] = {
             id: questionId,
             answerOption: answers.map((answer) => answer.option),
           };
+
           return { userTestAnswers: updatedAnswers };
         }),
       clearAnswersForQuestion: (questionIndex) =>
         set((state) => {
           const updatedAnswers = [...state.userTestAnswers];
+
           updatedAnswers[questionIndex] = {
             id: updatedAnswers[questionIndex]?.id || "",
             answerOption: [],
           };
+
           return { userTestAnswers: updatedAnswers };
         }),
       setCurrentQuestionIndex: (index) => {
@@ -81,6 +82,7 @@ export const useHollandTestContext = <T>(
   selector: (state: HollandTestState) => T,
 ): T => {
   const store = useContext(HollandTestContext);
+
   if (!store)
     throw new Error("Missing HollandTestContext.Provider in the tree");
 

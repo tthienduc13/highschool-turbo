@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
@@ -17,10 +16,10 @@ function OnboardCommandMenuModule() {
       setInteracted(true);
     });
   }, []);
+
   return (
     <PresentWrapper>
       <DefaultLayout
-        heading={interacted ? "Không tệ nhỉ!" : "Menu lệnh"}
         description={
           interacted ? (
             <>
@@ -31,6 +30,7 @@ function OnboardCommandMenuModule() {
             "Điều hướng giữa các bộ thẻ, thư mục, khoá học nhanh chóng"
           )
         }
+        heading={interacted ? "Không tệ nhỉ!" : "Menu lệnh"}
         nextVariant={"default"}
       >
         {!interacted && (

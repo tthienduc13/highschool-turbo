@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@highschool/ui/components/ui/button";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import GlobalShortcutLayer from "../global-shorcut-layer";
+
 import { useNextStep } from "./present-wrapper";
 
 interface DefaultLayoutProps {
@@ -45,14 +45,14 @@ export const DefaultLayout: React.FC<
         </div>
         {children}
         <Button
+          className="w-72 md:h-12 md:text-lg"
           disabled={nextDisabled || nextLoading}
+          size={"lg"}
           variant={nextVariant}
           onClick={async () => {
             await onNext?.();
             if (defaultNext) next();
           }}
-          className="w-72 md:h-12 md:text-lg"
-          size={"lg"}
         >
           {nextLoading ? <IconLoader2 className="animate-spin" /> : action}
         </Button>

@@ -1,7 +1,6 @@
-import { Suspense } from "react";
-
 import type { Metadata } from "next";
 
+import { Suspense } from "react";
 import { auth } from "@highschool/react-query/auth";
 import "@highschool/ui/globals.css";
 import { cn } from "@highschool/ui/lib/utils";
@@ -27,8 +26,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
+
   return (
-    <html lang="vi" suppressHydrationWarning>
+    <html suppressHydrationWarning lang="vi">
       <body
         className={cn(
           "w-screen bg-gray-50 font-sans dark:bg-gray-900/50",

@@ -9,9 +9,11 @@ import {
 import { ProfileArea } from "./profile-area";
 import { FlashcardList } from "./tabs/flashcard";
 
+import { Container } from "@/components/core/layouts/container";
+
 export const ProfileLoading = () => {
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-12">
+    <Container className="flex flex-col gap-12" maxWidth="4xl">
       <ProfileArea.Skeleton />
       <Tabs className="mb-5 md:mb-10">
         <TabsList>
@@ -32,6 +34,6 @@ export const ProfileLoading = () => {
           <FlashcardList.Skeleton />
         </TabsContent>
       </Tabs>
-    </div>
+    </Container>
   );
 };

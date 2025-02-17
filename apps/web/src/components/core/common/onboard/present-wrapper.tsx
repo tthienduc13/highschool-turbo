@@ -1,19 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-
 import { createContext, useContext } from "react";
-
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-
 import { useMediaQuery } from "@highschool/hooks";
+
+import { Loading } from "../loading";
+
+import { SegmentedProgress } from "./segmented-progress";
 
 import { useMe } from "@/hooks/use-me";
 import { getSafeRedirectUrl } from "@/utils/urls";
-
-import { Loading } from "../loading";
-import { SegmentedProgress } from "./segmented-progress";
 
 const computeMap = (isMobile = false) => {
   const base = [
@@ -63,11 +61,13 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
     if (!callbackUrl) return "/";
 
     return getSafeRedirectUrl(callbackUrl);
+
     return "";
   };
 
   const nextStep = () => {
     const next = map[map.indexOf(currentStep)! + 1];
+
     if (next) {
       router.replace(
         `/onboard${next}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`,
@@ -84,10 +84,6 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
       <div className="relative flex min-h-screen w-screen items-center justify-center">
         <div className="mx-auto max-w-3xl py-20">
           <motion.div
-            initial={{
-              opacity: -1,
-              translateY: -16,
-            }}
             animate={{
               opacity: 1,
               translateY: 0,
@@ -104,6 +100,10 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
                 ease: "easeIn",
               },
             }}
+            initial={{
+              opacity: -1,
+              translateY: -16,
+            }}
           >
             {children}
           </motion.div>
@@ -111,10 +111,10 @@ export const PresentWrapper: React.FC<React.PropsWithChildren> = ({
         <div className="absolute bottom-0 left-0 w-full">
           <div className="mx-auto w-full max-w-xs px-4">
             <SegmentedProgress
-              steps={map.length}
-              currentStep={map.indexOf(currentStep)}
               clickable
+              currentStep={map.indexOf(currentStep)}
               disableFrom={!me.username ? 3 : undefined}
+              steps={map.length}
               onClick={async (i) => {
                 await router.replace(
                   `/onboard${map[i]!}?callbackUrl=${encodeURIComponent(callbackUrl || "")}`,

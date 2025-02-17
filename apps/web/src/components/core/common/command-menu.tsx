@@ -1,11 +1,8 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
-
 import { useEffect, useRef, useState } from "react";
-
 import { usePathname, useRouter } from "next/navigation";
-
 import { useShortcut } from "@highschool/hooks";
 import {
   Dialog,
@@ -14,7 +11,6 @@ import {
 } from "@highschool/ui/components/ui/dialog";
 import { Input } from "@highschool/ui/components/ui/input";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconFolder,
   IconHome,

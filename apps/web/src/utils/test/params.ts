@@ -1,15 +1,13 @@
 import * as z from "zod";
-
 import { useRouter } from "next/navigation";
-
 import { StudySetAnswerMode } from "@highschool/interfaces";
+
+import { getBitwiseForTypes, getQuestionTypesFromBitwise } from "./type";
 
 import {
   DEFAULT_PROPS,
   TestStoreProps,
 } from "@/stores/use-study-set-test-store";
-
-import { getBitwiseForTypes, getQuestionTypesFromBitwise } from "./type";
 
 const settingsSchema = z.object({
   count: z.number().int().min(1),

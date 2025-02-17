@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import { Flashcard } from "@highschool/interfaces";
 import { useAuthorsQuery } from "@highschool/react-query/queries";
 import {
@@ -12,9 +11,9 @@ import {
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
 
-import { StudySetCard } from "@/components/core/common/study-set-card";
-
 import { Wrapper } from "./wrapper";
+
+import { StudySetCard } from "@/components/core/common/study-set-card";
 
 interface RecommendFlashcardProps {
   data: Flashcard[];
@@ -30,6 +29,7 @@ export const RecommendFlashcard = ({ data }: RecommendFlashcardProps) => {
       const uniqueUserIds = Array.from(
         new Set(data.map((flashcard: { userId: string }) => flashcard.userId)),
       );
+
       setUserIds(uniqueUserIds);
     }
   }, [data]);
@@ -42,18 +42,19 @@ export const RecommendFlashcard = ({ data }: RecommendFlashcardProps) => {
     <Wrapper title="Thẻ ghi nhớ gợi ý">
       <div className="group w-full">
         <Carousel
+          className="w-full px-4"
           opts={{
             dragFree: true,
 
             align: "start",
           }}
-          className="w-full px-4"
         >
           <CarouselContent>
             {data?.map((flashcard) => {
               const matchedUser = user?.find(
                 (user) => user.id === flashcard.userId,
               );
+
               return (
                 <CarouselItem
                   key={flashcard.id}
@@ -61,13 +62,13 @@ export const RecommendFlashcard = ({ data }: RecommendFlashcardProps) => {
                 >
                   <div className="py-4">
                     <StudySetCard
-                      studySet={flashcard}
                       numTerms={flashcard.numberOfFlashcardContent}
-                      userLoading={userLoading}
+                      studySet={flashcard}
                       user={{
                         fullname: matchedUser?.fullname!,
                         image: matchedUser?.profilePicture!,
                       }}
+                      userLoading={userLoading}
                       onRemove={() => {}}
                     />
                   </div>
@@ -76,16 +77,16 @@ export const RecommendFlashcard = ({ data }: RecommendFlashcardProps) => {
             })}
           </CarouselContent>
           <CarouselPrevious
+            className="left-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="left-0 hidden group-hover:flex"
           />
           <CarouselNext
+            className="right-0 hidden group-hover:flex"
             style={{
               zIndex: 10000,
             }}
-            className="right-0 hidden group-hover:flex"
           />
         </Carousel>
       </div>

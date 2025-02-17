@@ -1,7 +1,6 @@
 import type { Editor } from "@tiptap/core";
 
 import React from "react";
-
 import { useOutsideClick } from "@highschool/hooks";
 import { A, Highlight } from "@highschool/lib/editor";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -11,7 +10,6 @@ import {
   PopoverTrigger,
 } from "@highschool/ui/components/ui/popover";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCircle, IconClearFormatting } from "@tabler/icons-react";
 
 export interface HighlightColorPopoverProps {
@@ -36,17 +34,17 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
         <PopoverTrigger asChild>
           <div className={cn("relative h-6 w-6")}>
             <Button
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={(e) => {
-                e.preventDefault();
-                setIsOpen((o) => !o);
-              }}
-              variant={"ghost"}
-              size={"icon"}
               className={cn(
                 "absolute left-0 top-0 h-full w-full rounded-full",
                 isActive && "bg-gray-300",
               )}
+              size={"icon"}
+              variant={"ghost"}
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen((o) => !o);
+              }}
+              onMouseDown={(e) => e.preventDefault()}
             >
               <div className="absolute h-4 w-4">
                 <IconCircle size={16} />
@@ -72,19 +70,19 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
           </div>
         </PopoverTrigger>
         <PopoverContent
-          onOpenAutoFocus={(e) => e.preventDefault()}
+          className="w-full p-[4px]"
           side="top"
           sideOffset={10}
-          className="w-full p-[4px]"
+          onOpenAutoFocus={(e) => e.preventDefault()}
         >
           <div className="flex flex-row items-center gap-x-1">
             {Object.values(Highlight).map((color) => (
               <Button
-                className="h-4 w-4"
-                variant={"ghost"}
-                size={"icon"}
                 key={color}
-                onMouseDown={(e) => e.preventDefault()}
+                aria-label={color}
+                className="h-4 w-4"
+                size={"icon"}
+                variant={"ghost"}
                 onClick={() => {
                   activeEditor
                     ?.chain()
@@ -93,25 +91,25 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
                     .run();
                   setIsOpen(false);
                 }}
-                aria-label={color}
+                onMouseDown={(e) => e.preventDefault()}
               >
                 <div
                   className="h-3 w-3 rounded-full"
                   style={{ background: color }}
-                ></div>
+                />
               </Button>
             ))}
             <Button
-              className="h-4 w-4"
-              variant={"ghost"}
-              size={"icon"}
               key={color}
-              onMouseDown={(e) => e.preventDefault()}
+              aria-label={color}
+              className="h-4 w-4"
+              size={"icon"}
+              variant={"ghost"}
               onClick={() => {
                 activeEditor?.chain().focus().unsetHighlight().run();
                 setIsOpen(false);
               }}
-              aria-label={color}
+              onMouseDown={(e) => e.preventDefault()}
             >
               <IconClearFormatting size={16} />
             </Button>

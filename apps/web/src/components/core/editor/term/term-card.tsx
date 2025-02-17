@@ -3,17 +3,15 @@
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { motion, useInView } from "framer-motion";
-
 import { forwardRef, memo, useEffect, useRef } from "react";
-
 import { Card } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
-
-import { useSetEditorContext } from "@/stores/use-set-editor-store";
 
 import { DeloadedCard } from "./deloaded-card";
 import { InnerTermCard } from "./inner-term-card";
 import { SortableTermCardProps } from "./sortable-term-card";
+
+import { useSetEditorContext } from "@/stores/use-set-editor-store";
 
 export interface TermCardProps extends SortableTermCardProps {
   style: React.CSSProperties;
@@ -25,6 +23,7 @@ export type TermCardRef = HTMLDivElement;
 
 const padNextFour = (ranks: number[]) => {
   const last = ranks[ranks.length - 1]!;
+
   return [...ranks, last + 1, last + 2, last + 3, last + 4];
 };
 
@@ -75,20 +74,20 @@ export const TermCard = forwardRef<TermCardRef, TermCardProps>(
           )}
           {visible || props.justCreated ? (
             <MotionCard
+              animate={{ scale: 1, opacity: 1 }}
               className="rounded-xl border-2 border-gray-50 bg-white dark:border-gray-700 dark:bg-gray-800/50"
+              exit={{ scale: 0.8, opacity: 0 }}
               initial={{
                 scale: props.justCreated ? 0.9 : 1,
                 opacity: props.justCreated ? 0.5 : 1,
               }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
             >
               <InnerTermCard {...props} />
             </MotionCard>
           ) : (
             <DeloadedCard
-              term={props.flashcardContent.flashcardContentTerm}
               definition={props.flashcardContent.flashcardContentDefinition}
+              term={props.flashcardContent.flashcardContentTerm}
             />
           )}
         </div>

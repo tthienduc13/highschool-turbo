@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useLayoutEffect, useRef, useState } from "react";
 
 interface PhotoContainerProps {
@@ -19,6 +20,7 @@ export const PhotoContainer: React.FC<PhotoContainerProps> = ({
   const [originalHeight, setOriginalHeight] = useState<number>();
   const originalWidthRef = useRef<number>(0);
   const originalHeightRef = useRef<number>(0);
+
   originalWidthRef.current = originalWidth ?? 0;
   originalHeightRef.current = originalHeight ?? 0;
 
@@ -32,6 +34,7 @@ export const PhotoContainer: React.FC<PhotoContainerProps> = ({
 
   const [scale, setScale] = useState(1);
   const scaleRef = useRef<number>(1);
+
   scaleRef.current = scale;
 
   const setBounded = () => {
@@ -86,21 +89,20 @@ export const PhotoContainer: React.FC<PhotoContainerProps> = ({
 
   return (
     <div
+      ref={containerRef}
       style={{
         width: originalWidth,
         height: originalHeight,
       }}
-      ref={containerRef}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         alt="Photo preview"
-        src={src}
         className={
           animate
             ? "object-cover transition-[width,height,transform,border-radius] duration-500"
             : ""
         }
+        src={src}
         style={{
           width,
           height,

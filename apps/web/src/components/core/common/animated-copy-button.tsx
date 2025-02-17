@@ -1,12 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-
 import React, { useState } from "react";
-
 import { buttonVariants } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCheck } from "@tabler/icons-react";
 
 interface AnimatedCopyButtonProps {
@@ -19,21 +16,22 @@ export const AnimatedCopyButton = ({ pathName }: AnimatedCopyButtonProps) => {
     setIsCopied(true);
     navigator.clipboard.writeText(pathName);
   };
+
   return (
     <AnimatePresence mode="wait">
       {isCopied ? (
         <motion.button
-          className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
-          onClick={() => setIsCopied(false)}
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className={cn(buttonVariants({ size: "lg", variant: "outline" }))}
           exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          onClick={() => setIsCopied(false)}
         >
           <motion.span
             key="action"
+            animate={{ y: 0 }}
             className="flex flex-row items-center gap-x-1"
             initial={{ y: -50 }}
-            animate={{ y: 0 }}
           >
             <IconCheck size={16} />
             Copied
@@ -41,16 +39,16 @@ export const AnimatedCopyButton = ({ pathName }: AnimatedCopyButtonProps) => {
         </motion.button>
       ) : (
         <motion.button
-          className={cn(buttonVariants({ size: "lg", variant: "default" }))}
-          onClick={hanldeCopy}
-          initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          className={cn(buttonVariants({ size: "lg", variant: "default" }))}
           exit={{ opacity: 0 }}
+          initial={{ opacity: 0 }}
+          onClick={hanldeCopy}
         >
           <motion.span
             key="reaction"
-            initial={{ x: 0 }}
             exit={{ x: 50, transition: { duration: 0.1 } }}
+            initial={{ x: 0 }}
           >
             Copy
           </motion.span>

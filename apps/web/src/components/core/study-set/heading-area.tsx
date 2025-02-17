@@ -2,14 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-
 import { useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useDeleteFlashcardMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconEditCircle,
   IconStar,
@@ -17,12 +13,12 @@ import {
   IconTrendingUp,
 } from "@tabler/icons-react";
 
-import { useSet } from "@/hooks/use-set";
-
 import { ConfirmModal } from "../common/confirm-modal";
 import { Hint } from "../common/hint";
 import { visibilityIcon } from "../common/renderer/visibility-icon";
 import { visibilityText } from "../common/renderer/visibility-text";
+
+import { useSet } from "@/hooks/use-set";
 
 export const HeadingArea = () => {
   const { flashcard } = useSet();
@@ -35,17 +31,18 @@ export const HeadingArea = () => {
   return (
     <>
       <ConfirmModal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
-        heading="Xoá bộ thẻ ghi nhớ này?"
+        destructive
+        actionText="Xoá bộ thẻ"
         body={
           <p className="text-muted-foreground">
             Bạn có chắc chắn muốn bộ thẻ ghi nhớ này và toàn bộ nội dung? Hành
             động này không thể hoàn tác.
           </p>
         }
-        actionText="Xoá bộ thẻ"
+        heading="Xoá bộ thẻ ghi nhớ này?"
         isLoading={deleteSet.isPending}
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
         onConfirm={() => {
           deleteSet.mutate(
             { flashcardId: flashcard.id },
@@ -57,7 +54,6 @@ export const HeadingArea = () => {
             },
           );
         }}
-        destructive
       />
       <div className="flex flex-col gap-4">
         <h1 className="break-all text-2xl font-bold md:text-4xl">
@@ -78,9 +74,9 @@ export const HeadingArea = () => {
             <div className="bg-background flex w-fit flex-row overflow-hidden rounded-lg border">
               <Hint label="Chỉnh sửa bộ thẻ" side="bottom" sideOffset={10}>
                 <Button
+                  className="rounded-none"
                   size={"icon"}
                   variant={"ghost"}
-                  className="rounded-none"
                   onClick={() => router.push(`/study-set/edit/${flashcard.id}`)}
                 >
                   <IconEditCircle />
@@ -88,9 +84,9 @@ export const HeadingArea = () => {
               </Hint>
               <Hint label="Xoá bộ thẻ" side="bottom" sideOffset={10}>
                 <Button
+                  className="rounded-none"
                   size={"icon"}
                   variant={"ghost"}
-                  className="rounded-none"
                   onClick={() => setDeleteModalOpen(true)}
                 >
                   <IconTrash />

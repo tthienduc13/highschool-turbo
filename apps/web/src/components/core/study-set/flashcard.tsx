@@ -1,16 +1,14 @@
 import type { JSONContent } from "@tiptap/react";
+
 import { toast } from "sonner";
 import useFitText from "use-fit-text";
-
 import { memo, useRef } from "react";
-
 import { FlashcardContent } from "@highschool/interfaces";
 import { Display } from "@highschool/lib/display";
 import { getRichTextJson } from "@highschool/lib/editor";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconArrowBackUp,
   IconCheck,
@@ -22,10 +20,11 @@ import {
   IconX,
 } from "@tabler/icons-react";
 
-import { resize } from "@/utils/resize-image";
-
 import { PhotoView } from "../providers/photo-provider/photo-view";
+
 import { SetCreatorOnly } from "./creator-only";
+
+import { resize } from "@/utils/resize-image";
 
 export interface FlashcardProps {
   term: FlashcardContent;
@@ -54,7 +53,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
   onRightAction,
   onBackAction,
   onRequestEdit,
-  onRequestStar,
+  //   onRequestStar,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -67,8 +66,8 @@ export const Flashcard: React.FC<FlashcardProps> = ({
 
   return (
     <Card
-      style={{ height: h }}
       className="w-full overflow-hidden rounded-xl border-none bg-white shadow-xl dark:bg-gray-800"
+      style={{ height: h }}
     >
       <div
         className="h-[4px] min-h-[4px] bg-orange-300"
@@ -84,16 +83,16 @@ export const Flashcard: React.FC<FlashcardProps> = ({
             {variant == "sortable" && (
               <Button
                 aria-label="Back"
+                className="-ml-2 rounded-full"
+                disabled={index === 0}
                 size="icon"
                 variant="ghost"
-                className="-ml-2 rounded-full"
                 onClick={(e) => {
                   e.stopPropagation();
                   onBackAction?.();
                 }}
-                disabled={index === 0}
               >
-                <IconArrowBackUp size={24} className="!size-6" />
+                <IconArrowBackUp className="!size-6" size={24} />
               </Button>
             )}
             <div className="font-bold text-gray-500">
@@ -108,9 +107,9 @@ export const Flashcard: React.FC<FlashcardProps> = ({
               <SetCreatorOnly>
                 <Button
                   aria-label="Edit"
-                  variant="ghost"
-                  size="icon"
                   className="rounded-full"
+                  size="icon"
+                  variant="ghost"
                   onClick={(e) => {
                     e.stopPropagation();
                     onRequestEdit();
@@ -122,9 +121,9 @@ export const Flashcard: React.FC<FlashcardProps> = ({
             </div>
             <Button
               aria-label="Edit"
-              variant="ghost"
-              size="icon"
               className="rounded-full"
+              size="icon"
+              variant="ghost"
               onClick={(e) => {
                 e.stopPropagation();
                 toast.info("Chức năng đang phát triển");
@@ -144,11 +143,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
               )}
             >
               <PureShrinkableText
-                text={
-                  isFlipped
-                    ? term.flashcardContentDefinition
-                    : term.flashcardContentTerm
-                }
+                container={containerRef}
                 richText={
                   (isFlipped
                     ? getRichTextJson(term.flashcardContentDefinitionRichText)
@@ -156,7 +151,11 @@ export const Flashcard: React.FC<FlashcardProps> = ({
                         term.flashcardContentTermRichText,
                       )) as JSONContent
                 }
-                container={containerRef}
+                text={
+                  isFlipped
+                    ? term.flashcardContentDefinition
+                    : term.flashcardContentTerm
+                }
               />
             </div>
             {term.image && isFlipped && (
@@ -167,19 +166,18 @@ export const Flashcard: React.FC<FlashcardProps> = ({
                 )}
               >
                 <PhotoView
+                  borderRadius={8}
                   src={resize({
                     src: term.image,
                     width: 500,
                   })}
-                  borderRadius={8}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
+                    alt="Term asset"
                     src={resize({
                       src: term.image,
                       width: 500,
                     })}
-                    alt="Term asset"
                     style={{
                       cursor: "zoom-in",
                       borderRadius: "8px",
@@ -194,14 +192,14 @@ export const Flashcard: React.FC<FlashcardProps> = ({
         </div>
         <div className="flex flex-row items-center gap-4">
           <Button
-            size={"lg"}
             className="w-full"
+            disabled={variant == "default" && index === 0}
+            size={"lg"}
+            variant={"outline"}
             onClick={(e) => {
               e.stopPropagation();
               onLeftAction();
             }}
-            variant={"outline"}
-            disabled={variant == "default" && index === 0}
           >
             <LeftIcon
               className={cn(
@@ -213,14 +211,14 @@ export const Flashcard: React.FC<FlashcardProps> = ({
             />
           </Button>
           <Button
-            size={"lg"}
             className="w-full"
+            disabled={variant == "default" && index === numTerms - 1}
+            size={"lg"}
+            variant={"outline"}
             onClick={(e) => {
               e.stopPropagation();
               onRightAction();
             }}
-            variant={"outline"}
-            disabled={variant == "default" && index === numTerms - 1}
           >
             <RightIcon
               className={cn(
@@ -270,7 +268,7 @@ const ShrinkableText: React.FC<{
         overflowWrap: "anywhere",
       }}
     >
-      <Display text={text} richText={richText} />
+      <Display richText={richText} text={text} />
     </span>
   );
 };

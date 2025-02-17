@@ -1,15 +1,11 @@
 "use client";
 
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-
 import { useEffect, useState } from "react";
-
 import { useRouter } from "next/navigation";
-
 import { useResetProgressMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconReload } from "@tabler/icons-react";
 
 import {
@@ -65,18 +61,18 @@ export const LearnSettingModal: React.FC<LearnSettingModalProps> = ({
               <p className="text-sm">Xóa tiến trình học của bộ thẻ này</p>
             </div>
             <Button
-              disabled={isPending}
               className="text-blue hover:text-blue"
+              disabled={isPending}
+              size={"lg"}
+              variant={"ghost"}
               onClick={async () => {
                 resetProgress({ flashcardId: flashcard.id });
                 router.refresh();
               }}
-              size={"lg"}
-              variant={"ghost"}
             >
               <IconReload
-                size={"lg"}
                 className={cn(isPending && "animate-spin")}
+                size={"lg"}
               />
               {!isPending && " Làm lại từ đầu"}
             </Button>

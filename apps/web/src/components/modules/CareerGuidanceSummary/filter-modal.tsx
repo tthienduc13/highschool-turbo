@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 import { Separator } from "@highschool/ui/components/ui/separator";
-
 import { IconLocation, IconMoneybag } from "@tabler/icons-react";
 
 import { FilterState } from "./university-section";
@@ -30,8 +29,9 @@ export const FilterModal = ({
   clearFilter,
 }: FilterModalProps) => {
   console.log(filterState);
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} withoutFooter title="Bộ lọc">
+    <Modal withoutFooter isOpen={isOpen} title="Bộ lọc" onClose={onClose}>
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-3 items-center">
           <div className="flex flex-row items-center gap-2">
@@ -46,13 +46,13 @@ export const FilterModal = ({
           >
             <SelectTrigger className="col-span-2">
               <SelectValue
-                placeholder={"Bạn muốn học ở đâu?"}
                 className="px-4"
+                placeholder={"Bạn muốn học ở đâu?"}
               />
             </SelectTrigger>
             <SelectContent
-              onCloseAutoFocus={(e) => e.preventDefault()}
               className="placeholder:text-muted-foreground"
+              onCloseAutoFocus={(e) => e.preventDefault()}
             >
               {Object.values(UniversityCity).map((city) => (
                 <SelectItem key={city} value={city}>
