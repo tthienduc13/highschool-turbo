@@ -1,5 +1,11 @@
-import { Button } from "@highschool/ui/components/ui/button";
+"use client";
+
+import { useSession } from "next-auth/react";
 
 export default function Home() {
+  const session = useSession();
+
+  console.log(session);
+
   return <div>abc</div>;
 }

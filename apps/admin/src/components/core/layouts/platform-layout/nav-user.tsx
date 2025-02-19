@@ -1,10 +1,15 @@
 "use client";
-
+import { signOut, useSession } from "next-auth/react";
+import { deleteClientCookie } from "@highschool/lib/cookies";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@highschool/ui/components/ui/avatar";
+  IconBell,
+  IconChevronUp,
+  IconCreditCard,
+  IconLogout2,
+  IconRosetteDiscountCheck,
+  IconSparkles,
+} from "@tabler/icons-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,14 +19,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
-
 import {
-  IconBell,
-  IconDots,
-  IconLogout,
-  IconLogout2,
-  IconSparkles,
-} from "@tabler/icons-react";
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@highschool/ui/components/ui/avatar";
 
 import {
   SidebarMenu,
@@ -40,6 +42,7 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const { data } = useSession();
 
   return (
     <SidebarMenu>
@@ -47,34 +50,45 @@ export function NavUser({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              size="lg"
             >
-              <Avatar className="h-8 w-8 !rounded">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="!rounded">CN</AvatarFallback>
+              <Avatar className="h-8 w-8 rounded-lg">
+                <AvatarImage
+                  alt={data?.user.fullname ?? "Người dùng Highschool"}
+                  src={data?.user.image}
+                />
+                <AvatarFallback className="rounded-lg">HS</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
+                <span className="truncate font-semibold">
+                  {data?.user.fullname ?? data?.user.username}
+                </span>
+                <span className="truncate text-xs">{data?.user.email}</span>
               </div>
-              <IconDots className="ml-auto size-4" />
+              <IconChevronUp className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
+            align="end"
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             side={isMobile ? "bottom" : "right"}
-            align="end"
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarImage
+                    alt={data?.user.fullname ?? "Người dùng Highschool"}
+                    src={data?.user.image}
+                  />
+                  <AvatarFallback className="rounded-lg">HS</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">
+                    {data?.user.fullname ?? data?.user.username}
+                  </span>
+                  <span className="truncate text-xs">{data?.user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -87,21 +101,26 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              {/* <DropdownMenuItem>
-                <Icon />
+              <DropdownMenuItem>
+                <IconRosetteDiscountCheck />
                 Account
-              </DropdownMenuItem> */}
-              {/* <DropdownMenuItem>
-                <CreditCard />
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <IconCreditCard />
                 Billing
-              </DropdownMenuItem> */}
+              </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconBell />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                await deleteClientCookie(ACCESS_TOKEN);
+                await signOut();
+              }}
+            >
               <IconLogout2 />
               Log out
             </DropdownMenuItem>

@@ -3,10 +3,11 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
-        "build": "next build",
-        "start": "next start",
-        "lint": "next lint"
+        "dev": "pnpm with-env next dev --turbopack",
+        "build": "pnpm with-env next build",
+        "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
+        "start": "pnpm with-env next start",
+        "with-env": "dotenv -e ../../.env --"
     },
     "dependencies": {
         "@highschool/endpoints": "workspace:*",
@@ -14,12 +15,17 @@
         "@highschool/hooks": "workspace:*",
         "@highschool/interfaces": "workspace:*",
         "@highschool/ui": "workspace:*",
+        "@hookform/resolvers": "^3.9.1",
         "@radix-ui/react-slot": "^1.1.1",
         "@tabler/icons-react": "^3.24.0",
         "class-variance-authority": "^0.7.0",
+        "dotenv-cli": "^7.4.4",
         "next": "15.1.0",
+        "next-auth": "5.0.0-beta.25",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "react-hook-form": "7.54.1",
+        "zod": "^3.23.8"
     },
     "devDependencies": {
         "@highschool/eslint-config": "workspace:*",
