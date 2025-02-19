@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { endpointAuth } from "@highschool/endpoints";
 import {
   GoogleLoginRequest,
@@ -20,12 +21,33 @@ export const login = async ({
   email: string;
 }): Promise<ResponseModel<MagicLinkResponse>> => {
   try {
-    const { data } = await axiosServices.post(endpointAuth.EMAIL, {
+    const { data } = await axiosServices.post(endpointAuth.MAGIC_LINK, {
       email: email,
     });
+
     return data;
   } catch (error) {
-    console.log("Error while login by login", error);
+    console.log("Error while login by  magic link", error);
+    throw error;
+  }
+};
+
+export const credentialLogin = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}): Promise<ResponseModel<UserSession>> => {
+  try {
+    const { data } = await axiosServices.post(endpointAuth.CREDENTIALS, {
+      email: email,
+      password: password,
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while login by credential", error);
     throw error;
   }
 };
@@ -42,6 +64,7 @@ export const verifyAccount = async ({
       email: email,
       token: token,
     });
+
     return data;
   } catch (error) {
     console.log("Error while verify account", error);
@@ -62,6 +85,7 @@ export const googleAuthentication = async ({
       avatar: avatar,
       accessToken: accessToken,
     });
+
     return data;
   } catch (error) {
     console.log("Error while login by google", error);
@@ -81,6 +105,7 @@ export const requestRefreshToken = async ({
       refreshToken: refreshToken,
       sessionId: sessionId,
     });
+
     return data;
   } catch (error) {
     console.log("Error while getting refresh token", error);

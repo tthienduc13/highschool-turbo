@@ -13,7 +13,8 @@ const endpointUploadImage = {
 
 const endpointAuth = {
   GOOGLE: `${prefixUserServices}${prefixSecondVerson}/authentication/google`,
-  EMAIL: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
+  MAGIC_LINK: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
+  CREDENTIALS: `${prefixUserServices}${prefixFirstVersion}/authentication/login`,
   VERIFY_ACCOUNT: `${prefixUserServices}${prefixSecondVerson}/authentication/verify-account`,
   REFRESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
 };
@@ -66,7 +67,7 @@ const endpointUserPersonalized = {
 const endpointFlashcard = {
   GET_TOP_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/top`,
   DRAFT: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/draft`,
-  RELATED:`${prefixDocumentServices}${prefixFirstVersion}/flashcard/related`,
+  RELATED: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/related`,
   GET_BY_SLUG: (slug: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}`,
   GET_BY_ID: (id: string) =>

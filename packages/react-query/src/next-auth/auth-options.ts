@@ -6,8 +6,14 @@ import { GoogleLoginRequest } from "@highschool/interfaces";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 import { cookies } from "next/headers.js";
 import { setClientCookie } from "@highschool/lib/cookies.ts";
+import Credentials from "next-auth/providers/credentials";
 
-import { googleAuthentication, login, verifyAccount } from "../apis/auth.ts";
+import {
+  credentialLogin,
+  googleAuthentication,
+  login,
+  verifyAccount,
+} from "../apis/auth.ts";
 
 interface MagicLinkCredentials {
   email: string;
@@ -18,7 +24,6 @@ interface MagicLinkCredentials {
 
 const refreshAccessToken = async (token: JWT) => {
   try {
-    const cookieStore = await cookies();
     const response = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
       {
@@ -108,6 +113,38 @@ export const AuthOptions: NextAuthConfig = {
         }
       },
     },
+    Credentials({
+      credentials: {
+        email: {
+          type: "text",
+        },
+        password: {
+          type: "password",
+        },
+      },
+      authorize: async (credentials) => {
+        let user = null;
+
+        const response = await credentialLogin({
+          email: credentials.email as string,
+          password: credentials.password as string,
+        });
+
+        if (response.status === 400) {
+          throw new Error("Invalid credentials");
+        }
+        if (
+          response.data?.roleName.toLocaleLowerCase() === "moderator" ||
+          response.data?.roleName.toLocaleLowerCase() === "admin"
+        ) {
+          user = response.data;
+
+          return user;
+        }
+
+        return null;
+      },
+    }),
   ],
   callbacks: {
     async signIn({ account, user }) {
