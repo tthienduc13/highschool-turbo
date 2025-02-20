@@ -2,10 +2,10 @@
 
 import type * as React from "react";
 
+import Image from "next/image";
 import {
   IconBooks,
   IconChartPie,
-  IconCommand,
   IconFrame,
   IconLifebuoy,
   IconMap,
@@ -166,11 +166,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton asChild size="lg">
               <Link href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <IconCommand className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg border-gray-100 text-sidebar-primary-foreground">
+                  <Image alt="Logo" height={32} src={"/logo.svg"} width={32} />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
+                  <span className="truncate font-semibold">Highschool</span>
                   <span className="truncate text-xs">Enterprise</span>
                 </div>
               </Link>

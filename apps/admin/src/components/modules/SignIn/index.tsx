@@ -29,6 +29,7 @@ type UserFormValue = z.infer<typeof loginSchema>;
 
 function SignInModule() {
   const params = useSearchParams();
+  const callbackUrl = params.get("callbackUrl") || "/dashboard";
   const urlError =
     params.get("error") === "OAuthAccountNotLinked"
       ? "Email already in used with different provider!"
@@ -48,7 +49,7 @@ function SignInModule() {
       await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/",
+        callbackUrl: callbackUrl,
       });
     });
   };

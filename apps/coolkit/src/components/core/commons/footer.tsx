@@ -1,19 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-
 import { env } from "@highschool/env";
-import { Button } from "@highschool/ui/components/ui/button";
-import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconBrandFacebook,
   IconBrandGithub,
   IconCopyright,
-  IconMoon,
-  IconSun,
 } from "@tabler/icons-react";
 
 // import { MOD } from "@/lib/tiny-key";
@@ -26,6 +19,7 @@ export const Footer = () => {
   }, []);
 
   if (!initialized) return null;
+
   return (
     <div className="w-full max-w-[100vw] border-t-[1px] border-t-gray-200 bg-white dark:border-t-gray-800/50 dark:bg-gray-900/50">
       <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8">
@@ -117,7 +111,7 @@ const SocialLink: React.FC<React.PropsWithChildren<{ href: string }>> = ({
 
 const FooterLink: React.FC<FooterLinkProps> = ({ href, text }) => {
   return (
-    <Link href={href} className="w-fit">
+    <Link className="w-fit" href={href}>
       <p className="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-900 dark:hover:text-gray-50">
         {text}
       </p>

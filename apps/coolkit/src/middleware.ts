@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import { auth } from "@highschool/react-query/auth";
 
 import {
