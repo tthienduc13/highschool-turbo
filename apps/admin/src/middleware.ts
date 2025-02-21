@@ -22,6 +22,10 @@ export default auth((req) => {
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
 
+    if (pathname === "/") {
+      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    }
+
     return NextResponse.next();
   }
 

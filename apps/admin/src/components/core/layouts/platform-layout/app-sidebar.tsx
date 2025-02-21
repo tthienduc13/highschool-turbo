@@ -12,7 +12,7 @@ import {
   IconRobot,
   IconSend,
   IconSettings2,
-  IconTerminal2,
+  IconUsers,
 } from "@tabler/icons-react";
 import Link from "next/link";
 
@@ -32,29 +32,20 @@ import { NavProjects } from "./nav-project";
 import { NavSecondary } from "./nav-secondary";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
-      title: "Playground",
+      title: "Users Management",
       url: "#",
-      icon: IconTerminal2,
+      icon: IconUsers,
       isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Users",
+          url: "/dashboard/users",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "Academic Staff",
+          url: "/dashboard/academic-staff",
         },
       ],
     },
@@ -184,7 +175,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary className="mt-auto" items={data.navSecondary} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

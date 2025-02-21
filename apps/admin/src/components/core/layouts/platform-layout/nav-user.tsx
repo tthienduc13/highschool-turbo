@@ -32,15 +32,7 @@ import {
   useSidebar,
 } from "../../common/sidebar";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar();
   const { data } = useSession();
 
