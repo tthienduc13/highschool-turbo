@@ -44,6 +44,7 @@ export const getUserProgressStage = async (): Promise<
 > => {
   try {
     const { data } = await axiosServices.get(endpointUser.PROGRESS_STATE);
+
     return data;
   } catch (error) {
     console.log("Error while getting user progress stage", error);
@@ -56,6 +57,7 @@ export const careerOrientationStatus = async (): Promise<
 > => {
   try {
     const { data } = await axiosServices.get(endpointUser.ORIENTATION_STATUS);
+
     return data;
   } catch (error) {
     console.log("Error while getting status", error);
@@ -68,6 +70,7 @@ export const getCareerGuidanceBrief = async (): Promise<
 > => {
   try {
     const { data } = await axiosServices.get(endpointCareerGuidance.GET_BRIEF);
+
     return data;
   } catch (error) {
     console.log("Error while getting career guidance brief", error);
@@ -84,6 +87,7 @@ export const getUserProfile = async ({
     const { data } = await axiosServices.get(
       endpointUser.PROFILE_USER(username),
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting user profile", error);
@@ -105,6 +109,7 @@ export const checkUserNameExist = async ({
         },
       },
     );
+
     return data;
   } catch (error) {
     console.error("Error while checking username", error);
@@ -119,6 +124,7 @@ export const getAuthorList = async ({
 }): Promise<Author[]> => {
   try {
     const params = new URLSearchParams();
+
     userIds.forEach((id) => params.append("userIds", id));
 
     const { data } = await axiosServices.get(`${endpointUser.GET_AUTHOR}`, {
@@ -141,6 +147,7 @@ export const getAuthorById = async ({
     const { data } = await axiosServices.get(
       `${endpointUser.GET_AUTHOR_BY_ID(authorId)}`,
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting author by id", error);
@@ -166,7 +173,7 @@ export const updateBaseUserInfo = async ({
   fullName: string;
   address: string;
   roleName: string;
-  birthdate: Date;
+  birthdate: string;
   profilePicture: string;
   student: Partial<{
     major: string;
@@ -201,6 +208,7 @@ export const updateBaseUserInfo = async ({
       `${endpointUser.UPDATE_BASE_USER}`,
       payload,
     );
+
     return data;
   } catch (error) {
     console.error("Error while updating base user", error);
@@ -217,6 +225,7 @@ export const completeOnboard = async ({
     const { data } = await axiosServices.put(
       `${endpointUser.COMPLETE_ONBOARD(userId)}`,
     );
+
     return data;
   } catch (error) {
     console.error("Error while updating user status", error);
@@ -235,6 +244,7 @@ export const saveCachePersonality = async ({
       hollandType: hollandType ?? "",
       mbtiType: mbtiType ?? "",
     });
+
     return data;
   } catch (error) {
     console.error("Error while saving cache personality", error);
@@ -253,6 +263,7 @@ export const report = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const formData = new FormData();
+
     formData.append("ReportTitle", title);
     formData.append("ReportContent", description);
 
