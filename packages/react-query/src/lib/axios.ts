@@ -5,11 +5,13 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { env } from "@highschool/env";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
+import { cookies } from "next/headers.js";
 
 import { signOut } from "../next-auth/index.ts";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
+const isServer = typeof window === "undefined";
 
 const createAxiosInstance = (contentType: string, useAuth = false) => {
   const instance = axios.create({
@@ -20,10 +22,20 @@ const createAxiosInstance = (contentType: string, useAuth = false) => {
 
   instance.interceptors.request.use(
     async (config) => {
-      const accessToken = getClientCookie(ACCESS_TOKEN);
+      let accessToken: string | undefined;
 
-      config.headers = config.headers || {};
-      config.headers["Authorization"] = `Bearer ${accessToken}`;
+      if (isServer) {
+        const cookiesStore = await cookies();
+
+        accessToken = cookiesStore.get(ACCESS_TOKEN)?.value;
+      } else {
+        accessToken = getClientCookie(ACCESS_TOKEN);
+      }
+
+      if (accessToken) {
+        config.headers = config.headers || {};
+        config.headers["Authorization"] = `Bearer ${accessToken}`;
+      }
 
       return config;
     },

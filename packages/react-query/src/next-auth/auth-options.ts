@@ -245,6 +245,7 @@ export const AuthOptions: NextAuthConfig = {
         roleName: token.roleName,
         progressStage: token.progressStage,
         refreshToken: token.refreshToken,
+        sessionId: token.sessionId,
         expiresAt: token.expiresAt,
       };
 

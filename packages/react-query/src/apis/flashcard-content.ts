@@ -36,6 +36,7 @@ export const getFlashcardContentsBySlug = async ({
         },
       },
     );
+
     return response.data;
   } catch (error) {
     console.log("Error in getFlashcardContentsBySlug", error);
@@ -44,30 +45,31 @@ export const getFlashcardContentsBySlug = async ({
 };
 
 export const getFlashcardContentsById = async ({
-    id,
-    pageNumber,
-    pageSize,
-  }: {
-    id: string;
-    pageNumber: number;
-    pageSize: number;
-  }): Promise<FlashcardContent[]> => {
-    try {
-      const response = await axiosServices.get(
-        `${endpointFlashcardContent.GET_LIST_BY_ID(id)}`,
-        {
-          params: {
-            pageNumber,
-            pageSize,
-          },
+  id,
+  pageNumber,
+  pageSize,
+}: {
+  id: string;
+  pageNumber: number;
+  pageSize: number;
+}): Promise<FlashcardContent[]> => {
+  try {
+    const response = await axiosServices.get(
+      `${endpointFlashcardContent.GET_LIST_BY_ID(id)}`,
+      {
+        params: {
+          pageNumber,
+          pageSize,
         },
-      );
-      return response.data;
-    } catch (error) {
-      console.log("Error in getFlashcardContentsByID", error);
-      throw error;
-    }
-  };
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log("Error in getFlashcardContentsByID", error);
+    throw error;
+  }
+};
 
 // PATCH
 export const patchFlashcardContent = async ({
@@ -96,7 +98,9 @@ export const patchFlashcardContent = async ({
       endpointFlashcardContent.EDIT_CONTENT(flashcardId),
       cleanValues,
     );
-    console.log(data)
+
+    console.log(data);
+
     return data;
   } catch (error) {
     console.error("Error while patching flashcard content", error);
@@ -186,6 +190,7 @@ export const deleteFlashcardContent = async ({
         flashcardContentId: flashcardContentId,
       }),
     );
+
     return data;
   } catch (error) {
     console.error("Error while deleting flashcard content", error);
@@ -204,6 +209,7 @@ export const reorderTerm = async ({
     const { data } = await axiosServices.patch(
       endpointFlashcardContent.REORDER_TERM(flashcardContentId, newRank),
     );
+
     return data;
   } catch (error) {
     console.log("Error while reordering", error);

@@ -1,6 +1,10 @@
 import { Grade } from "./common";
 import { FlashcardContent } from "./flashcard-content";
-import { LimitedStudySetAnswerMode, MultipleAnswerMode, StudySetAnswerMode } from "./study-mode";
+import {
+  LimitedStudySetAnswerMode,
+  MultipleAnswerMode,
+  StudySetAnswerMode,
+} from "./study-mode";
 
 export interface Flashcard {
   id: string;
@@ -22,7 +26,7 @@ export interface Flashcard {
   todayView: number;
   totalView: number;
   numberOfFlashcardContent: number;
-  container: FlashcardContainer
+  container: FlashcardContainer;
 }
 
 export enum StudySetVisibility {
@@ -71,26 +75,25 @@ export interface EditSetPayload {
 }
 
 export interface FlashcardContainer {
-    id:                   string;
-    userId:               string;
-    viewAt:               Date;
-    shuffleFlashcards:    boolean;
-    learnRound:           number;
-    learnMode:            LearnMode;
-    shuffleLearn:         boolean;
-    studyStarred:         boolean;
-    answerWith:           StudySetAnswerMode;
-    multipleAnswerMode:   MultipleAnswerMode;
-    extendedFeedbackBank: boolean;
-    enableCardsSorting:   boolean;
-    cardsRound:           number;
-    cardsStudyStarred:    boolean;
-    cardsAnswerWith:      LimitedStudySetAnswerMode;
-    matchStudyStarred:    boolean;
+  id: string;
+  userId: string;
+  viewAt: Date;
+  shuffleFlashcards: boolean;
+  learnRound: number;
+  learnMode: LearnMode;
+  shuffleLearn: boolean;
+  studyStarred: boolean;
+  answerWith: StudySetAnswerMode;
+  multipleAnswerMode: MultipleAnswerMode;
+  extendedFeedbackBank: boolean;
+  enableCardsSorting: boolean;
+  cardsRound: number;
+  cardsStudyStarred: boolean;
+  cardsAnswerWith: LimitedStudySetAnswerMode;
+  matchStudyStarred: boolean;
 }
 
-
 enum LearnMode {
-    Learn= "Learn",
-    Review = "Review",
-  }
+  Learn = "Learn",
+  Review = "Review",
+}

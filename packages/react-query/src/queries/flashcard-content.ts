@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
-    getFlashcardContentsById,
+  getFlashcardContentsById,
   getFlashcardContentsBySlug,
   patchFlashcardContent,
 } from "../apis/flashcard-content.ts";
@@ -18,27 +18,26 @@ export const useContentsBySlugQuery = ({
   return useQuery({
     queryKey: ["flashcard-content-by-slug", slug, pageNumber, pageSize],
     queryFn: () => getFlashcardContentsBySlug({ slug, pageNumber, pageSize }),
-    refetchOnMount: true
+    refetchOnMount: true,
   });
 };
 
 export const useContentsByIdQuery = ({
-    id,
-    pageNumber,
-    pageSize,
-  }: {
-    id: string;
-    pageNumber: number;
-    pageSize: number;
-  }) => {
-    return useQuery({
-      queryKey: ["flashcard-content-by-id", id, pageNumber, pageSize],
-      queryFn: () => getFlashcardContentsById({ id, pageNumber, pageSize }),
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
-    });
-  };
-
+  id,
+  pageNumber,
+  pageSize,
+}: {
+  id: string;
+  pageNumber: number;
+  pageSize: number;
+}) => {
+  return useQuery({
+    queryKey: ["flashcard-content-by-id", id, pageNumber, pageSize],
+    queryFn: () => getFlashcardContentsById({ id, pageNumber, pageSize }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+  });
+};
 
 export const useEditFlashcardContentMutation = ({
   slug,
@@ -46,6 +45,7 @@ export const useEditFlashcardContentMutation = ({
   slug?: string;
 }) => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["update-flashcard-content"],
     mutationFn: patchFlashcardContent,
@@ -53,6 +53,7 @@ export const useEditFlashcardContentMutation = ({
       queryClient.invalidateQueries({
         queryKey: ["flashcard-content-by-slug", slug],
       });
+
       return data;
     },
   });

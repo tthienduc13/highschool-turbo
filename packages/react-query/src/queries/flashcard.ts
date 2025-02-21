@@ -57,11 +57,11 @@ export const useTopFlashcardQuery = () => {
 };
 
 export const useRelatedFlashcard = () => {
-    return useQuery({
-      queryKey: ["related-flashcard"],
-      queryFn: getTopFlashcard,
-    });
-  };
+  return useQuery({
+    queryKey: ["related-flashcard"],
+    queryFn: getTopFlashcard,
+  });
+};
 
 export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
@@ -73,14 +73,14 @@ export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
 };
 
 export const useFlashcardByIdQuery = ({ id }: { id: string }) => {
-    return useQuery({
-      queryKey: ["flashcard-by-id", id],
-      queryFn: () => getFlashcardById({ id }),
-      refetchOnMount: true,
-      refetchOnWindowFocus: true,
-      enabled: !!id,
-    });
-  };
+  return useQuery({
+    queryKey: ["flashcard-by-id", id],
+    queryFn: () => getFlashcardById({ id }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    enabled: !!id,
+  });
+};
 
 export const useFlashcardDraftQuery = () => {
   return useQuery({
