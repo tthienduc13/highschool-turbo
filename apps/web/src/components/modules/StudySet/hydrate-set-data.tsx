@@ -80,7 +80,7 @@ export const HydrateSetData: React.FC<
         createInjectedData(flashcardData!, flashcardContentData),
       );
     }
-  });
+  }, [isDirty]);
 
   const createInjectedData = (
     flashcard: Flashcard,

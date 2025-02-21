@@ -54,7 +54,7 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
 
   const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
 
-  const FlashcardWrapper = !enableCardsSorting
+  const FlashcardWrapper = enableCardsSorting
     ? SortFlashcardWrapper
     : DefaultFlashcardWrapper;
 

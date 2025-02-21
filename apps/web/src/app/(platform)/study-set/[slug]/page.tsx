@@ -5,10 +5,11 @@ import {
 } from "@tanstack/react-query";
 import { Metadata } from "next";
 import { getFlashcardBySlug } from "@highschool/react-query/apis";
+import { Flashcard } from "@highschool/interfaces";
 
 import StudySetModule from "@/components/modules/StudySet";
 
-const metadataCache = new Map<string, any>();
+const metadataCache = new Map<string, Flashcard>();
 
 export const generateMetadata = async ({
   params,
@@ -20,37 +21,50 @@ export const generateMetadata = async ({
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
 
-    return {
-      title: cachedData.flashcardName,
-      description: cachedData.flashcardDescription,
-    };
+    return cachedData
+      ? {
+          title: cachedData.flashcardName,
+          description: cachedData.flashcardDescription,
+        }
+      : undefined;
   }
 
   const data = await getFlashcardBySlug({ slug });
 
-  if (!data) return;
+  if (data) metadataCache.set(slug, data); // ✅ Ensure cache is updated only when data exists
 
-  metadataCache.set(slug, data);
-
-  return {
-    title: data.flashcardName,
-    description: data.flashcardDescription,
-  };
+  return data
+    ? {
+        title: data.flashcardName,
+        description: data.flashcardDescription,
+      }
+    : undefined;
 };
 
 async function StudySet({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const queryClient = new QueryClient();
 
-  const cachedData = metadataCache.get(slug);
-
-  if (cachedData) {
-    queryClient.setQueryData(["flashcard-by-slug", slug], cachedData);
+  if (metadataCache.has(slug)) {
+    queryClient.setQueryData(
+      ["flashcard-by-slug", slug],
+      metadataCache.get(slug),
+    );
   } else {
     await queryClient.prefetchQuery({
       queryKey: ["flashcard-by-slug", slug],
       queryFn: () => getFlashcardBySlug({ slug }),
     });
+
+    // ✅ Ensure consistency by caching the fetched data
+    const fetchedData = queryClient.getQueryData<Flashcard>([
+      "flashcard-by-slug",
+      slug,
+    ]);
+
+    if (fetchedData) {
+      metadataCache.set(slug, fetchedData);
+    }
   }
 
   return (

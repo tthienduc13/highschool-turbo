@@ -1,6 +1,7 @@
 "use client";
 
 import { useRecommendedDataQuery } from "@highschool/react-query/queries";
+import { useSession } from "next-auth/react";
 
 import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
@@ -16,6 +17,9 @@ import { WithFooter } from "@/components/core/common/with-footer";
 
 function HomeModule() {
   const me = useMe();
+  const session = useSession();
+
+  console.log(session);
   const { data, isLoading } = useRecommendedDataQuery(
     me?.roleName?.toLocaleLowerCase() === "student",
   );
