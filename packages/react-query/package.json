@@ -11,10 +11,11 @@
     "dependencies": {
         "@highschool/endpoints": "workspace:*",
         "@highschool/env": "workspace:*",
-        "@highschool/lib": "workspace:*",
         "@highschool/interfaces": "workspace:*",
+        "@highschool/lib": "workspace:*",
         "@tanstack/react-query": "^5.62.7",
         "axios": "^1.7.9",
+        "cookies-next": "^5.0.2",
         "next": "15.1.0",
         "next-auth": "5.0.0-beta.25",
         "react": "^19.0.0",
@@ -28,6 +29,7 @@
         "./apis": "./src/apis/index.ts",
         "./queries": "./src/queries/index.ts",
         "./auth": "./src/next-auth/index.ts",
-        "./options": "./src/next-auth/auth-options.ts"
+        "./options": "./src/next-auth/auth-options.ts",
+        "./axios": "./src/lib/index.ts"
     }
 }

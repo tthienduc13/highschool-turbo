@@ -9,6 +9,8 @@ import { IconBooks, IconSchool } from "@tabler/icons-react";
 import { setClientCookie } from "@highschool/lib/cookies";
 import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
+import { clearAccessTokenCache } from "../../../../../../../packages/react-query/src/lib/axios";
+
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
 import {
   PresentWrapper,
@@ -38,6 +40,7 @@ function OnboardAccountTypeModule() {
             {
               onSuccess: async (data) => {
                 await setClientCookie(ACCESS_TOKEN, data.data?.accessToken!);
+                await clearAccessTokenCache();
                 await update({
                   ...session,
                   user: {

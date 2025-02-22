@@ -2,11 +2,11 @@
 import axios from "axios";
 import { endpointFlashcard, endpointUser } from "@highschool/endpoints";
 import {
-  DraftData,
-  EditSetPayload,
-  Flashcard,
-  Pagination,
-  ResponseModel,
+    DraftData,
+    EditSetPayload,
+    Flashcard,
+    Pagination,
+    ResponseModel,
 } from "@highschool/interfaces";
 
 import axiosServices from "../lib/axios.ts";
@@ -14,170 +14,170 @@ import axiosServices from "../lib/axios.ts";
 import fetchPaginatedData from "./common.ts";
 
 export const getUserFlashcard = async ({
-  username,
-  pageSize,
-  pageNumber,
+    username,
+    pageSize,
+    pageNumber,
 }: {
-  username: string;
-  pageSize: number;
-  pageNumber: number;
+    username: string;
+    pageSize: number;
+    pageNumber: number;
 }): Promise<Pagination<Flashcard[]>> => {
-  return fetchPaginatedData<Flashcard[]>(
-    endpointUser.USER_FLASHCARD(username),
-    {
-      pageNumber,
-      pageSize,
-    },
-  );
+    return fetchPaginatedData<Flashcard[]>(
+        endpointUser.USER_FLASHCARD(username),
+        {
+            pageNumber,
+            pageSize,
+        },
+    );
 };
 
 export const getOwnerFlashcard = async ({
-  pageSize,
-  pageNumber,
-}: {
-  pageSize: number;
-  pageNumber: number;
-}): Promise<Pagination<Flashcard[]>> => {
-  return fetchPaginatedData<Flashcard[]>(endpointUser.OWNER_FLASHCARD, {
-    pageNumber,
     pageSize,
-  });
+    pageNumber,
+}: {
+    pageSize: number;
+    pageNumber: number;
+}): Promise<Pagination<Flashcard[]>> => {
+    return fetchPaginatedData<Flashcard[]>(endpointUser.OWNER_FLASHCARD, {
+        pageNumber,
+        pageSize,
+    });
 };
 
 export const getTopFlashcard = async (): Promise<Flashcard[]> => {
-  try {
-    const { data } = await axiosServices.get(
-      endpointFlashcard.GET_TOP_FLASHCARD,
-    );
+    try {
+        const { data } = await axiosServices.get(
+            endpointFlashcard.GET_TOP_FLASHCARD,
+        );
 
-    return data;
-  } catch (error) {
-    console.error("Error while getting top flashcard", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.error("Error while getting top flashcard", error);
+        throw error;
+    }
 };
 
 export const getRelatedFlashcard = async (): Promise<Flashcard[]> => {
-  try {
-    const { data } = await axiosServices.get(endpointFlashcard.RELATED);
+    try {
+        const { data } = await axiosServices.get(endpointFlashcard.RELATED);
 
-    return data;
-  } catch (error) {
-    console.error("Error while getting related flashcard", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.error("Error while getting related flashcard", error);
+        throw error;
+    }
 };
 
 export const getFlashcardBySlug = async ({
-  slug,
+    slug,
 }: {
-  slug: string;
+    slug: string;
 }): Promise<Flashcard> => {
-  try {
-    const { data } = await axiosServices.get(
-      endpointFlashcard.GET_BY_SLUG(slug),
-    );
+    try {
+        const { data } = await axiosServices.get(
+            endpointFlashcard.GET_BY_SLUG(slug),
+        );
 
-    return data;
-  } catch (error) {
-    console.error("Error while getting flashcard by slug", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.error("Error while getting flashcard by slug", error);
+        throw error;
+    }
 };
 
 export const getFlashcardById = async ({
-  id,
+    id,
 }: {
-  id: string;
+    id: string;
 }): Promise<Flashcard> => {
-  try {
-    const { data } = await axiosServices.get(endpointFlashcard.GET_BY_ID(id));
+    try {
+        const { data } = await axiosServices.get(endpointFlashcard.GET_BY_ID(id));
 
-    return data;
-  } catch (error) {
-    console.error("Error while getting flashcard by id", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.error("Error while getting flashcard by id", error);
+        throw error;
+    }
 };
 
 export const getDraftFlashcard = async (): Promise<
-  ResponseModel<DraftData | string>
+    ResponseModel<DraftData | string>
 > => {
-  try {
-    const { data } = await axiosServices.post(`${endpointFlashcard.DRAFT}`, {});
+    try {
+        const { data } = await axiosServices.post(`${endpointFlashcard.DRAFT}`, {});
 
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const { data } = error.response;
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            const { data } = error.response;
 
-      return data;
+            return data;
+        }
+        console.error("Error while getting draft:", error);
+        throw error;
     }
-    console.error("Error while getting draft:", error);
-    throw error;
-  }
 };
 
 export const createFlashcardStatus = async ({
-  flashcardId,
+    flashcardId,
 }: {
-  flashcardId: string;
+    flashcardId: string;
 }): Promise<ResponseModel<string>> => {
-  try {
-    const { data } = await axiosServices.patch(
-      endpointFlashcard.CREATE_FLASHCARD_FROM_DRAFT(flashcardId),
-    );
+    try {
+        const { data } = await axiosServices.patch(
+            endpointFlashcard.CREATE_FLASHCARD_FROM_DRAFT(flashcardId),
+        );
 
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      const { data } = error.response;
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            const { data } = error.response;
 
-      return data;
+            return data;
+        }
+        console.error("Error creating status draft:", error);
+        throw error;
     }
-    console.error("Error creating status draft:", error);
-    throw error;
-  }
 };
 
 export const patchFlashcard = async ({
-  flashcardId,
-  values,
+    flashcardId,
+    values,
 }: {
-  flashcardId: string;
-  values: Partial<EditSetPayload>;
+    flashcardId: string;
+    values: Partial<EditSetPayload>;
 }): Promise<ResponseModel<string>> => {
-  try {
-    const cleanValues = Object.fromEntries(
-      Object.entries(values).filter(
-        ([_, value]) => value != null && value !== "",
-      ),
-    );
-    const { data } = await axiosServices.patch(
-      endpointFlashcard.EDIT_SET(flashcardId),
-      cleanValues,
-    );
+    try {
+        const cleanValues = Object.fromEntries(
+            Object.entries(values).filter(
+                ([_, value]) => value != null && value !== "",
+            ),
+        );
+        const { data } = await axiosServices.patch(
+            endpointFlashcard.EDIT_SET(flashcardId),
+            cleanValues,
+        );
 
-    return data;
-  } catch (error) {
-    console.error("Error while patching flashcard", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.error("Error while patching flashcard", error);
+        throw error;
+    }
 };
 
 export const deleteFlashcard = async ({
-  flashcardId,
+    flashcardId,
 }: {
-  flashcardId: string;
+    flashcardId: string;
 }): Promise<ResponseModel<string>> => {
-  try {
-    const { data } = await axiosServices.delete(
-      endpointFlashcard.DELETE(flashcardId),
-    );
+    try {
+        const { data } = await axiosServices.delete(
+            endpointFlashcard.DELETE(flashcardId),
+        );
 
-    return data;
-  } catch (error) {
-    console.log("Error while deleting flashcard", error);
-    throw error;
-  }
+        return data;
+    } catch (error) {
+        console.log("Error while deleting flashcard", error);
+        throw error;
+    }
 };
