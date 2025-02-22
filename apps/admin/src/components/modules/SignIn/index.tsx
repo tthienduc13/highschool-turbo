@@ -4,7 +4,7 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
 import Image from "next/image";
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import {
 import { IconExclamationCircle, IconLoader2 } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { AuthError } from "next-auth";
 
 const loginSchema = z.object({
   email: z.string(),
@@ -29,7 +30,8 @@ type UserFormValue = z.infer<typeof loginSchema>;
 
 function SignInModule() {
   const params = useSearchParams();
-  const callbackUrl = params.get("callbackUrl") || "/dashboard";
+  const [formError, setFormError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const urlError =
     params.get("error") === "OAuthAccountNotLinked"
       ? "Email already in used with different provider!"
@@ -42,16 +44,40 @@ function SignInModule() {
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-
   const onSubmit = async (data: UserFormValue) => {
-    startTransition(async () => {
-      await signIn("credentials", {
+    setFormError(null); // Reset error before submitting
+    setIsPending(true);
+    try {
+      const response = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: callbackUrl,
+        redirect: false,
       });
-    });
+
+      setIsPending(false);
+
+      if (response?.error) {
+        setFormError(
+          response.error === "CredentialsSignin"
+            ? "Invalid credentials!"
+            : "Something went wrong!",
+        );
+
+        return;
+      }
+    } catch (error) {
+      if (error instanceof AuthError) {
+        switch (error.type) {
+          case "CredentialsSignin":
+            setFormError("Invalid credentials!");
+            break;
+          default:
+            setFormError("Something went wrong!");
+        }
+      } else {
+        setFormError("Something went wrong!");
+      }
+    }
   };
 
   return (
@@ -135,6 +161,7 @@ function SignInModule() {
                     )}
                   />
                 </div>
+                <FormError message={formError || urlError} />
                 <div className="w-full flex justify-between pt-6">
                   <Link
                     className="text-blue-700 hover:text-blue-500 text-sm"
