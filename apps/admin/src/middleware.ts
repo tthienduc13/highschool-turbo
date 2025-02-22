@@ -4,34 +4,35 @@ import { auth } from "@highschool/react-query/auth";
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from "../routes";
 
 export default auth((req) => {
-  const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+    const { nextUrl } = req;
 
-  const pathname = nextUrl.pathname;
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+    const isLoggedIn = !!req.auth;
 
-  if (isApiAuthRoute) return;
+    const pathname = nextUrl.pathname;
+    const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+    const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 
-  if (!isLoggedIn && pathname !== "/sign-in") {
-    return NextResponse.redirect(new URL("/sign-in", req.url));
-  }
+    if (isApiAuthRoute) return;
 
-  if (isLoggedIn) {
-    if (isAuthRoute) {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    if (!isLoggedIn && pathname !== "/sign-in") {
+        return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
-    if (pathname === "/") {
-      return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+    if (isLoggedIn) {
+        if (isAuthRoute) {
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+        }
+
+        if (pathname === "/") {
+            return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+        }
+
+        return NextResponse.next();
     }
 
     return NextResponse.next();
-  }
-
-  return NextResponse.next();
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+    matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

@@ -138,20 +138,6 @@ export const EditorContextLayer = ({
     apiReorderTerm.isPending;
 
   useEffect(() => {
-    const state = storeRef.current!.getState();
-
-    state.setIsSaving(isSaving);
-
-    if (isSaving) {
-      setSavedLocally(true);
-    } else if (savedLocally) {
-      if (!state.saveError) {
-        state.setSavedAt(new Date());
-      }
-    }
-  }, [isSaving, savedLocally]);
-
-  useEffect(() => {
     const transform = (c: Context) => {
       const term = storeRef
         .current!.getState()
@@ -200,6 +186,22 @@ export const EditorContextLayer = ({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!storeRef.current) {
+      return;
+    }
+    const state = storeRef.current!.getState();
+
+    state.setIsSaving(isSaving);
+    if (isSaving) {
+      setSavedLocally(true);
+    } else if (savedLocally) {
+      if (!state.saveError) {
+        state.setSavedAt(new Date());
+      }
+    }
+  }, [isSaving, savedLocally]);
 
   if (!data || !data.flashcardContents) {
     return <EditorLoading />;

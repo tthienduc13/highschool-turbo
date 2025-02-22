@@ -21,6 +21,7 @@ const playersSlice = createSlice({
       action: PayloadAction<Partial<Player> & { id: string }>,
     ) => {
       const { id, ...updates } = action.payload;
+
       return state.map((player) =>
         player?.id === id ? { ...player, ...updates } : player,
       );
@@ -34,7 +35,9 @@ const playersSlice = createSlice({
       if (existingIndex >= 0) {
         // update player if existing
         const updatedState = [...state];
+
         updatedState[existingIndex] = newPlayer;
+
         return updatedState;
       } else {
         // add player if not existing
@@ -43,6 +46,7 @@ const playersSlice = createSlice({
     },
     removePlayer: (state, action: PayloadAction<string>) => {
       const playerId = action.payload;
+
       return state.filter((player) => player?.id !== playerId);
     },
   },

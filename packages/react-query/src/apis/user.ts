@@ -173,7 +173,7 @@ export const updateBaseUserInfo = async ({
   fullName: string;
   address: string;
   roleName: string;
-  birthdate: string;
+  birthdate: Date;
   profilePicture: string;
   student: Partial<{
     major: string;

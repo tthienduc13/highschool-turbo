@@ -50,20 +50,10 @@ export const SelectSubject = () => {
   const updateUser = useUpdateBaseUserInfoMutation();
 
   const handleDone = () => {
-    const dateObj = new Date(selectedDob!);
-
-    // Format date in local time without timezone conversion
-    const formattedDate =
-      dateObj.getFullYear() +
-      "-" +
-      String(dateObj.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(dateObj.getDate()).padStart(2, "0");
-
     updateUser.mutate(
       {
         address: selectedCity.name!,
-        birthdate: formattedDate.toString(),
+        birthdate: selectedDob!,
         student: {
           grade: convertToClass(selectedClass!),
           subjectIds: selectedSubjects,
