@@ -9,258 +9,258 @@ import { setClientCookie } from "@highschool/lib/cookies.ts";
 import Credentials from "next-auth/providers/credentials";
 
 import {
-  credentialLogin,
-  googleAuthentication,
-  login,
-  verifyAccount,
+    credentialLogin,
+    googleAuthentication,
+    login,
+    verifyAccount,
 } from "../apis/auth.ts";
 
 interface MagicLinkCredentials {
-  email: string;
-  token: string;
+    email: string;
+    token: string;
 }
 
 // TODO: ADD HTTPONLY FOR COOKIE
 
 const refreshAccessToken = async (token: JWT) => {
-  try {
-    const response = await fetch(
-      `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sessionId: token.sessionId,
-          refreshToken: token.refreshToken,
-        }),
-      },
-    );
+    try {
+        const response = await fetch(
+            `${env.NEXT_PUBLIC_API_URL}/users-service/api/v2/authentication/refresh-token`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    sessionId: token.sessionId,
+                    refreshToken: token.refreshToken,
+                }),
+            },
+        );
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (!result.data) {
+            throw new Error("RefreshTokenFailed");
+        }
+        setClientCookie(ACCESS_TOKEN, result.data.accessToken);
+
+        return {
+            ...token,
+            expiresAt: result.data.expiresAt,
+            refreshToken: result.data.refreshToken || token.refreshToken,
+            userId: token.userId,
+            fullname: token.fullname,
+            username: token.username,
+            roleName: token.roleName,
+            isNewUser: token.isNewUser,
+            sessionId: token.sessionId,
+        };
+    } catch (error) {
+        console.error("RefreshAccessTokenError", error);
+
+        return {
+            ...token,
+            error: "RefreshAccessTokenError",
+        };
     }
-
-    const result = await response.json();
-
-    if (!result.data) {
-      throw new Error("RefreshTokenFailed");
-    }
-    setClientCookie(ACCESS_TOKEN, result.data.accessToken);
-
-    return {
-      ...token,
-      expiresAt: result.data.expiresAt,
-      refreshToken: result.data.refreshToken || token.refreshToken,
-      userId: token.userId,
-      fullname: token.fullname,
-      username: token.username,
-      roleName: token.roleName,
-      isNewUser: token.isNewUser,
-      sessionId: token.sessionId,
-    };
-  } catch (error) {
-    console.error("RefreshAccessTokenError", error);
-
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
-  }
 };
 
 export const sendVerificationRequest = async (params: {
-  identifier: string;
-  url: string;
+    identifier: string;
+    url: string;
 }) => {
-  await login({ email: params.identifier });
+    await login({ email: params.identifier });
 };
 
 export const AuthOptions: NextAuthConfig = {
-  providers: [
-    Google({
-      clientId: process.env.AUTH_GOOGLE_ID,
-      clientSecret: process.env.AUTH_GOOGLE_SECRET,
-    }),
-    {
-      id: "magic-link",
-      name: "Magic Link",
-      type: "credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "you@example.com",
+    providers: [
+        Google({
+            clientId: process.env.AUTH_GOOGLE_ID,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET,
+        }),
+        {
+            id: "magic-link",
+            name: "Magic Link",
+            type: "credentials",
+            credentials: {
+                email: {
+                    label: "Email",
+                    type: "email",
+                    placeholder: "you@example.com",
+                },
+                token: { label: "Token", type: "string" },
+            },
+            async authorize(
+                credentials: Partial<MagicLinkCredentials> | undefined,
+            ): Promise<User | null> {
+                if (!credentials?.email || !credentials.token) {
+                    throw new Error("Email and token are required.");
+                }
+                try {
+                    const { data } = await verifyAccount({
+                        email: credentials.email,
+                        token: encodeURI(credentials.token),
+                    });
+
+                    return data!;
+                } catch (error) {
+                    throw error;
+                }
+            },
         },
-        token: { label: "Token", type: "string" },
-      },
-      async authorize(
-        credentials: Partial<MagicLinkCredentials> | undefined,
-      ): Promise<User | null> {
-        if (!credentials?.email || !credentials.token) {
-          throw new Error("Email and token are required.");
-        }
-        try {
-          const { data } = await verifyAccount({
-            email: credentials.email,
-            token: encodeURI(credentials.token),
-          });
+        Credentials({
+            credentials: {
+                email: {
+                    type: "text",
+                },
+                password: {
+                    type: "password",
+                },
+            },
+            authorize: async (credentials) => {
+                let user = null;
 
-          return data!;
-        } catch (error) {
-          throw error;
-        }
-      },
-    },
-    Credentials({
-      credentials: {
-        email: {
-          type: "text",
+                const response = await credentialLogin({
+                    email: credentials.email as string,
+                    password: credentials.password as string,
+                });
+
+                if (response.status === 400) {
+                    throw new Error("Invalid credentials");
+                }
+                if (
+                    response.data?.roleName.toLocaleLowerCase() === "moderator" ||
+                    response.data?.roleName.toLocaleLowerCase() === "admin"
+                ) {
+                    user = response.data;
+
+                    return user;
+                }
+
+                return null;
+            },
+        }),
+    ],
+    callbacks: {
+        async signIn({ account, user }) {
+            if (account?.provider === "google") {
+                const googleLoginInfo: GoogleLoginRequest = {
+                    email: user.email ?? "",
+                    fullName: user.name ?? "",
+                    avatar: user.image ?? "",
+                    accessToken: account.access_token ?? "",
+                };
+
+                const response = await googleAuthentication(googleLoginInfo);
+
+                if (!response.data) return false;
+                const userInfo = response.data;
+
+                const cookieStore = await cookies();
+
+                cookieStore.set({
+                    name: ACCESS_TOKEN,
+                    value: userInfo.accessToken,
+                    //   httpOnly: true,
+                });
+
+                user.userId = userInfo.userId;
+                user.email = userInfo.email;
+                user.username = userInfo.username;
+                user.fullname = userInfo.fullname;
+                user.image = userInfo.image;
+                user.roleName = userInfo.roleName;
+                user.refreshToken = userInfo.refreshToken;
+                user.sessionId = userInfo.sessionId;
+                user.progressStage = userInfo.progressStage;
+                user.roleName = userInfo.roleName;
+                user.expiresAt = userInfo.expiresAt;
+
+                return true;
+            }
+            if (account?.provider === "magic-link") {
+                const userInfo = user;
+
+                const cookieStore = await cookies();
+
+                cookieStore.set({
+                    name: ACCESS_TOKEN,
+                    value: userInfo.accessToken,
+                    //   httpOnly: true,
+                });
+
+                Object.assign(user, {
+                    userId: userInfo.userId,
+                    email: userInfo.email,
+                    username: userInfo.username,
+                    fullname: userInfo.fullname,
+                    image: userInfo.image,
+                    roleName: userInfo.roleName,
+                    refreshToken: userInfo.refreshToken,
+                    sessionId: userInfo.sessionId,
+                    progressStage: userInfo.progressStage,
+                    expiresAt: userInfo.expiresAt,
+                });
+
+                return true;
+            }
+
+            return true;
         },
-        password: {
-          type: "password",
+        async jwt({ token, account, user, trigger, session }) {
+            if (account && user) {
+                return {
+                    ...token,
+                    ...user,
+                };
+            }
+
+            if (trigger === "update" && session.user) {
+                return {
+                    ...token,
+                    ...session.user,
+                };
+            }
+
+            if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
+                return (await refreshAccessToken(token)) as JWT;
+            }
+
+            return token;
         },
-      },
-      authorize: async (credentials) => {
-        let user = null;
+        async session({ session, token }) {
+            session.user = {
+                ...session.user,
+                name: token.name,
+                email: token.email!,
+                image: token.image!,
+                userId: token.userId,
+                username: token.username,
+                fullname: token.fullname,
+                roleName: token.roleName,
+                progressStage: token.progressStage,
+                refreshToken: token.refreshToken,
+                sessionId: token.sessionId,
+                expiresAt: token.expiresAt,
+            };
 
-        const response = await credentialLogin({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        });
-
-        if (response.status === 400) {
-          throw new Error("Invalid credentials");
-        }
-        if (
-          response.data?.roleName.toLocaleLowerCase() === "moderator" ||
-          response.data?.roleName.toLocaleLowerCase() === "admin"
-        ) {
-          user = response.data;
-
-          return user;
-        }
-
-        return null;
-      },
-    }),
-  ],
-  callbacks: {
-    async signIn({ account, user }) {
-      if (account?.provider === "google") {
-        const googleLoginInfo: GoogleLoginRequest = {
-          email: user.email ?? "",
-          fullName: user.name ?? "",
-          avatar: user.image ?? "",
-          accessToken: account.access_token ?? "",
-        };
-
-        const response = await googleAuthentication(googleLoginInfo);
-
-        if (!response.data) return false;
-        const userInfo = response.data;
-
-        const cookieStore = await cookies();
-
-        cookieStore.set({
-          name: ACCESS_TOKEN,
-          value: userInfo.accessToken,
-          //   httpOnly: true,
-        });
-
-        user.userId = userInfo.userId;
-        user.email = userInfo.email;
-        user.username = userInfo.username;
-        user.fullname = userInfo.fullname;
-        user.image = userInfo.image;
-        user.roleName = userInfo.roleName;
-        user.refreshToken = userInfo.refreshToken;
-        user.sessionId = userInfo.sessionId;
-        user.progressStage = userInfo.progressStage;
-        user.roleName = userInfo.roleName;
-        user.expiresAt = userInfo.expiresAt;
-
-        return true;
-      }
-      if (account?.provider === "magic-link") {
-        const userInfo = user;
-
-        const cookieStore = await cookies();
-
-        cookieStore.set({
-          name: ACCESS_TOKEN,
-          value: userInfo.accessToken,
-          //   httpOnly: true,
-        });
-
-        Object.assign(user, {
-          userId: userInfo.userId,
-          email: userInfo.email,
-          username: userInfo.username,
-          fullname: userInfo.fullname,
-          image: userInfo.image,
-          roleName: userInfo.roleName,
-          refreshToken: userInfo.refreshToken,
-          sessionId: userInfo.sessionId,
-          progressStage: userInfo.progressStage,
-          expiresAt: userInfo.expiresAt,
-        });
-
-        return true;
-      }
-
-      return true;
+            return session;
+        },
     },
-    async jwt({ token, account, user, trigger, session }) {
-      if (account && user) {
-        return {
-          ...token,
-          ...user,
-        };
-      }
-
-      if (trigger === "update" && session.user) {
-        return {
-          ...token,
-          ...session.user,
-        };
-      }
-
-      if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
-        return (await refreshAccessToken(token)) as JWT;
-      }
-
-      return token;
+    pages: {
+        signIn: "/sign-in",
+        verifyRequest: "/verify",
+        newUser: "/onboard",
+        error: "/auth-error",
     },
-    async session({ session, token }) {
-      session.user = {
-        ...session.user,
-        name: token.name,
-        email: token.email!,
-        image: token.image!,
-        userId: token.userId,
-        username: token.username,
-        fullname: token.fullname,
-        roleName: token.roleName,
-        progressStage: token.progressStage,
-        refreshToken: token.refreshToken,
-        sessionId: token.sessionId,
-        expiresAt: token.expiresAt,
-      };
-
-      return session;
+    session: {
+        strategy: "jwt",
     },
-  },
-  pages: {
-    signIn: "/sign-in",
-    verifyRequest: "/verify",
-    newUser: "/onboard",
-    error: "/auth-error",
-  },
-  session: {
-    strategy: "jwt",
-  },
-  trustHost: true,
-  secret: process.env.AUTH_SECRET,
+    trustHost: true,
+    secret: process.env.AUTH_SECRET,
 };

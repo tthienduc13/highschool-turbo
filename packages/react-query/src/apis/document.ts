@@ -8,7 +8,8 @@ import {
 } from "@highschool/interfaces";
 
 import { axiosClientWithoutAuth } from "../lib/axios.ts";
-import fetchPaginatedData, { fetchUnauthedPaginatedData } from "./common.ts";
+
+import { fetchUnauthedPaginatedData } from "./common.ts";
 
 export const getDocuments = async ({
   search,
@@ -23,19 +24,22 @@ export const getDocuments = async ({
   curriculumIds,
   subjectId,
 }: FilterPayload): Promise<Pagination<Document[]>> => {
-  return fetchUnauthedPaginatedData<Document[]>(endpointDocument.GET_DOCUMENTS, {
-    search: search,
-    pageNumber: pageNumber,
-    pageSize: pageSize,
-    sortPopular,
-    semester,
-    subjectId: schoolId,
-    categoryIds: categoryIds,
-    curriculumIds: curriculumIds,
-    SubjectId: subjectId,
-    documentYear: documentYear,
-    provinceId: provinceId,
-  });
+  return fetchUnauthedPaginatedData<Document[]>(
+    endpointDocument.GET_DOCUMENTS,
+    {
+      search: search,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      sortPopular,
+      semester,
+      subjectId: schoolId,
+      categoryIds: categoryIds,
+      curriculumIds: curriculumIds,
+      SubjectId: subjectId,
+      documentYear: documentYear,
+      provinceId: provinceId,
+    },
+  );
 };
 
 export const getDocumentBySlug = async ({
@@ -47,6 +51,7 @@ export const getDocumentBySlug = async ({
     const { data } = await axiosClientWithoutAuth.get(
       `${endpointDocument.GET_BY_SLUG(documentSlug)}`,
     );
+
     return data;
   } catch (error) {
     console.log(`Error fetching document with slug:${documentSlug}`, error);
@@ -62,6 +67,7 @@ export const getDocumentMedia = async ({
     const { data } = await axiosClientWithoutAuth.get(
       `${endpointDocumentMedia.GET_DOCUMENT(documentId)}`,
     );
+
     return data;
   } catch (error) {
     console.log(
@@ -83,5 +89,6 @@ export const getDownloadDocument = async ({
       responseType: "blob",
     },
   );
+
   return response;
 };
