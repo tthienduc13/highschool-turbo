@@ -1,43 +1,90 @@
-import {
-  deleteClientCookie,
-  getClientCookie,
-} from "@highschool/lib/cookies.ts";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getSession as getSessionClient } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { env } from "@highschool/env";
-import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
-import { cookies } from "next/headers.js";
+import { Session } from "next-auth";
 
-import { signOut } from "../next-auth/index.ts";
+import { auth } from "../next-auth/index.ts";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
 const isServer = typeof window === "undefined";
 
-const createAxiosInstance = (contentType: string, useAuth = false) => {
+let cachedSession: Session | null = null;
+let sessionPromise: Promise<Session | null> | null = null;
+
+const makeSession = async (): Promise<Session | null> => {
+  try {
+    return isServer ? await auth() : await getSessionClient();
+  } catch {
+    return null;
+  }
+};
+
+export const clearAccessTokenCache = () => {
+  cachedSession = null;
+  sessionPromise = null;
+};
+
+const getSession = async ({ cache = true } = {}): Promise<Session | null> => {
+  if (cache && cachedSession) {
+    const expiresAt = cachedSession?.user?.expiresAt
+      ? new Date(cachedSession.user.expiresAt).getTime()
+      : 0;
+
+    if (Date.now() < expiresAt) {
+      return cachedSession;
+    }
+  }
+
+  if (!sessionPromise) {
+    sessionPromise = makeSession().then((session) => {
+      cachedSession = session;
+      sessionPromise = null;
+
+      return session;
+    });
+  }
+
+  return sessionPromise;
+};
+
+const attachJwtToRequest = async (request: AxiosRequestConfig) => {
+  const session = await getSession({ cache: true });
+
+  if (!session) {
+    return;
+  }
+
+  if (request.headers) {
+    request.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
+
+    if (request.url === "auth/refresh-token") {
+      request.headers["refresh-token"] = `Bearer ${session.user.refreshToken}`;
+    }
+  }
+};
+
+const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
   const instance = axios.create({
     baseURL: BASE_URL,
     timeout: TIMEOUT,
-    headers: { "Content-Type": contentType },
   });
 
   instance.interceptors.request.use(
     async (config) => {
-      let accessToken: string | undefined;
+      try {
+        if (useAuth) {
+          await attachJwtToRequest(config);
+        }
 
-      if (isServer) {
-        const cookiesStore = await cookies();
-
-        accessToken = cookiesStore.get(ACCESS_TOKEN)?.value;
-      } else {
-        accessToken = getClientCookie(ACCESS_TOKEN);
-      }
-
-      if (accessToken) {
         config.headers = config.headers || {};
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
-      }
+        config.headers["Content-Type"] = contentType;
 
-      return config;
+        return config;
+      } catch (error) {
+        return Promise.reject(error);
+      }
     },
     (error) => Promise.reject(error),
   );
@@ -45,8 +92,13 @@ const createAxiosInstance = (contentType: string, useAuth = false) => {
   instance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error) => {
-      if (useAuth && error.response?.status === 401 && !error.config._retry) {
-        await deleteClientCookie(ACCESS_TOKEN);
+      const originalRequest = error.config;
+
+      if (
+        error.response?.status === 401 &&
+        !originalRequest._retry &&
+        useAuth
+      ) {
         await signOut();
       }
 

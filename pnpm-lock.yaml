@@ -807,6 +807,9 @@ importers:
       axios:
         specifier: ^1.7.9
         version: 1.7.9
+      cookies-next:
+        specifier: ^5.0.2
+        version: 5.0.2(next@15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
       next:
         specifier: 15.1.0
         version: 15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)

@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
  * @param value - The value of the cookie.
  */
 export const setClientCookie = (name: string, value: string): void => {
-  Cookies.set(name, value);
+    Cookies.set(name, value);
 };
 
 /**
@@ -15,7 +15,7 @@ export const setClientCookie = (name: string, value: string): void => {
  * @returns The value of the cookie or undefined if not found.
  */
 export const getClientCookie = (name: string): string | undefined => {
-  return Cookies.get(name);
+    return Cookies.get(name);
 };
 
 /**
@@ -23,7 +23,7 @@ export const getClientCookie = (name: string): string | undefined => {
  * @returns An object containing all cookies as key-value pairs.
  */
 export const getAllClientCookies = (): { [key: string]: string } => {
-  return Cookies.get();
+    return Cookies.get();
 };
 
 /**
@@ -31,5 +31,5 @@ export const getAllClientCookies = (): { [key: string]: string } => {
  * @param name - The name of the cookie to delete.
  */
 export const deleteClientCookie = (name: string): void => {
-  Cookies.remove(name);
+    Cookies.remove(name);
 };

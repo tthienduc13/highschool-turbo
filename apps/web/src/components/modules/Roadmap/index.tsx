@@ -6,14 +6,14 @@ import { useRouter } from "next/navigation";
 import InternalRoadmap from "./internal-roadmap";
 
 function RoadmapModule() {
-  const session = useSession();
-  const router = useRouter();
+    const session = useSession();
+    const router = useRouter();
 
-  if (!session) {
-    router.push("/");
-  }
+    if (!session) {
+        router.push("/");
+    }
 
-  return <InternalRoadmap />;
+    return <InternalRoadmap />;
 }
 
 export default RoadmapModule;

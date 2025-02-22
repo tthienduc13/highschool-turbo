@@ -211,12 +211,24 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
       action: () => menuEventChannel.emit("createFolder"),
     });
 
-    const matchingOptions = total.filter((o) =>
-      (o.searchableName ?? o.name).toLowerCase().includes(query.toLowerCase()),
-    );
+    // const matchingOptions = total.filter((o) =>
+    //   (o.searchableName ?? o.name).toLowerCase().includes(query.toLowerCase()),
+    // );
 
-    if (matchingOptions.length === 0 && query.trim() !== "") {
-      matchingOptions.push({
+    // if (matchingOptions.length === 0 && query.trim() !== "") {
+    //   matchingOptions.push({
+    //     icon: <IconSearch className="size-6" />,
+    //     name: `Tìm kiếm: "${query}"`,
+    //     label: "Tìm kiếm các mục phù hợp",
+    //     action: () => {
+    //       router.push(`/search?q=${query}`);
+    //       // Add search logic here, e.g., API call
+    //     },
+    //   });
+    // }
+
+    if (query.trim() !== "") {
+      total.push({
         icon: <IconSearch className="size-6" />,
         name: `Tìm kiếm: "${query}"`,
         label: "Tìm kiếm các mục phù hợp",
@@ -227,7 +239,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
       });
     }
 
-    setOptions(matchingOptions);
+    setOptions(total);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, query]);
 
