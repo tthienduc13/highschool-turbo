@@ -233,7 +233,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
         name: `Tìm kiếm: "${query}"`,
         label: "Tìm kiếm các mục phù hợp",
         action: () => {
-          router.push(`/search?q=${query}`);
+          router.push(`/search?q=${query}&type=all`);
           // Add search logic here, e.g., API call
         },
       });
