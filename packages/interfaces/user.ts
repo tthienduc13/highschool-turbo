@@ -39,3 +39,61 @@ export type CareerGuidanceStatus = {
   isMBTIDone: boolean;
   isHollandDone: boolean;
 };
+
+export type User = {
+  id: string;
+  username: string;
+  email: string;
+  bio: string | null;
+  fullname: string;
+  roleName: string | null;
+  provider: string;
+  status: string;
+  timezone: string;
+  lastLoginAt: Date;
+  profilePicture: string;
+  deletedAt: null;
+  isNewUser: boolean;
+  notes: string[];
+  recentViews: string[];
+  reports: string[];
+};
+
+export type Teacher = User & {
+  graduatedUniversity: string;
+  contactNumber: string;
+  pin: string;
+  workPlace: string;
+  subjectsTaught: string;
+  rating: number;
+  experienceYears: number;
+  verified: boolean;
+  videoIntroduction: string;
+  certificates: string[];
+};
+
+export type Student = User & {
+  grade: number;
+  schoolName: string;
+  enrollments: unknown[];
+};
+
+export type UserPreview = {
+  id: string;
+  username: string;
+  email: string;
+  fullname: string;
+  roleName: string;
+  status: string;
+  profilePicture: string | null;
+  createdAt?: Date;
+};
+
+export type UserCreate = {
+  username: string;
+  email: string;
+  bio: string;
+  fullName: string;
+  password: string;
+  profilePicture: string;
+};

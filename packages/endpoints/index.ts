@@ -43,6 +43,12 @@ const endpointUser = {
   PROGRESS_STATE: `${prefixUserServices}${prefixFirstVersion}/users/progressStage`,
   CACHE_PERSONALITY: `${prefixUserServices}${prefixFirstVersion}/users/cachePersonality`,
   REPORT: `${prefixUserServices}${prefixFirstVersion}/reports`,
+  GET_USER: `${prefixUserServices}${prefixFirstVersion}/users`,
+  UPDATE_STATUS_USER: `${prefixUserServices}${prefixFirstVersion}/users/status`,
+  GET_USER_DETAIL: (userId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/users/infor/${userId}`,
+  UPDATE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
+  CREATE_USER: `${prefixUserServices}${prefixFirstVersion}/users/createaccount`,
 };
 
 const endpointFolder = {

@@ -3,18 +3,8 @@
 import type * as React from "react";
 
 import Image from "next/image";
-import {
-  IconBooks,
-  IconChartPie,
-  IconFrame,
-  IconLifebuoy,
-  IconMap,
-  IconRobot,
-  IconSend,
-  IconSettings2,
-  IconUsers,
-} from "@tabler/icons-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import {
   Sidebar,
@@ -28,128 +18,20 @@ import {
 
 import { NavUser } from "./nav-user";
 import { NavMain } from "./nav-main";
-import { NavProjects } from "./nav-project";
-import { NavSecondary } from "./nav-secondary";
 
-const data = {
-  navMain: [
-    {
-      title: "Users Management",
-      url: "#",
-      icon: IconUsers,
-      isActive: true,
-      items: [
-        {
-          title: "Users",
-          url: "/dashboard/users",
-        },
-        {
-          title: "Academic Staff",
-          url: "/dashboard/academic-staff",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: IconRobot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: IconBooks,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Support",
-      url: "#",
-      icon: IconLifebuoy,
-    },
-    {
-      title: "Feedback",
-      url: "#",
-      icon: IconSend,
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: IconFrame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: IconChartPie,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: IconMap,
-    },
-  ],
-};
+import { UserRole } from "@/domain/enums/user";
+import { navAdmin, navModerator } from "@/domain/constants/sidebar";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data } = useSession();
+
+  const nav =
+    data?.user.roleName === UserRole[UserRole.Admin] ? navAdmin : navModerator;
+
   return (
     <Sidebar
-      className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
+      //className="top-[--header-height] !h-[calc(100svh-var(--header-height))]"
+      collapsible="icon"
       {...props}
     >
       <SidebarHeader>
@@ -170,9 +52,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
-        <NavSecondary className="mt-auto" items={data.navSecondary} />
+        <NavMain items={nav.navMain} />
+        {/* <NavSecondary className="mt-auto" items={nav.navSecondary} /> */}
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

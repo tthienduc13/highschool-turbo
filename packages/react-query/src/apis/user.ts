@@ -2,8 +2,11 @@ import { endpointCareerGuidance, endpointUser } from "@highschool/endpoints";
 import {
   Author,
   CareerGuidanceStatus,
+  Metadata,
+  Pagination,
   ResponseModel,
   TypeExam,
+  UserPreview,
   UserProfile,
   UserSession,
 } from "@highschool/interfaces";
@@ -282,6 +285,41 @@ export const report = async ({
     return data;
   } catch (error) {
     console.log("Error while reporting", error);
+    throw error;
+  }
+};
+
+// Dashboard
+export const getUsers = async ({
+  page,
+  eachPage,
+  status,
+  search,
+  roleName,
+}: {
+  page: number;
+  eachPage: number;
+  status: string;
+  search?: string;
+  roleName: string;
+}): Promise<Pagination<UserPreview>> => {
+  try {
+    const response = await axiosServices.get(`${endpointUser.GET_USER}`, {
+      params: { page, eachPage, status, search, roleName },
+    });
+
+    const paginationHeader = response.headers["x-pagination"];
+    const metadata: Metadata = JSON.parse(paginationHeader || "{}");
+
+    return {
+      data: response.data,
+      currentPage: metadata.CurrentPage,
+      pageSize: metadata.PageSize,
+      totalCount: metadata.TotalCount,
+      totalPages: metadata.TotalPages,
+    };
+  } catch (error) {
+    console.error("Error while getting user", error);
     throw error;
   }
 };

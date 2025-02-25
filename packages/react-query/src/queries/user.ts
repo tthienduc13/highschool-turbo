@@ -10,6 +10,7 @@ import {
   getCareerGuidanceBrief,
   getUserProfile,
   getUserProgressStage,
+  getUsers,
   report,
   saveCachePersonality,
   updateBaseUserInfo,
@@ -114,5 +115,31 @@ export const useReportMutation = () => {
   return useMutation({
     mutationKey: ["report"],
     mutationFn: report,
+  });
+};
+
+export const useUsersQuery = ({
+  page,
+  eachPage,
+  status,
+  search,
+  roleName,
+}: {
+  page: number;
+  eachPage: number;
+  status: string;
+  search?: string;
+  roleName: string;
+}) => {
+  return useQuery({
+    queryKey: ["users", page, eachPage, status, search, roleName],
+    queryFn: () =>
+      getUsers({
+        page: page,
+        eachPage: eachPage,
+        status: status,
+        search: search,
+        roleName: roleName,
+      }),
   });
 };

@@ -1,5 +1,5 @@
-function UsersMangagement() {
+function StudentMangagement() {
   return <div>adsfa</div>;
 }
 
-export default UsersMangagement;
+export default StudentMangagement;
