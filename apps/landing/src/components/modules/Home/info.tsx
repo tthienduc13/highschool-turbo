@@ -1,23 +1,20 @@
 "use client";
 
 import Image from "next/image";
-
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 
 import { TextAnimate } from "@/components/core/common/text-animation";
 
-import { FeedBack } from "./feed-back";
-
 export const Info = () => {
   return (
-    <div className="relative mt-[60px] md:mt-[100px]">
+    <div className="relative mt-[60px] md:mt-[200px]">
       <div
         className="relative flex w-full items-center justify-center bg-[#03061e]"
         style={{
           position: "relative",
         }}
       >
-        <div className="relative z-10 mt-[20px] max-w-4xl px-4 py-[50px] text-center text-white">
+        <div className="relative z-10 mt-[70px] max-w-4xl px-4 py-[50px] text-center text-white">
           <TextAnimate
             animation="slideUp"
             by="word"
@@ -25,29 +22,34 @@ export const Info = () => {
           >
             Học tập thông minh, phát triển tương lai
           </TextAnimate>
-          <TextAnimate animation="fadeIn" by="word" className="mt-4 text-lg">
+          <TextAnimate
+            animation="blurIn"
+            by="word"
+            className="mt-7 text-lg"
+            duration={0.1}
+          >
             Highschool đồng hành cùng bạn trong hành trình học tập hiệu quả hơn
             với các phương pháp tối ưu và lộ trình học tập được cá nhân hóa.
           </TextAnimate>
           <div
-            data-aos="fade-up"
             className="relative mx-auto my-5 flex w-full max-w-[300px] items-center justify-center md:my-10 md:max-w-2xl lg:max-w-3xl"
+            data-aos="fade-up"
           >
             <Card className="absolute left-10 top-[20px] w-full max-w-[260px] -translate-x-1/3 -rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
               <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5"></div>
+                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5" />
                 <div className="flex h-full w-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
                     <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
                       <Image
+                        priority
+                        alt="logo"
+                        className="object-contain"
+                        height={150}
                         src={
                           "https://res.cloudinary.com/dhdyel6be/image/upload/v1739368433/HighSchool/avatars/contributor/tpwe4nqfhkdqbb9i6f6c.jpg"
                         }
-                        alt="logo"
-                        height={120}
                         width={120}
-                        priority
-                        className="object-contain"
                       />
                     </div>
                     <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
@@ -65,19 +67,19 @@ export const Info = () => {
 
             <Card className="relative z-10 w-full max-w-[260px] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
               <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute h-full w-full opacity-5"></div>
+                <div className="bg-custom-gradient absolute h-full w-full opacity-5" />
                 <div className="flex h-full w-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
                     <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
                       <Image
+                        priority
+                        alt="logo"
+                        className="object-contain"
+                        height={120}
                         src={
                           "https://res.cloudinary.com/dhdyel6be/image/upload/v1739367764/HighSchool/avatars/contributor/jqbxxbxxdly8lwmhosel.jpg"
                         }
-                        alt="logo"
-                        height={120}
                         width={120}
-                        priority
-                        className="object-contain"
                       />
                     </div>
                     <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
@@ -95,19 +97,19 @@ export const Info = () => {
 
             <Card className="absolute right-10 top-[20px] z-20 w-full max-w-[260px] translate-x-1/3 rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
               <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5"></div>
+                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5" />
                 <div className="flex h-full w-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
                     <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
                       <Image
+                        priority
+                        alt="logo"
+                        className="object-contain"
+                        height={120}
                         src={
                           "https://res.cloudinary.com/dhdyel6be/image/upload/v1739368326/HighSchool/avatars/contributor/bske0fcoptwgaeac9mbp.jpg"
                         }
-                        alt="logo"
-                        height={120}
                         width={120}
-                        priority
-                        className="object-contain"
                       />
                     </div>
                     <div className="rounded-md border bg-white px-2 py-1 text-sm font-medium">
@@ -129,19 +131,20 @@ export const Info = () => {
               by="character"
               className="mt-10 text-3xl font-bold md:text-4xl"
             >
-              Tài trợ bởi
+              Được tạo bởi
             </TextAnimate>
             <div
+              className="relative h-[100px] w-[200px] mt-5"
               data-aos="zoom-in"
               data-aos-duration="1000"
-              className="relative h-[100px] w-[200px]"
             >
               <Image
-                src="/fpt-logo.png"
-                alt="fpt logo"
                 fill
-                className="object-contain"
                 priority
+                alt="fpt logo"
+                className="object-contain"
+                src="/logo-with-text.svg"
+                style={{ transform: "scale(2)" }}
               />
             </div>
           </div>
@@ -160,7 +163,7 @@ export const Info = () => {
             maskSize: "auto 100%",
             backgroundColor: "#03061e",
           }}
-        ></div>
+        />
         <div
           className="absolute bottom-[calc(-5vw+2px)] left-0 z-0 h-[5vw] w-full"
           style={{
@@ -174,7 +177,7 @@ export const Info = () => {
             maskSize: "auto 100%",
             backgroundColor: "#03061e",
           }}
-        ></div>
+        />
       </div>
     </div>
   );
