@@ -20,11 +20,13 @@ export interface Ability {
 }
 
 export interface Major {
+  id?: string;
   majorCode: string;
   name: string;
   description: string;
   skillYouLearn: string;
   majorCategory: MajorCategory;
+  majorCategoryCode?: string;
 }
 
 export interface MajorCategory {

@@ -247,7 +247,35 @@ const endpointKet = {
   GET_KETS_CATEGORY: `/kets/categories`,
 };
 
+const endPointOccupation = {
+  GET_OCCUPATIONS: `${prefixUserServices}${prefixFirstVersion}/occupation`,
+  CREATE_OCCUPATION: `${prefixUserServices}${prefixFirstVersion}/occupation`,
+  UPDATE_OCCUPATION: (occupationId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/occupation/${occupationId}`,
+  DELETE_OCCUPATION: (occupationId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/occupation/${occupationId}`,
+};
+
+const endPointMajor = {
+  GET_MAJOR: `${prefixUserServices}${prefixFirstVersion}/major`,
+  GET_MAJOR_NAME: `${prefixUserServices}${prefixFirstVersion}/major/name`,
+  CREATE_MAJOR: `${prefixUserServices}${prefixFirstVersion}/major`,
+  UPDATE_MAJOR: (majorId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/major/${majorId}`,
+  DELETE_MAJOR: (majorId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/major/${majorId}`,
+  GET_MAJOR_CATEGORY: `${prefixUserServices}${prefixFirstVersion}/majorCategory`,
+  GET_MAJOR_CATEGORY_NAME: `${prefixUserServices}${prefixFirstVersion}/majorCategory/name`,
+  CREATE_MAJOR_CATEGORY: `${prefixUserServices}${prefixFirstVersion}/majorCategory`,
+  UPDATE_MAJOR_CATEGORY: (majorCategoryId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/majorCategory/${majorCategoryId}`,
+  DELETE_MAJOR_CATEGORY: (majorCategoryId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/majorCategory/${majorCategoryId}`,
+};
+
 export {
+  endPointMajor,
+  endPointOccupation,
   endpointKet,
   endpointUploadImage,
   endpointGame,

@@ -161,12 +161,12 @@ export const navAdmin = {
       icon: IconUserCircle,
       items: [
         {
-          title: "Teachers",
-          url: "/account/teacher",
-        },
-        {
           title: "Students",
           url: "/accounts/student",
+        },
+        {
+          title: "Teachers",
+          url: "/accounts/teacher",
         },
         {
           title: "Moderators",

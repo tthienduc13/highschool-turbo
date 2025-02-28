@@ -1,4 +1,5 @@
-import { UsersActionDialog } from "./users-action-dialog";
+import { UsersActionDialog } from "../moderator-table-module/users-action-dialog";
+
 import { UsersDeleteDialog } from "./users-delete-dialog";
 
 import { useUsers } from "@/stores/users-context";
@@ -19,9 +20,9 @@ export function UsersDialogs() {
           <UsersActionDialog
             key={`user-edit-${currentRow.id}`}
             currentRow={currentRow}
-            open={open === "edit"}
+            open={open === "edit" || open === "view"}
             onOpenChange={() => {
-              setOpen("edit");
+              setOpen(open);
               setTimeout(() => {
                 setCurrentRow(null);
               }, 500);

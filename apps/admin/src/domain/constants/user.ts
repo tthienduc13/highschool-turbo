@@ -6,7 +6,6 @@ import {
 } from "@tabler/icons-react";
 
 export const callTypes = new Map<string, string>([
-  ["All", "bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200"],
   ["Active", "bg-teal-100/30 text-teal-900 dark:text-teal-200 border-teal-200"],
   ["Pending", "bg-neutral-300/40 border-neutral-300"],
   ["Deleted", "bg-sky-200/40 text-sky-900 dark:text-sky-100 border-sky-300"],
@@ -19,12 +18,12 @@ export const callTypes = new Map<string, string>([
 export const userTypes = [
   {
     label: "Admin",
-    value: "admin",
+    value: "Admin",
     icon: IconShield,
   },
   {
     label: "Moderator",
-    value: "moderator",
+    value: "Moderator",
     icon: IconUserShield,
   },
   {
@@ -34,7 +33,7 @@ export const userTypes = [
   },
   {
     label: "Teacher",
-    value: "teacher",
+    value: "Teacher",
     icon: IconSchool,
   },
 ] as const;

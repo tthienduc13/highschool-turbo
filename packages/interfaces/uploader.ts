@@ -8,6 +8,7 @@ export enum HighSchoolAssets {
   GameAvatar = "GameAvatar",
   KetThumbnail = "GameKetThumbnail",
   KetContent = "GameKetContent",
+  Test = "Test",
 }
 
 export enum ImageResizeMode {

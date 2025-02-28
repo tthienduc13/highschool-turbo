@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import {
   careerOrientationStatus,
   checkUserNameExist,
   completeOnboard,
+  createAccount,
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
@@ -127,7 +128,7 @@ export const useUsersQuery = ({
 }: {
   page: number;
   eachPage: number;
-  status: string;
+  status: string[];
   search?: string;
   roleName: string;
 }) => {
@@ -141,5 +142,23 @@ export const useUsersQuery = ({
         search: search,
         roleName: roleName,
       }),
+  });
+};
+
+export const useCreateUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["create-user"],
+    mutationFn: createAccount,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success(data.message ?? "Create successfully");
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some error occured");
+    },
   });
 };

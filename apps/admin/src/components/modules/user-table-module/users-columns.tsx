@@ -2,44 +2,42 @@ import { ColumnDef } from "@tanstack/react-table";
 import { UserPreview } from "@highschool/interfaces";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { cn } from "@highschool/ui/lib/utils";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@highschool/ui/components/ui/avatar";
 
 import { DataTableColumnHeader } from "../../core/table/data-table-column-header";
 
 import { callTypes, userTypes } from "@/domain/constants/user";
 import LongText from "@/components/ui/long-text";
-import { DataTableRowActions } from "@/components/core/table/data-table-row-actions";
+import { DataTableRowActions } from "@/components/modules/user-table-module/data-table-row-actions";
 
 export const columns: ColumnDef<UserPreview>[] = [
-  // {
-  //   id: "select",
-  //   header: ({ table }) => (
-  //     <Checkbox
-  //       aria-label="Select all"
-  //       checked={
-  //         table.getIsAllPageRowsSelected() ||
-  //         (table.getIsSomePageRowsSelected() && "indeterminate")
-  //       }
-  //       className="translate-y-[2px]"
-  //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-  //     />
-  //   ),
-  //   meta: {
-  //     className: cn(
-  //       "sticky md:table-cell left-0 z-10 rounded-tl",
-  //       "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-  //     ),
-  //   },
-  //   cell: ({ row }) => (
-  //     <Checkbox
-  //       aria-label="Select row"
-  //       checked={row.getIsSelected()}
-  //       className="translate-y-[2px]"
-  //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-  //     />
-  //   ),
-  //   enableSorting: false,
-  //   enableHiding: false,
-  // },
+  {
+    id: "fullName",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
+    cell: ({ row }) => {
+      const { fullname } = row.original;
+
+      return (
+        <div className="flex items-center gap-x-2">
+          <Avatar className="size-8">
+            <AvatarImage
+              alt={row.original.fullname}
+              src={row.original.profilePicture ?? ""}
+            />
+            <AvatarFallback>{row.original.fullname[0]}</AvatarFallback>
+          </Avatar>
+          <LongText className="max-w-36">{fullname}</LongText>
+        </div>
+      );
+    },
+    meta: { className: "w-36" },
+  },
   {
     accessorKey: "username",
     header: ({ column }) => (
@@ -56,18 +54,6 @@ export const columns: ColumnDef<UserPreview>[] = [
       ),
     },
     enableHiding: false,
-  },
-  {
-    id: "fullName",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    cell: ({ row }) => {
-      const { fullname } = row.original;
-
-      return <LongText className="max-w-36">{fullname}</LongText>;
-    },
-    meta: { className: "w-36" },
   },
   {
     accessorKey: "email",
@@ -98,13 +84,13 @@ export const columns: ColumnDef<UserPreview>[] = [
       return (
         <div className="flex space-x-2">
           <Badge className={cn("capitalize", badgeColor)} variant="outline">
-            {row.getValue("status")}
+            {row.original.status}
           </Badge>
         </div>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.original.status);
     },
     enableHiding: false,
     enableSorting: false,
@@ -116,6 +102,8 @@ export const columns: ColumnDef<UserPreview>[] = [
     ),
     cell: ({ row }) => {
       const { roleName } = row.original;
+
+      console.log("roleName", roleName);
       const userType = userTypes.find(
         ({ value }: { value: string }) => value === roleName,
       );
@@ -129,12 +117,12 @@ export const columns: ColumnDef<UserPreview>[] = [
           {userType.icon && (
             <userType.icon className="text-muted-foreground" size={16} />
           )}
-          <span className="text-sm capitalize">{row.getValue("role")}</span>
+          <span className="text-sm capitalize">{row.original.roleName}</span>
         </div>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return value.includes(row.original.roleName);
     },
     enableSorting: false,
     enableHiding: false,

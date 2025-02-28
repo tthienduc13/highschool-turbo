@@ -2,6 +2,7 @@
 
 import { Session } from "next-auth";
 import dynamic from "next/dynamic";
+import { Toaster } from "sonner";
 
 import { ThemeProvider } from "./theme-provider";
 import { ReactQueryProvider } from "./query-provider";
@@ -27,6 +28,7 @@ export const AppProviders = ({ children, session }: AppProviderProps) => {
       >
         <SearchProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
+          <Toaster richColors position="top-center" />
         </SearchProvider>
       </ThemeProvider>
     </SessionProvider>

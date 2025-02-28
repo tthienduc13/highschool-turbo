@@ -1,7 +1,7 @@
-import { cn } from '@highschool/ui/lib/utils.js'
+import { cn } from '@highschool/ui/lib/utils'
 import * as React from 'react'
 import * as AlertDialogPrimitive from '@radix-ui/react-alert-dialog'
-import { buttonVariants } from './button.js'
+import { buttonVariants } from '@highschool/ui/components/ui/button'
 
 const AlertDialog = AlertDialogPrimitive.Root
 

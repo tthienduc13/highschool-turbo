@@ -1,4 +1,4 @@
-import StudentTableModule from "@/components/modules/user-table-module";
+import StudentTableModule from "@/components/modules/student-table-module";
 
 function StudentManagementPage() {
     return <StudentTableModule />;

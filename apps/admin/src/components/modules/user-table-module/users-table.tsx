@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -27,7 +27,8 @@ import { UserPreview } from "@highschool/interfaces";
 import { DataTablePagination } from "../../core/table/data-table-pagination";
 
 import { DataTableToolbar } from "./data-table-toolbar";
-import { UsersPrimaryButtons } from "./users-primary-buttons";
+
+import { AccountFilter } from "@/hooks/use-filter-account";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,17 +39,26 @@ declare module "@tanstack/react-table" {
 
 interface DataTableProps {
   columns: ColumnDef<UserPreview>[];
-  data: UserPreview[];
+  filter: AccountFilter;
+  title?: string;
+  subTitle?: string;
+  extraButton?: React.ReactNode;
 }
 
-export function UsersTable({ columns, data }: DataTableProps) {
+export function UsersTable({
+  columns,
+  filter,
+  title,
+  subTitle,
+  extraButton,
+}: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
-    data,
+    data: filter.data,
     columns,
     state: {
       sorting,
@@ -73,14 +83,12 @@ export function UsersTable({ columns, data }: DataTableProps) {
     <div className="space-y-4 mt-4">
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-primary text-2xl font-bold mb-0 pb-0">User List</p>
-          <span className="text-lg text-gray-400">
-            Manage your Students and Teachers roles here.
-          </span>
+          <p className="text-primary text-2xl font-bold mb-0 pb-0">{title}</p>
+          <span className="text-lg text-gray-400">{subTitle}</span>
         </div>
-        <UsersPrimaryButtons />
+        {extraButton}
       </div>
-      <DataTableToolbar table={table} />
+      <DataTableToolbar filter={filter} table={table} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -139,7 +147,7 @@ export function UsersTable({ columns, data }: DataTableProps) {
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <DataTablePagination pagination={filter.pagination} table={table} />
     </div>
   );
 }

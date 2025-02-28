@@ -6,12 +6,16 @@ import {
   Pagination,
   ResponseModel,
   TypeExam,
+  UserCreate,
   UserPreview,
   UserProfile,
   UserSession,
 } from "@highschool/interfaces";
 
-import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  createQueryString,
+} from "../lib/axios.ts";
 
 export interface CareerGuidanceBrief {
   mbtiResponse: MBTIResponse;
@@ -290,23 +294,18 @@ export const report = async ({
 };
 
 // Dashboard
-export const getUsers = async ({
-  page,
-  eachPage,
-  status,
-  search,
-  roleName,
-}: {
+export const getUsers = async (params: {
   page: number;
   eachPage: number;
-  status: string;
+  status: string[];
   search?: string;
   roleName: string;
 }): Promise<Pagination<UserPreview>> => {
   try {
-    const response = await axiosServices.get(`${endpointUser.GET_USER}`, {
-      params: { page, eachPage, status, search, roleName },
-    });
+    const queryString = createQueryString(params);
+    const response = await axiosServices.get(
+      `${endpointUser.GET_USER}?${queryString}`,
+    );
 
     const paginationHeader = response.headers["x-pagination"];
     const metadata: Metadata = JSON.parse(paginationHeader || "{}");
@@ -320,6 +319,21 @@ export const getUsers = async ({
     };
   } catch (error) {
     console.error("Error while getting user", error);
+    throw error;
+  }
+};
+
+export const createAccount = async ({
+  user,
+}: {
+  user: UserCreate;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const response = await axiosServices.post(endpointUser.CREATE_USER, user);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating account:", error);
     throw error;
   }
 };

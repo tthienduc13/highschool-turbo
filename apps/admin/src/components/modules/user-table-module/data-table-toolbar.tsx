@@ -6,14 +6,16 @@ import { Input } from "@highschool/ui/components/ui/input";
 import { DataTableFacetedFilter } from "../../core/table/data-table-faceted-filter";
 import { DataTableViewOptions } from "../../core/table/data-table-view-options";
 
-import { userTypes } from "@/domain/constants/user";
+import { AccountFilter } from "@/hooks/use-filter-account";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  filter: AccountFilter;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  filter,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
@@ -23,33 +25,30 @@ export function DataTableToolbar<TData>({
         <Input
           className="h-8 w-[150px] lg:w-[250px]"
           placeholder="Filter users..."
-          value={
-            (table.getColumn("username")?.getFilterValue() as string) ?? ""
-          }
-          onChange={(event) =>
-            table.getColumn("username")?.setFilterValue(event.target.value)
-          }
+          value={filter.search ?? ""}
+          onChange={(event) => filter.setSearch(event.target.value)}
         />
         <div className="flex gap-x-2">
           {table.getColumn("status") && (
             <DataTableFacetedFilter
               column={table.getColumn("status")}
               options={[
-                { label: "Active", value: "active" },
-                { label: "Inactive", value: "inactive" },
-                { label: "Invited", value: "invited" },
-                { label: "Suspended", value: "suspended" },
+                { label: "Active", value: "Active" },
+                { label: "Pending", value: "Pending" },
+                { label: "Deleted", value: "Deleted" },
+                { label: "Blocked", value: "Blocked" },
               ]}
+              setSelect={filter.setStatus}
               title="Status"
             />
           )}
-          {table.getColumn("role") && (
+          {/* {table.getColumn("role") && (
             <DataTableFacetedFilter
               column={table.getColumn("role")}
               options={userTypes.map((t) => ({ ...t }))}
               title="Role"
             />
-          )}
+          )} */}
         </div>
         {isFiltered && (
           <Button

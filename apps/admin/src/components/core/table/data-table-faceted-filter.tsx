@@ -28,12 +28,14 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  setSelect?: (value: string[]) => void;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
   column,
   title,
   options,
+  setSelect,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
@@ -102,6 +104,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       column?.setFilterValue(
                         filterValues.length ? filterValues : undefined,
                       );
+                      setSelect && setSelect(filterValues);
                     }}
                   >
                     <div
@@ -133,7 +136,10 @@ export function DataTableFacetedFilter<TData, TValue>({
                 <CommandGroup>
                   <CommandItem
                     className="justify-center text-center"
-                    onSelect={() => column?.setFilterValue(undefined)}
+                    onSelect={() => {
+                      column?.setFilterValue(undefined);
+                      setSelect && setSelect([]);
+                    }}
                   >
                     Clear filters
                   </CommandItem>
