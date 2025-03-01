@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import "@highschool/ui/globals.css";
+import "@/app/admin.css";
 import { cn } from "@highschool/ui/lib/utils";
 import { auth } from "@highschool/react-query/auth";
 
@@ -26,7 +27,7 @@ export default async function RootLayout({
     <html suppressHydrationWarning lang="vi">
       <body
         className={cn(
-          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50",
+          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50 w-full",
           sofiaFontVN.variable,
         )}
       >

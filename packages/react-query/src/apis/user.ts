@@ -2,13 +2,20 @@ import { endpointCareerGuidance, endpointUser } from "@highschool/endpoints";
 import {
   Author,
   CareerGuidanceStatus,
+  Metadata,
+  Pagination,
   ResponseModel,
   TypeExam,
+  UserCreate,
+  UserPreview,
   UserProfile,
   UserSession,
 } from "@highschool/interfaces";
 
-import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  createQueryString,
+} from "../lib/axios.ts";
 
 export interface CareerGuidanceBrief {
   mbtiResponse: MBTIResponse;
@@ -282,6 +289,51 @@ export const report = async ({
     return data;
   } catch (error) {
     console.log("Error while reporting", error);
+    throw error;
+  }
+};
+
+// Dashboard
+export const getUsers = async (params: {
+  page: number;
+  eachPage: number;
+  status: string[];
+  search?: string;
+  roleName: string;
+}): Promise<Pagination<UserPreview>> => {
+  try {
+    const queryString = createQueryString(params);
+    const response = await axiosServices.get(
+      `${endpointUser.GET_USER}?${queryString}`,
+    );
+
+    const paginationHeader = response.headers["x-pagination"];
+    const metadata: Metadata = JSON.parse(paginationHeader || "{}");
+
+    return {
+      data: response.data,
+      currentPage: metadata.CurrentPage,
+      pageSize: metadata.PageSize,
+      totalCount: metadata.TotalCount,
+      totalPages: metadata.TotalPages,
+    };
+  } catch (error) {
+    console.error("Error while getting user", error);
+    throw error;
+  }
+};
+
+export const createAccount = async ({
+  user,
+}: {
+  user: UserCreate;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const response = await axiosServices.post(endpointUser.CREATE_USER, user);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error creating account:", error);
     throw error;
   }
 };

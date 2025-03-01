@@ -109,9 +109,25 @@ const createAxiosInstance = (contentType: string, useAuth: boolean = false) => {
   return instance;
 };
 
+const createQueryString = (params: Record<string, any>): string => {
+  const urlParams = new URLSearchParams();
+
+  Object.keys(params).forEach((key) => {
+    const value = params[key];
+
+    if (Array.isArray(value)) {
+      value.forEach((val) => urlParams.append(key, val));
+    } else if (value !== undefined && value !== null) {
+      urlParams.append(key, value);
+    }
+  });
+
+  return urlParams.toString();
+};
+
 const axiosServices = createAxiosInstance("application/json", true);
 const axiosClientWithoutAuth = createAxiosInstance("application/json", false);
 const axiosClientUpload = createAxiosInstance("multipart/form-data", true);
 
-export { axiosClientUpload, axiosClientWithoutAuth };
+export { axiosClientUpload, axiosClientWithoutAuth, createQueryString };
 export default axiosServices;

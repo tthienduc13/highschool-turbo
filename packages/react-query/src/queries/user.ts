@@ -1,15 +1,17 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import {
   careerOrientationStatus,
   checkUserNameExist,
   completeOnboard,
+  createAccount,
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
   getUserProfile,
   getUserProgressStage,
+  getUsers,
   report,
   saveCachePersonality,
   updateBaseUserInfo,
@@ -114,5 +116,49 @@ export const useReportMutation = () => {
   return useMutation({
     mutationKey: ["report"],
     mutationFn: report,
+  });
+};
+
+export const useUsersQuery = ({
+  page,
+  eachPage,
+  status,
+  search,
+  roleName,
+}: {
+  page: number;
+  eachPage: number;
+  status: string[];
+  search?: string;
+  roleName: string;
+}) => {
+  return useQuery({
+    queryKey: ["users", page, eachPage, status, search, roleName],
+    queryFn: () =>
+      getUsers({
+        page: page,
+        eachPage: eachPage,
+        status: status,
+        search: search,
+        roleName: roleName,
+      }),
+  });
+};
+
+export const useCreateUserMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["create-user"],
+    mutationFn: createAccount,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success(data.message ?? "Create successfully");
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some error occured");
+    },
   });
 };

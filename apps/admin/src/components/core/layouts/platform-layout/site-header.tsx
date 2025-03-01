@@ -11,6 +11,7 @@ import {
 } from "@highschool/ui/components/ui/breadcrumb";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
+import { usePathname } from "next/navigation";
 
 import { useSidebar } from "../../common/sidebar";
 import { ThemeSwitcher } from "../../common/theme-switcher";
@@ -19,6 +20,12 @@ import { SearchForm } from "./search-form";
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
+  const pathName = usePathname();
+
+  const slugs = pathName
+    .split("/")
+    .filter((slug) => slug !== "")
+    .map((slug) => slug.charAt(0).toUpperCase() + slug.slice(1));
 
   return (
     <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
@@ -35,15 +42,18 @@ export function SiteHeader() {
           <Separator className="mr-2 h-4" orientation="vertical" />
           <Breadcrumb className="hidden sm:block">
             <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="#">
-                  Building Your Application
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
+              {slugs.map((slug, index) => (
+                <>
+                  <BreadcrumbItem>
+                    {index < slugs.length - 1 ? (
+                      <BreadcrumbLink href={`/${slug}`}>{slug}</BreadcrumbLink>
+                    ) : (
+                      <BreadcrumbPage> {slug} </BreadcrumbPage>
+                    )}
+                  </BreadcrumbItem>
+                  {index < slugs.length - 1 && <BreadcrumbSeparator />}
+                </>
+              ))}
             </BreadcrumbList>
           </Breadcrumb>
         </div>
