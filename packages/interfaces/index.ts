@@ -24,3 +24,4 @@ export * from "./uploader";
 export * from "./news";
 export * from "./ket";
 export * from "./avatar";
+export * from "./search";

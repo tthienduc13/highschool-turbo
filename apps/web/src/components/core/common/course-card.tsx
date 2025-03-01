@@ -14,7 +14,7 @@ interface CourseCardProps {
 export const CourseCard = ({ course }: CourseCardProps) => {
   return (
     <Link href={`/courses/${course.slug}`}>
-      <div className="bg-background group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700 dark:bg-gray-800">
+      <div className=" group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700 dark:bg-gray-800">
         <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
           <Image
             fill
@@ -25,7 +25,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
             src={course?.image ?? "/logo.svg"}
           />
         </div>
-        <div className="flex flex-grow flex-col gap-2">
+        <div className="flex grow flex-col gap-2">
           <div className="flex flex-col gap-y-1">
             <h2 className="line-clamp-1 text-lg font-bold">
               {course.subjectName}

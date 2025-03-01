@@ -22,3 +22,4 @@ export * from "./document.ts";
 export * from "./news.ts";
 export * from "./uploader.ts";
 export * from "./game.ts";
+export * from "./search.ts";

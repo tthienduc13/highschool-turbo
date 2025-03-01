@@ -7,12 +7,14 @@ import {
   deleteFolder,
   getFolderDetail,
   getUserFolderList,
+  removeDocumentFromFolder,
   removeFlashcardFromFolder,
   updateFolder,
 } from "../apis/folder.ts";
 
 export const useCreateFolderMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["create-folder"],
     mutationFn: createFolder,
@@ -20,6 +22,7 @@ export const useCreateFolderMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["user-folders"],
       });
+
       return data;
     },
     onError: (error) => {
@@ -30,6 +33,7 @@ export const useCreateFolderMutation = () => {
 
 export const useUpdateFolderMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["update-folder"],
     mutationFn: updateFolder,
@@ -37,6 +41,7 @@ export const useUpdateFolderMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["folder-detail", data.data],
       });
+
       return data;
     },
     onError: (error) => {
@@ -51,11 +56,10 @@ export const useUserFoldersQuery = ({
   userName,
   flashcardId,
   documentId,
-
 }: {
   pageSize: number;
   pageNumber: number;
-userName?: string
+  userName?: string;
   flashcardId?: string;
   documentId?: string;
 }) => {
@@ -102,6 +106,7 @@ export const useFolderDetailQuery = ({
 
 export const useDeleteFolderMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["delete-folder"],
     mutationFn: deleteFolder,
@@ -110,6 +115,7 @@ export const useDeleteFolderMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["user-folders"],
       });
+
       return data;
     },
   });
@@ -117,6 +123,7 @@ export const useDeleteFolderMutation = () => {
 
 export const useRemoveFlashcardMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["remove-flashcard"],
     mutationFn: removeFlashcardFromFolder,
@@ -125,6 +132,24 @@ export const useRemoveFlashcardMutation = () => {
         queryKey: ["folder-detail", data.data],
       });
       toast.success(data.message);
+
+      return data;
+    },
+  });
+};
+
+export const useRemoveDocumentMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["remove-document"],
+    mutationFn: removeDocumentFromFolder,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["folder-detail", data.data],
+      });
+      toast.success(data.message);
+
       return data;
     },
   });
@@ -132,6 +157,7 @@ export const useRemoveFlashcardMutation = () => {
 
 export const useAddTofolderMutation = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["add-to-folder"],
     mutationFn: addToFolder,
@@ -141,6 +167,7 @@ export const useAddTofolderMutation = () => {
         queryKey: ["folder-detail", data.data],
       });
       toast.success(data.message);
+
       return data;
     },
     onError: (error) => {

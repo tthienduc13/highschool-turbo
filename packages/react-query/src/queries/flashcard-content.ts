@@ -18,6 +18,7 @@ export const useContentsBySlugQuery = ({
   return useQuery({
     queryKey: ["flashcard-content-by-slug", slug, pageNumber, pageSize],
     queryFn: () => getFlashcardContentsBySlug({ slug, pageNumber, pageSize }),
+    enabled: !!slug,
     refetchOnMount: true,
   });
 };

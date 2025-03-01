@@ -23,7 +23,7 @@ export const AppProviders = ({ children, session }: AppProviderProps) => {
         attribute="class"
         defaultTheme="light"
       >
-        <ReactQueryProvider> {children}</ReactQueryProvider>
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </ThemeProvider>
     </SessionProvider>
   );

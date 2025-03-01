@@ -1,11 +1,8 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-
 import React from "react";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import {
@@ -24,6 +21,7 @@ interface ModalProps {
   title?: string;
   children?: React.ReactNode;
   buttonLabel?: string;
+  cancelLabel?: string;
   onConfirm?: () => void;
   description?: string;
   isPending?: boolean;
@@ -42,6 +40,7 @@ export const Modal = ({
   title,
   children,
   buttonLabel = "Xác nhận",
+  cancelLabel = "Huỷ",
   onConfirm,
   description,
   isPending,
@@ -84,18 +83,18 @@ export const Modal = ({
             {!withoutCancel && (
               <Button
                 className="!text-base"
+                disabled={isPending}
                 size={"lg"}
                 variant="ghost"
                 onClick={onClose}
-                disabled={isPending}
               >
-                Hủy
+                {cancelLabel}
               </Button>
             )}
             <Button
-              size={"lg"}
               className="!text-base"
               disabled={isPending || isDisabled}
+              size={"lg"}
               onClick={onConfirm}
             >
               {isPending ? (

@@ -47,7 +47,7 @@ export const Instruction = ({ onClose }: InstructionProps) => {
                     key={index}
                     className="flex items-start space-x-2 sm:space-x-3"
                   >
-                    <IconCheck className="mt-1 h-5 w-5 flex-shrink-0 text-green-500" />
+                    <IconCheck className="mt-1 size-5 shrink-0 text-green-500" />
                     <span className="text-sm text-gray-700 sm:text-base dark:text-gray-200">
                       {tip}
                     </span>

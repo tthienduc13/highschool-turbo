@@ -198,14 +198,14 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
               disabled={currentQuestionIndex === 0}
               onClick={handlePreviousQuestion}
             >
-              <IconChevronLeft className="h-4 w-4" />
+              <IconChevronLeft className="size-4" />
               Câu trước
             </Button>
             <Button onClick={handleNextQuestion}>
               {currentQuestionIndex === data?.data?.questions.length - 1
                 ? "Xem lại"
                 : "Câu sau"}
-              <IconChevronRight className="ml-2 h-4 w-4" />
+              <IconChevronRight className="ml-2 size-4" />
             </Button>
           </div>
         </CardFooter>

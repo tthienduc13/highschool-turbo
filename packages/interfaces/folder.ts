@@ -30,4 +30,13 @@ export interface FolderUser {
   countFlashCard: number;
   countDocument: number;
   createdAt: Date;
+  author: FolderAuthor;
+}
+
+export interface FolderAuthor {
+  username: string;
+  userId: string;
+  avatar: string;
+  email: string;
+  fullName: string;
 }

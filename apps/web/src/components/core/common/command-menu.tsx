@@ -22,6 +22,8 @@ import {
   IconSun,
   IconUser,
 } from "@tabler/icons-react";
+import { useSearchQuery } from "@highschool/react-query/queries";
+import { SearchType } from "@highschool/interfaces";
 
 import { menuEventChannel } from "@/events/menu";
 import useColorMode from "@/hooks/use-color-mode";
@@ -83,6 +85,11 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
   const resultsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const dismiss = pathName == `/onboard/command-menu`;
+
+  const { data, isLoading, isSuccess } = useSearchQuery({
+    type: SearchType.Name,
+    value: query,
+  });
 
   const filteredOptions: MenuOption[] = options
     .filter((o) => (!!o.shouldShow ? o.shouldShow() : true))
@@ -211,37 +218,37 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
       action: () => menuEventChannel.emit("createFolder"),
     });
 
-    // const matchingOptions = total.filter((o) =>
-    //   (o.searchableName ?? o.name).toLowerCase().includes(query.toLowerCase()),
-    // );
-
-    // if (matchingOptions.length === 0 && query.trim() !== "") {
-    //   matchingOptions.push({
-    //     icon: <IconSearch className="size-6" />,
-    //     name: `Tìm kiếm: "${query}"`,
-    //     label: "Tìm kiếm các mục phù hợp",
-    //     action: () => {
-    //       router.push(`/search?q=${query}`);
-    //       // Add search logic here, e.g., API call
-    //     },
-    //   });
-    // }
-
     if (query.trim() !== "") {
       total.push({
         icon: <IconSearch className="size-6" />,
         name: `Tìm kiếm: "${query}"`,
         label: "Tìm kiếm các mục phù hợp",
         action: () => {
-          router.push(`/search?q=${query}&type=all`);
+          router.push(`/search?q=${query}&type=${SearchType.All}`);
           // Add search logic here, e.g., API call
         },
       });
     }
 
+    if (isSuccess) {
+      data?.map((searchValue) => {
+        total.push({
+          icon: <IconSearch className="size-6" />,
+          name: `Tìm kiếm: "${searchValue}"`,
+          label: "Tìm kiếm các mục phù hợp",
+          action: () => {
+            router.push(
+              `/search?q=${searchValue.trim()}&type=${SearchType.All}`,
+            );
+            // Add search logic here, e.g., API call
+          },
+        });
+      });
+    }
+
     setOptions(total);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, query]);
+  }, [open, query, isSuccess]);
 
   return (
     <Dialog defaultOpen={true} open={open} onOpenChange={onClose}>
@@ -279,9 +286,10 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
             filteredOptions.length > 6 ? "overflow-auto" : "overflow-hidden",
           )}
           style={{
-            height: !filteredOptions.length
-              ? 64
-              : 72 * (filteredOptions || []).slice(0, 6).length,
+            height:
+              !filteredOptions.length && isLoading
+                ? 64
+                : 72 * (filteredOptions || []).slice(0, 6).length,
           }}
         >
           {!!filteredOptions.length && (
@@ -294,7 +302,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
                 transform: `translateY(${selectionIndex * 72}px)`,
               }}
             >
-              <div className="h-full w-full rounded-xl bg-[#e2e8f080] dark:bg-[#2d374880]" />
+              <div className="size-full rounded-xl bg-[#e2e8f080] dark:bg-[#2d374880]" />
             </div>
           )}
           {filteredOptions.map((o, i) => (
@@ -313,6 +321,11 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
               onClick={(e) => onSubmit(i, e.ctrlKey)}
             />
           ))}
+          {isLoading && (
+            <div className="flex h-16 w-full items-center justify-center">
+              <IconLoader2 className="animate-spin" size={24} />
+            </div>
+          )}
         </div>
       </DialogContent>
     </Dialog>

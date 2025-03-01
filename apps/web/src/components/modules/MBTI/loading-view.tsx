@@ -15,8 +15,8 @@ const LoadingViewRaw = () => {
           }}
         >
           <div className="animate-rotate-blobs absolute h-[400px]">
-            <div className="animate-orange-blob absolute left-[-100px] h-[400px] w-[400px] rounded-full bg-orange-300 opacity-80 blur-[80px] dark:bg-orange-400" />
-            <div className="animate-blue-blob absolute right-[-100px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-80 blur-[80px] dark:bg-blue-500" />
+            <div className="animate-orange-blob absolute left-[-100px] size-[400px] rounded-full bg-orange-300 opacity-80 blur-[80px] dark:bg-orange-400" />
+            <div className="animate-blue-blob absolute right-[-100px] size-[400px] rounded-full bg-blue-500 opacity-80 blur-[80px] dark:bg-blue-500" />
           </div>
         </div>
         <div className="flex flex-col items-center space-y-4">

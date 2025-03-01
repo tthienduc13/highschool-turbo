@@ -34,7 +34,7 @@ export const ResultPrintComponent = forwardRef<
       </div>
       <div className="mt-4 flex flex-col gap-y-2">
         <div className="flex flex-row items-center gap-x-4">
-          <div className="relative h-[200px] w-[200px] overflow-hidden rounded-full">
+          <div className="relative size-[200px] overflow-hidden rounded-full">
             <Image
               fill
               alt={data.title}
@@ -58,7 +58,7 @@ export const ResultPrintComponent = forwardRef<
             <ul className="flex flex-col gap-y-2">
               {data[type].map((item, index) => (
                 <li key={index} className="flex flex-row items-start">
-                  <IconPointFilled className="mr-2 mt-1 flex-shrink-0" />
+                  <IconPointFilled className="mr-2 mt-1 shrink-0" />
                   <span>{item}</span>
                 </li>
               ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { HydrateProfileData } from "./hydrate-profile-data";
-import { InnerProfile } from "./innder-profile";
+import { InnerProfile } from "./inner-profile";
 import { ProfileLoading } from "./profile-loading";
 
 import { Container } from "@/components/core/layouts/container";

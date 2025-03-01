@@ -57,6 +57,8 @@ const endpointFolder = {
     `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
   REMOVE_FLASHCARD: (flashcardId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards/${flashcardId}`,
+  REMOVE_DOCUMENT: (documentId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/folders/documents/${documentId}`,
 };
 
 const endpointUserPersonalized = {

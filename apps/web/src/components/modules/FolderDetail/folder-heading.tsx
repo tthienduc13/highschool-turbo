@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { useDeleteFolderMutation } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -14,27 +14,22 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
+import { NavTab } from "../UserProfile/inner-profile";
+
 import { EditFolderModal } from "./edit-folder-modal";
 
 import { ConfirmModal } from "@/components/core/common/confirm-modal";
 import { UsernameLink } from "@/components/core/common/username-link";
 import { useFolder } from "@/hooks/use-folder";
-import { useMe } from "@/hooks/use-me";
 
 export const FolderHeading = () => {
-  const me = useMe();
   const folder = useFolder();
   const router = useRouter();
+  const params = useParams();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
   const deleteFolderMutation = useDeleteFolderMutation();
-
-  useEffect(() => {
-    if (deleteFolderMutation.isSuccess) {
-      router.push(`/`);
-    }
-  }, [deleteFolderMutation.isSuccess]);
 
   return (
     <>
@@ -57,9 +52,18 @@ export const FolderHeading = () => {
         isOpen={deleteOpen}
         onClose={() => setDeleteOpen(false)}
         onConfirm={() => {
-          deleteFolderMutation.mutate({
-            folderId: folder.folderUser.id,
-          });
+          deleteFolderMutation.mutate(
+            {
+              folderId: folder.folderUser.id,
+            },
+            {
+              onSuccess: () => {
+                router.push(
+                  `/profile/${params.username as String}?type=${NavTab.Folder}`,
+                );
+              },
+            },
+          );
         }}
       />
       <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end md:gap-4">
@@ -71,13 +75,19 @@ export const FolderHeading = () => {
             <div className="flex flex-row items-center gap-2">
               <Avatar className="size-5">
                 <AvatarImage
-                  alt={me?.fullname ?? me?.username}
-                  src={me?.image ?? ""}
+                  alt={
+                    folder.folderUser.author.username ??
+                    folder.folderUser.author.fullName
+                  }
+                  src={folder.folderUser.author.avatar}
                 />
               </Avatar>
               <UsernameLink
-                displayName={me?.fullname ?? me?.username!}
-                username={me?.username!}
+                displayName={
+                  folder.folderUser.author.username ??
+                  folder.folderUser.author.fullName
+                }
+                username={folder.folderUser.author.username}
               />
             </div>
             <div className="flex flex-row items-center gap-4">

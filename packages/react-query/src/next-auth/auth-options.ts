@@ -81,13 +81,6 @@ export const AuthOptions: NextAuthConfig = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
-      //   authorization: {
-      //     params: {
-      //       prompt: "consent",
-      //       access_type: "offline",
-      //       response_type: "code",
-      //     },
-      //   },
     }),
     {
       id: "magic-link",
@@ -244,6 +237,7 @@ export const AuthOptions: NextAuthConfig = {
         roleName: token.roleName,
         progressStage: token.progressStage,
         accessToken: token.accessToken,
+        sessionId: token.sessionId,
         refreshToken: token.refreshToken,
         expiresAt: token.expiresAt,
       };

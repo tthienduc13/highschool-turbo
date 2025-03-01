@@ -26,7 +26,7 @@ import { IconCheck, IconChevronDown, IconX } from "@tabler/icons-react";
  * Uses class-variance-authority (cva) to define different styles based on "variant" prop.
  */
 const multiSelectVariants = cva(
-  "m-1 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300",
+  "m-1 transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110",
   {
     variants: {
       variant: {
@@ -35,7 +35,7 @@ const multiSelectVariants = cva(
         secondary:
           "border-foreground/10 bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent",
         inverted: "inverted",
       },
     },
@@ -228,11 +228,11 @@ export const MultiSelect = React.forwardRef<
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {IconComponent && (
-                          <IconComponent className="mr-2 h-4 w-4" />
+                          <IconComponent className="mr-2 size-4" />
                         )}
                         {option?.label}
                         <IconX
-                          className="ml-2 h-4 w-4 cursor-pointer"
+                          className="ml-2 size-4 cursor-pointer"
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
@@ -252,7 +252,7 @@ export const MultiSelect = React.forwardRef<
                     >
                       {`+ ${selectedValues.length - maxCount} `}
                       <IconX
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                        className="ml-2 size-4 cursor-pointer"
                         onClick={(event) => {
                           event.stopPropagation();
                           clearExtraOptions();
@@ -321,10 +321,10 @@ export const MultiSelect = React.forwardRef<
                             : "opacity-50 [&_svg]:invisible",
                         )}
                       >
-                        <IconCheck className="h-3 w-3" />
+                        <IconCheck className="size-3" />
                       </div>
                       {option.icon && (
-                        <option.icon className="text-muted-foreground mr-2 h-3 w-3" />
+                        <option.icon className="text-muted-foreground mr-2 size-3" />
                       )}
                       <span>{option.label}</span>
                     </CommandItem>

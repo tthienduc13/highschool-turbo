@@ -37,8 +37,8 @@ function CoursesModule() {
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="w-full">
               <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white">
-                <div className="relative hidden h-[180px] w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100 md:block">
-                  <Skeleton className="h-full w-full" />
+                <div className="relative hidden h-[180px] w-full overflow-hidden rounded-t-lg bg-gray-100 md:block">
+                  <Skeleton className="size-full" />
                 </div>
                 <div className="p-4">
                   <Skeleton className="my-4 h-7 w-2/3" />

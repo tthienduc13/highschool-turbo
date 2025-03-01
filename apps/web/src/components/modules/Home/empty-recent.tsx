@@ -82,7 +82,7 @@ export const EmptyRecent = () => {
           <motion.div {...folder} className="opacity-50">
             <IconFolder opacity="0.9" size={40} strokeWidth="2px" />
           </motion.div>
-          <div className="absolute left-0 top-10 -z-10 h-full w-full rounded-full bg-gradient-to-b from-gray-500 to-transparent" />
+          <div className="absolute left-0 top-10 -z-10 size-full rounded-full bg-gradient-to-b from-gray-500 to-transparent" />
         </div>
         <div className="z-10 flex flex-col gap-2 px-7">
           <h1 className="text-3xl font-bold md:text-4xl">

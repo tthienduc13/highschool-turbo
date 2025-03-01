@@ -123,7 +123,7 @@ export const ReportModal = () => {
             Tiêu đề
           </Label>
           <Input
-            className="h-12 w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
+            className="h-12 w-full border-0 border-l-4 border-l-red-300  bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
             placeholder="Tiêu đề"
             value={title}
             onChange={(e) => {
@@ -145,7 +145,7 @@ export const ReportModal = () => {
             Nội dung
           </Label>
           <Textarea
-            className="w-full border-0 border-l-4 border-l-red-300 border-l-transparent bg-gray-100 pt-2 font-medium shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
+            className="w-full border-0 border-l-4 border-l-red-300  bg-gray-100 pt-2 font-medium shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
             placeholder="Nội dung"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -157,10 +157,7 @@ export const ReportModal = () => {
           </Label>
           <div className="flex flex-row items-start gap-4">
             <div className="flex flex-row">
-              <AddImageButton
-                className="h-20 w-20"
-                onClick={triggerFileInput}
-              />
+              <AddImageButton className="size-20" onClick={triggerFileInput} />
               <input
                 ref={fileInputRef}
                 multiple
@@ -175,7 +172,7 @@ export const ReportModal = () => {
                 <div key={index} className="group relative">
                   <img
                     alt={`Image ${index + 1}`}
-                    className="h-20 w-20 object-cover"
+                    className="size-20 object-cover"
                     src={URL.createObjectURL(file)}
                   />
                   <RemoveImageButton

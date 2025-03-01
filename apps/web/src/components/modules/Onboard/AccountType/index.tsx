@@ -6,8 +6,6 @@ import { UserType } from "@highschool/interfaces";
 import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { cn } from "@highschool/ui/lib/utils";
 import { IconBooks, IconSchool } from "@tabler/icons-react";
-import { setClientCookie } from "@highschool/lib/cookies";
-import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { clearAccessTokenCache } from "../../../../../../../packages/react-query/src/lib/axios";
 
@@ -39,7 +37,6 @@ function OnboardAccountTypeModule() {
             },
             {
               onSuccess: async (data) => {
-                await setClientCookie(ACCESS_TOKEN, data.data?.accessToken!);
                 await clearAccessTokenCache();
                 await update({
                   ...session,

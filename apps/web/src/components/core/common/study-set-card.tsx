@@ -19,12 +19,14 @@ export interface StudySetCardProps {
   verified?: boolean;
   removable?: boolean;
   onRemove: () => void;
+  bottom?: React.ReactNode;
 }
 
 export const StudySetCard = ({
   studySet,
   numTerms,
   userLoading,
+  bottom,
   draft,
   user,
   verified = false,
@@ -33,6 +35,7 @@ export const StudySetCard = ({
 }: StudySetCardProps) => {
   return (
     <GenericCard
+      bottom={bottom}
       grade={studySet.grade}
       itemsLabel={"thẻ"}
       label={
@@ -65,14 +68,6 @@ export const StudySetCard = ({
       userLoading={userLoading}
       verified={verified}
       onRemove={onRemove}
-      // bottom={
-      //     studySet.type == "Collab" ? (
-      //         <GenericCollaboratorsFooter
-      //             avatars={collaborators?.avatars || []}
-      //             total={collaborators?.total || 0}
-      //         />
-      //     ) : undefined
-      // }
     />
   );
 };

@@ -84,7 +84,7 @@ export const ResultView = () => {
         }}
       >
         <Input
-          className="h-12 w-full border-0 border-b-4 border-b-blue-300 border-b-transparent bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
+          className="h-12 w-full border-0 border-b-4 border-b-blue-300  bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
           placeholder="Nhập email của bạn"
           type="email"
           value={email}
@@ -121,7 +121,7 @@ export const ResultView = () => {
         </div>
         <div className="mt-4 flex flex-col gap-y-2">
           <div className="flex flex-col items-center gap-4 md:flex-row">
-            <div className="relative h-[200px] w-[200px] overflow-hidden rounded-full">
+            <div className="relative size-[200px] overflow-hidden rounded-full">
               <Image
                 fill
                 alt={result?.title}
@@ -147,7 +147,7 @@ export const ResultView = () => {
               <ul className="flex flex-col gap-y-2">
                 {result[type].map((item, index) => (
                   <li key={index} className="flex flex-row items-start">
-                    <IconPointFilled className="mr-2 mt-1 flex-shrink-0" />
+                    <IconPointFilled className="mr-2 mt-1 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}

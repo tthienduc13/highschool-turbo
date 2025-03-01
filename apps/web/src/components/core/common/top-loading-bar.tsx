@@ -19,6 +19,7 @@ export const TopLoadingBar = () => {
       /^\/courses\/([a-zA-Z0-9-]+)\/chapters\/([a-zA-Z0-9-]+)$/;
     const careerGuidanceRegex = /^\/career-guidance\/(mbti|holland|summary)$/;
     const searchRegex = /^\/search\?q=.*$/;
+    const documentRegex = /^\/documents\/([a-zA-Z0-9-]+)$/;
 
     const unified = new RegExp(
       `^(${[
@@ -29,6 +30,7 @@ export const TopLoadingBar = () => {
         courseChapterRegex,
         careerGuidanceRegex,
         searchRegex,
+        documentRegex,
       ]
         .map((r) => r.source)
         .join("|")})$`,

@@ -23,3 +23,10 @@ export type NewsAuthor = {
   authorImage: string;
   authorName: string;
 };
+
+export interface StudyGuide {
+  id: string;
+  newName: string;
+  slug: string;
+  author: NewsAuthor;
+}

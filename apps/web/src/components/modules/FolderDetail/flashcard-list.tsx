@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useAddTofolderMutation,
+  useOwnFlashcardQuery,
   useRemoveFlashcardMutation,
-  useUserFlashcardQuery,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconCards, IconPlus } from "@tabler/icons-react";
@@ -20,23 +20,15 @@ export const FlashcardList = () => {
   const folder = useFolder();
   const me = useMe();
 
-  const [hasOpenedSets, setHasOpenedSets] = useState(false);
   const [addSetsModalOpen, setAddSetsModalOpen] = useState(false);
 
-  const { data, isLoading } = useUserFlashcardQuery({
+  const { data, isLoading } = useOwnFlashcardQuery({
     pageNumber: 1,
     pageSize: 100,
-    username: me?.username!,
   });
 
   const removeFlashcard = useRemoveFlashcardMutation();
   const addToFolder = useAddTofolderMutation();
-
-  useEffect(() => {
-    if (addToFolder.isSuccess) {
-      setAddSetsModalOpen(false);
-    }
-  }, [addToFolder.isSuccess]);
 
   return (
     <>
@@ -52,10 +44,17 @@ export const FlashcardList = () => {
         isEntitiesLoading={isLoading}
         isOpen={addSetsModalOpen}
         onAdd={async (ids: string[]) => {
-          await addToFolder.mutateAsync({
-            folderId: folder.folderUser.id,
-            flashcardIds: ids,
-          });
+          await addToFolder.mutateAsync(
+            {
+              folderId: folder.folderUser.id,
+              flashcardIds: ids,
+            },
+            {
+              onSuccess: () => {
+                setAddSetsModalOpen(false);
+              },
+            },
+          );
         }}
         onClose={() => setAddSetsModalOpen(false)}
       />
@@ -70,6 +69,9 @@ export const FlashcardList = () => {
           {folder.flashcards.map((flashcard) => (
             <StudySetCard
               key={flashcard.id}
+              draft={!flashcard.created}
+              numTerms={flashcard.numberOfFlashcardContent}
+              removable={true}
               studySet={flashcard}
               user={{
                 fullname: me?.fullname!,
@@ -81,9 +83,6 @@ export const FlashcardList = () => {
                   flashcardId: flashcard.id,
                 });
               }}
-              numTerms={flashcard.numberOfFlashcardContent}
-              // collaborators={studySet.collaborators}
-              removable={true}
             />
           ))}
           <Button
@@ -91,7 +90,6 @@ export const FlashcardList = () => {
             variant={"outline"}
             onClick={() => {
               setAddSetsModalOpen(true);
-              setHasOpenedSets(true);
             }}
           >
             <IconPlus className="!size-6" />

@@ -11,7 +11,7 @@ export const LoadingFlashcard = ({ h = "500px" }: LoadingFlashcardProps) => {
     <div className="relative overflow-hidden rounded-xl shadow-xl">
       <Skeleton className="h-full rounded-xl">
         <div
-          className="h-full w-full rounded-xl border-[2px] bg-transparent bg-white"
+          className="size-full rounded-xl border-2  bg-white"
           style={{ minHeight: h }}
         />
       </Skeleton>

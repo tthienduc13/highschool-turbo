@@ -38,14 +38,14 @@ export const SelectableGenericCard = ({
       )}
       onClick={onSelect}
     >
-      <div className="flex h-full w-full flex-col justify-between gap-4">
+      <div className="flex size-full flex-col justify-between gap-4">
         <div
           className={cn(
             "flex gap-2",
             reverseTitle ? "flex-col-reverse" : "flex-col",
           )}
         >
-          <h2 className="line-clamp-2 overflow-hidden text-ellipsis text-base font-bold">
+          <h2 className="line-clamp-2 overflow-hidden text-ellipsis text-left text-base font-bold">
             {title}
           </h2>
           <div className="flex flex-row items-center gap-2 text-gray-600 dark:text-gray-400">

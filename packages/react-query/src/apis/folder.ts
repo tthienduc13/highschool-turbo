@@ -7,6 +7,7 @@ import {
 } from "@highschool/interfaces";
 
 import axiosServices from "../lib/axios.ts";
+
 import fetchPaginatedData from "./common.ts";
 
 // GET
@@ -46,6 +47,7 @@ export const getFolderDetail = async ({
     const { data } = await axiosServices.get(endpointFolder.GET_FOLDER_DETAIL, {
       params: { pageNumber, pageSize, id: folderId },
     });
+
     return data;
   } catch (error) {
     console.log("Error while fetching folder detail", error);
@@ -73,6 +75,7 @@ export const createFolder = async ({
         documentIds,
       },
     );
+
     return data;
   } catch (error) {
     console.log("Error while creating folder", error);
@@ -97,6 +100,7 @@ export const addToFolder = async ({
         documentIds,
       },
     );
+
     return data;
   } catch (error) {
     console.log("Error while adding to folder", error);
@@ -125,6 +129,7 @@ export const updateFolder = async ({
         documentIds,
       },
     );
+
     return data;
   } catch (error) {
     console.log("Error while updating folder", error);
@@ -139,6 +144,7 @@ export const deleteFolder = async ({ folderId }: { folderId: string }) => {
     const { data } = await axiosServices.delete(
       endpointFolder.DELETE_FOLDER(folderId),
     );
+
     return data;
   } catch (error) {
     console.log("Error while deleting folder", error);
@@ -158,9 +164,30 @@ export const removeFlashcardFromFolder = async ({
       endpointFolder.REMOVE_FLASHCARD(flashcardId),
       { params: { folderId } },
     );
+
     return data;
   } catch (error) {
     console.log("Error while removing flashcard from folder", error);
+    throw Error;
+  }
+};
+
+export const removeDocumentFromFolder = async ({
+  documentId,
+  folderId,
+}: {
+  documentId: string;
+  folderId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      endpointFolder.REMOVE_DOCUMENT(documentId),
+      { params: { folderId } },
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while removing document from folder", error);
     throw Error;
   }
 };

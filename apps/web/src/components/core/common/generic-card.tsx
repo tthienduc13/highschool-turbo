@@ -4,14 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Grade } from "@highschool/interfaces";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
-import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@highschool/ui/components/ui/dropdown-menu";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
 import {
@@ -19,6 +12,13 @@ import {
   IconDotsVertical,
   IconTrash,
 } from "@tabler/icons-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@highschool/ui/components/ui/dropdown-menu";
+import { Button } from "@highschool/ui/components/ui/button";
 
 import { gradeRenderer } from "./renderer/grade";
 
@@ -50,7 +50,7 @@ export const GenericCard = ({
   userLoading = false,
   //   itemsLabel,
   label,
-  //   bottom,
+  bottom,
   url,
   user,
   reverseTitle = false,
@@ -95,26 +95,33 @@ export const GenericCard = ({
               </div>
             </div>
           </div>
-          <div className="flex flex-row justify-between">
+          <div className="flex w-full flex-row justify-between">
             {!userLoading && (
-              <div className="flex flex-row items-center gap-2">
-                <Avatar className="size-6">
-                  <AvatarImage
-                    alt={user.fullname ?? "Người dùng Highschool"}
-                    src={user.image ?? "/logo.svg"}
-                  />
-                </Avatar>
-                <div className="flex flex-row items-center gap-1">
-                  <div className="text-sm font-semibold">
-                    {user.fullname ?? "Người dùng Highschool"}
-                  </div>
-                  {verified && (
-                    <IconDiscountCheck aria-label="Verified" size={18} />
-                  )}
-                </div>
+              <div className="flex w-full flex-row items-center gap-2">
+                {!bottom ? (
+                  <>
+                    {" "}
+                    <Avatar className="size-6">
+                      <AvatarImage
+                        alt={user.fullname ?? "Người dùng Highschool"}
+                        src={user.image ?? "/logo.svg"}
+                      />
+                    </Avatar>
+                    <div className="flex flex-row items-center gap-1">
+                      <div className="text-sm font-semibold">
+                        {user.fullname ?? "Highschool"}
+                      </div>
+                      {verified && (
+                        <IconDiscountCheck aria-label="Verified" size={18} />
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  bottom
+                )}
               </div>
             )}
-            {removable && (
+            {removable ? (
               <DropdownMenu
                 open={menuOpen}
                 onOpenChange={() => setMenuOpen(false)}
@@ -146,7 +153,7 @@ export const GenericCard = ({
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
@@ -163,7 +170,7 @@ GenericCard.Skeleton = function GenericCardSkeleton() {
           <Skeleton className="h-4 w-1/4" />
         </div>
         <div className="flex items-center space-x-2">
-          <Skeleton className="h-6 w-6 rounded-full" />
+          <Skeleton className="size-6 rounded-full" />
           <Skeleton className="h-4 w-1/3" />
         </div>
       </CardContent>

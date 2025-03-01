@@ -93,7 +93,7 @@ export const Header = () => {
           >
             <Image
               alt=""
-              className="h-full w-full object-cover"
+              className="size-full object-cover"
               height={8}
               src={theme === "dark" ? "/dark-wave.svg" : "/wave.svg"}
               width={1440}
@@ -101,7 +101,7 @@ export const Header = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="mx-auto flex h-full w-full flex-row items-center justify-between px-6 py-4 md:px-8">
+      <div className="mx-auto flex size-full flex-row items-center justify-between px-6 py-4 md:px-8">
         <LeftNav onFolderClick={() => setFolderModalOpen(true)} />
         <div className="block md:hidden">
           <div className="flex flex-row gap-2">

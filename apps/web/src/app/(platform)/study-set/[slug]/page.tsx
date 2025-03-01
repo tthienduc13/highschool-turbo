@@ -31,7 +31,7 @@ export const generateMetadata = async ({
 
   const data = await getFlashcardBySlug({ slug });
 
-  if (data) metadataCache.set(slug, data); // ✅ Ensure cache is updated only when data exists
+  if (data) metadataCache.set(slug, data);
 
   return data
     ? {
@@ -46,17 +46,15 @@ async function StudySet({ params }: { params: Promise<{ slug: string }> }) {
   const queryClient = new QueryClient();
 
   if (metadataCache.has(slug)) {
-    queryClient.setQueryData(
-      ["flashcard-by-slug", slug],
-      metadataCache.get(slug),
-    );
+    const cachedData = metadataCache.get(slug);
+
+    queryClient.setQueryData(["flashcard-by-slug", slug], cachedData);
   } else {
     await queryClient.prefetchQuery({
       queryKey: ["flashcard-by-slug", slug],
       queryFn: () => getFlashcardBySlug({ slug }),
     });
 
-    // ✅ Ensure consistency by caching the fetched data
     const fetchedData = queryClient.getQueryData<Flashcard>([
       "flashcard-by-slug",
       slug,

@@ -20,6 +20,13 @@ export const emptyFolderContext: UserFolder = {
     countFlashCard: 0,
     countDocument: 0,
     createdAt: new Date(0),
+    author: {
+      username: "",
+      userId: "",
+      avatar: "",
+      email: "",
+      fullName: "",
+    },
   },
   flashcards: [],
   documents: [],
