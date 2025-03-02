@@ -47,11 +47,11 @@ export const ProfileLinkable = ({
 
 ProfileLinkable.Skeleton = function ProfileLinkableSkeleton() {
   return (
-    <div className="h-full w-full rounded-lg border-2 border-gray-200 bg-white p-4 shadow-md dark:border-gray-700 dark:bg-gray-800">
+    <div className="size-full rounded-lg border-2 border-gray-200 bg-white p-4 shadow-md dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-col gap-2">
         <div className="flex h-5 flex-row items-center justify-between">
           <Skeleton className="h-[14px] w-20" />
-          <Skeleton className="h-[18px] w-[18px] rounded-full" />
+          <Skeleton className="size-[18px] rounded-full" />
         </div>
         <Skeleton className="h-7 w-32" />
       </div>

@@ -23,7 +23,7 @@ export const TitleBar = () => {
       <div className="bg-primary/40 flex h-8 w-[110px] items-center justify-center rounded-md px-3 text-base font-bold">
         Thẻ ghi nhớ
       </div>
-      <h1 className="line-clamp-1 hidden w-full flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-center text-xl font-bold md:block">
+      <h1 className="line-clamp-1 hidden w-full flex-1 truncate text-center text-xl font-bold md:block">
         {flashcard?.flashcardName}
       </h1>
       <div className="flex w-[110px] justify-end">

@@ -60,7 +60,7 @@ const SkeletonPromptDisplay: React.FC<{ label: string }> = ({ label }) => {
 export const QuestionSkeleton = () => {
   return (
     <Card className="relative rounded-2xl border-2 border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
-      <div className="space-y-6 px-5 py-5 sm:px-6 sm:py-5 md:px-8 md:py-7">
+      <div className="space-y-6 p-5 sm:px-6 sm:py-5 md:px-8 md:py-7">
         <div className="grid grid-cols-1 gap-1 sm:grid-cols-[1fr_2px_1fr] md:gap-3">
           <div className="w-full pr-0 sm:pr-4">
             <SkeletonPromptDisplay label="Definition" />

@@ -138,7 +138,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                   onSubmit={emailMethods.handleSubmit(onSubmit)}
                 >
                   <div className="flex w-full flex-col gap-3">
-                    <div className="h-full w-full">
+                    <div className="size-full">
                       <div
                         className={cn(
                           "relative -ml-1 flex w-[calc(100%+8px)] flex-col gap-2 overflow-hidden px-1 transition-all duration-150 ease-out",

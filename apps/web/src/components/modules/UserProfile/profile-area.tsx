@@ -41,7 +41,7 @@ export const ProfileArea = () => {
 ProfileArea.Skeleton = function ProfileAreaSkeleton() {
   return (
     <div className="flex flex-row items-center gap-4 md:gap-6">
-      <Skeleton className="h-16 w-16 rounded-full" />
+      <Skeleton className="size-16 rounded-full" />
       <div className="flex h-16 flex-col justify-between">
         <Skeleton className="h-6 w-48 md:h-9" />
         <Skeleton className="h-4 w-32" />

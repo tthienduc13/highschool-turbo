@@ -35,7 +35,7 @@ export const FolderList = () => {
             <div className="whitespace-nowrap text-2xl font-bold">
               {group.label}
             </div>
-            <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700" />
+            <div className="h-px w-full bg-gray-300 dark:bg-gray-700" />
           </div>
           <div className="flex flex-col gap-6">
             {group.items.map((item) => (

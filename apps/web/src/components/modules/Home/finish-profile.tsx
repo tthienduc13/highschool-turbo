@@ -76,7 +76,7 @@ export const FinishProfile = () => {
           <>
             {isTeacher ? (
               <Button
-                className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
+                className="size-full justify-start whitespace-pre-wrap md:!text-base"
                 variant={"ghost"}
                 onClick={() => {
                   menuEventChannel.emit("openTeacherInformationModal");
@@ -94,7 +94,7 @@ export const FinishProfile = () => {
               </Button>
             ) : (
               <Button
-                className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
+                className="size-full justify-start whitespace-pre-wrap md:!text-base"
                 variant={"ghost"}
                 onClick={() => {
                   menuEventChannel.emit("openInformationModal");
@@ -118,7 +118,7 @@ export const FinishProfile = () => {
         {!isTeacher &&
           data?.data === StudentProgressState.PersonalityAssessment && (
             <Button
-              className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
+              className="size-full justify-start whitespace-pre-wrap md:!text-base"
               variant={"ghost"}
               onClick={() => {
                 menuEventChannel.emit("openCareerGuidanceModal");
@@ -138,7 +138,7 @@ export const FinishProfile = () => {
           )}
         {isTeacher && data?.data === TeacherProgressState.VerifyTeacher && (
           <Button
-            className="h-full w-full justify-start whitespace-pre-wrap md:!text-base"
+            className="size-full justify-start whitespace-pre-wrap md:!text-base"
             variant={"ghost"}
             onClick={() => {
               menuEventChannel.emit("openCareerGuidanceModal");

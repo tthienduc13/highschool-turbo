@@ -21,8 +21,8 @@ export const RecentView = () => {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {[...Array(4)].map((_, index) => (
             <div key={index} className="w-full">
-              <div className="flex h-full w-full flex-row gap-4 p-4">
-                <Skeleton className="h-10 w-10 rounded-md" />
+              <div className="flex size-full flex-row gap-4 p-4">
+                <Skeleton className="size-10 rounded-md" />
                 <div className="flex flex-1 flex-col justify-start">
                   <Skeleton className="mb-2 h-5 w-3/4" />
                   <Skeleton className="h-4 w-1/2" />
@@ -56,7 +56,7 @@ export const RecentView = () => {
             }
           >
             <Button
-              className="group h-full w-full justify-start whitespace-pre-wrap p-4"
+              className="group size-full justify-start whitespace-pre-wrap p-4"
               variant={"ghost"}
             >
               <div className="flex w-full flex-row gap-4">

@@ -11,7 +11,7 @@ import { WithFooter } from "@/components/core/common/with-footer";
 
 function SettingsModule() {
   const Divider = () => {
-    return <div className="h-[1px] w-full bg-gray-400 dark:bg-gray-600" />;
+    return <div className="h-px w-full bg-gray-400 dark:bg-gray-600" />;
   };
 
   return (

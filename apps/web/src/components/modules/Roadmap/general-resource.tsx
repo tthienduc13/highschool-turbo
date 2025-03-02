@@ -76,7 +76,7 @@ const ResourceSection = ({ title, data, type }: ResourceSectionProps) => (
       <div className="flex items-center rounded-md border border-green-500 px-2 py-1">
         <span className="text-sm font-medium text-green-500">{title}</span>
       </div>
-      <div className="ml-2 flex-grow border-t border-green-500" />
+      <div className="ml-2 grow border-t border-green-500" />
     </div>
     {data && data.length > 0 ? (
       <ul className="list-disc pl-5">

@@ -48,13 +48,13 @@ export const StudySets = ({ data }: StudySetsProps) => {
       <div className="flex flex-col gap-6">
         {isTablet ? (
           <div className="flex flex-col gap-2">
-            <h2 className="font-semibold text-sm flex-1 text-gray-800 dark:text-gray-400">
+            <h2 className="flex-1 text-sm font-semibold text-gray-800 dark:text-gray-400">
               Bộ lọc
             </h2>
             <div className="flex flex-row items-center gap-4">
-              <div className="h-10 w-[100px] border-2 border-gray-200 rounded-md" />
-              <div className="h-10 w-[100px] border-2 border-gray-200 rounded-md" />
-              <div className="h-10 w-[100px] border-2 border-gray-200 rounded-md" />
+              <div className="h-10 w-[100px] rounded-md border-2 border-gray-200" />
+              <div className="h-10 w-[100px] rounded-md border-2 border-gray-200" />
+              <div className="h-10 w-[100px] rounded-md border-2 border-gray-200" />
             </div>
           </div>
         ) : (
@@ -67,12 +67,12 @@ export const StudySets = ({ data }: StudySetsProps) => {
           </Button>
         )}
         <h2 className="text-2xl font-semibold">Bộ thẻ ghi nhớ</h2>
-        <div className="grid gird-cols-1 gap-4">
+        <div className="gird-cols-1 grid gap-4">
           {data?.map((flashcard) => (
             <StudySetCard
               key={flashcard.id}
               bottom={
-                <div className="flex w-full items-center flex-row justify-between">
+                <div className="flex w-full flex-row items-center justify-between">
                   <div className="flex flex-row items-center gap-2">
                     <Avatar className="size-6">
                       <AvatarImage

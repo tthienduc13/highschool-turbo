@@ -4,9 +4,23 @@ import Cookies from "js-cookie";
  * Set a cookie.
  * @param name - The name of the cookie.
  * @param value - The value of the cookie.
+ * @param expires - Optional number of days until the cookie expires.
+ * @param path - Optional path where the cookie is accessible.
  */
-export const setClientCookie = (name: string, value: string): void => {
-  Cookies.set(name, value);
+export const setClientCookie = (
+  name: string,
+  value: string,
+  expires?: number,
+  path: string = "/",
+): void => {
+  const options = {
+    expires: expires
+      ? new Date(new Date().getTime() + expires * 24 * 60 * 60 * 1000)
+      : undefined,
+    path: path,
+  };
+
+  Cookies.set(name, value, options);
 };
 
 /**
@@ -29,7 +43,8 @@ export const getAllClientCookies = (): { [key: string]: string } => {
 /**
  * Delete a cookie.
  * @param name - The name of the cookie to delete.
+ * @param path - Optional path where the cookie is accessible.
  */
-export const deleteClientCookie = (name: string): void => {
-  Cookies.remove(name);
+export const deleteClientCookie = (name: string, path: string = "/"): void => {
+  Cookies.remove(name, { path });
 };

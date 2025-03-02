@@ -81,7 +81,7 @@ function CourseDetailModule() {
                 <div className="col-span-2 grid grid-cols-2 gap-2">
                   {courseItems.map((item, index) => (
                     <div key={index} className="flex items-center gap-x-2">
-                      <item.icon className="h-5 w-5" />
+                      <item.icon className="size-5" />
                       <span>{item.value}</span>
                     </div>
                   ))}

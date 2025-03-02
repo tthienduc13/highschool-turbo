@@ -1,66 +1,44 @@
+import { getClientCookie } from "@highschool/lib/cookies.ts";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { getSession as getSessionClient } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { env } from "@highschool/env";
-import { Session } from "next-auth";
-
-import { auth } from "../next-auth/index.ts";
+import { cookies as serverCookies } from "next/headers.js";
+import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
 const isServer = typeof window === "undefined";
 
-let cachedSession: Session | null = null;
-let sessionPromise: Promise<Session | null> | null = null;
+const getAccessToken = async () => {
+  if (isServer) {
+    const serverCookiesInstance = await serverCookies();
 
-const makeSession = async (): Promise<Session | null> => {
-  try {
-    return isServer ? await auth() : await getSessionClient();
-  } catch {
-    return null;
+    return serverCookiesInstance.get(ACCESS_TOKEN);
+  } else {
+    return getClientCookie(ACCESS_TOKEN);
   }
 };
 
-export const clearAccessTokenCache = () => {
-  cachedSession = null;
-  sessionPromise = null;
-};
+const getRefreshToken = async () => {
+  if (isServer) {
+    const serverCookiesInstance = await serverCookies();
 
-const getSession = async ({ cache = true } = {}): Promise<Session | null> => {
-  if (cache && cachedSession) {
-    const expiresAt = cachedSession?.user?.expiresAt
-      ? new Date(cachedSession.user.expiresAt).getTime()
-      : 0;
-
-    if (Date.now() < expiresAt) {
-      return cachedSession;
-    }
+    return serverCookiesInstance.get("refreshToken");
+  } else {
+    return getClientCookie("refreshToken");
   }
-
-  if (!sessionPromise) {
-    sessionPromise = makeSession().then((session) => {
-      cachedSession = session;
-      sessionPromise = null;
-
-      return session;
-    });
-  }
-
-  return sessionPromise;
 };
 
 const attachJwtToRequest = async (request: AxiosRequestConfig) => {
-  const session = await getSession({ cache: true });
+  const accessToken = await getAccessToken();
 
-  if (!session) {
-    return;
-  }
-
-  if (request.headers) {
-    request.headers["Authorization"] = `Bearer ${session.user.accessToken}`;
+  if (accessToken && request.headers) {
+    request.headers["Authorization"] = `Bearer ${accessToken}`;
 
     if (request.url === "auth/refresh-token") {
-      request.headers["refresh-token"] = `Bearer ${session.user.refreshToken}`;
+      const refreshToken = await getRefreshToken();
+
+      request.headers["refresh-token"] = `Bearer ${refreshToken}`;
     }
   }
 };

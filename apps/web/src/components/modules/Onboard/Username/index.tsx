@@ -59,7 +59,7 @@ function OnboardUsernameModule() {
             onLoadingChange={(loading) => setLoading(loading)}
           />
           <div className="mt-3 flex w-full flex-row items-center gap-6">
-            <Avatar className="h-[60px] w-[60px]">
+            <Avatar className="size-[60px]">
               <AvatarImage
                 alt={me?.fullname ?? "Highschool User"}
                 src={me?.image!}

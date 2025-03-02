@@ -32,7 +32,7 @@ FlashcardList.Skeleton = function FlashcardListSkeleton() {
         <div className="flex h-7 flex-row items-center">
           <Skeleton className="h-[26px] w-[100px] rounded-md" />
         </div>
-        <div className="h-[1px] w-full bg-gray-300 dark:bg-gray-700" />
+        <div className="h-px w-full bg-gray-300 dark:bg-gray-700" />
       </div>
       <div className="flex flex-col gap-4">
         {Array.from({ length: numSets }, (_, i) => (

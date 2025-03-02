@@ -6,6 +6,7 @@ import { GoogleLoginRequest } from "@highschool/interfaces";
 import { cookies } from "next/headers.js";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 import Credentials from "next-auth/providers/credentials";
+import { signOut } from "next-auth/react";
 
 import {
   credentialLogin,
@@ -42,10 +43,13 @@ const refreshAccessToken = async (token: JWT) => {
     const result = await response.json();
 
     if (!result.data) {
+      signOut();
       throw new Error("RefreshTokenFailed");
     }
 
-    // setClientCookie(ACCESS_TOKEN, result.data.accessToken);
+    const cookieStore = await cookies();
+
+    cookieStore.set(ACCESS_TOKEN, result.data.accessToken);
 
     return {
       ...token,
@@ -124,8 +128,6 @@ export const AuthOptions: NextAuthConfig = {
         },
       },
       authorize: async (credentials) => {
-        let user = null;
-
         const response = await credentialLogin({
           email: credentials.email as string,
           password: credentials.password as string,
@@ -138,9 +140,7 @@ export const AuthOptions: NextAuthConfig = {
           response.data?.roleName.toLocaleLowerCase() === "moderator" ||
           response.data?.roleName.toLocaleLowerCase() === "admin"
         ) {
-          user = response.data;
-
-          return user;
+          return response.data;
         }
 
         return null;
@@ -165,23 +165,29 @@ export const AuthOptions: NextAuthConfig = {
 
         cookieStore.set(ACCESS_TOKEN, userInfo.accessToken);
 
-        user.userId = userInfo.userId;
-        user.email = userInfo.email;
-        user.username = userInfo.username;
-        user.fullname = userInfo.fullname;
-        user.image = userInfo.image;
-        user.roleName = userInfo.roleName;
-        user.accessToken = userInfo.accessToken;
-        user.refreshToken = userInfo.refreshToken;
-        user.sessionId = userInfo.sessionId;
-        user.progressStage = userInfo.progressStage;
-        user.roleName = userInfo.roleName;
-        user.expiresAt = userInfo.expiresAt;
+        Object.assign(user, {
+          userId: userInfo.userId,
+          email: userInfo.email,
+          username: userInfo.username,
+          fullname: userInfo.fullname,
+          image: userInfo.image,
+          roleName: userInfo.roleName,
+          accessToken: userInfo.accessToken,
+          refreshToken: userInfo.refreshToken,
+          sessionId: userInfo.sessionId,
+          progressStage: userInfo.progressStage,
+          expiresAt: userInfo.expiresAt,
+        });
 
         return true;
       }
+
       if (account?.provider === "magic-link") {
         const userInfo = user;
+
+        const cookieStore = await cookies();
+
+        cookieStore.set(ACCESS_TOKEN, userInfo.accessToken);
 
         Object.assign(user, {
           userId: userInfo.userId,
@@ -218,8 +224,6 @@ export const AuthOptions: NextAuthConfig = {
       }
 
       if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
-        console.log("start refreshing token");
-
         return (await refreshAccessToken(token)) as JWT;
       }
 
