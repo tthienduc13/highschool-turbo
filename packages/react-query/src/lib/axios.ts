@@ -13,7 +13,7 @@ const getAccessToken = async () => {
   if (isServer) {
     const serverCookiesInstance = await serverCookies();
 
-    return serverCookiesInstance.get(ACCESS_TOKEN);
+    return serverCookiesInstance.get(ACCESS_TOKEN)?.value;
   } else {
     return getClientCookie(ACCESS_TOKEN);
   }
