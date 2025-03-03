@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 interface AvatarCirclesProps {
@@ -20,19 +19,16 @@ const AvatarCircles = ({
       {avatarUrls.map((url, index) => (
         <img
           key={index}
-          className="h-10 w-10 rounded-full border-2 border-white lg:h-12 lg:w-12 dark:border-gray-800"
+          alt={`Avatar ${index + 1}`}
+          className="size-10 rounded-full border-2 border-white lg:size-12 dark:border-gray-800"
+          height={40}
           src={url}
           width={40}
-          height={40}
-          alt={`Avatar ${index + 1}`}
         />
       ))}
-      <a
-        className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-black text-center text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-white dark:text-black"
-        href=""
-      >
+      <div className="flex size-10 items-center justify-center rounded-full border-2 border-white bg-black text-center text-xs font-medium text-white hover:bg-gray-600 dark:border-gray-800 dark:bg-white dark:text-black">
         +{numPeople}
-      </a>
+      </div>
     </div>
   );
 };

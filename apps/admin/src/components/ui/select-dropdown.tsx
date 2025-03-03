@@ -45,7 +45,7 @@ export function SelectDropdown({
         {isPending ? (
           <SelectItem disabled className="h-14" value="loading">
             <div className="flex items-center justify-center gap-2">
-              <IconLoader className="h-5 w-5 animate-spin" />
+              <IconLoader className="size-5 animate-spin" />
               {"  "}
               Loading...
             </div>

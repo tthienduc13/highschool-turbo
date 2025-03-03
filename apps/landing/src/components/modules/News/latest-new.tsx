@@ -1,12 +1,10 @@
 "use client";
 
 import { Fragment } from "react";
-
 import { useInfiniteNewsQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconLoader2 } from "@tabler/icons-react";
 
 import { NewsCard } from "@/components/core/common/new-card";
@@ -21,6 +19,7 @@ export const LatestNews = () => {
     isLoading,
     isFetchingNextPage,
   } = useInfiniteNewsQuery();
+
   if (isLoading) {
     return <LatestNewsSkeleton />;
   }
@@ -52,10 +51,10 @@ export const LatestNews = () => {
       ))}
       <div className="flex w-full justify-center">
         <Button
-          size={"lg"}
-          onClick={() => fetchNextPage()}
           disabled={!hasNextPage || isFetchingNextPage}
+          size={"lg"}
           variant={"outline"}
+          onClick={() => fetchNextPage()}
         >
           {isFetching ? (
             <IconLoader2 className="animate-spin" />
@@ -82,7 +81,7 @@ const LatestNewsSkeleton = () => (
             <Skeleton className="h-6 w-full" />
             <Skeleton className="h-4 w-full" />
             <div className="flex items-center gap-2 pt-2">
-              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="size-6 rounded-full" />
               <Skeleton className="h-4 w-24" />
             </div>
           </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { AnimatePresence, Transition, motion } from "framer-motion";
-
 import {
   Children,
   ReactElement,
@@ -10,7 +9,6 @@ import {
   useId,
   useState,
 } from "react";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 type AnimatedBackgroundProps = {
@@ -74,16 +72,16 @@ export function AnimatedBackground({
         <AnimatePresence initial={false}>
           {activeId === id && (
             <motion.div
-              layoutId={`background-${uniqueId}`}
-              className={cn("absolute inset-0", className)}
-              transition={transition}
-              initial={{ opacity: defaultValue ? 1 : 0 }}
               animate={{
                 opacity: 1,
               }}
+              className={cn("absolute inset-0", className)}
               exit={{
                 opacity: 0,
               }}
+              initial={{ opacity: defaultValue ? 1 : 0 }}
+              layoutId={`background-${uniqueId}`}
+              transition={transition}
             />
           )}
         </AnimatePresence>

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { Button } from "@highschool/ui/components/ui/button";
 
 export default function NotFound() {
@@ -9,12 +8,12 @@ export default function NotFound() {
       <div className="flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row">
         <div className="w-full md:w-1/2">
           <Image
-            src="/not-found.png"
-            alt="404 Not Found Illustration"
-            width={400}
-            height={400}
-            className="h-auto w-full"
             priority
+            alt="404 Not Found Illustration"
+            className="h-auto w-full"
+            height={400}
+            src="/not-found.png"
+            width={400}
           />
         </div>
         <div className="w-full text-center md:w-1/2 md:text-left">

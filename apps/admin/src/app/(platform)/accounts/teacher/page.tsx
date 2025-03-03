@@ -1,7 +1,7 @@
 import TeacherTableModule from "@/components/modules/teacher-table-module";
 
 function TeacherManagementPage() {
-    return <TeacherTableModule />;
+  return <TeacherTableModule />;
 }
 
 export default TeacherManagementPage;

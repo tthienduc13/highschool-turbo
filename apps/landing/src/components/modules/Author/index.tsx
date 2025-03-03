@@ -11,7 +11,6 @@ import {
 } from "@highschool/ui/components/ui/avatar";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconRosetteDiscountCheck } from "@tabler/icons-react";
 
 import { Breadcrumbs } from "@/components/core/common/bread-crumbs";
@@ -74,7 +73,7 @@ const AuthorDetails = ({
 }) => (
   <div className="flex items-center gap-4">
     <Avatar className="size-14">
-      <AvatarImage src={profilePicture} alt={name || "Tác giả"} />
+      <AvatarImage alt={name || "Tác giả"} src={profilePicture} />
       <AvatarFallback>HS</AvatarFallback>
     </Avatar>
     <div className="flex items-center gap-2">
@@ -97,7 +96,7 @@ const NewsList = ({ newsData }: { newsData: any[] }) => (
 
 const AuthorSkeleton = () => (
   <div className="flex items-center gap-2">
-    <Skeleton className="h-14 w-14 rounded-full" />
+    <Skeleton className="size-14 rounded-full" />
     <Skeleton className="h-5 w-[150px]" />
   </div>
 );
@@ -107,11 +106,11 @@ export const NewsLoading = () => (
     {Array.from({ length: 3 }).map((_, index) => (
       <div
         key={index}
-        className="group relative grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6"
         aria-hidden="true"
+        className="group relative grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6"
       >
         <div className="relative aspect-video w-full overflow-hidden rounded-lg sm:col-span-1">
-          <Skeleton className="h-full w-full" />
+          <Skeleton className="size-full" />
         </div>
         <div className="flex flex-col gap-2 sm:col-span-2 sm:gap-4">
           <Skeleton className="h-6 w-20" />
@@ -120,7 +119,7 @@ export const NewsLoading = () => (
           <Skeleton className="h-4 w-3/4 sm:h-5" />
           <div className="mt-auto flex flex-wrap items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-6 rounded-full" />
+              <Skeleton className="size-6 rounded-full" />
               <Skeleton className="h-4 w-24 sm:h-5" />
             </div>
             <Skeleton className="h-4 w-20 sm:h-5" />

@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
-
 import { Button } from "@highschool/ui/components/ui/button";
 
 export default function Error({
@@ -17,17 +15,18 @@ export default function Error({
   useEffect(() => {
     console.error(error);
   }, [error]);
+
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <div className="flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row">
         <div className="w-full md:w-1/2">
           <Image
-            src="/error.png"
-            alt="500 Error Illustration"
-            width={400}
-            height={400}
-            className="h-auto w-full"
             priority
+            alt="500 Error Illustration"
+            className="h-auto w-full"
+            height={400}
+            src="/error.png"
+            width={400}
           />
         </div>
         <div className="w-full text-center md:w-1/2 md:text-left">
@@ -40,7 +39,7 @@ export default function Error({
             trang khác nhé!
           </p>
           <div className="flex flex-row gap-2">
-            <Button onClick={reset} variant="outline">
+            <Button variant="outline" onClick={reset}>
               Thử lại
             </Button>
             <Button asChild variant={"default"}>

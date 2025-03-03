@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import { useDebounceValue } from "@highschool/hooks";
 import {
   useCategoriesQuery,
@@ -11,14 +10,13 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-
 import { IconFilter, IconSearch } from "@tabler/icons-react";
-
-import { DocumentCard } from "@/components/core/common/document-card";
-import { Container } from "@/components/core/common/layouts/container";
 
 import { Filter } from "./filter";
 import { InPageFilter } from "./in-page-filter";
+
+import { DocumentCard } from "@/components/core/common/document-card";
+import { Container } from "@/components/core/common/layouts/container";
 
 interface InPageFilters {
   sort: boolean | null; // null = "Mới nhất", true = "Nhiều lượt xem nhất", false = "Ít lượt xem nhất"
@@ -89,6 +87,7 @@ function DocumentLibraryModule() {
         ...filters,
         categoryIds: updated.join(","),
       }));
+
       return updated;
     });
   };
@@ -98,10 +97,12 @@ function DocumentLibraryModule() {
       const updated = prev.includes(curriculumId)
         ? prev.filter((item) => item !== curriculumId)
         : [...prev, curriculumId];
+
       setTopFilters((filters) => ({
         ...filters,
         curriculumIds: updated.join(","),
       }));
+
       return updated;
     });
   };
@@ -121,14 +122,14 @@ function DocumentLibraryModule() {
   });
 
   return (
-    <Container maxWidth="[1440px]" className="flex flex-col gap-12 lg:px-20">
+    <Container className="flex flex-col gap-12 lg:px-20" maxWidth="[1440px]">
       <div className="flex flex-row justify-between">
         <h1 className="text-3xl font-bold">Kho tài liệu</h1>
         <div className="flex items-center justify-between lg:hidden">
           <Button
-            onClick={() => setOpenFilter(true)}
-            variant={"outline"}
             size={"icon"}
+            variant={"outline"}
+            onClick={() => setOpenFilter(true)}
           >
             <IconFilter size={"18"} />
           </Button>
@@ -138,7 +139,7 @@ function DocumentLibraryModule() {
         <section className="flex flex-col gap-2">
           <h2 className="group relative w-fit cursor-pointer text-lg font-medium">
             Danh mục
-            <div className="bg-primary absolute bottom-1 left-0 h-0.5 w-1/2 transition-all duration-200 ease-in-out group-hover:w-full"></div>
+            <div className="bg-primary absolute bottom-1 left-0 h-0.5 w-1/2 transition-all duration-200 ease-in-out group-hover:w-full" />
           </h2>
           <div className="flex flex-row flex-wrap gap-2">
             {categoryLoading
@@ -164,7 +165,7 @@ function DocumentLibraryModule() {
         <section className="flex flex-col gap-2">
           <h2 className="group relative w-fit cursor-pointer text-lg font-medium">
             Chương trình học
-            <div className="bg-primary absolute bottom-1 left-0 h-0.5 w-1/2 transition-all duration-200 ease-in-out group-hover:w-full"></div>
+            <div className="bg-primary absolute bottom-1 left-0 h-0.5 w-1/2 transition-all duration-200 ease-in-out group-hover:w-full" />
           </h2>
           <div className="flex flex-row gap-2">
             {curriculumLoading
@@ -193,9 +194,9 @@ function DocumentLibraryModule() {
       <div className="flex w-full flex-row gap-8">
         <div className="hidden w-1/5 lg:block">
           <Filter
-            setFilters={setFilters}
-            filters={filters}
             categoryName={selectedCategoryName}
+            filters={filters}
+            setFilters={setFilters}
           />
         </div>
         <div className="flex flex-1 flex-col gap-8">
@@ -203,10 +204,10 @@ function DocumentLibraryModule() {
             <div className="focus-within:border-primary flex flex-row items-center gap-2 rounded-lg border-2 border-gray-200 px-3 py-0.5 focus-within:border-2">
               <IconSearch size={20} />
               <Input
+                className="min-w-[200px] border-none !text-base shadow-none focus-visible:ring-0"
+                placeholder="Tìm theo tên"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm theo tên"
-                className="min-w-[200px] border-none !text-base shadow-none focus-visible:ring-0"
               />
             </div>
             <InPageFilter

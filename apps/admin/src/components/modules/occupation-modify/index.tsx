@@ -208,7 +208,7 @@ function OccupationModifyModule() {
         <div className="space-y-8 p-6">
             <Card>
                 <CardHeader>
-                    <CardTitle className="text-3xl font-bold tracking-tight text-primary">Career Information</CardTitle>
+                    <CardTitle className="text-primary text-3xl font-bold tracking-tight">Career Information</CardTitle>
                     <CardDescription>Enter the details for the new career path</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -229,7 +229,7 @@ function OccupationModifyModule() {
                     </div>
 
                     <div className="flex w-full space-x-12">
-                        <div className="space-y-2 w-[25vw]">
+                        <div className="w-[25vw] space-y-2">
                             <Label>Major Codes</Label>
                             <FancyBox
                                 items={
@@ -245,7 +245,7 @@ function OccupationModifyModule() {
                                 setSelectedValues={setMajorCodes}
                             />
                         </div>
-                        <div className="space-y-6 w-[55vw]">
+                        <div className="w-[55vw] space-y-6">
                             <Label>Chance to Find Job <span className="font-bold">({careerInfo.chanceToFindJob}%)</span></Label>
                             <Slider
                                 max={100}
@@ -309,7 +309,7 @@ function OccupationModifyModule() {
                                                 onChange={(e) => handleBulletPointSectionChange(sectionIndex, field, 'title', e.target.value)}
                                             />
                                             <Button size="icon" type="button" variant="outline" onClick={() => removeBulletPointSection(sectionIndex, field)}>
-                                                <IconMinus className="h-4 w-4" />
+                                                <IconMinus className="size-4" />
                                             </Button>
                                         </div>
                                     </CardHeader>
@@ -322,7 +322,7 @@ function OccupationModifyModule() {
                                                     onChange={(e) => handleBulletPointSectionChange(sectionIndex, field, 'bulletPoints', e.target.value, bulletPointIndex)}
                                                 />
                                                 <Button size="icon" type="button" variant="outline" onClick={() => removeBulletPoint(sectionIndex, bulletPointIndex, field)}>
-                                                    <IconMinus className="h-4 w-4" />
+                                                    <IconMinus className="size-4" />
                                                 </Button>
                                             </div>
                                         ))}

@@ -1,9 +1,3 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Select,
@@ -13,6 +7,12 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 import { Table } from "@tanstack/react-table";
+import {
+  IconArrowsLeft,
+  IconArrowsRight,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 
 import { Pagination } from "@/hooks/use-pagination";
 
@@ -27,7 +27,7 @@ export function DataTablePagination<TData>({
 }: DataTablePaginationProps<TData>) {
   return (
     <div
-      className="flex items-center justify-between overflow-clip px-2 float-end"
+      className="float-end flex items-center justify-between text-clip px-2"
       style={{ overflowClipMargin: 1 }}
     >
       <div className="flex items-center sm:space-x-6 lg:space-x-8">
@@ -57,40 +57,40 @@ export function DataTablePagination<TData>({
         </div>
         <div className="flex items-center space-x-2">
           <Button
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden size-8 p-0 lg:flex"
             disabled={pagination.page === 0}
             variant="outline"
             onClick={() => pagination.setPage(1)}
           >
             <span className="sr-only">Go to first page</span>
-            <DoubleArrowLeftIcon className="h-4 w-4" />
+            <IconArrowsLeft className="size-4" />
           </Button>
           <Button
-            className="h-8 w-8 p-0"
+            className="size-8 p-0"
             disabled={pagination.page === 1}
             variant="outline"
             onClick={() => pagination.setPage(pagination.page - 1)}
           >
             <span className="sr-only">Go to previous page</span>
-            <ChevronLeftIcon className="h-4 w-4" />
+            <IconChevronLeft className="size-4" />
           </Button>
           <Button
-            className="h-8 w-8 p-0"
+            className="size-8 p-0"
             disabled={pagination.page >= pagination.pageCount}
             variant="outline"
             onClick={() => pagination.setPage(pagination.page + 1)}
           >
             <span className="sr-only">Go to next page</span>
-            <ChevronRightIcon className="h-4 w-4" />
+            <IconChevronRight className="size-4" />
           </Button>
           <Button
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="hidden size-8 p-0 lg:flex"
             disabled={pagination.page >= pagination.pageCount}
             variant="outline"
             onClick={() => pagination.setPage(pagination.pageCount)}
           >
             <span className="sr-only">Go to last page</span>
-            <DoubleArrowRightIcon className="h-4 w-4" />
+            <IconArrowsRight className="size-4" />
           </Button>
         </div>
       </div>

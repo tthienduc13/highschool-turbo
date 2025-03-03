@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Command,
@@ -15,7 +14,6 @@ import {
   PopoverTrigger,
 } from "@highschool/ui/components/ui/popover";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconCalendar, IconCheck } from "@tabler/icons-react";
 
 interface YearPickerProps {
@@ -32,13 +30,13 @@ export const YearPicker: React.FC<YearPickerProps> = ({ value, onChange }) => {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
+          role="combobox"
+          variant="outline"
         >
           {value ? value : "Chọn năm học"}
-          <IconCalendar className="ml-2 h-4 w-4 opacity-50" />
+          <IconCalendar className="ml-2 size-4 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-52 p-0">

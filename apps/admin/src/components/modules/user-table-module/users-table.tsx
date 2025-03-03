@@ -80,10 +80,10 @@ export function UsersTable({
   });
 
   return (
-    <div className="space-y-4 mt-4">
-      <div className="flex justify-between items-center">
+    <div className="mt-4 space-y-4">
+      <div className="flex items-center justify-between">
         <div>
-          <p className="text-primary text-2xl font-bold mb-0 pb-0">{title}</p>
+          <p className="text-primary mb-0 pb-0 text-2xl font-bold">{title}</p>
           <span className="text-lg text-gray-400">{subTitle}</span>
         </div>
         {extraButton}
@@ -104,9 +104,9 @@ export function UsersTable({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}

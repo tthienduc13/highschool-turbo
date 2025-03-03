@@ -140,7 +140,12 @@ export const AuthOptions: NextAuthConfig = {
           response.data?.roleName.toLocaleLowerCase() === "moderator" ||
           response.data?.roleName.toLocaleLowerCase() === "admin"
         ) {
-          return response.data;
+          const userSession = response.data;
+          const cookieStore = await cookies();
+
+          cookieStore.set(ACCESS_TOKEN, userSession.accessToken);
+
+          return userSession;
         }
 
         return null;

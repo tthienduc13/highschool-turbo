@@ -12,12 +12,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
-
 import { IconFilterCancel } from "@tabler/icons-react";
 
-import { YearPicker } from "@/components/core/common/year-picker";
-
 import { Filters } from ".";
+
+import { YearPicker } from "@/components/core/common/year-picker";
 
 interface FilterProps {
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;

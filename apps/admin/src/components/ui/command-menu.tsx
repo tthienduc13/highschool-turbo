@@ -38,9 +38,9 @@ export function CommandMenu() {
                       key={`${navItem.url}-${i}`}
                       value={navItem.title}
                     >
-                      <a className="mr-2 flex h-4 w-4 items-center justify-center">
-                        <IconArrowRightDashed className="size-2 text-muted-foreground/80" />
-                      </a>
+                      <div className="mr-2 flex size-4 items-center justify-center">
+                        <IconArrowRightDashed className="text-muted-foreground/80 size-2" />
+                      </div>
                       {navItem.title}
                     </CommandItem>
                   );

@@ -8,22 +8,22 @@ import UsersProvider from "@/stores/users-context";
 import { useAccountFilter } from "@/hooks/use-filter-account";
 
 function TeacherTableModule() {
-    const filter = useAccountFilter({
-        initSearch: "",
-        initStatus: [],
-        initRole: UserRole.Teacher,
-    });
+  const filter = useAccountFilter({
+    initSearch: "",
+    initStatus: [],
+    initRole: UserRole.Teacher,
+  });
 
-    return (
-        <UsersProvider>
-            <UsersTable
-                columns={columns}
-                filter={filter}
-                subTitle="Manage your Teachers roles here."
-                title="Teacher List"
-            />
-        </UsersProvider>
-    );
+  return (
+    <UsersProvider>
+      <UsersTable
+        columns={columns}
+        filter={filter}
+        subTitle="Manage your Teachers roles here."
+        title="Teacher List"
+      />
+    </UsersProvider>
+  );
 }
 
 export default TeacherTableModule;

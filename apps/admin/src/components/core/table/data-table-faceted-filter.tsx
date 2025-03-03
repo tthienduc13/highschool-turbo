@@ -1,5 +1,4 @@
 import * as React from "react";
-import { CheckIcon, PlusCircledIcon } from "@radix-ui/react-icons";
 import { Column } from "@tanstack/react-table";
 import { cn } from "@highschool/ui/lib/utils";
 import { Badge } from "@highschool/ui/components/ui/badge";
@@ -19,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@highschool/ui/components/ui/popover";
 import { Separator } from "@highschool/ui/components/ui/separator";
+import { IconCheck, IconCirclePlus } from "@tabler/icons-react";
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>;
@@ -44,7 +44,7 @@ export function DataTableFacetedFilter<TData, TValue>({
     <Popover>
       <PopoverTrigger asChild>
         <Button className="h-8 border-dashed" size="sm" variant="outline">
-          <PlusCircledIcon className="h-4 w-4" />
+          <IconCirclePlus className="size-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -115,14 +115,14 @@ export function DataTableFacetedFilter<TData, TValue>({
                           : "opacity-50 [&_svg]:invisible",
                       )}
                     >
-                      <CheckIcon className={cn("h-4 w-4")} />
+                      <IconCheck className={cn("h-4 w-4")} />
                     </div>
                     {option.icon && (
-                      <option.icon className="h-4 w-4 text-muted-foreground" />
+                      <option.icon className="text-muted-foreground size-4" />
                     )}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
-                      <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
+                      <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">
                         {facets.get(option.value)}
                       </span>
                     )}

@@ -9,6 +9,7 @@ import { TopNews } from "./top-new";
 async function NewsModule() {
   const news: News[] = await getHotNews();
   const popularNews: News[] = await getPopularNews();
+
   return (
     <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-10 p-4 lg:gap-20 xl:px-20 xl:py-[60px]">
       <TopNews news={news} />

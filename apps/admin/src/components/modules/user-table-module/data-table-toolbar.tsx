@@ -1,7 +1,7 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
+import { IconCross } from "@tabler/icons-react";
 
 import { DataTableFacetedFilter } from "../../core/table/data-table-faceted-filter";
 import { DataTableViewOptions } from "../../core/table/data-table-view-options";
@@ -57,7 +57,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
           >
             Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
+            <IconCross className="ml-2 size-4" />
           </Button>
         )}
       </div>

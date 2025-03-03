@@ -3,9 +3,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-
 import { Metadata } from "next";
-
 import { Document } from "@highschool/interfaces";
 import { getDocumentBySlug } from "@highschool/react-query/apis";
 
@@ -23,6 +21,7 @@ export const generateMetadata = async ({
 
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
+
     return {
       title: cachedData?.documentName,
       description: cachedData?.documentDescription,
@@ -30,6 +29,7 @@ export const generateMetadata = async ({
   }
 
   const data = await getDocumentBySlug({ documentSlug: slug });
+
   if (!data) return;
 
   metadataCache.set(slug, data);
@@ -49,6 +49,7 @@ async function DocumentDetail({
   const queryClient = new QueryClient();
 
   const cachedData = metadataCache.get(slug);
+
   if (cachedData) {
     queryClient.setQueryData(["document-by-slug", slug], cachedData);
   } else {

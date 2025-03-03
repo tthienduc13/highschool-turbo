@@ -1,9 +1,9 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 "use client";
 
 import React, { CSSProperties, useEffect, useRef, useState } from "react";
-
 import Image, { ImageProps } from "next/image";
-
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
 
@@ -79,6 +79,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
   const isYouTubeVideo = (url: string) => {
     const youtubeRegex =
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+
     return youtubeRegex.test(url);
   };
 
@@ -86,6 +87,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
     const match = url.match(
       /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
     );
+
     return match
       ? `https://www.youtube.com/embed/${match[1]}?controls=0&rel=0&modestbranding=1`
       : "";
@@ -99,6 +101,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
       <div
         ref={imageRef}
         {...(!isEnlarged && { background: "neutral-medium" })}
+        className={cn("relative flex w-full", className)}
         style={{
           outline: "none",
           overflow: "hidden",
@@ -113,17 +116,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
           ...calculateTransform(),
           ...style,
         }}
-        className={cn("relative flex w-full", className)}
         onClick={handleClick}
       >
-        {isLoading && <Skeleton className="h-full w-full" />}
+        {isLoading && <Skeleton className="size-full" />}
         {!isLoading && isVideo && (
           <video
-            src={src}
             autoPlay
             loop
             muted
             playsInline
+            src={src}
             style={{
               width: "100%",
               height: "100%",
@@ -133,23 +135,24 @@ const SmartImage: React.FC<SmartImageProps> = ({
         )}
         {!isLoading && isYouTube && (
           <iframe
-            width="100%"
+            allowFullScreen
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            frameBorder="0"
             height="100%"
             src={getYouTubeEmbedUrl(src)}
-            frameBorder="0"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
             style={{
               objectFit: objectFit,
             }}
+            title="video"
+            width="100%"
           />
         )}
         {!isLoading && !isVideo && !isYouTube && (
           <Image
             {...props}
-            src={src}
-            alt={alt}
             fill
+            alt={alt}
+            src={src}
             style={{
               objectFit: isEnlarged ? "contain" : objectFit,
             }}
@@ -160,7 +163,6 @@ const SmartImage: React.FC<SmartImageProps> = ({
       {isEnlarged && enlarge && (
         <div
           className="fixed flex items-center justify-center"
-          onClick={handleClick}
           style={{
             zIndex: 1,
             top: 0,
@@ -172,6 +174,7 @@ const SmartImage: React.FC<SmartImageProps> = ({
             transition: "opacity 0.3s ease-in-out",
             opacity: isEnlarged ? 1 : 0,
           }}
+          onClick={handleClick}
         >
           <div
             className="relative flex"
@@ -183,11 +186,11 @@ const SmartImage: React.FC<SmartImageProps> = ({
           >
             {isVideo ? (
               <video
-                src={src}
                 autoPlay
                 loop
                 muted
                 playsInline
+                src={src}
                 style={{
                   width: "90vw",
                   height: "auto",
@@ -197,12 +200,12 @@ const SmartImage: React.FC<SmartImageProps> = ({
             ) : (
               <Image
                 {...props}
-                src={src}
-                alt={alt}
                 fill
+                alt={alt}
                 sizes="90vw"
-                unoptimized={unoptimized}
+                src={src}
                 style={{ objectFit: "contain" }}
+                unoptimized={unoptimized}
               />
             )}
           </div>

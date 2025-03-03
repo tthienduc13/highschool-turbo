@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { cn } from "@highschool/ui/lib/utils";
 
 interface LogoProps {
@@ -9,22 +8,22 @@ interface LogoProps {
 
 export const Logo = ({ className }: LogoProps) => {
   return (
-    <Link href="/" className={cn(className, "hover:opacity-80")}>
+    <Link className={cn(className, "hover:opacity-80")} href="/">
       <Image
-        src={"/logo.svg"}
-        alt="Mobile logo"
-        width={32}
-        height={32}
         priority
+        alt="Mobile logo"
         className="block md:hidden"
+        height={32}
+        src={"/logo.svg"}
+        width={32}
       />
       <Image
-        src={"/logo-with-text.svg"}
         alt="Logo with text"
-        width={100}
+        className="hidden w-full md:block md:h-10"
         height={50}
         sizes="(max-width: 768px) 32px, 100px"
-        className="hidden w-full md:block md:h-10"
+        src={"/logo-with-text.svg"}
+        width={100}
       />
     </Link>
   );

@@ -1,8 +1,6 @@
 import Image from "next/image";
-
 import {
   IconArrowRight,
-  IconBrandFacebook,
   IconBrandFacebookFilled,
   IconCards,
   IconProgress,
@@ -22,11 +20,11 @@ const StartedItems: StartedItemProps[] = [
   {
     logo: (
       <Image
-        src={"/logo.svg"}
-        alt="Mobile logo"
-        width={28}
-        height={28}
         priority
+        alt="Mobile logo"
+        height={28}
+        src={"/logo.svg"}
+        width={28}
       />
     ),
     title: "Đăng nhập vào Highschool",
@@ -36,7 +34,7 @@ const StartedItems: StartedItemProps[] = [
     href: "",
   },
   {
-    logo: <IconProgress size={28} className="text-blue-600" />,
+    logo: <IconProgress className="text-blue-600" size={28} />,
     title: "Nhập thông tin ",
     description:
       " Nhập đầy đủ thông tin như về trường, lớp, môn học bạn quan tâm để hệ thống gợi ý một cách chính xác nhất",
@@ -44,7 +42,7 @@ const StartedItems: StartedItemProps[] = [
     href: "",
   },
   {
-    logo: <IconCards size={28} className="text-blue-600" />,
+    logo: <IconCards className="text-blue-600" size={28} />,
     title: "Tạo bộ thẻ đầu tiên ",
     description:
       "Tạo bộ thẻ đầu tiên, khám phá những tính năng của thẻ ghi nhớ, giúp bạn tăng tối đa hiệu suất học tập",
@@ -75,10 +73,10 @@ export const GettingStarted = () => {
       <div className="grid w-full grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
         {StartedItems.map((item, index) => (
           <div
+            key={index}
+            className="flex size-full flex-col gap-2"
             data-aos="fade-up"
             data-aos-duration={(index + 1) * 500}
-            key={index}
-            className="flex h-full w-full flex-col gap-2"
           >
             {item.logo}
             <div>
@@ -89,7 +87,7 @@ export const GettingStarted = () => {
               <button className="group flex items-center gap-2 text-base font-semibold text-blue-600">
                 {item.buttonLabel}
                 <IconArrowRight
-                  className="transform transition-all duration-200 group-hover:translate-x-2"
+                  className="transition-all duration-200 group-hover:translate-x-2"
                   size={20}
                 />
               </button>

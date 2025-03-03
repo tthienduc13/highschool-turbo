@@ -1,18 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
-import { env } from "@highschool/env";
 import { useMediaQuery } from "@highschool/hooks";
 import { Document } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconDownload,
   IconEye,
   IconFileLike,
   IconFolder,
 } from "@tabler/icons-react";
+import Link from "next/link";
+import { env } from "@highschool/env";
 
 interface DocumentCardProps {
   data: Document;
@@ -38,16 +37,12 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
       className="flex w-full flex-col gap-2 rounded-xl border border-gray-200 bg-white shadow-lg md:gap-4 dark:border-gray-700 dark:bg-gray-800"
     >
       <div className="flex flex-col gap-2 border-b p-4">
-        <div
+        <Link
           className="line-clamp-1 cursor-pointer text-sm font-semibold"
-          onClick={() =>
-            router.push(
-              `${env.NEXT_PUBLIC_LANDING_URL}/kho-tai-lieu/${data.documentSlug}`,
-            )
-          }
+          href={`${env.NEXT_PUBLIC_LANDING_URL}/kho-tai-lieu/${data.documentSlug}`}
         >
           {documentName}
-        </div>
+        </Link>
         <div className="flex flex-col gap-y-2">
           <div className="flex flex-row items-center gap-1 md:gap-2">
             <IconFolder size={14} />
@@ -82,10 +77,10 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
       </div>
       <div className="flex w-full flex-row gap-x-2 px-4 pb-2 md:w-full">
         <Button
-          onClick={() => router.push("/kho-tai-lieu/" + data.documentSlug)}
+          className="flex-1 border-gray-50 dark:border-gray-800"
           size={isDesktop ? "lg" : "sm"}
           variant="ghost"
-          className="flex-1 border-gray-50 dark:border-gray-800"
+          onClick={() => router.push("/kho-tai-lieu/" + data.documentSlug)}
         >
           Xem
         </Button>

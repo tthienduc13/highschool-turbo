@@ -192,7 +192,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
             Make changes to your profile here. Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 py-4 overflow-y-auto">
+        <div className="grid gap-4 overflow-y-auto py-4">
           <div>
             <Label className="text-sm font-semibold">
               Username <span className="text-primary">(required)</span>
@@ -241,7 +241,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
             />
           </div>
           <div>
-            <Label className="text-sm font-semibold flex justify-between">
+            <Label className="flex justify-between text-sm font-semibold">
               <div>
                 Password <span className="text-primary">(required)</span>
               </div>

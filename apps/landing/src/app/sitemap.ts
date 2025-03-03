@@ -1,5 +1,4 @@
 import { MetadataRoute } from "next";
-
 import { env } from "@highschool/env";
 
 export default function sitemap(): MetadataRoute.Sitemap {

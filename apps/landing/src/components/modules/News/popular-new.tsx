@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { News } from "@highschool/interfaces";
 import { formatDate } from "@highschool/lib/date";
 import {
@@ -33,10 +32,10 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
         {topNews?.image ? (
           <div className="relative aspect-video w-full overflow-hidden rounded-lg">
             <Image
-              src={topNews.image}
-              alt={topNews?.newName || "News"}
               fill
+              alt={topNews?.newName || "News"}
               className="object-cover transition-transform group-hover:scale-105"
+              src={topNews.image}
             />
           </div>
         ) : (
@@ -55,8 +54,8 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
             <Avatar className="size-8">
               {topNews?.author?.authorImage ? (
                 <AvatarImage
-                  src={topNews.author.authorImage}
                   alt={topNews.author.authorName || "Author"}
+                  src={topNews.author.authorImage}
                 />
               ) : (
                 <AvatarFallback>
@@ -65,8 +64,8 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
               )}
             </Avatar>
             <Link
-              href={`/tac-gia/${topNews?.author?.authorId || "#"}`}
               className="flex flex-col"
+              href={`/tac-gia/${topNews?.author?.authorId || "#"}`}
             >
               <p className="text-xs">
                 {topNews?.author?.authorName || "Unknown Author"}
@@ -84,16 +83,16 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
         {news.slice(1, 4).map((newsItem) => (
           <Link
             key={newsItem?.id || Math.random()}
-            href={`/tin-tuc/${newsItem?.slug || "#"}`}
             className="group flex gap-4"
+            href={`/tin-tuc/${newsItem?.slug || "#"}`}
           >
             <div className="relative aspect-video w-1/3 overflow-hidden rounded-lg">
               {newsItem?.image ? (
                 <Image
-                  src={newsItem.image}
-                  alt={newsItem?.newName || "News"}
                   fill
+                  alt={newsItem?.newName || "News"}
                   className="object-cover transition-transform group-hover:scale-105"
+                  src={newsItem.image}
                 />
               ) : (
                 <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-200">
@@ -114,7 +113,7 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
                     ? formatDate(newsItem.createdAt)
                     : "Unknown Date"}
                 </span>
-                <Separator orientation="vertical" className="h-4" />
+                <Separator className="h-4" orientation="vertical" />
                 <span>
                   {newsItem?.view ? `${newsItem.view} views` : "No views"}
                 </span>

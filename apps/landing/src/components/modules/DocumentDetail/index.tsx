@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-
 import { useDocumentBySlugQuery } from "@highschool/react-query/queries";
 import { Card } from "@highschool/ui/components/ui/card";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
@@ -14,6 +13,7 @@ function DocumentDetailModule() {
   const { data: document, isLoading: documentLoading } = useDocumentBySlugQuery(
     { slug: slug as string },
   );
+
   if (documentLoading) {
     return <DocumentViewerSkeleton />;
   }
@@ -26,7 +26,7 @@ function DocumentDetailModule() {
   ];
 
   return (
-    <Container maxWidth="[1440px]" className="flex flex-col gap-12 lg:px-20">
+    <Container className="flex flex-col gap-12 lg:px-20" maxWidth="[1440px]">
       <Breadcrumbs items={breadcrumbItems} />
       <header className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-x-4">
@@ -47,12 +47,12 @@ function DocumentViewerSkeleton() {
     <div className="mx-auto flex h-screen max-w-[1440px] flex-col p-4">
       <header className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-x-4">
-          <Skeleton className="h-10 w-10 rounded-full" />
+          <Skeleton className="size-10 rounded-full" />
           <Skeleton className="h-8 w-64" />
         </div>
       </header>
       <div className="flex flex-1 gap-4 overflow-hidden">
-        <aside className="hidden w-64 flex-shrink-0 md:flex md:flex-col">
+        <aside className="hidden w-64 shrink-0 md:flex md:flex-col">
           <Card className="flex-1 p-4">
             <div className="space-y-4">
               {Array.from({ length: 6 }).map((_, i) => (
@@ -66,10 +66,10 @@ function DocumentViewerSkeleton() {
         </aside>
         <main className="flex min-w-0 flex-1 flex-col">
           <Card className="flex-1">
-            <Skeleton className="h-full w-full" />
+            <Skeleton className="size-full" />
           </Card>
         </main>
-        <aside className="hidden w-72 flex-shrink-0 lg:flex lg:flex-col">
+        <aside className="hidden w-72 shrink-0 lg:flex lg:flex-col">
           <Card className="flex-1 p-4">
             <div className="space-y-6">
               <div className="space-y-2">

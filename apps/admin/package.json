@@ -16,7 +16,6 @@
         "@highschool/interfaces": "workspace:*",
         "@highschool/ui": "workspace:*",
         "@hookform/resolvers": "^3.9.1",
-        "@radix-ui/react-icons": "^1.3.2",
         "@radix-ui/react-slot": "^1.1.1",
         "@tabler/icons-react": "^3.24.0",
         "@tanstack/react-query": "^5.62.7",

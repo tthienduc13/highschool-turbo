@@ -11,24 +11,24 @@ import UsersProvider from "@/stores/users-context";
 import { useAccountFilter } from "@/hooks/use-filter-account";
 
 function ModeratorTableModule() {
-    const filter = useAccountFilter({
-        initSearch: "",
-        initStatus: [],
-        initRole: UserRole.Moderator,
-    });
+  const filter = useAccountFilter({
+    initSearch: "",
+    initStatus: [],
+    initRole: UserRole.Moderator,
+  });
 
-    return (
-        <UsersProvider>
-            <UsersTable
-                columns={columns}
-                extraButton={<UsersPrimaryButtons />}
-                filter={filter}
-                subTitle="Manage your Moderator roles here."
-                title="Moderator List"
-            />
-            <UsersDialogs />
-        </UsersProvider>
-    );
+  return (
+    <UsersProvider>
+      <UsersTable
+        columns={columns}
+        extraButton={<UsersPrimaryButtons />}
+        filter={filter}
+        subTitle="Manage your Moderator roles here."
+        title="Moderator List"
+      />
+      <UsersDialogs />
+    </UsersProvider>
+  );
 }
 
 export default ModeratorTableModule;

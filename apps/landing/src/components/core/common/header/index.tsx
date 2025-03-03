@@ -1,19 +1,16 @@
 "use client";
 
-import { Fragment, useState } from "react";
-
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
 import { env } from "@highschool/env";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconArrowRight, IconMenu, IconX } from "@tabler/icons-react";
 
-import { AnimatedBackground } from "@/components/ui/animated-background";
-
 import { Logo } from "../logo";
+
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 export interface NavigationBarProps {
   name: string;
@@ -50,36 +47,37 @@ export const Header = () => {
   const isActive = (currentPath: string, href: string): boolean => {
     return currentPath === href || currentPath.startsWith(href + "/");
   };
+
   return (
     <div
-      style={{ zIndex: 100 }}
       className="bg-background relative mx-auto flex w-full flex-row items-center justify-between p-4 pt-5 lg:px-10 lg:pb-5 xl:px-20 xl:pb-10"
+      style={{ zIndex: 100 }}
     >
       <div className="flex w-[150px] justify-start">
         <Logo />
       </div>
       <div className="hidden flex-1 items-center justify-center gap-5 md:flex">
         <AnimatedBackground
-          defaultValue={navbarItems[0].href}
+          enableHover
           className="rounded-md bg-blue-500/20 dark:bg-blue-500/80"
+          defaultValue={navbarItems[0].href}
           transition={{
             type: "spring",
             bounce: 0.2,
             duration: 0.3,
           }}
-          enableHover
         >
           {navbarItems.map((tab, index) => (
             <button
               key={index}
-              onClick={() => router.push(tab.href)}
-              data-id={tab}
-              type="button"
               className={cn(
                 "relative flex cursor-pointer items-center justify-center whitespace-nowrap rounded-md px-4 py-2 !text-base font-medium transition-colors duration-300 hover:bg-transparent hover:text-blue-700 dark:hover:text-blue-200",
                 currentPathName === tab.href &&
                   "text-blue-700 dark:text-blue-200",
               )}
+              data-id={tab}
+              type="button"
+              onClick={() => router.push(tab.href)}
             >
               {tab.name}
               {currentPathName === tab.href && (
@@ -92,9 +90,9 @@ export const Header = () => {
       <div className="flex justify-end md:w-[150px]">
         <Button
           className="flex md:hidden"
-          onClick={() => setIsOpenMobileMenu(!isOpenMobileMenu)}
-          variant={"ghost"}
           size={"icon"}
+          variant={"ghost"}
+          onClick={() => setIsOpenMobileMenu(!isOpenMobileMenu)}
         >
           {isOpenMobileMenu ? (
             <IconX className="!size-6" />
@@ -104,12 +102,12 @@ export const Header = () => {
         </Button>
         <div className="hidden flex-row justify-center gap-2 md:flex">
           <Link
-            href={env.NEXT_PUBLIC_APP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
             className="hover:border-primary group cursor-pointer rounded-xl border-4 border-transparent border-opacity-0 bg-transparent p-1 transition-all duration-500 hover:border-opacity-100"
+            href={env.NEXT_PUBLIC_APP_URL}
+            rel="noopener noreferrer"
+            target="_blank"
           >
-            <Button variant="default" className="relative gap-2">
+            <Button className="relative gap-2" variant="default">
               Bắt đầu ngay
               <IconArrowRight size="16" />
               <div

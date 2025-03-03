@@ -17,6 +17,7 @@ export const MainLayout = ({ children }: RootMainLayoutProps) => {
   useEffect(() => {
     AOS.init({});
   }, []);
+
   return (
     <ReactQueryProvider>
       <div className="flex min-h-screen w-screen flex-col overflow-x-hidden">

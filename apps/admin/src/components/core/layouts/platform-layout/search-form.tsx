@@ -12,7 +12,7 @@ export function SearchForm({ ...props }: React.ComponentProps<"form">) {
 
   return (
     <form {...props}>
-      <div className="relative w-[12rem]">
+      <div className="relative w-48">
         <Label className="sr-only" htmlFor="search">
           Tìm kiếm
         </Label>

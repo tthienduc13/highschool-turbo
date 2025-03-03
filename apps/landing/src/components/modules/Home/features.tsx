@@ -1,15 +1,11 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-
 import { useRef } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
-
 import { env } from "@highschool/env";
 import { cn } from "@highschool/ui/lib/utils";
-
 import { IconArrowRight } from "@tabler/icons-react";
 
 import { TextAnimate } from "@/components/core/common/text-animation";
@@ -86,49 +82,49 @@ export const Features = () => {
 
     return (
       <div
-        className="mx-auto h-20 w-full max-w-[690px] md:h-[150px] lg:h-[300px]"
         ref={ref}
+        className="mx-auto h-20 w-full max-w-[690px] md:h-[150px] lg:h-[300px]"
       >
         <svg
-          width="100%"
-          height="100%"
-          viewBox="0 0 690 408"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          height="100%"
           style={{ transform: flipped ? "scaleX(-1)" : "none" }}
+          viewBox="0 0 690 408"
+          width="100%"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
             <linearGradient
               id="line1-gradient"
               x1="0%"
-              y1="0%"
               x2="0%"
+              y1="0%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="#ffffff"></stop>
-              <stop offset="100%" stopColor="#fff3fc"></stop>
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="100%" stopColor="#fff3fc" />
             </linearGradient>
           </defs>
           <path
+            className="stroke-none lg:stroke-[#C0D1EB]"
             d="M0,0 Q50,200 345,204 T690,408"
             stroke="#C0D1EB"
-            strokeWidth="5"
-            strokeLinejoin="round"
-            strokeLinecap="round"
             strokeDasharray="20 20"
-            className="stroke-none lg:stroke-[#C0D1EB]"
-          ></path>
-          <motion.path
-            d="M690,408Q640,208 345,204Q50,200 0,0"
-            stroke="white"
-            strokeWidth="5"
-            strokeLinejoin="round"
             strokeLinecap="round"
-            fill="none"
+            strokeLinejoin="round"
+            strokeWidth="5"
+          />
+          <motion.path
             className="stroke-none lg:stroke-white"
+            d="M690,408Q640,208 345,204Q50,200 0,0"
+            fill="none"
             initial={{ pathLength: 1 }}
+            stroke="white"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="5"
             style={{ pathLength }}
-          ></motion.path>
+          />
         </svg>
       </div>
     );
@@ -136,8 +132,8 @@ export const Features = () => {
 
   return (
     <div
-      id="features"
       className="mx-auto mt-[60px] flex w-full max-w-[560px] flex-col gap-12 p-4 md:mt-[100px] md:px-10 lg:w-full lg:max-w-7xl lg:px-14"
+      id="features"
     >
       <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 text-center">
         <TextAnimate
@@ -158,6 +154,7 @@ export const Features = () => {
       <div>
         {featuresItems.map((item, index) => {
           const isEven = index % 2 === 0;
+
           return (
             <div key={index}>
               <div
@@ -169,16 +166,16 @@ export const Features = () => {
                 )}
               >
                 <div
-                  data-aos="zoom-in"
                   className={cn(
                     item.className,
                     "h-[300px] w-full max-w-[550px] transform rounded-xl p-10 transition-all duration-200 hover:scale-110 lg:h-[400px]",
                   )}
+                  data-aos="zoom-in"
                   style={{
                     backgroundColor: item.backgroundColor,
                   }}
                 >
-                  <div className="relative h-full w-full">
+                  <div className="relative size-full">
                     {item.videoUrl && item.thumbailUrl && (
                       <VideoPlayer
                         thumbnailUrl={item.thumbailUrl}
@@ -186,14 +183,14 @@ export const Features = () => {
                       />
                     )}
                     {item.imageUrl && (
-                      <div className="relative h-full w-full">
+                      <div className="relative size-full">
                         <Image
-                          src={item.imageUrl}
-                          alt={item.title}
                           fill
+                          alt={item.title}
                           className="rounded-xl object-fill"
                           priority={false}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          src={item.imageUrl}
                         />
                       </div>
                     )}
@@ -209,10 +206,10 @@ export const Features = () => {
                       <p className="text-xl">{item.description2}</p>
                     </div>
                     <Link
-                      href={item.externalLink || "/"}
                       className="flex items-center gap-1 text-xl font-medium underline"
+                      href={item.externalLink || "/"}
                     >
-                      Xem thêm <IconArrowRight className="h-5 w-5" />
+                      Xem thêm <IconArrowRight className="size-5" />
                     </Link>
                   </div>
                 </div>

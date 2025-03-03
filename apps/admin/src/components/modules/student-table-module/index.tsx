@@ -8,22 +8,22 @@ import UsersProvider from "@/stores/users-context";
 import { useAccountFilter } from "@/hooks/use-filter-account";
 
 function StudentTableModule() {
-    const filter = useAccountFilter({
-        initSearch: "",
-        initStatus: [],
-        initRole: UserRole.Student,
-    });
+  const filter = useAccountFilter({
+    initSearch: "",
+    initStatus: [],
+    initRole: UserRole.Student,
+  });
 
-    return (
-        <UsersProvider>
-            <UsersTable
-                columns={columns}
-                filter={filter}
-                subTitle="Manage your Students roles here."
-                title="Student List"
-            />
-        </UsersProvider>
-    );
+  return (
+    <UsersProvider>
+      <UsersTable
+        columns={columns}
+        filter={filter}
+        subTitle="Manage your Students roles here."
+        title="Student List"
+      />
+    </UsersProvider>
+  );
 }
 
 export default StudentTableModule;

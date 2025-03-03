@@ -1,6 +1,5 @@
 import { Banner } from "./banner";
 import { Features } from "./features";
-import { FeedBack } from "./feed-back";
 import { GettingStarted } from "./getting-started";
 import { Info } from "./info";
 

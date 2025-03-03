@@ -12,6 +12,7 @@ import {
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 
 import { useSidebar } from "../../common/sidebar";
 import { ThemeSwitcher } from "../../common/theme-switcher";
@@ -28,11 +29,11 @@ export function SiteHeader() {
     .map((slug) => slug.charAt(0).toUpperCase() + slug.slice(1));
 
   return (
-    <header className="fle sticky top-0 z-50 w-full items-center border-b bg-background">
+    <header className="fle bg-background sticky top-0 z-50 w-full items-center border-b">
       <div className="flex h-[--header-height] items-center justify-between px-4">
         <div className="flex  w-full items-center gap-2 ">
           <Button
-            className="h-8 w-8"
+            className="size-8"
             size="icon"
             variant="ghost"
             onClick={toggleSidebar}
@@ -43,7 +44,7 @@ export function SiteHeader() {
           <Breadcrumb className="hidden sm:block">
             <BreadcrumbList>
               {slugs.map((slug, index) => (
-                <>
+                <Fragment key={slug}>
                   <BreadcrumbItem>
                     {index < slugs.length - 1 ? (
                       <BreadcrumbLink href={`/${slug}`}>{slug}</BreadcrumbLink>
@@ -52,7 +53,7 @@ export function SiteHeader() {
                     )}
                   </BreadcrumbItem>
                   {index < slugs.length - 1 && <BreadcrumbSeparator />}
-                </>
+                </Fragment>
               ))}
             </BreadcrumbList>
           </Breadcrumb>

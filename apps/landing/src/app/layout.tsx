@@ -1,14 +1,13 @@
-import { Suspense } from "react";
-
 import type { Metadata } from "next";
 
+import { Suspense } from "react";
 import { env } from "@highschool/env";
 import "@highschool/ui/globals.css";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { sofiaFontVN } from "@/lib/fonts";
-
 import Loading from "./loading";
+
+import { sofiaFontVN } from "@/lib/fonts";
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.NEXT_PUBLIC_LANDING_URL),

@@ -18,7 +18,7 @@ import {
 } from "@highschool/ui/components/ui/form";
 import { IconExclamationCircle, IconLoader2 } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { AuthError } from "next-auth";
 
 const loginSchema = z.object({
@@ -30,6 +30,7 @@ type UserFormValue = z.infer<typeof loginSchema>;
 
 function SignInModule() {
   const params = useSearchParams();
+  const router = useRouter();
   const [formError, setFormError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState<boolean>(false);
   const urlError =
@@ -63,7 +64,7 @@ function SignInModule() {
             : "Something went wrong!",
         );
 
-        return;
+        return router.push("/dashboard");
       }
     } catch (error) {
       if (error instanceof AuthError) {
@@ -81,8 +82,8 @@ function SignInModule() {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center">
-      <div className="max-w-5xl mx-auto w-full flex flex-col gap-8">
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-8">
         <Image
           alt="Logo with text"
           className="hidden w-full md:block md:h-10"
@@ -91,7 +92,7 @@ function SignInModule() {
           src={"/logo-with-text.svg"}
           width={100}
         />
-        <div className="h-[581px] shadow-lg bg-white w-full flex items-center rounded-lg overflow-hidden ">
+        <div className="flex h-[581px] w-full items-center overflow-hidden rounded-lg bg-white shadow-lg ">
           <Image
             alt="login image"
             className=" h-[580px] "
@@ -100,9 +101,9 @@ function SignInModule() {
             width={387}
           />
           <div className="w-[calc(100%-387px)] px-16">
-            <div className="flex flex-col gap-2 mb-8">
-              <h2 className="text-2xl leading-9 font-bold">Đăng nhập</h2>
-              <h2 className="text-xl leading-5 font-normal ">
+            <div className="mb-8 flex flex-col gap-2">
+              <h2 className="text-2xl font-bold leading-9">Đăng nhập</h2>
+              <h2 className="text-xl font-normal leading-5 ">
                 vào hệ thống quản trị Highschool
               </h2>
             </div>
@@ -125,7 +126,7 @@ function SignInModule() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="h-10 border-2 border-gray-100 bg-gray-50 focus-visible:border-2 focus-visible:ring-0 focus-visible:border-blue-500 !text-base"
+                            className="h-10 border-2 border-gray-100 bg-gray-50 !text-base focus-visible:border-2 focus-visible:border-blue-500 focus-visible:ring-0"
                             disabled={isPending}
                             id="email"
                             type="string"
@@ -149,7 +150,7 @@ function SignInModule() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            className="h-10 border-2 border-gray-100 shadow-sm bg-gray-50 focus-visible:border-2 focus-visible:ring-0 focus-visible:border-blue-500 !text-base"
+                            className="h-10 border-2 border-gray-100 bg-gray-50 !text-base shadow-sm focus-visible:border-2 focus-visible:border-blue-500 focus-visible:ring-0"
                             disabled={isPending}
                             id="password"
                             type="password"
@@ -162,15 +163,15 @@ function SignInModule() {
                   />
                 </div>
                 <FormError message={formError || urlError} />
-                <div className="w-full flex justify-between pt-6">
+                <div className="flex w-full justify-between pt-6">
                   <Link
-                    className="text-blue-700 hover:text-blue-500 text-sm"
+                    className="text-sm text-blue-700 hover:text-blue-500"
                     href={"/forgot-password"}
                   >
                     Quên mật khẩu?
                   </Link>
                   <Button
-                    className="w-fit float-end"
+                    className="float-end w-fit"
                     disabled={isPending}
                     type="submit"
                   >
@@ -197,8 +198,8 @@ export const FormError = ({ message }: FormErrorProps) => {
   }
 
   return (
-    <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive">
-      <IconExclamationCircle className="h-4 w-4" />
+    <div className="bg-destructive/15 text-destructive flex items-center gap-x-2 rounded-md p-3 text-sm">
+      <IconExclamationCircle className="size-4" />
       <p>{message}</p>
     </div>
   );

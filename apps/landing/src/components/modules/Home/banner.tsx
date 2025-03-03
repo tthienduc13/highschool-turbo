@@ -1,14 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
-
 import Image from "next/image";
 import Link from "next/link";
-
 import { env } from "@highschool/env";
 import { useMediaQuery } from "@highschool/hooks";
 import { Button } from "@highschool/ui/components/ui/button";
-
 import {
   IconArrowRight,
   IconChevronDown,
@@ -87,12 +84,13 @@ export const Banner = () => {
       svgRef3.current.style.transform = `translateZ(0) rotateY(0deg) rotateX(0deg)`;
     }
   };
+
   return (
-    <div className="relative h-full w-full">
+    <div className="relative size-full">
       <div className="absolute top-[190px] -z-10 h-full w-[400%] max-w-[2200px] opacity-10 blur-[30px] lg:top-[260px] lg:w-[150%]">
-        <div className="relative h-full w-full rotate-12">
+        <div className="relative size-full rotate-12">
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 pb-[31.25%]" />
-          <div className="bg-custom-gradient absolute bottom-0 left-0 right-0 top-0 flex h-full w-full items-center justify-center overflow-hidden"></div>
+          <div className="bg-custom-gradient absolute inset-0 flex size-full items-center justify-center overflow-hidden" />
         </div>
       </div>
       <div className="mx-auto flex w-full max-w-[1440px] flex-col justify-center gap-6 px-4 py-6 md:items-center lg:px-10">
@@ -105,10 +103,10 @@ export const Banner = () => {
           <div className="flex max-w-[400px] flex-col justify-center gap-4 md:gap-6 lg:gap-8">
             <div className="flex flex-col gap-4">
               <Button
-                variant={"outline"}
                 className="bg-primary/10 hover:bg-primary/10 text-primary hover:text-primary w-fit rounded-xl border-none text-sm"
+                variant={"outline"}
               >
-                <IconSchool size={18} className="mr-2" /> Học tập nhưng thú vị
+                <IconSchool className="mr-2" size={18} /> Học tập nhưng thú vị
                 hơn
               </Button>
               <h2 className="text-lg font-semibold lg:text-2xl xl:text-3xl">
@@ -119,43 +117,43 @@ export const Banner = () => {
             <div className="flex items-center gap-2">
               <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-in`}>
                 <Button
-                  variant={"default"}
                   className="flex w-fit uppercase md:hidden"
+                  variant={"default"}
                 >
                   Đăng kí ngay{" "}
-                  <IconArrowRight size={18} className="mb-1 ml-2" />
+                  <IconArrowRight className="mb-1 ml-2" size={18} />
                 </Button>
               </Link>
               <Link href={`${env.NEXT_PUBLIC_APP_URL}/sign-in`}>
                 <Button
-                  variant={"default"}
-                  size={"lg"}
                   className="hidden w-fit uppercase md:flex"
+                  size={"lg"}
+                  variant={"default"}
                 >
                   Đăng kí ngay{" "}
-                  <IconArrowRight size={18} className="mb-1 ml-2" />
+                  <IconArrowRight className="mb-1 ml-2" size={18} />
                 </Button>
               </Link>
               <Link href={"#features"}>
                 <Button
-                  variant={"outline"}
                   className="flex w-fit uppercase md:hidden"
+                  variant={"outline"}
                 >
-                  Tìm hiểu thêm <IconChevronDown size={18} className="ml-2" />
+                  Tìm hiểu thêm <IconChevronDown className="ml-2" size={18} />
                 </Button>
               </Link>
               <Link href={"#features"}>
                 <Button
-                  variant={"outline"}
-                  size={"lg"}
                   className="hidden w-fit uppercase md:flex"
+                  size={"lg"}
+                  variant={"outline"}
                 >
-                  Tìm hiểu thêm <IconChevronDown size={18} className="ml-2" />
+                  Tìm hiểu thêm <IconChevronDown className="ml-2" size={18} />
                 </Button>
               </Link>
             </div>
             <div className="mt-5 flex flex-col gap-1">
-              <AvatarCircles numPeople={99} avatarUrls={avatarUrls} />
+              <AvatarCircles avatarUrls={avatarUrls} numPeople={99} />
               <p className="text-muted-foreground text-xs">
                 Tham gia cộng đồng với hơn 10k+ học sinh toàn quốc
               </p>
@@ -163,48 +161,48 @@ export const Banner = () => {
           </div>
           {isDesktop ? (
             <div
+              className="hidden flex-1 items-center justify-end lg:flex"
               style={{
                 perspective: "1000px",
               }}
-              className="hidden flex-1 items-center justify-end lg:flex"
             >
               <div
                 ref={containerRef}
-                onMouseEnter={handleMouseEnter}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
                 className="duration-8000 ease-custom-bezier h-[300px] w-[560px] transition-all"
                 style={{
                   transformStyle: "preserve-3d",
                 }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onMouseMove={handleMouseMove}
               >
                 <div className="relative h-[220px] w-[370px] lg:h-[300px] lg:w-[450px]">
                   <div className="absolute left-0 top-0">
                     <svg
                       ref={svgRef1}
+                      className="h-[170px] w-[170] transition-transform duration-200 ease-linear"
                       viewBox="0 0 297 297"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-[170px] w-[170] transition-transform duration-200 ease-linear"
                     >
                       <circle
-                        opacity="0.8"
                         cx="148.315"
                         cy="148.522"
+                        fill="url(#paint0_linear_824_894)"
+                        opacity="0.8"
                         r="147.986"
                         transform="rotate(7.6256 148.315 148.522)"
-                        fill="url(#paint0_linear_824_894)"
-                      ></circle>
+                      />
                       <defs>
                         <linearGradient
+                          gradientUnits="userSpaceOnUse"
                           id="paint0_linear_824_894"
                           x1="0.328903"
-                          y1="0.535995"
                           x2="175.667"
+                          y1="0.535995"
                           y2="181.872"
-                          gradientUnits="userSpaceOnUse"
                         >
-                          <stop stopColor="#FE9A8B"></stop>
-                          <stop offset="1" stopColor="#F9748F"></stop>
+                          <stop stopColor="#FE9A8B" />
+                          <stop offset="1" stopColor="#F9748F" />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -215,25 +213,25 @@ export const Banner = () => {
                   >
                     <svg
                       ref={svgRef2}
+                      className="size-[100px]"
                       viewBox="0 0 150 147"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-[100px] w-[100px]"
                     >
                       <path
                         d="M39.8164 10.29C43.2117 0.0616442 56.4064 -2.65562 63.5668 5.39899L145.847 97.9551C153.008 106.01 148.764 118.795 138.208 120.969L16.9117 145.948C6.35604 148.122 -2.59448 138.054 0.800817 127.825L39.8164 10.29Z"
                         fill="url(#paint0_linear_824_896)"
-                      ></path>
+                      />
                       <defs>
                         <linearGradient
+                          gradientUnits="userSpaceOnUse"
                           id="paint0_linear_824_896"
                           x1="-49.9991"
-                          y1="7.34546"
                           x2="185.05"
+                          y1="7.34546"
                           y2="162.117"
-                          gradientUnits="userSpaceOnUse"
                         >
-                          <stop stopColor="#F6D365"></stop>
-                          <stop offset="1" stopColor="#FDA085"></stop>
+                          <stop stopColor="#F6D365" />
+                          <stop offset="1" stopColor="#FDA085" />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -241,25 +239,25 @@ export const Banner = () => {
                   <div className="absolute right-0 top-10">
                     <svg
                       ref={svgRef3}
+                      className="h-[100px] w-full"
                       viewBox="0 0 221 230"
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-[100px] w-full"
                     >
                       <path
                         d="M128.424 1.69041C136.301 -0.697951 144.82 2.25754 149.526 9.01114L216.74 105.478C221.446 112.232 221.268 121.247 216.299 127.81L145.324 221.545C140.355 228.107 131.725 230.723 123.949 228.026L12.8689 189.49C5.09224 186.792 -0.0627493 179.393 0.0999652 171.164L2.42415 53.6124C2.58686 45.3827 8.03028 38.1937 15.9075 35.8054L128.424 1.69041Z"
                         fill="url(#paint0_linear_824_893)"
-                      ></path>
+                      />
                       <defs>
                         <linearGradient
+                          gradientUnits="userSpaceOnUse"
                           id="paint0_linear_824_893"
                           x1="19.8743"
-                          y1="-43.5617"
                           x2="178.994"
+                          y1="-43.5617"
                           y2="271.787"
-                          gradientUnits="userSpaceOnUse"
                         >
-                          <stop stopColor="#4DED8D"></stop>
-                          <stop offset="1" stopColor="#1C6546"></stop>
+                          <stop stopColor="#4DED8D" />
+                          <stop offset="1" stopColor="#1C6546" />
                         </linearGradient>
                       </defs>
                     </svg>
@@ -267,9 +265,9 @@ export const Banner = () => {
                   <Image
                     ref={imageRef}
                     fill
-                    quality={100}
-                    className="h-full transform object-cover transition duration-200 ease-linear"
                     alt="whale"
+                    className="h-full object-cover transition duration-200 ease-linear"
+                    quality={100}
                     src="/images/whale.png"
                   />
                 </div>
@@ -280,29 +278,29 @@ export const Banner = () => {
               <div className="relative flex h-[280px] w-[400px] items-center justify-center">
                 <div className="absolute left-10 top-10">
                   <svg
+                    className="size-[100px] transition-transform duration-200 ease-linear"
                     viewBox="0 0 297 297"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-[100px] w-[100px] transition-transform duration-200 ease-linear"
                   >
                     <circle
-                      opacity="0.8"
                       cx="148.315"
                       cy="148.522"
+                      fill="url(#paint0_linear_824_894)"
+                      opacity="0.8"
                       r="147.986"
                       transform="rotate(7.6256 148.315 148.522)"
-                      fill="url(#paint0_linear_824_894)"
-                    ></circle>
+                    />
                     <defs>
                       <linearGradient
+                        gradientUnits="userSpaceOnUse"
                         id="paint0_linear_824_894"
                         x1="0.328903"
-                        y1="0.535995"
                         x2="175.667"
+                        y1="0.535995"
                         y2="181.872"
-                        gradientUnits="userSpaceOnUse"
                       >
-                        <stop stopColor="#FE9A8B"></stop>
-                        <stop offset="1" stopColor="#F9748F"></stop>
+                        <stop stopColor="#FE9A8B" />
+                        <stop offset="1" stopColor="#F9748F" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -312,50 +310,50 @@ export const Banner = () => {
                   style={{ zIndex: 1000 }}
                 >
                   <svg
+                    className="size-[70px]"
                     viewBox="0 0 150 147"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-[70px] w-[70px]"
                   >
                     <path
                       d="M39.8164 10.29C43.2117 0.0616442 56.4064 -2.65562 63.5668 5.39899L145.847 97.9551C153.008 106.01 148.764 118.795 138.208 120.969L16.9117 145.948C6.35604 148.122 -2.59448 138.054 0.800817 127.825L39.8164 10.29Z"
                       fill="url(#paint0_linear_824_896)"
-                    ></path>
+                    />
                     <defs>
                       <linearGradient
+                        gradientUnits="userSpaceOnUse"
                         id="paint0_linear_824_896"
                         x1="-49.9991"
-                        y1="7.34546"
                         x2="185.05"
+                        y1="7.34546"
                         y2="162.117"
-                        gradientUnits="userSpaceOnUse"
                       >
-                        <stop stopColor="#F6D365"></stop>
-                        <stop offset="1" stopColor="#FDA085"></stop>
+                        <stop stopColor="#F6D365" />
+                        <stop offset="1" stopColor="#FDA085" />
                       </linearGradient>
                     </defs>
                   </svg>
                 </div>
                 <div className="absolute right-10 top-10">
                   <svg
+                    className="h-[70px] w-full"
                     viewBox="0 0 221 230"
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-[70px] w-full"
                   >
                     <path
                       d="M128.424 1.69041C136.301 -0.697951 144.82 2.25754 149.526 9.01114L216.74 105.478C221.446 112.232 221.268 121.247 216.299 127.81L145.324 221.545C140.355 228.107 131.725 230.723 123.949 228.026L12.8689 189.49C5.09224 186.792 -0.0627493 179.393 0.0999652 171.164L2.42415 53.6124C2.58686 45.3827 8.03028 38.1937 15.9075 35.8054L128.424 1.69041Z"
                       fill="url(#paint0_linear_824_893)"
-                    ></path>
+                    />
                     <defs>
                       <linearGradient
+                        gradientUnits="userSpaceOnUse"
                         id="paint0_linear_824_893"
                         x1="19.8743"
-                        y1="-43.5617"
                         x2="178.994"
+                        y1="-43.5617"
                         y2="271.787"
-                        gradientUnits="userSpaceOnUse"
                       >
-                        <stop stopColor="#4DED8D"></stop>
-                        <stop offset="1" stopColor="#1C6546"></stop>
+                        <stop stopColor="#4DED8D" />
+                        <stop offset="1" stopColor="#1C6546" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -363,10 +361,10 @@ export const Banner = () => {
                 <div className="relative h-[190px] w-[290px]">
                   <Image
                     ref={imageRef}
-                    className="object-cover"
-                    quality={100}
                     fill
                     alt="whale"
+                    className="object-cover"
+                    quality={100}
                     src="/images/whale.png"
                   />
                 </div>

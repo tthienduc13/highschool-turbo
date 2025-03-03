@@ -1,11 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-
 import React, { useEffect, useId, useRef, useState } from "react";
-
 import Image from "next/image";
-
 import { env } from "@highschool/env";
 
 import { useOutsideClick } from "@/hooks/use-outside-click";
@@ -31,25 +28,27 @@ export const WorkFlow = () => {
     }
 
     window.addEventListener("keydown", onKeyDown);
+
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [active]);
 
   useOutsideClick(ref, () => setActive(null));
+
   return (
     <div
-      id="workflow"
       className="mt-[60px] grid grid-cols-1 gap-12 px-4 py-[64px] pb-[80px] lg:mt-[100px] lg:px-10 xl:px-[60px]"
+      id="workflow"
     >
       <div className="flex flex-col gap-4 text-center">
         <h2
-          data-aos="fade-up"
           className="text-3xl font-bold md:text-4xl lg:text-[42px]"
+          data-aos="fade-up"
         >
           Cách hoạt động
         </h2>
         <p
-          data-aos="fade-up"
           className="text-muted-foreground text-2xl font-medium md:text-3xl"
+          data-aos="fade-up"
         >
           Trải qua các bước, HighschoolVN sẽ giúp bạn hiểu hơn về mình
         </p>
@@ -57,10 +56,10 @@ export const WorkFlow = () => {
       <AnimatePresence>
         {active && typeof active === "object" && (
           <motion.div
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            className="fixed inset-0 z-10 size-full bg-black/20"
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-10 h-full w-full bg-black/20"
+            initial={{ opacity: 0 }}
           />
         )}
       </AnimatePresence>
@@ -70,36 +69,36 @@ export const WorkFlow = () => {
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
-              initial={{
-                opacity: 0,
-              }}
               animate={{
                 opacity: 1,
               }}
+              className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full bg-white lg:hidden"
               exit={{
                 opacity: 0,
                 transition: {
                   duration: 0.05,
                 },
               }}
-              className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-white lg:hidden"
+              initial={{
+                opacity: 0,
+              }}
               onClick={() => setActive(null)}
             >
               <CloseIcon />
             </motion.button>
             <motion.div
-              layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="flex h-full w-full max-w-[500px] flex-col overflow-hidden bg-white sm:rounded-3xl md:h-fit md:max-h-[90%] dark:bg-neutral-900"
+              className="flex size-full max-w-[500px] flex-col overflow-hidden bg-white sm:rounded-3xl md:h-fit md:max-h-[90%] dark:bg-neutral-900"
+              layoutId={`card-${active.title}-${id}`}
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <Image
                   priority
-                  width={200}
+                  alt={active.title}
+                  className="h-80 w-full object-cover object-top sm:rounded-t-lg lg:h-80"
                   height={200}
                   src={active.src}
-                  alt={active.title}
-                  className="h-80 w-full object-cover object-top sm:rounded-tl-lg sm:rounded-tr-lg lg:h-80"
+                  width={200}
                 />
               </motion.div>
 
@@ -107,26 +106,26 @@ export const WorkFlow = () => {
                 <div className="flex items-start justify-between p-4">
                   <div className="">
                     <motion.h3
-                      layoutId={`title-${active.title}-${id}`}
                       className="text-base font-medium text-neutral-700 dark:text-neutral-200"
+                      layoutId={`title-${active.title}-${id}`}
                     >
                       {active.title}
                     </motion.h3>
                     <motion.p
-                      layoutId={`description-${active.description}-${id}`}
                       className="text-base text-neutral-600 dark:text-neutral-400"
+                      layoutId={`description-${active.description}-${id}`}
                     >
                       {active.description}
                     </motion.p>
                   </div>
                   <motion.a
                     layout
-                    initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
+                    className="rounded-full bg-green-500 px-4 py-3 text-sm font-bold text-white"
                     exit={{ opacity: 0 }}
                     href={active.ctaLink}
+                    initial={{ opacity: 0 }}
                     target="_blank"
-                    className="rounded-full bg-green-500 px-4 py-3 text-sm font-bold text-white"
                   >
                     {active.ctaText}
                   </motion.a>
@@ -134,10 +133,10 @@ export const WorkFlow = () => {
                 <div className="relative px-4 pt-4">
                   <motion.div
                     layout
-                    initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
                     className="flex h-40 flex-col items-start gap-4 overflow-auto pb-10 text-xs text-neutral-600 [-ms-overflow-style:none] [-webkit-overflow-scrolling:touch] [mask:linear-gradient(to_bottom,white,white,transparent)] [scrollbar-width:none] md:h-fit md:text-sm lg:text-base dark:text-neutral-400"
+                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0 }}
                   >
                     {typeof active.content === "function"
                       ? active.content()
@@ -152,18 +151,18 @@ export const WorkFlow = () => {
       <ul className="mx-auto grid w-full grid-cols-1 items-start gap-20 md:grid-cols-3 md:gap-4">
         {cards.map((card, index) => (
           <motion.div
+            key={card.title}
+            className="relative flex cursor-pointer flex-col rounded-xl p-4 dark:hover:bg-neutral-800"
             data-aos="zoom-in"
             layoutId={`card-${card.title}-${id}`}
-            key={card.title}
-            onClick={() => setActive(card)}
             style={{
               backgroundColor: card.backgroundColor,
             }}
-            className="relative flex cursor-pointer flex-col rounded-xl p-4 dark:hover:bg-neutral-800"
+            onClick={() => setActive(card)}
           >
             <div
+              className="absolute -top-4 left-5 text-4xl  font-bold md:-top-5 md:left-10"
               style={{ color: card.backgroundColor, filter: "brightness(0.8)" }}
-              className="absolute -top-4 left-5 text-4xl text-[80px] font-bold md:-top-5 md:left-10"
             >
               0{index + 1}
             </div>
@@ -191,30 +190,30 @@ export const WorkFlow = () => {
 export const CloseIcon = () => {
   return (
     <motion.svg
-      initial={{
-        opacity: 0,
-      }}
       animate={{
         opacity: 1,
       }}
+      className="size-4 text-black"
       exit={{
         opacity: 0,
         transition: {
           duration: 0.05,
         },
       }}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
       fill="none"
+      height="24"
+      initial={{
+        opacity: 0,
+      }}
       stroke="currentColor"
-      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 text-black"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M0 0h24v24H0z" fill="none" stroke="none" />
       <path d="M18 6l-12 12" />
       <path d="M6 6l12 12" />
     </motion.svg>

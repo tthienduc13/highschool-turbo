@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
-
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 
 interface InPageFilters {
@@ -79,13 +78,13 @@ export const InPageFilter = ({
       {/* Semester Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button size="icon" variant="outline" className="border-gray-200">
+          <Button className="border-gray-200" size="icon" variant="outline">
             <IconAdjustmentsHorizontal />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="bottom" align="end" className="w-60">
+        <DropdownMenuContent align="end" className="w-60" side="bottom">
           <DropdownMenuLabel>Học kì</DropdownMenuLabel>
-          <DropdownMenuGroup className="flex flex-row flex-wrap gap-2 px-2 py-2">
+          <DropdownMenuGroup className="flex flex-row flex-wrap gap-2 p-2">
             {Object.entries(semesterMap).map(([key, value]) => (
               <Button
                 key={key}

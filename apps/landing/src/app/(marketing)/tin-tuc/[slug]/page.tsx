@@ -3,9 +3,7 @@ import {
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-
 import { Metadata } from "next";
-
 import { News } from "@highschool/interfaces";
 import { getNewBySlug } from "@highschool/react-query/apis";
 
@@ -23,6 +21,7 @@ export const generateMetadata = async ({
 
   if (metadataCache.has(slug)) {
     const cachedData = metadataCache.get(slug);
+
     return {
       title: cachedData?.newName,
       description: cachedData?.content,
@@ -30,6 +29,7 @@ export const generateMetadata = async ({
   }
 
   const data = await getNewBySlug(slug);
+
   if (!data) return;
 
   metadataCache.set(slug, data);
@@ -45,6 +45,7 @@ async function NewsDetail({ params }: { params: Promise<{ slug: string }> }) {
   const queryClient = new QueryClient();
 
   const cachedData = metadataCache.get(slug);
+
   if (cachedData) {
     queryClient.setQueryData(["news-by-slug", slug], cachedData);
   } else {

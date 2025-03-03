@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-
 import { News } from "@highschool/interfaces";
 import { formatDate } from "@highschool/lib/date";
 import { estimateReadingTime } from "@highschool/lib/estimate-reading-time";
@@ -28,14 +27,14 @@ export const TopNews = ({ news }: { news: News[] }) => {
           <div className="flex h-full flex-col gap-3 lg:gap-8">
             {hotNewsItem?.image && (
               <Link
-                href={`/tin-tuc/${hotNewsItem.slug}`}
                 className="relative aspect-video h-[180px] w-full overflow-hidden rounded-lg md:h-[230px] lg:h-[400px]"
+                href={`/tin-tuc/${hotNewsItem.slug}`}
               >
                 <Image
-                  src={hotNewsItem.image}
-                  alt={hotNewsItem.newName || "Hot News"}
                   fill
+                  alt={hotNewsItem.newName || "Hot News"}
                   className="object-fill"
+                  src={hotNewsItem.image}
                 />
               </Link>
             )}
@@ -47,8 +46,8 @@ export const TopNews = ({ news }: { news: News[] }) => {
                   </div>
                 )}
                 <Separator
-                  orientation="vertical"
                   className="h-4 w-0.5 lg:h-5 lg:w-1"
+                  orientation="vertical"
                 />
                 <div className="text-muted-foreground">
                   {hotNewsItem?.content
@@ -69,8 +68,8 @@ export const TopNews = ({ news }: { news: News[] }) => {
               <Avatar className="size-8 md:size-10">
                 {hotNewsItem?.author?.authorImage ? (
                   <AvatarImage
-                    src={hotNewsItem.author.authorImage}
                     alt={hotNewsItem.author.authorName || "Author"}
+                    src={hotNewsItem.author.authorImage}
                   />
                 ) : (
                   <AvatarFallback>
@@ -79,8 +78,8 @@ export const TopNews = ({ news }: { news: News[] }) => {
                 )}
               </Avatar>
               <Link
-                href={`/tac-gia/${hotNewsItem?.author?.authorId}`}
                 className="flex flex-col"
+                href={`/tac-gia/${hotNewsItem?.author?.authorId}`}
               >
                 <p className="text-xs md:text-sm">
                   {hotNewsItem?.author?.authorName || "Unknown Author"}
@@ -98,7 +97,7 @@ export const TopNews = ({ news }: { news: News[] }) => {
         )}
       </div>
 
-      <div className="mt-10 flex h-full w-full flex-col gap-5 md:col-span-2 md:mt-0">
+      <div className="mt-10 flex size-full flex-col gap-5 md:col-span-2 md:mt-0">
         {otherNewsItems.map((newsItem) => (
           <div
             key={newsItem?.id}
@@ -106,28 +105,28 @@ export const TopNews = ({ news }: { news: News[] }) => {
           >
             {newsItem?.image && (
               <Link
-                href={`/tin-tuc/${newsItem.slug}`}
                 className="relative my-auto h-2/3 w-1/3 overflow-hidden rounded-lg md:h-full"
+                href={`/tin-tuc/${newsItem.slug}`}
               >
                 <Image
-                  src={newsItem.image}
-                  alt={newsItem.newName || "News Item"}
                   fill
+                  alt={newsItem.newName || "News Item"}
                   className="rounded-lg object-cover"
+                  src={newsItem.image}
                 />
               </Link>
             )}
             <Link
-              href={`/tin-tuc/${newsItem.slug}`}
               className="flex flex-1 flex-col gap-2"
+              href={`/tin-tuc/${newsItem.slug}`}
             >
               <div className="flex flex-row items-center gap-4 text-xs lg:text-base">
                 <div className="text-theme_color line-clamp-2 cursor-pointer uppercase hover:opacity-80">
                   {newsItem?.newsTagName || "General"}
                 </div>
                 <Separator
-                  orientation="vertical"
                   className="hidden h-4 w-0.5 lg:block"
+                  orientation="vertical"
                 />
                 {newsItem?.content && (
                   <div className="text-muted-foreground line-clamp-2 hidden lg:block">

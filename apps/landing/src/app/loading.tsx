@@ -5,11 +5,11 @@ export default function Loading() {
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="text-center">
         <Image
-          src="/loading.gif"
           alt="Loading"
-          width={300}
-          height={300}
           className="mx-auto"
+          height={300}
+          src="/loading.gif"
+          width={300}
         />
       </div>
     </div>

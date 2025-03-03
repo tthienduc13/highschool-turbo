@@ -36,11 +36,11 @@ export const Info = () => {
             data-aos="fade-up"
           >
             <Card className="absolute left-10 top-[20px] w-full max-w-[260px] -translate-x-1/3 -rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
-              <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5" />
-                <div className="flex h-full w-full flex-col gap-4 p-5">
+              <CardContent className="relative size-full p-0">
+                <div className="bg-custom-gradient absolute -z-10 size-full opacity-5" />
+                <div className="flex size-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
-                    <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                    <div className="relative size-[80px] overflow-hidden rounded-2xl md:size-[120px]">
                       <Image
                         priority
                         alt="logo"
@@ -66,11 +66,11 @@ export const Info = () => {
             </Card>
 
             <Card className="relative z-10 w-full max-w-[260px] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
-              <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute h-full w-full opacity-5" />
-                <div className="flex h-full w-full flex-col gap-4 p-5">
+              <CardContent className="relative size-full p-0">
+                <div className="bg-custom-gradient absolute size-full opacity-5" />
+                <div className="flex size-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
-                    <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                    <div className="relative size-[80px] overflow-hidden rounded-2xl md:size-[120px]">
                       <Image
                         priority
                         alt="logo"
@@ -96,11 +96,11 @@ export const Info = () => {
             </Card>
 
             <Card className="absolute right-10 top-[20px] z-20 w-full max-w-[260px] translate-x-1/3 rotate-[7deg] scale-90 overflow-hidden rounded-3xl shadow-md transition-all duration-200 ease-in-out hover:scale-100 md:max-w-[300px] lg:max-w-[340px]">
-              <CardContent className="relative h-full w-full p-0">
-                <div className="bg-custom-gradient absolute -z-10 h-full w-full opacity-5" />
-                <div className="flex h-full w-full flex-col gap-4 p-5">
+              <CardContent className="relative size-full p-0">
+                <div className="bg-custom-gradient absolute -z-10 size-full opacity-5" />
+                <div className="flex size-full flex-col gap-4 p-5">
                   <div className="flex flex-row items-start justify-between">
-                    <div className="relative h-[80px] w-[80px] overflow-hidden rounded-2xl md:h-[120px] md:w-[120px]">
+                    <div className="relative size-[80px] overflow-hidden rounded-2xl md:size-[120px]">
                       <Image
                         priority
                         alt="logo"
@@ -134,7 +134,7 @@ export const Info = () => {
               Được tạo bởi
             </TextAnimate>
             <div
-              className="relative h-[100px] w-[200px] mt-5"
+              className="relative mt-5 h-[100px] w-[200px]"
               data-aos="zoom-in"
               data-aos-duration="1000"
             >

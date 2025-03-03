@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-
 import { formatDate } from "@highschool/lib/date";
 import { estimateReadingTime } from "@highschool/lib/estimate-reading-time";
 import {
@@ -15,13 +14,12 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@highschool/ui/components/ui/avatar";
-
 import { IconClock } from "@tabler/icons-react";
+
+import { NewsLoading } from "../Author";
 
 import { Breadcrumbs } from "@/components/core/common/bread-crumbs";
 import { NewsCard } from "@/components/core/common/new-card";
-
-import { NewsLoading } from "../Author";
 
 function NewsDetailModule() {
   const { slug } = useParams();
@@ -55,17 +53,17 @@ function NewsDetailModule() {
         <div className="flex items-center justify-between space-x-4 text-sm text-gray-600">
           {newDetail?.author && (
             <Link
+              className="flex items-center gap-2"
               href={
                 newDetail.author.authorName
                   ? `/tac-gia/${newDetail.author.authorId}`
                   : ""
               }
-              className="flex items-center gap-2"
             >
               <Avatar>
                 <AvatarImage
-                  src={newDetail.author.authorImage}
                   alt={newDetail.author.authorName}
+                  src={newDetail.author.authorImage}
                 />
                 <AvatarFallback>HS</AvatarFallback>
               </Avatar>
@@ -73,7 +71,7 @@ function NewsDetailModule() {
             </Link>
           )}
           <span className="flex items-center">
-            <IconClock className="mr-1 h-4 w-4" />
+            <IconClock className="mr-1 size-4" />
             {estimateReadingTime(newDetail?.content!)} phút đọc
           </span>
         </div>
@@ -81,15 +79,15 @@ function NewsDetailModule() {
 
       <figure className="mb-8">
         <Image
-          src={newDetail?.image ?? ""}
+          priority
           alt={newDetail?.newName ?? ""}
-          width={800}
+          className="rounded-lg object-cover"
           height={400}
           layout="responsive"
           quality={100}
-          priority
-          className="rounded-lg object-cover"
           sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          src={newDetail?.image ?? ""}
+          width={800}
         />
         <figcaption className="mt-2 text-center text-sm text-gray-600">
           Image caption: Visualization of Artificial Intelligence
@@ -121,8 +119,8 @@ function NewsDetailModule() {
 
         <main className="md:w-3/4">
           <div
-            className="prose max-w-none"
             dangerouslySetInnerHTML={{ __html: newDetail?.contentHtml! }}
+            className="prose max-w-none"
           />
           <div className="mt-8 border-t border-gray-300 pt-4 text-sm text-gray-600">
             <p>
