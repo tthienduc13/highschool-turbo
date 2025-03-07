@@ -90,12 +90,12 @@ export const InnerModal = ({
         </CredenzaHeader>
         <CredenzaBody>
           <div className="flex flex-col items-center justify-center gap-y-6">
-            <div className="relative h-40 w-40">
+            <div className="relative size-40">
               {result ? (
                 <CropContainer image={result as string} onComplete={setCrop} />
               ) : (
-                <div className="flex h-full w-full flex-col items-center justify-center gap-y-4 text-gray-400">
-                  <IconUpload className="h-[100px] w-[100px]" />
+                <div className="flex size-full flex-col items-center justify-center gap-y-4 text-gray-400">
+                  <IconUpload className="size-[100px]" />
                   <div className="text-sm font-medium">
                     {" "}
                     File ảnh tối đa 5 MB

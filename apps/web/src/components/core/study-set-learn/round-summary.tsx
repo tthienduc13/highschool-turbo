@@ -44,7 +44,7 @@ export const RoundSummary = () => {
               mass: 100,
             }}
           >
-            <div className="bg-blue h-full w-full" />
+            <div className="size-full bg-primary" />
           </motion.div>
         </div>
       </div>
@@ -63,10 +63,10 @@ export const RoundSummary = () => {
             return (
               <div
                 key={term.id}
-                className="transition-border-color bg-background rounded-xl border-[1.5px] border-gray-100 px-0 py-0 shadow-sm duration-150 ease-in-out md:px-[22px] md:py-5 dark:border-gray-700 dark:bg-[#242C3A]"
+                className="transition-border-color ease-in-out rounded-xl border-[1.5px] border-gray-100 bg-background p-0 shadow-sm duration-150 dark:border-gray-700 dark:bg-[#242C3A] md:px-[22px] md:py-5"
               >
                 <div className="flex flex-col-reverse items-stretch gap-0 md:flex-row md:gap-6">
-                  <div className="flex w-full flex-col gap-2 px-3 py-3 md:flex-row md:gap-6 md:px-0 md:py-0">
+                  <div className="flex w-full flex-col gap-2 p-3 md:flex-row md:gap-6 md:p-0">
                     <div className="w-full">
                       <div className="w-full whitespace-pre-wrap break-words leading-relaxed">
                         {term.term}
@@ -113,7 +113,7 @@ RoundSummary.Skeleton = function RoundSummarySkeleton() {
           {[...Array(3)].map((_, i) => (
             <div
               key={i}
-              className="bg-background rounded-xl border-[1.5px] border-gray-100 px-0 py-0 shadow-sm md:px-[22px] md:py-5 dark:border-gray-700 dark:bg-[#242C3A]"
+              className="rounded-xl border-[1.5px] border-gray-100 bg-background p-0 shadow-sm dark:border-gray-700 dark:bg-[#242C3A] md:px-[22px] md:py-5"
             >
               <div className="flex flex-col-reverse items-stretch gap-0 md:flex-row md:gap-6">
                 <Skeleton className="h-16 w-full rounded" />

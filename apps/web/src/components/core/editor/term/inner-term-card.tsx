@@ -178,7 +178,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
     return (
       <PopoverAnchor asChild>
         <Button
-          className="text-primary hover:text-primary/80 hover:bg-primary/10 py-0 text-sm"
+          className="py-0 text-sm text-primary hover:bg-primary/10 hover:text-primary/80"
           size="sm"
           variant="ghost"
           onPointerDown={() => {
@@ -366,7 +366,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             )}
           </div>
           <div className="flex h-6 items-center justify-between">
-            <div className="text-muted-foreground text-sm">Thuật ngữ</div>
+            <div className="text-sm text-muted-foreground">Thuật ngữ</div>
             <LanguageButtonPure type="term" />
           </div>
         </div>
@@ -406,7 +406,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
             )}
           </div>
           <div className="flex h-6 items-center justify-between">
-            <div className="text-muted-foreground text-sm">Định nghĩa</div>
+            <div className="text-sm text-muted-foreground">Định nghĩa</div>
             <LanguageButtonPure type="definition" />
           </div>
         </div>

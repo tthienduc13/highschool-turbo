@@ -10,6 +10,8 @@ import {
 
 import { Flashcard } from "./flashcard";
 import { RootFlashcardContext } from "./root-flashcard-wrapper";
+import { SortFlashcardProgress } from "./sort-flashcard-progress";
+import { SortableShortcutLayer } from "./sortable-shorcut-layer";
 
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
@@ -171,7 +173,7 @@ export const SortFlashcardWrapper = () => {
         height: h,
       }}
     >
-      {/* {progressView ? (
+      {progressView ? (
         <SortFlashcardProgress
           h={h}
           onNextRound={onNextRound}
@@ -183,10 +185,10 @@ export const SortFlashcardWrapper = () => {
             if (visibleFlashcards.length)
               await flipCard(visibleFlashcards[0]!.id);
           }}
-          triggerStillLearning={() => markCardCallback(term!, false)}
           triggerKnow={() => markCardCallback(term!, true)}
+          triggerStillLearning={() => markCardCallback(term!, false)}
         />
-      )} */}
+      )}
       <AnimatePresence>
         {visibleFlashcards.map((t, i) => (
           <motion.div

@@ -4,6 +4,7 @@ import React from "react";
 import {
   LimitedStudySetAnswerMode,
   MultipleAnswerMode,
+  StudiableTerm,
   StudySetAnswerMode,
 } from "@highschool/interfaces";
 
@@ -22,6 +23,7 @@ export interface ContainerStoreProps {
   cardsAnswerWith: LimitedStudySetAnswerMode;
   matchStudyStarred: boolean;
   starredTerms: string[];
+  studiableTerms: StudiableTerm[];
 }
 
 interface ContainerState extends ContainerStoreProps {
@@ -62,6 +64,7 @@ export const createContainerStore = (
     enableCardsSorting: false,
     matchStudyStarred: false,
     starredTerms: [],
+    studiableTerms: [],
   };
 
   return createStore<ContainerState>()(

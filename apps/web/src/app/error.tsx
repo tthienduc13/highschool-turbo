@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="flex w-full max-w-4xl flex-col items-center gap-8 md:flex-row">
         <div className="w-full md:w-1/2">
           <Image
@@ -33,7 +33,7 @@ export default function Error({
           <h1 className="text-theme_color mb-4 text-4xl font-bold">
             Có lỗi xảy ra
           </h1>
-          <p className="text-muted-foreground mb-8 text-xl">
+          <p className="mb-8 text-xl text-muted-foreground">
             Hệ thống của chúng mình đang bị nóng máy quá rồi! Hãy thử làm mát
             bằng cách click vào nút &rsquo;Làm mới&rsquo; hoặc tìm kiếm một
             trang khác nhé!

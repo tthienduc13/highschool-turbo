@@ -64,7 +64,7 @@ export const ChangeFullnameInput = ({
           )}
         >
           <Input
-            className="h-full w-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
+            className="size-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 dark:bg-gray-800/50 sm:!text-base md:!text-xl"
             disabled={changeUsername.isPending}
             placeholder="Nhập tên người dùng"
             value={fullnameValue}

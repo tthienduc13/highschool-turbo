@@ -134,7 +134,7 @@ export const ResultView = () => {
               {result.title}
             </h2>
           </div>
-          <div className="text-muted-foreground text-justify">
+          <div className="text-justify text-muted-foreground">
             {result.description}
           </div>
         </div>

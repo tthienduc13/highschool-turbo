@@ -45,7 +45,7 @@ export const ResultPrintComponent = forwardRef<
           </div>
           <h2 className="text-xl font-semibold">{data.title}</h2>
         </div>
-        <div className="text-muted-foreground text-justify">
+        <div className="text-justify text-muted-foreground">
           {data.description}
         </div>
       </div>

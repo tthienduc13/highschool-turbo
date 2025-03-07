@@ -9,6 +9,8 @@ import {
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
+  starTerm,
+  updateContainer,
 } from "../apis/flashcard.ts";
 
 export const useUserFlashcardQuery = ({
@@ -109,5 +111,26 @@ export const useDeleteFlashcardMutation = () => {
   return useMutation({
     mutationKey: ["delete-flashcard"],
     mutationFn: deleteFlashcard,
+  });
+};
+
+export const useStarTermMutation = () => {
+  return useMutation({
+    mutationKey: ["star-term"],
+    mutationFn: starTerm,
+  });
+};
+
+export const useUnStarTermMutation = () => {
+  return useMutation({
+    mutationKey: ["unstar-term"],
+    mutationFn: starTerm,
+  });
+};
+
+export const useUpdateContainerMutation = () => {
+  return useMutation({
+    mutationKey: ["update-container"],
+    mutationFn: updateContainer,
   });
 };

@@ -52,7 +52,7 @@ export const DocumentCard = ({
     <Link
       key={data.id}
       passHref
-      className="flex w-full flex-col gap-2 rounded-xl border-2 border-gray-200 bg-white shadow-lg md:gap-4 dark:border-gray-700 dark:bg-gray-800"
+      className="flex w-full flex-col gap-2 rounded-xl border-2 border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 md:gap-4"
       href={`/documents/${data.documentSlug}`}
     >
       <div className="flex flex-col gap-2 py-4">

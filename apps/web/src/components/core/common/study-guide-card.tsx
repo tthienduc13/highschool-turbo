@@ -17,7 +17,7 @@ export const StudyGuideCard = ({
 }: StudyGuideCardProps) => {
   return (
     <Link passHref href={`/study-guide/${slug}`}>
-      <div className="flex size-full cursor-pointer flex-row rounded-lg border-2 border-gray-200 bg-white shadow-md md:flex-col dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex size-full cursor-pointer flex-row rounded-lg border-2 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 md:flex-col">
         <div className="flex flex-col gap-5 p-5">
           <h2 className="line-clamp-1 overflow-hidden text-ellipsis text-lg font-bold">
             {title}

@@ -1,6 +1,5 @@
 import type { JSONContent } from "@tiptap/react";
 
-import { toast } from "sonner";
 import useFitText from "use-fit-text";
 import { memo, useRef } from "react";
 import { FlashcardContent } from "@highschool/interfaces";
@@ -53,7 +52,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
   onRightAction,
   onBackAction,
   onRequestEdit,
-  //   onRequestStar,
+  onRequestStar,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -126,7 +125,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
               variant="ghost"
               onClick={(e) => {
                 e.stopPropagation();
-                toast.info("Chức năng đang phát triển");
+                onRequestStar();
               }}
             >
               <Star className="!size-5" />
@@ -134,7 +133,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({
           </div>
         </div>
         <div className="my-4 flex flex-1 items-center justify-center overflow-y-auto">
-          <div className="flex h-full w-full flex-col-reverse md:flex-row">
+          <div className="flex size-full flex-col-reverse md:flex-row">
             <div
               ref={containerRef}
               className={cn(

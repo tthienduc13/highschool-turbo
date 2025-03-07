@@ -7,7 +7,8 @@ import {
 } from "@highschool/interfaces";
 
 import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
-import fetchPaginatedData, { fetchUnauthedPaginatedData } from "./common.ts";
+
+import { fetchUnauthedPaginatedData } from "./common.ts";
 
 export const getCourses = async ({
   search,
@@ -35,6 +36,7 @@ export const getCourseBySlug = async ({
 }): Promise<Course> => {
   try {
     const { data } = await axiosServices.get(endpointCourse.GET_BY_SLUG(slug));
+
     return data;
   } catch (error) {
     console.log("Error while getting course by slug", error);
@@ -47,6 +49,7 @@ export const getCategories = async (): Promise<CourseCategory[]> => {
     const { data } = await axiosClientWithoutAuth.get(
       endpointCategory.GET_ALL_CATEGORIES,
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting category", error);
@@ -65,6 +68,7 @@ export const enrollCourse = async ({
     const { data } = await axiosServices.post(
       `${endpointCourse.ENROLL_COURSE({ subjectId: subjectId, curriculumId: curriculumId })}`,
     );
+
     return data;
   } catch (error) {
     console.log("Error while enroll", error);
@@ -83,6 +87,7 @@ export const unEnrollCourse = async ({
     const { data } = await axiosServices.delete(
       `${endpointCourse.UNENROLL_COURSE({ subjectId: subjectId, curriculumId: curriculumId })}`,
     );
+
     return data;
   } catch (error) {
     console.log("Error while unenroll", error);

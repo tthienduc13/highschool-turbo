@@ -1,5 +1,5 @@
 function CourseLearnModule() {
-  return <div className="bg-primary/10 size-full" />;
+  return <div className="size-full bg-primary/10" />;
 }
 
 export default CourseLearnModule;

@@ -21,6 +21,7 @@ interface ModalProps {
   title?: string;
   children?: React.ReactNode;
   buttonLabel?: string;
+  buttonVariant?: string;
   cancelLabel?: string;
   onConfirm?: () => void;
   description?: string;

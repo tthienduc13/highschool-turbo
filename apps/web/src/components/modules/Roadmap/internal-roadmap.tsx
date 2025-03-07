@@ -147,7 +147,7 @@ function Roadmap() {
         onPaneClick={closeResource}
       >
         <Panel
-          className="bg-background flex flex-row items-center gap-x-2 rounded-md border px-4 py-2 shadow-xl"
+          className="flex flex-row items-center gap-x-2 rounded-md border bg-background px-4 py-2 shadow-xl"
           position={"top-left"}
         >
           <Button size={"icon"} variant={"ghost"} onClick={() => router.back()}>
@@ -161,7 +161,7 @@ function Roadmap() {
         <ResourcePanel selectedNodeId={selectedNodeId ?? ""} />
         <Background />
         <Controls
-          className="bg-background border"
+          className="border bg-background"
           orientation="horizontal"
           position="bottom-left"
           showInteractive={false}

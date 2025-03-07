@@ -12,6 +12,7 @@ import { TitleBar } from "./title-bar";
 import { SettingModal } from "@/components/core/study-set/setting-modal";
 import { PhotoViewProvider } from "@/components/core/providers/photo-provider";
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
+import { Container } from "@/components/core/layouts/container";
 
 function StudySetFlashcardModule() {
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -25,15 +26,21 @@ function StudySetFlashcardModule() {
             isOpen={settingsOpen}
             onClose={() => setSettingsOpen(false)}
           />
-          <div className="h-[calc(100vh-80px-32px)] min-h-[720px] w-full overflow-hidden p-0">
-            <div className="mx-auto h-[calc(100vh-180px)] min-h-[620px] w-full max-w-7xl">
+          <Container
+            className="h-[calc(100vh-80px-32px)] min-h-[720px] w-full overflow-hidden p-0"
+            maxWidth="full"
+          >
+            <Container
+              className=" h-[calc(100vh-180px)] min-h-[620px] w-full "
+              maxWidth="7xl"
+            >
               <div className="flex flex-col gap-6">
                 <TitleBar />
                 <FlashcardArea />
                 <ControlsBar onSettingsClick={() => setSettingsOpen(true)} />
               </div>
-            </div>
-          </div>
+            </Container>
+          </Container>
         </HydrateSetData>
       </PhotoViewProvider>
     </>

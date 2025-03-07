@@ -51,7 +51,7 @@ export const RelatedResoucrces = () => {
           </div>
         </h2>
       </div>
-      <div className="group w-full rounded-xl bg-gray-100">
+      <div className="group w-full rounded-xl bg-gray-100 dark:bg-gray-900/50">
         <Carousel
           className="w-full px-4"
           opts={{

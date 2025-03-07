@@ -60,7 +60,7 @@ function CourseDetailModule() {
         <div className="flex flex-col gap-12">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex flex-col gap-5 md:flex-row">
-            <div className="bg-background relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 shadow-md md:w-[250px] dark:border-gray-700">
+            <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 bg-background shadow-md dark:border-gray-700 md:w-[250px]">
               <Image
                 fill
                 alt={`Image of ${data?.subjectName || "Subject"}`}
@@ -73,7 +73,7 @@ function CourseDetailModule() {
                 <h1 className="text-2xl font-bold md:text-3xl">
                   {data?.subjectName}
                 </h1>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   {data?.information}
                 </p>
               </div>

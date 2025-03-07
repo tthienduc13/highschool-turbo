@@ -32,7 +32,7 @@ export const ProfileSection = ({
       <div className="flex flex-col-reverse justify-between gap-4 md:flex-row md:items-center">
         <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
           Hiểu mình
-          <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+          <div className="absolute bottom-0 left-0 h-1 w-1/2 bg-primary transition-all duration-200 group-hover:w-full" />
         </h1>
         <div className="flex flex-row items-center gap-2">
           <Button onClick={() => window.print()}>
@@ -92,10 +92,10 @@ export const ProfileSection = ({
               <Card className="w-full border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <CardContent className="flex flex-col gap-4 p-5">
                   <div className="flex flex-row items-center justify-between">
-                    <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
+                    <h3 className="w-fit text-lg font-medium highlight highlight-[#C9F77A] highlight-variant-5">
                       Kiểm tra tính cách (MBTI)
                     </h3>
-                    <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
+                    <div className="flex h-8 items-center justify-center rounded-md bg-primary/40 px-3 text-base font-bold">
                       {brief.mbtiResponse.mbtiType}
                     </div>
                   </div>
@@ -111,10 +111,10 @@ export const ProfileSection = ({
               <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
                 <CardContent className="flex flex-col gap-4 p-5">
                   <div className="flex flex-row items-center justify-between">
-                    <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-lg font-medium">
+                    <h3 className="w-fit text-lg font-medium highlight highlight-[#C9F77A] highlight-variant-5">
                       Định hướng nghề nghiệp (Holland)
                     </h3>
-                    <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
+                    <div className="flex h-8 items-center justify-center rounded-md bg-primary/40 px-3 text-base font-bold">
                       {brief.hollandResponse.hollandType}
                     </div>
                   </div>
@@ -131,7 +131,7 @@ export const ProfileSection = ({
             <Card className="w-full border-gray-200 dark:border-gray-700 dark:bg-gray-800">
               <CardContent className="flex flex-col gap-4 p-5">
                 <div className="flex flex-row items-center justify-between">
-                  <h3 className="highlight highlight-[#C9F77A] highlight-variant-5 w-fit text-xl font-bold">
+                  <h3 className="w-fit text-xl font-bold highlight highlight-[#C9F77A] highlight-variant-5">
                     Về bạn
                   </h3>
                 </div>

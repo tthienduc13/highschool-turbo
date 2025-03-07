@@ -15,13 +15,13 @@ export const DeloadedTerm = ({ term }: DeloadedTermProps) => {
       )}
     >
       <CardContent className="flex flex-col-reverse items-stretch p-0 md:flex-row md:gap-6">
-        <div className="flex w-full flex-col gap-2 px-3 py-3 md:flex-row md:gap-6 md:px-0 md:py-0">
+        <div className="flex w-full flex-col gap-2 p-3 md:flex-row md:gap-6 md:p-0">
           <div className="overflow-wrap-anywhere w-full whitespace-pre-wrap leading-[25px]">
             {term.flashcardContentTerm}
           </div>
         </div>
         <div className="h-full w-[4px] rounded-full bg-gray-100 dark:bg-gray-700" />
-        <div className="flex w-full flex-col gap-2 px-3 py-3 md:flex-row md:gap-6 md:px-0 md:py-0">
+        <div className="flex w-full flex-col gap-2 p-3 md:flex-row md:gap-6 md:p-0">
           <div className="overflow-wrap-anywhere w-full whitespace-pre-wrap leading-[25px]">
             {term.flashcardContentDefinition}
           </div>

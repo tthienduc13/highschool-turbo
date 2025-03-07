@@ -7,6 +7,8 @@ import { IconLink, IconLock, IconWorld } from "@tabler/icons-react";
 
 import { visibilityText } from "../common/renderer/visibility-text";
 
+import { useMe } from "@/hooks/use-me";
+
 export interface VisibilityModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -21,6 +23,7 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
   visibility,
   onChangeVisibility,
 }) => {
+  const me = useMe();
   const handleChangeVisibility = (newVisibility: StudySetVisibility) => {
     onChangeVisibility(newVisibility);
     onClose();
@@ -42,6 +45,7 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
             description:
               "Mọi người đều có thể xem và học tập bộ này, và nó sẽ hiển thị công khai trên hồ sơ của bạn.",
             icon: <IconWorld size={20} />,
+            teacherOnly: true,
           },
           {
             visibility: StudySetVisibility.Unlisted,
@@ -57,24 +61,31 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
               "Chỉ mình bạn có thể xem và học tập bộ này. Nó sẽ không xuất hiện trên hồ sơ của bạn và không thể thêm vào thư mục của người khác.",
             icon: <IconLock size={20} />,
           },
-        ].map((option) => (
-          <button
-            key={option.visibility}
-            className={cn(
-              "h-full cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800",
-              visibility === option.visibility &&
-                "bg-gray-200 dark:bg-gray-700",
-            )}
-            onClick={() => handleChangeVisibility(option.visibility)}
-          >
-            <VisibilityOption
-              description={option.description}
-              icon={option.icon}
-              name={option.name}
-              selected={visibility === option.visibility}
-            />
-          </button>
-        ))}
+        ]
+          .filter(
+            (option) =>
+              !option.teacherOnly ||
+              (option.teacherOnly &&
+                me?.roleName?.toLocaleLowerCase() === "teacher"),
+          )
+          .map((option) => (
+            <button
+              key={option.visibility}
+              className={cn(
+                "h-full cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800",
+                visibility === option.visibility &&
+                  "bg-gray-200 dark:bg-gray-700",
+              )}
+              onClick={() => handleChangeVisibility(option.visibility)}
+            >
+              <VisibilityOption
+                description={option.description}
+                icon={option.icon}
+                name={option.name}
+                selected={visibility === option.visibility}
+              />
+            </button>
+          ))}
       </div>
     </Modal>
   );

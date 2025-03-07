@@ -211,20 +211,20 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
     <Wrapper>
       <div className="flex h-full flex-1 flex-col gap-2">
         <h2 className="truncate font-bold">{chapter.chapterName}</h2>
-        <p className="text-muted-foreground line-clamp-2 h-10 text-sm">
+        <p className="line-clamp-2 h-10 text-sm text-muted-foreground">
           {chapter.description}
         </p>
       </div>
       <div className="flex justify-between">
         <div className="flex items-center gap-x-2">
           <IconHistory size={16} />
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {new Date(chapter.createdAt).toLocaleDateString()}
           </p>
         </div>
         <div className="flex items-center gap-x-2">
           <IconBook size={16} />
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {chapter.numberLesson} bài học
           </p>
         </div>

@@ -97,13 +97,13 @@ export const LanguageMenuWrapper: React.FC<
         className="z-30 w-80 overflow-hidden rounded-lg border-none bg-white p-0 dark:bg-gray-800/50"
       >
         <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-center bg-gray-100 pb-2 pl-4 pt-2 dark:bg-gray-800/50">
-            <div className="flex h-10 w-10 items-center justify-center pl-2 text-gray-500">
+          <div className="flex flex-row items-center bg-gray-100 py-2 pl-4 dark:bg-gray-800/50">
+            <div className="flex size-10 items-center justify-center pl-2 text-gray-500">
               <IconSearch size={16} />
             </div>
             <Input
               ref={inputRef}
-              className="h-full w-full rounded-none border-none px-4 py-0 !text-lg shadow-none focus-visible:ring-0"
+              className="size-full rounded-none border-none px-4 py-0 !text-lg shadow-none focus-visible:ring-0"
               placeholder="Tìm kiếm ngôn ngữ "
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -131,7 +131,7 @@ export const LanguageMenuWrapper: React.FC<
               onSelect={onSelect}
             />
             {!allFiltered.length && (
-              <div className="h-full w-full items-center justify-center text-gray-500">
+              <div className="size-full items-center justify-center text-gray-500">
                 <div className="flex w-fit items-center">
                   <IconLanguage size="40" />
                   <div>Không tìm thấy</div>
@@ -201,7 +201,7 @@ const LanguageItem: React.FC<LanguageItemProps> = ({
   return useMemo(
     () => (
       <button
-        className="cursor-pointer px-4 py-2 transition-all duration-100 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-700"
+        className="ease-in-out cursor-pointer px-4 py-2 transition-all duration-100 hover:bg-gray-100 dark:hover:bg-gray-700"
         id={`language-menu-opt-${value}`}
         onClick={onClick}
       >

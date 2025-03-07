@@ -230,11 +230,11 @@ export const SearchImagesModal = ({
           <VisuallyHidden>
             <DialogDescription>Descritption</DialogDescription>
           </VisuallyHidden>
-          <div className="active:scale-97 rounded-xl border-2 border-gray-200 bg-gray-50/40 p-0 shadow-xl backdrop-blur-md transition-transform duration-150 ease-in-out dark:border-gray-700 dark:bg-gray-800/60">
+          <div className="active:scale-97 ease-in-out rounded-xl border-2 border-gray-200 bg-gray-50/40 p-0 shadow-xl backdrop-blur-md transition-transform duration-150 dark:border-gray-700 dark:bg-gray-800/60">
             <div className="px-5 py-4">
               <Input
                 ref={inputRef}
-                className="border-none px-0 !text-xl text-gray-900 placeholder-gray-500 shadow-none focus-visible:ring-0 dark:text-white"
+                className="border-none px-0 !text-xl text-gray-900 shadow-none placeholder:text-gray-500 focus-visible:ring-0 dark:text-white"
                 placeholder="Tìm kiếm ảnh"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -256,7 +256,7 @@ export const SearchImagesModal = ({
           <p className="ml-3 mt-3 text-xs text-gray-500 opacity-75">
             Ảnh bởi{" "}
             <Link
-              className="font-semibold text-gray-600 transition-colors duration-150 ease-in-out hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              className="ease-in-out font-semibold text-gray-600 transition-colors duration-150 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               href="https://unsplash.com/?utm_source=quenti&utm_medium=referral"
             >
               Unsplash
@@ -265,7 +265,7 @@ export const SearchImagesModal = ({
           <div className="relative mx-6 mt-6 cursor-not-allowed">
             <div
               {...getRootProps()}
-              className="group relative w-full cursor-pointer overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50/40 px-6 py-10 transition-colors duration-200 ease-in-out hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800/30 dark:hover:border-gray-600"
+              className="ease-in-out group relative w-full cursor-pointer overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50/40 px-6 py-10 transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800/30 dark:hover:border-gray-600"
             >
               <div
                 className="absolute left-0 top-0 h-full bg-gray-200 opacity-50 transition-[width] duration-700 dark:bg-gray-700"
@@ -278,7 +278,7 @@ export const SearchImagesModal = ({
                     <IconLock size={16} />
                   </div>
                 </div>
-                <p className="text-muted-foreground text-sm">
+                <p className="text-sm text-muted-foreground">
                   Nâng cấp lên tài khoản Pro
                 </p>
               </div>
@@ -306,7 +306,7 @@ export const SearchImagesModal = ({
               )}
             </div>
             {uploadError && (
-              <div className="absolute left-1/2 top-full mt-3 w-full -translate-x-1/2 transform">
+              <div className="absolute left-1/2 top-full mt-3 w-full -translate-x-1/2">
                 <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
                   <IconAlertCircle size={16} />
                   <span className="text-sm font-medium">{uploadError}</span>
@@ -322,7 +322,7 @@ export const SearchImagesModal = ({
 
 export function UploadDots() {
   return (
-    <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 transform space-x-0 opacity-20">
+    <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 space-x-0 opacity-20">
       <UploadColumn opacity={0.3} transform="translateY(6px)" />
       <UploadColumn opacity={0.7} speed={0.75} />
       <UploadColumn opacity={0.3} transform="translateY(6px)" />
@@ -342,7 +342,7 @@ function UploadColumn({ opacity, speed = 1, transform }: UploadColumnProps) {
       {Array.from({ length: 10 }).map((_, i) => (
         <div key={i} className="p-2">
           <div
-            className="animate-upload-dot h-[5px] w-[5px] rounded-full bg-current"
+            className="animate-upload-dot size-[5px] rounded-full bg-current"
             style={{ animationDuration: `${speed}s` }}
           />
         </div>
@@ -380,7 +380,7 @@ function Thumbnail({ index }: ThumbnailProps) {
   const image = data?.response?.results[index];
 
   return (
-    <div className="aspect-square h-full w-full overflow-hidden rounded-lg">
+    <div className="aspect-square size-full overflow-hidden rounded-lg">
       {image && (
         <button
           className="group relative cursor-pointer"
@@ -392,10 +392,10 @@ function Thumbnail({ index }: ThumbnailProps) {
         >
           <img
             alt={image.alt_description || "Image"}
-            className="aspect-square h-full w-full object-cover"
+            className="aspect-square size-full object-cover"
             src={image.urls.small}
           />
-          <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-gradient-to-t from-[hsl(230,21%,11%)] to-transparent px-[7px] py-1 pt-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <div className="bg-gradient-to-t absolute bottom-0 left-0 w-full overflow-hidden from-[hsl(230,21%,11%)] to-transparent px-[7px] py-1 pt-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <div className="w-full overflow-hidden text-ellipsis">
               <Link
                 className="overflow-hidden whitespace-nowrap text-[10px] font-medium text-gray-50"
@@ -406,7 +406,7 @@ function Thumbnail({ index }: ThumbnailProps) {
               </Link>
             </div>
           </div>
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-full bg-white opacity-0 transition-opacity duration-200 group-hover:opacity-10" />
+          <div className="pointer-events-none absolute left-0 top-0 size-full bg-white opacity-0 transition-opacity duration-200 group-hover:opacity-10" />
         </button>
       )}
     </div>

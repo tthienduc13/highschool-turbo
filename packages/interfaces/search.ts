@@ -25,6 +25,8 @@ export type SearchAll = {
 export type SearchParams = {
   type: SearchType;
   value: string;
+  pageSize: number;
+  pageNumber: number;
 };
 
 export type SearchResult<T> = T extends SearchType.All

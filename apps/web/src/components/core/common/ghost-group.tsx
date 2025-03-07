@@ -46,7 +46,7 @@ export const GhostGroup = () => {
       <motion.div {...rightGhost}>
         <IconGhost3 opacity="0.9" size={40} strokeWidth="3px" />
       </motion.div>
-      <div className="-z-1 absolute left-0 top-10 h-full w-full rounded-full bg-gradient-to-b from-gray-500 to-transparent opacity-50" />
+      <div className="-z-1 bg-gradient-to-b absolute left-0 top-10 size-full rounded-full from-gray-500 to-transparent opacity-50" />
     </div>
   );
 };

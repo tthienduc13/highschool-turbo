@@ -120,7 +120,7 @@ export const TestCardGapRaw = ({
           <div className="flex flex-col gap-2">
             <SlideFade skeleton={skeleton}>
               <TextWrapper rounded="md" skeletonHeight="4">
-                <div className="text-muted-foreground text-sm font-semibold">
+                <div className="text-sm font-semibold text-muted-foreground">
                   Bài kiểm tra
                 </div>
               </TextWrapper>

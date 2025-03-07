@@ -65,7 +65,7 @@ export const GenericCard = ({
   return (
     <Link passHref href={url}>
       <div
-        className="hover:border-b-primary h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-5 shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:border-gray-700 dark:bg-gray-800"
+        className="ease-in-out h-full cursor-pointer rounded-lg border-2 border-gray-200 bg-white p-5 shadow-md transition-all duration-200 hover:-translate-y-2 hover:border-b-primary dark:border-gray-700 dark:bg-gray-800"
         style={{ zIndex: menuOpen ? 30 : 25 }}
       >
         <div className="flex h-full flex-col justify-center gap-4">

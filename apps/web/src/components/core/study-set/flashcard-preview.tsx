@@ -9,6 +9,7 @@ import {
   IconPlayerPlay,
   IconSettings,
 } from "@tabler/icons-react";
+import { useUpdateContainerMutation } from "@highschool/react-query/queries";
 
 import { LinkArea } from "./link-area";
 import { RootFlashcardWrapper } from "./root-flashcard-wrapper";
@@ -33,6 +34,8 @@ export const FlashcardPreview = () => {
   const toggleShuffle = useContainerContext((s) => s.toggleShuffleFlashcards);
   const autoPlay = useContainerContext((s) => s.autoplayFlashcards);
   const toggleAutoplay = useContainerContext((s) => s.toggleAutoplayFlashcards);
+
+  const apiSetShuffle = useUpdateContainerMutation();
 
   const _termOrder = data.terms
     .sort((a, b) => a.rank - b.rank)
@@ -71,22 +74,19 @@ export const FlashcardPreview = () => {
             <div className="flex w-full flex-row gap-3 lg:flex-col">
               <Button
                 className="w-full"
+                disabled={enableCardsSorting && apiSetShuffle.isPending}
                 size={"lg"}
                 variant={shuffle ? "default" : "outline"}
                 onClick={() => {
-                  // void (async () => {
-                  //     await apiSetShuffle.mutateAsync({
-                  //         entityId: data.id,
-                  //         shuffle: !shuffle,
-                  //         type: "StudySet",
-                  //     });
-                  // })();
+                  void (async () => {
+                    await apiSetShuffle.mutateAsync({
+                      flashcardId: data.flashcard.id,
+                      values: { shuffleFlashcards: !shuffle },
+                    });
+                  })();
 
                   toggleShuffle();
                 }}
-                // isLoading={
-                //     enableCardsSorting && apiSetShuffle.isLoading
-                // }
               >
                 <IconArrowsShuffle />
                 Trộn thẻ

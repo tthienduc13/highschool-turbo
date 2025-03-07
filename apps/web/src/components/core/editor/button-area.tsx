@@ -99,8 +99,8 @@ ButtonArea.Skeleton = function ButtonAreaSkeleton() {
         <Skeleton className="h-10 w-[120px] rounded-lg" />
       </div>
       <div className="flex w-full items-center justify-end gap-2">
-        <Skeleton className="h-10 w-10 rounded-full" />
-        <Skeleton className="h-10 w-10 rounded-full" />
+        <Skeleton className="size-10 rounded-full" />
+        <Skeleton className="size-10 rounded-full" />
       </div>
     </div>
   );

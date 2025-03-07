@@ -109,7 +109,7 @@ export const Linkable: React.FC<LinkableProps> = ({
         )}
 
         <div className="flex flex-row items-center gap-3">
-          <div className="relative h-6 w-6">
+          <div className="relative size-6">
             {/* <div
                             className={cn(
                                 "w-full h-full absolute top-1 opacity-30 -left-1 transition-all duration-200 ease-in-out group-hover:-translate-x-[3px] group-focus-within:-translate-x-[3px]  backdrop-blur-3xl",
@@ -118,7 +118,7 @@ export const Linkable: React.FC<LinkableProps> = ({
                         >
                             {icon}
                         </div> */}
-            <div className="text-primary relative transition-all duration-200 ease-in-out group-focus-within:-translate-y-[2px] group-hover:-translate-y-[2px]">
+            <div className="ease-in-out relative text-primary transition-all duration-200 group-focus-within:-translate-y-[2px] group-hover:-translate-y-[2px]">
               {icon}
             </div>
           </div>

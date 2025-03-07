@@ -38,9 +38,9 @@ export const CareerSection = ({
       <div className="flex flex-col gap-2">
         <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
           Hiểu nghề
-          <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+          <div className="absolute bottom-0 left-0 h-1 w-1/2 bg-primary transition-all duration-200 group-hover:w-full" />
         </h1>
-        <p className="text-muted-foreground font-medium">
+        <p className="font-medium text-muted-foreground">
           Dưới đây là những nghề gợi ý phù hợp với bạn, hãy chọn những chuyên
           ngành bạn cảm thấy phù hợp
         </p>
@@ -82,12 +82,12 @@ const RecommendCard = ({
           </span>
           <div className="flex flex-row items-center gap-2 text-xs">
             <IconCashBanknote size={16} />
-            <span className="bg-primary/20 w-fit rounded-full px-1">
+            <span className="w-fit rounded-full bg-primary/20 px-1">
               {formattedAmount(career.minSalary)} -{" "}
               {formattedAmount(career.maxSalary)}
             </span>
           </div>
-          <p className="text text-muted-foreground line-clamp-4 text-xs">
+          <p className="text line-clamp-4 text-xs text-muted-foreground">
             {career.description}
           </p>
           <div className="flex flex-col gap-2">

@@ -25,7 +25,7 @@ export const DescriptionArea = () => {
       <div className="flex flex-col justify-start gap-8 sm:flex-row sm:justify-between sm:gap-0 md:items-center">
         {isLoading ? (
           <div className="flex flex-row items-center gap-x-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
+            <Skeleton className="size-12 rounded-full" />
             <div className="flex flex-col gap-y-1">
               <Skeleton className="h-6 w-[200px]" />
               <Skeleton className="h-5 w-[200px]" />
@@ -57,7 +57,7 @@ export const DescriptionArea = () => {
                   </Hint>
                 )}
               </div>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 {authorData?.data?.username}
               </p>
             </div>
@@ -68,7 +68,7 @@ export const DescriptionArea = () => {
       {data.flashcard.subjectName && (
         <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
           <Link
-            className="hover:text-primary flex flex-row items-center gap-2 transition-all duration-200 ease-in-out"
+            className="ease-in-out flex flex-row items-center gap-2 transition-all duration-200 hover:text-primary"
             href={"/course"}
           >
             <IconBooks size={20} />

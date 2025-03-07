@@ -28,6 +28,7 @@ interface LearnState extends LearnStoreProps {
   answerCorrectly: (termId: string) => void;
   answerIncorrectly: (termId: string) => void;
   acknowledgeIncorrect: () => void;
+  goToNextQuestion: () => void;
   // answerUnknownPartial: () => void
   endQuestionCallback: (correct: boolean) => void;
   // correctFromUnknown: (termId: string) => void
@@ -93,29 +94,20 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
         set((state) => ({
           answered: termId,
           status: "incorrect",
-          roundTimeline:
-            state.roundProgress != state.termsThisRound - 1
-              ? [
-                  ...state.roundTimeline,
-                  state.roundTimeline[state.roundCounter]!,
-                ]
-              : state.roundTimeline,
-          prevTermWasIncorrect: true,
+          roundTimeline: state.roundTimeline,
+          prevTermWasIncorrect: false,
         }));
-        setTimeout(() => {
-          set((state) => {
-            // const active = state.roundTimeline[state.roundCounter]!
-            // active.term.correctness = active.type == 'choice' ? 1 : 2
-
-            state.endQuestionCallback(true);
-
-            return {};
-          });
-        }, 1000);
       },
       acknowledgeIncorrect: () => {
         set((state) => {
           state.endQuestionCallback(false);
+
+          return {};
+        });
+      },
+      goToNextQuestion: () => {
+        set((state) => {
+          state.endQuestionCallback(true);
 
           return {};
         });

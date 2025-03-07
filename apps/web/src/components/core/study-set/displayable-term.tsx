@@ -188,7 +188,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
       )}
     >
       <CardContent className="flex flex-col-reverse items-stretch p-0 md:flex-row md:gap-6">
-        <div className="flex w-full flex-col gap-2 px-3 py-3 md:flex-row md:gap-6 md:px-0 md:py-0">
+        <div className="flex w-full flex-col gap-2 p-3 md:flex-row md:gap-6 md:p-0">
           {isEditing ? (
             <div className="flex w-full flex-col gap-2">
               <RichTextBar activeEditor={termEditor} />
@@ -288,12 +288,12 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             )}
           </div>
         </div>
-        <div className="h-full border-b-2 border-gray-100 px-1 py-2 md:border-b-0 md:px-0 md:py-0 dark:border-gray-700">
+        <div className="h-full border-b-2 border-gray-100 px-1 py-2 dark:border-gray-700 md:border-b-0 md:p-0">
           <div className="flex w-full justify-end">
             <div className="flex h-6 w-full items-center justify-between md:justify-end md:space-x-1">
               <CreatorOnly userId={flashcard.userId}>
                 <Button
-                  className="h-8 w-8 scale-75 rounded-full md:scale-100"
+                  className="size-8 scale-75 rounded-full md:scale-100"
                   size="icon"
                   variant={isEditing ? "default" : "ghost"}
                   onClick={() => {
@@ -307,7 +307,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                 </Button>
               </CreatorOnly>
               <Button
-                className="h-8 w-8 scale-75 rounded-full md:scale-100"
+                className="size-8 scale-75 rounded-full md:scale-100"
                 size="icon"
                 variant={isEditing ? "default" : "ghost"}
               >

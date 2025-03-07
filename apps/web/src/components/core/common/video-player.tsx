@@ -20,15 +20,15 @@ export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
     <div className="flex flex-col gap-6">
       <div className="relative aspect-video overflow-hidden rounded-xl">
         {!isReady && (
-          <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-slate-800">
-            <IconLoader2 className="text-secondary animate-spin" size={32} />
+          <div className="absolute inset-0 flex size-full items-center justify-center bg-slate-800">
+            <IconLoader2 className="animate-spin text-secondary" size={32} />
           </div>
         )}
         <video
           autoPlay
           controls
           muted
-          className="h-full w-full"
+          className="size-full"
           title={lesson.lessonName}
           onCanPlay={() => setIsReady(true)}
           //   onEnded={() => console.log("Video ended")}

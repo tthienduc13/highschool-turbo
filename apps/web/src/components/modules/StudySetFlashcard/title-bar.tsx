@@ -20,7 +20,7 @@ export const TitleBar = () => {
 
   return (
     <div className="mt-2 flex w-full items-center justify-between gap-4">
-      <div className="bg-primary/40 flex h-8 w-[110px] items-center justify-center rounded-md px-3 text-base font-bold">
+      <div className="flex h-8 w-[110px] items-center justify-center rounded-md bg-primary/40 px-3 text-base font-bold">
         Thẻ ghi nhớ
       </div>
       <h1 className="line-clamp-1 hidden w-full flex-1 truncate text-center text-xl font-bold md:block">

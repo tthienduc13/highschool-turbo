@@ -190,7 +190,7 @@ export const Quiz = ({ setShowQuiz }: QuizProps) => {
           </RadioGroup>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <div className="text-muted-foreground text-sm">
+          <div className="text-sm text-muted-foreground">
             Câu {currentQuestionIndex + 1} trên {data?.data?.questions.length}
           </div>
           <div className="flex space-x-2">

@@ -46,17 +46,17 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
               }}
               onMouseDown={(e) => e.preventDefault()}
             >
-              <div className="absolute h-4 w-4">
+              <div className="absolute size-4">
                 <IconCircle size={16} />
-                <div className="absolute inset-0 flex h-full w-full items-center justify-center">
+                <div className="absolute inset-0 flex size-full items-center justify-center">
                   <div
-                    className={`transition-background relative h-[7px] w-[7px] rounded-full duration-200 ease-in-out`}
+                    className={`transition-background ease-in-out relative size-[7px] rounded-full duration-200`}
                     style={{
                       backgroundColor: color ? color.slice(0, 7) : undefined,
                     }}
                   >
                     <div
-                      className={`absolute inset-0 h-full w-full rounded-full transition-opacity duration-200 ease-in-out`}
+                      className={`ease-in-out absolute inset-0 size-full rounded-full transition-opacity duration-200`}
                       style={{
                         opacity: color ? 0 : 1,
                         backgroundImage:
@@ -80,7 +80,7 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
               <Button
                 key={color}
                 aria-label={color}
-                className="h-4 w-4"
+                className="size-4"
                 size={"icon"}
                 variant={"ghost"}
                 onClick={() => {
@@ -94,7 +94,7 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
                 onMouseDown={(e) => e.preventDefault()}
               >
                 <div
-                  className="h-3 w-3 rounded-full"
+                  className="size-3 rounded-full"
                   style={{ background: color }}
                 />
               </Button>
@@ -102,7 +102,7 @@ export const HighlightColorPopover: React.FC<HighlightColorPopoverProps> = ({
             <Button
               key={color}
               aria-label={color}
-              className="h-4 w-4"
+              className="size-4"
               size={"icon"}
               variant={"ghost"}
               onClick={() => {

@@ -18,11 +18,11 @@ export const HighschoolMessage: React.FC<HighschoolMessageProps> = ({
     <div className="flex flex-col items-center justify-center gap-8 px-4 text-center">
       <div className="flex flex-col items-center justify-center gap-4 text-gray-700 dark:text-gray-300">
         <GhostGroup />
-        <h2 className="text-3xl font-bold text-gray-700 md:text-4xl dark:text-gray-300">
+        <h2 className="text-3xl font-bold text-gray-700 dark:text-gray-300 md:text-4xl">
           {message}
         </h2>
         {subheading && (
-          <div className="text-muted-foreground font-medium">{subheading}</div>
+          <div className="font-medium text-muted-foreground">{subheading}</div>
         )}
       </div>
       {homeButton && (

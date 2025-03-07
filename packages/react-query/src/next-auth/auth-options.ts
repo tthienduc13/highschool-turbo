@@ -7,6 +7,7 @@ import { cookies } from "next/headers.js";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 import Credentials from "next-auth/providers/credentials";
 import { signOut } from "next-auth/react";
+import { setClientCookie } from "@highschool/lib/cookies.ts";
 
 import {
   credentialLogin,
@@ -47,9 +48,9 @@ const refreshAccessToken = async (token: JWT) => {
       throw new Error("RefreshTokenFailed");
     }
 
-    const cookieStore = await cookies();
+    // const cookieStore = await cookies();
 
-    cookieStore.set(ACCESS_TOKEN, result.data.accessToken);
+    // cookieStore.set(ACCESS_TOKEN, result.data.accessToken);
 
     return {
       ...token,
@@ -140,12 +141,12 @@ export const AuthOptions: NextAuthConfig = {
           response.data?.roleName.toLocaleLowerCase() === "moderator" ||
           response.data?.roleName.toLocaleLowerCase() === "admin"
         ) {
-          const userSession = response.data;
+          const userData = response.data;
           const cookieStore = await cookies();
 
-          cookieStore.set(ACCESS_TOKEN, userSession.accessToken);
+          cookieStore.set(ACCESS_TOKEN, userData.accessToken);
 
-          return userSession;
+          return userData;
         }
 
         return null;
@@ -229,7 +230,14 @@ export const AuthOptions: NextAuthConfig = {
       }
 
       if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
-        return (await refreshAccessToken(token)) as JWT;
+        const response = (await refreshAccessToken(token)) as JWT;
+
+        // const cookieStore = await cookies();
+
+        // cookieStore.set(ACCESS_TOKEN, response.accessToken);
+        setClientCookie(ACCESS_TOKEN, response.accessToken);
+
+        return response;
       }
 
       return token;

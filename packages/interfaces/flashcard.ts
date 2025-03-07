@@ -91,6 +91,8 @@ export interface FlashcardContainer {
   cardsStudyStarred: boolean;
   cardsAnswerWith: LimitedStudySetAnswerMode;
   matchStudyStarred: boolean;
+  starredTerms: string[];
+  studiableTerms: StudiableTerm[];
 }
 
 enum LearnMode {

@@ -86,6 +86,10 @@ const endpointFlashcard = {
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}`,
   DELETE: (flashcardId: string) =>
     `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}`,
+  STAR_TERM: (flashcardContentId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/starredTerm/${flashcardContentId}`,
+  UPDATE_CONTAINER: (flashcardId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/container/flashcard/${flashcardId}`,
 };
 
 const endpointFlashcardContent = {

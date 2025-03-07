@@ -13,11 +13,11 @@ export const ActionBar = () => {
   const roundSummary = useLearnContext((s) => s.roundSummary);
   const nextRound = useLearnContext((s) => s.nextRound);
   const queryClient = useQueryClient();
-  const acknowledgeIncorrect = useLearnContext((s) => s.acknowledgeIncorrect);
+  const goToNextQuestion = useLearnContext((s) => s.goToNextQuestion);
 
   const handleAction = () => {
     if (status === "incorrect") {
-      acknowledgeIncorrect();
+      goToNextQuestion();
     } else {
       queryClient.invalidateQueries({
         queryKey: ["flashcard-learn", flashcard.id],
@@ -39,13 +39,13 @@ export const ActionBar = () => {
             initial={{ translateY: 80 }}
             style={{ position: "fixed", bottom: 0, width: "100%", left: 0 }}
           >
-            <div className="dark:border-t-800 bg-background w-full border-t-2 border-t-gray-100">
-              <div className="mx-auto flex max-w-4xl flex-row justify-between px-4 py-4 md:px-0">
+            <div className="dark:border-t-800 w-full border-t-2 border-t-gray-100 bg-background">
+              <div className="mx-auto flex max-w-4xl flex-row justify-between p-4 md:px-0">
                 <p className="hidden font-medium text-gray-500 md:flex">
                   Bấm nút bất kì để tiếp tục
                 </p>
                 <Button className="w-full md:w-auto" onClick={handleAction}>
-                  Vòng tiếp theo
+                  {status === "incorrect" ? "Tiếp tục" : "Bắt đầu vòng mới"}
                 </Button>
               </div>
             </div>

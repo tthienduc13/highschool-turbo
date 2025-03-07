@@ -152,7 +152,7 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
             {data.zones.map((term, id) => (
               <React.Fragment key={id}>
                 <div
-                  className={`flex items-center order-[${id + 1}] md:order-[${id}]`}
+                  className={`order-[ flex items-center${id + 1}] md:order-[${id}]`}
                 >
                   <Droppable answerMode={question.answerMode} id={term.id}>
                     {!!getInZone(term.id) && (
@@ -179,7 +179,7 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
                   </Droppable>
                 </div>
                 <div
-                  className={`flex items-center order-[${id}] md:order-[${id + 1}]`}
+                  className={`order-[ flex items-center${id}] md:order-[${id + 1}]`}
                 >
                   <div className="flex w-full flex-row items-center justify-between gap-4">
                     <div className="whitespace-nowrap">
@@ -350,7 +350,7 @@ const Droppable: React.FC<
           : "border-gray-100 dark:border-gray-600",
       )}
     >
-      <div className="absolute left-0 top-0 flex h-full w-full flex-row items-center justify-center text-sm text-gray-500">
+      <div className="absolute left-0 top-0 flex size-full flex-row items-center justify-center text-sm text-gray-500">
         <div>
           Kéo{" "}
           {answerMode === StudySetAnswerMode.FlashcardContentDefinition
