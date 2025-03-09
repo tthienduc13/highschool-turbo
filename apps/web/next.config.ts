@@ -17,11 +17,22 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "**",
+      },
+      {
         protocol: "http",
         hostname: "res.cloudinary.com",
         port: "",
-        pathname: "/dni30h5dy/image/upload/**",
-        search: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "play-lh.googleusercontent.com",
+        port: "",
+        pathname: "**",
       },
       {
         protocol: "https",

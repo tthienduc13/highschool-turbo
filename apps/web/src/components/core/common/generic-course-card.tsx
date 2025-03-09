@@ -17,8 +17,8 @@ export const GenericCourseCard = ({
 }: GenericCourseCardProps) => {
   return (
     <Link passHref className="flex" href={href}>
-      <div className="flex size-full cursor-pointer flex-row rounded-lg border-2 border-gray-200 bg-white shadow-md dark:border-gray-700 dark:bg-gray-800 md:flex-col">
-        <div className="relative h-[120px] w-full border-gray-200 dark:border-gray-700 md:w-full md:border-b-2">
+      <div className="flex size-full cursor-pointer flex-row rounded-lg border-2 border-gray-200 bg-white shadow-md md:flex-col dark:border-gray-700 dark:bg-gray-800">
+        <div className="relative h-[120px] w-full border-gray-200 md:w-full md:border-b-2 dark:border-gray-700">
           <Image
             fill
             alt={title}
@@ -34,7 +34,7 @@ export const GenericCourseCard = ({
           <button className="group mt-1 w-fit p-0 text-blue-700 hover:text-blue-700 dark:text-blue-100 dark:hover:text-blue-100">
             <div className="flex flex-row gap-1 text-xs">
               <p>Xem ngay</p>
-              <div className="ease-in-out transition-all duration-200 group-hover:-rotate-45">
+              <div className="transition-all duration-200 ease-in-out group-hover:-rotate-45">
                 <IconArrowRight size={16} />
               </div>
             </div>

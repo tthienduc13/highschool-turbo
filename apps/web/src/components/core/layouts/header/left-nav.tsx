@@ -89,7 +89,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
   const STUDENT_TABS = [
     { name: "Trang chủ", href: "/" },
     { name: "Môn học", href: "/courses" },
-    { name: "Lộ trình học", href: "/roadmap" },
+    // { name: "Lộ trình học", href: "/roadmap" },
   ];
 
   const TEACHER_TAB = [{ name: "Trang chủ", href: "/" }];

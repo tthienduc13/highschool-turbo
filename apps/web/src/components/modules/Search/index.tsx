@@ -68,7 +68,7 @@ function SearchModule() {
               variant={"outline"}
             >
               <TabsTrigger
-                className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
+                className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.All}
                 variant={"outline"}
                 onClick={() => {
@@ -80,7 +80,7 @@ function SearchModule() {
                 Tất cả
               </TabsTrigger>
               <TabsTrigger
-                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
+                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.Flashcard}
                 variant={"outline"}
                 onClick={() => {
@@ -92,8 +92,8 @@ function SearchModule() {
                 Thẻ ghi nhớ
               </TabsTrigger>
               <TabsTrigger
-                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
-                value={SearchType.Flashcard}
+                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
+                value={SearchType.Folder}
                 variant={"outline"}
                 onClick={() => {
                   router.replace(
@@ -104,7 +104,7 @@ function SearchModule() {
                 Thư mục
               </TabsTrigger>
               <TabsTrigger
-                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
+                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.Subject}
                 variant={"outline"}
                 onClick={() => {
@@ -116,7 +116,7 @@ function SearchModule() {
                 Môn học
               </TabsTrigger>
               <TabsTrigger
-                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
+                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.Document}
                 variant={"outline"}
                 onClick={() => {
@@ -128,7 +128,7 @@ function SearchModule() {
                 Tài liệu
               </TabsTrigger>
               <TabsTrigger
-                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
+                className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.News}
                 variant={"outline"}
                 onClick={() => {

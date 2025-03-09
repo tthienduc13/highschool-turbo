@@ -21,7 +21,7 @@ import {
 import { ResultPrintComponent } from "./result-print-component";
 
 import { menuEventChannel } from "@/events/menu";
-import { useMBTITestContext } from "@/stores/use-mbti-store";
+import { useMBTITestContext } from "@/stores/use-mbti-test-store";
 
 export const ResultView = () => {
   const result = useMBTITestContext((s) => s.result);
@@ -134,7 +134,7 @@ export const ResultView = () => {
               {result.title}
             </h2>
           </div>
-          <div className="text-justify text-muted-foreground">
+          <div className="text-muted-foreground text-justify">
             {result.description}
           </div>
         </div>
