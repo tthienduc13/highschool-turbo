@@ -7,7 +7,7 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { IconDownload, IconLoader2 } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
-import { useHollandTestContext } from "@/stores/use-holland-store";
+import { useHollandTestContext } from "@/stores/use-holland-test-store";
 
 export const ResultView = () => {
   const result = useHollandTestContext((s) => s.result);

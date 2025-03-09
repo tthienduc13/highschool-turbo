@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useSubmitHollandMutation } from "@highschool/react-query/queries";
 
-import { HydrateHollandTestData } from "./hydrate-test-data";
-import { Instruction } from "./instruction";
-import { LoadingView } from "./loading-view";
-import { ResultView } from "./result-view";
-import { TestView } from "./test-view";
+import { HydrateHollandTestData } from "./hydrate-holland-test-data";
 
-import { useHollandTestContext } from "@/stores/use-holland-store";
 import { Container } from "@/components/core/layouts/container";
 import { WithFooter } from "@/components/core/common/with-footer";
+import { useHollandTestContext } from "@/stores/use-holland-test-store";
+import { Instruction } from "@/components/core/holland/instruction";
+import { LoadingView } from "@/components/core/holland/loading-view";
+import { ResultView } from "@/components/core/holland/result-view";
+import { TestView } from "@/components/core/holland/test-view";
 
 function HollandModule() {
   return (

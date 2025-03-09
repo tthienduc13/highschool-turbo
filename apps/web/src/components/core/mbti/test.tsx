@@ -19,7 +19,8 @@ import {
 } from "@tabler/icons-react";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { NavigateShortcutLayer } from "./navigation-shortcut-layer";
+import { NavigateShortcutLayer } from "../common/shortcuts-layer/navigation-shortcut-layer";
+
 import { ChoiceShortcutLayer } from "./choice-shortcut-layer";
 import { MBTISettingModal } from "./settings/setting-modal";
 
@@ -193,7 +194,7 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
                           <Button
                             key={option.option}
                             className={cn(
-                              "h-auto w-full rounded-xl px-8 py-5 justify-start disabled:cursor-not-allowed whitespace-normal  border-2 border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 !text-base",
+                              "h-auto w-full rounded-xl px-6 py-4 justify-start disabled:cursor-not-allowed whitespace-normal  border-2 border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 !text-base",
                               active &&
                                 userAnswers[roundCounter]?.option ===
                                   option.option &&
