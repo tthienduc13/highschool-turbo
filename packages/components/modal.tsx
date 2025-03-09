@@ -85,7 +85,7 @@ export const Modal = ({
               <Button
                 className="!text-base"
                 disabled={isPending}
-                size={"lg"}
+                size={"default"}
                 variant="ghost"
                 onClick={onClose}
               >
@@ -95,7 +95,7 @@ export const Modal = ({
             <Button
               className="!text-base"
               disabled={isPending || isDisabled}
-              size={"lg"}
+              size={"default"}
               onClick={onConfirm}
             >
               {isPending ? (

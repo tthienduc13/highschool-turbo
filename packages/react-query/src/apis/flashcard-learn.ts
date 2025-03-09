@@ -3,7 +3,7 @@ import { endpointFlashcardLearn } from "@highschool/endpoints";
 import {
   ResponseModel,
   RoundSummary,
-  StudibaleTerms,
+  StudiableTerms,
   UpdateProgressPayload,
 } from "@highschool/interfaces";
 
@@ -13,11 +13,12 @@ export const getLearnSet = async ({
   flashcardId,
 }: {
   flashcardId: string;
-}): Promise<StudibaleTerms> => {
+}): Promise<StudiableTerms> => {
   try {
     const { data } = await axiosServices.get(
       endpointFlashcardLearn.GET_LEARN_SET(flashcardId),
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting learning data", error);
@@ -34,6 +35,7 @@ export const getLearnProgress = async ({
     const { data } = await axiosServices.get(
       endpointFlashcardLearn.GET_LEARN_PROGRESS(flashcardId),
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting learning progress", error);
@@ -56,6 +58,7 @@ export const updateLearnProgress = async ({
         isCorrect,
       },
     );
+
     return data;
   } catch (error) {
     console.error("Error while updating user's progress in learn", error);
@@ -74,6 +77,7 @@ export const resetLearnProgress = async ({
     const { data } = await axiosServices.delete(
       endpointFlashcardLearn.RESET_PROGRESS(flashcardId),
     );
+
     return data;
   } catch (error) {
     console.error("Error while resetting user's progress in learn", error);

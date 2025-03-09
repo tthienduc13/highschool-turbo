@@ -1,4 +1,4 @@
-export interface StudibaleTerms {
+export interface StudiableTerms {
   needPayment: boolean;
   questions: Question[];
 }
