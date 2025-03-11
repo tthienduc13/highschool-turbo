@@ -5,6 +5,7 @@ import {
   getHotNews,
   getNewBySlug,
   getNews,
+  getPopularNews,
   getRelatedNews,
 } from "../apis/news.ts";
 
@@ -12,6 +13,14 @@ export const useHotNewsQuery = () => {
   return useQuery({
     queryKey: ["hot news"],
     queryFn: getHotNews,
+    refetchInterval: 30000,
+  });
+};
+
+export const usePopularNewsQuery = () => {
+  return useQuery({
+    queryKey: ["hot news"],
+    queryFn: getPopularNews,
     refetchInterval: 30000,
   });
 };
