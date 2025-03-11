@@ -62,7 +62,7 @@ export const createMBTITestStore = (initProps?: Partial<MBTIStoreProps>) => {
 
           updatedAnswers[roundCounter] = {
             id: active.id,
-            option: choseOption,
+            answerOption: choseOption,
           };
 
           return { userTestAnswers: updatedAnswers };

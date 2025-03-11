@@ -19,12 +19,12 @@ export const Activities = () => {
             />
             <div
               aria-hidden="true"
-              className="via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full bg-gradient-radial from-blue-300 to-transparent opacity-30 blur-2xl"
+              className="via-transpare bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">
             <h2 className="text-lg font-semibold">Hướng nghiệp</h2>
-            <p className="flex-1 text-justify text-sm text-muted-foreground">
+            <p className="text-muted-foreground flex-1 text-justify text-sm">
               Hoạt động hướng nghiệp bao gồm 2 bài kiểm tra MBTI và Holland,
               Highschool sẽ giúp bạn tìm ra được nghề nghiệp phù hợp với bạn
             </p>
@@ -46,12 +46,12 @@ export const Activities = () => {
             />
             <div
               aria-hidden="true"
-              className="via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full bg-gradient-radial from-blue-300 to-transparent opacity-30 blur-2xl"
+              className="via-transparet bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">
             <h2 className="text-lg font-semibold">Trò chơi</h2>
-            <p className="flex-1 text-justify text-sm text-muted-foreground">
+            <p className="text-muted-foreground flex-1 text-justify text-sm">
               Bao gồm các trò chơi giải đố hằng ngày, hằng tuần, hằng tháng giúp
               bạn rèn luyện trí tuệ và có thể nhận được nhiều phần quà trị giá
             </p>

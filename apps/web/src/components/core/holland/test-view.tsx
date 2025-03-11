@@ -18,9 +18,12 @@ import {
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { cn } from "@highschool/ui/lib/utils";
+import { toast } from "sonner";
 
 import { NavigateShortcutLayer } from "../common/shortcuts-layer/navigation-shortcut-layer";
 import { Container } from "../layouts/container";
+
+import { ChoiceShortcutLayer } from "./choice-shortcut-layer";
 
 import { useHollandTestContext } from "@/stores/use-holland-test-store";
 
@@ -50,23 +53,45 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
 
   const active = timeline[roundCounter];
 
-  const isUserAnswerAll = userAnswers.length === timeline.length;
+  const validateAllQuestionsAnswered = () => {
+    return userAnswers.length === timeline.length;
+  };
+
+  const validateMinimumAnswersPerQuestion = () => {
+    const unansweredOrInsufficientQuestions = userAnswers.filter(
+      (answer) => !answer.answerOption || answer.answerOption.length < 3,
+    );
+
+    return unansweredOrInsufficientQuestions.length === 0;
+  };
 
   const neutralColor = theme === "dark" ? "#7ea6ff" : "#0042da";
 
   const handleSubmit = () => {
-    //   if (!isUserAlreadyPickAnswer) {
-    //     alert("Vui lòng trả lời toàn bộ câu hỏi");
-    //     return;
-    //   }
-    //   submitAnswer.mutate(userAnswers, {
-    //     onSuccess: (data) => {
-    //       setResult(data.hollandTypeContentList, data.hollandTypeResult);
-    //     },
-    //     onError: () => {
-    //       alert("Đã xảy ra lỗi khi gửi câu trả lời. Vui lòng thử lại.");
-    //     },
-    //   });
+    if (!validateAllQuestionsAnswered()) {
+      toast.error("Chưa hoàn thành bài kiểm tra", {
+        description: "Vui lòng trả lời tất cả các câu hỏi.",
+      });
+
+      return;
+    }
+
+    // Check if each question has at least 3 answers
+    if (!validateMinimumAnswersPerQuestion()) {
+      toast.error("Thiếu câu trả lời", {
+        description: "Mỗi câu hỏi cần chọn tối thiểu 3 câu trả lời.",
+      });
+
+      return;
+    }
+    submitAnswer.mutate(userAnswers, {
+      onSuccess: (data) => {
+        setResult(data.hollandTypeContentList, data.hollandTypeResult);
+      },
+      onError: () => {
+        alert("Đã xảy ra lỗi khi gửi câu trả lời. Vui lòng thử lại.");
+      },
+    });
   };
 
   return (
@@ -164,26 +189,48 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
                 </div>
                 <div className="flex flex-col gap-3">
                   <div className="grid grid-cols-1 gap-4 ">
-                    {/* <ChoiceShortcutLayer
+                    <ChoiceShortcutLayer
                       choose={(i) => {
-                        if (active.options.length > i)
-                          answer(active, active.options[i].option);
+                        if (active.options.length > i) {
+                          const currentAnswers =
+                            userAnswers[roundCounter]?.answerOption || [];
+                          const option = active.options[i].option;
+
+                          const updatedAnswers = currentAnswers.includes(option)
+                            ? currentAnswers.filter((opt) => opt !== option)
+                            : [...currentAnswers, option];
+
+                          answer(active, updatedAnswers);
+                        }
                       }}
-                    /> */}
+                    />
                     {active.options.map((option, i) => (
                       <div key={option.option} className="flex flex-col gap-2">
                         <Button
                           key={option.option}
                           className={cn(
                             "h-auto w-full rounded-xl px-6 py-4 justify-start disabled:cursor-not-allowed whitespace-normal  border-2 border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 !text-base",
-                            active &&
-                              userAnswers[roundCounter]?.answerOption.includes(
-                                option.option,
-                              ) &&
-                              "bg-blue-200 dark:bg-blue-900 border-blue-300 dark:border-blue-700 hover:bg-blue-200 dark:hover:bg-blue-800",
+                            {
+                              "bg-blue-200 dark:bg-blue-900 border-blue-300 dark:border-blue-700 hover:bg-blue-200 dark:hover:bg-blue-800":
+                                userAnswers[
+                                  roundCounter
+                                ]?.answerOption?.includes(option.option),
+                            },
                           )}
                           variant="outline"
-                          //   onClick={() => answer(active, option.option)}
+                          onClick={() => {
+                            const currentAnswers =
+                              userAnswers[roundCounter]?.answerOption || [];
+                            const updatedAnswers = currentAnswers.includes(
+                              option.option,
+                            )
+                              ? currentAnswers.filter(
+                                  (opt) => opt !== option.option,
+                                )
+                              : [...currentAnswers, option.option];
+
+                            answer(active, updatedAnswers);
+                          }}
                         >
                           {i + 1}. {option.text}
                         </Button>
@@ -209,7 +256,7 @@ export const TestView = ({ submitAnswer }: TestViewProps) => {
                   className="w-full bg-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-500 "
                   size={"lg"}
                   variant={"default"}
-                  onClick={() => goToNextQuestion()}
+                  onClick={() => handleSubmit()}
                 >
                   {submitAnswer.isPending ? (
                     <IconLoader2 className="animate-spin" />

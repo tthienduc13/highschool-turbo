@@ -11,7 +11,7 @@ export interface MBTIAnswerOptions {
 
 export interface MBTIUserOption {
   id: string;
-  option: string;
+  answerOption: string;
 }
 
 export interface MBTIResult {

@@ -9,12 +9,18 @@ import {
 import { IconBell } from "@tabler/icons-react";
 
 import { useMe } from "@/hooks/use-me";
+import { env } from "@/env";
 
 export const UserNotification = () => {
   const me = useMe();
 
   return (
-    <Inbox applicationIdentifier={"2T6E0LAU8aRZ"} subscriberId={me?.userId!}>
+    <Inbox
+      applicationIdentifier={
+        env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_IDENTIFIER
+      }
+      subscriberId={me?.userId!}
+    >
       <Popover>
         <PopoverTrigger asChild>
           <button>

@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-import "./src/env.mjs";
+import "./src/env.ts";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,

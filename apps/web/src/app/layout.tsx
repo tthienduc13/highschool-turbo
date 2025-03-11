@@ -31,7 +31,7 @@ export default async function RootLayout({
     <html suppressHydrationWarning lang="vi">
       <body
         className={cn(
-          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50",
+          "w-screen overflow-x-hidden overflow-y-scroll bg-gray-50 font-sans dark:bg-gray-900/50",
           sofiaFontVN.variable,
         )}
       >

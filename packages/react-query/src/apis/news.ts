@@ -1,14 +1,14 @@
 import { endpointNews } from "@highschool/endpoints";
 import { News, Pagination } from "@highschool/interfaces";
 
-import { axiosClientWithoutAuth } from "../lib/axios.ts";
+import axiosServices from "../lib/axios.ts";
+
 import fetchPaginatedData from "./common.ts";
 
 export const getHotNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_HOT_NEWS,
-    );
+    const { data } = await axiosServices.get(endpointNews.GET_HOT_NEWS);
+
     return data;
   } catch (error) {
     console.error("Error while getting hot new", error);
@@ -17,9 +17,8 @@ export const getHotNews = async (): Promise<News[]> => {
 };
 export const getPopularNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_POPULAR_NEWS,
-    );
+    const { data } = await axiosServices.get(endpointNews.GET_POPULAR_NEWS);
+
     return data;
   } catch (error) {
     console.error("Error while getting popular news", error);
@@ -51,9 +50,8 @@ export const getNews = async ({
 
 export const getNewBySlug = async (slug: string): Promise<News> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_NEW_SLUG(slug),
-    );
+    const { data } = await axiosServices.get(endpointNews.GET_NEW_SLUG(slug));
+
     return data;
   } catch (error) {
     console.error("Error while getting new ", slug, error);
@@ -63,9 +61,10 @@ export const getNewBySlug = async (slug: string): Promise<News> => {
 
 export const getAuthorNews = async (authorId: string): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
+    const { data } = await axiosServices.get(
       endpointNews.GET_AUTHOR_NEW(authorId),
     );
+
     return data;
   } catch (error) {
     console.error("Error while author getting new ", authorId, error);
@@ -83,7 +82,7 @@ export const getRelatedNews = async ({
   location: string;
 }): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
+    const { data } = await axiosServices.get(
       endpointNews.GET_RELATED_NEW(newsTagId),
       {
         params: {
@@ -92,6 +91,7 @@ export const getRelatedNews = async ({
         },
       },
     );
+
     return data;
   } catch (error) {
     console.log("error while getting realted news", error);

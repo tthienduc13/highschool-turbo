@@ -8,7 +8,7 @@ import { RecentView } from "./recent-view";
 import { RecommendCourse } from "./recommend-course";
 import { RecommendDocument } from "./recommend-document";
 import { RecommendFlashcard } from "./recommend-flashcard";
-import { TopFlascard } from "./top-flashcard";
+import { TopFlashcard } from "./top-flashcard";
 
 import { useMe } from "@/hooks/use-me";
 import { Container } from "@/components/core/layouts/container";
@@ -27,7 +27,7 @@ function HomeModule() {
         <Container className="flex flex-col gap-12" maxWidth="7xl">
           <FinishProfile />
           <RecentView />
-          <TopFlascard />
+          <TopFlashcard />
           <Activities />
         </Container>
       </WithFooter>
@@ -43,7 +43,7 @@ function HomeModule() {
         {data?.flashcards && <RecommendFlashcard data={data?.flashcards!} />}
         {data?.documents && <RecommendDocument data={data?.documents!} />}
         <Activities />
-        <TopFlascard />
+        <TopFlashcard />
       </Container>
     </WithFooter>
   );
