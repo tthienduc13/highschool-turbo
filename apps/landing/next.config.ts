@@ -16,17 +16,26 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
-        pathname: "/**",
+        port: "",
+        pathname: "**",
       },
       {
         protocol: "http",
         hostname: "res.cloudinary.com",
-        pathname: "/**",
+        port: "",
+        pathname: "**",
       },
       {
         protocol: "https",
+        hostname: "play-lh.googleusercontent.com",
+        port: "",
+        pathname: "**",
+      },
+
+      {
+        protocol: "https",
         hostname: "avatar.iran.liara.run",
-        pathname: "/**",
+        pathname: "**",
       },
     ],
   },

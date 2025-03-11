@@ -9,7 +9,6 @@ import { getNewBySlug } from "@highschool/react-query/apis";
 
 import NewsDetailModule from "@/components/modules/NewsDetail";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const metadataCache = new Map<string, News>();
 
 export const generateMetadata = async ({

@@ -25,8 +25,8 @@ export const NewsCard = ({ news }: NewCardProps) => {
         />
       </Link>
       <div className="flex w-full flex-col gap-2 sm:col-span-2 sm:gap-4">
-        <div className="w-fit rounded-md bg-blue-500 px-3 py-1 text-xs font-medium text-white">
-          {news.newsTagName.toUpperCase()}
+        <div className="w-fit rounded-md bg-blue-500 px-3 py-1 text-xs font-medium uppercase text-white">
+          {news.newsTagName}
         </div>
         <Link href={`/tin-tuc/${news.slug}`}>
           <h3 className="line-clamp-2 text-base font-semibold sm:text-lg md:text-xl">
@@ -58,7 +58,7 @@ export const NewsCard = ({ news }: NewCardProps) => {
           )}
           <Separator className="hidden h-4 sm:block" orientation="vertical" />
           <span className="text-muted-foreground text-xs sm:text-sm">
-            {formatDate(news.createdAt)}
+            {news.createdAt ? formatDate(news.createdAt) : "Unknown Date"}
           </span>
           <Separator className="hidden h-4 sm:block" orientation="vertical" />
           <span className="text-muted-foreground text-xs sm:text-sm">

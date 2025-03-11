@@ -80,7 +80,11 @@ export const DocumentCard = ({ data }: DocumentCardProps) => {
           className="flex-1 border-gray-50 dark:border-gray-800"
           size={isDesktop ? "lg" : "sm"}
           variant="ghost"
-          onClick={() => router.push("/kho-tai-lieu/" + data.documentSlug)}
+          onClick={() =>
+            router.push(
+              `${env.NEXT_PUBLIC_APP_URL}/documents/${data.documentSlug}`,
+            )
+          }
         >
           Xem
         </Button>
