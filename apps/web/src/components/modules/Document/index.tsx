@@ -57,6 +57,7 @@ function DocumentModule() {
   const createdAt = documentData?.createdAt
     ? new Date(documentData.createdAt).toLocaleDateString()
     : "Unknown";
+
   const updatedAt = documentData?.updatedAt
     ? new Date(documentData.updatedAt).toLocaleDateString()
     : createdAt;

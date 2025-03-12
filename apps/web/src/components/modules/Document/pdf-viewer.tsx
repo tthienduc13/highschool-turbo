@@ -2,20 +2,20 @@
 
 import { useState } from "react";
 import { Document, Page } from "react-pdf";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ZoomIn,
-  ZoomOut,
-  RotateCw,
-  FileText,
-} from "lucide-react";
 import { pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconFileText,
+  IconRotate,
+  IconZoomIn,
+  IconZoomOut,
+} from "@tabler/icons-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -90,7 +90,7 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
 
               <div className="mt-6 flex justify-center">
                 <div className="text-muted-foreground flex flex-col items-center">
-                  <FileText className="mb-2 size-16" />
+                  <IconFileText className="mb-2 size-16" />
                   <p className="text-sm">
                     Try using a different PDF file or check your network
                     connection.
@@ -114,7 +114,7 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
             variant="outline"
             onClick={() => changePage(-1)}
           >
-            <ChevronLeft className="size-4" />
+            <IconChevronLeft className="size-4" />
           </Button>
 
           <div className="flex items-center gap-2">
@@ -141,7 +141,7 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
             variant="outline"
             onClick={() => changePage(1)}
           >
-            <ChevronRight className="size-4" />
+            <IconChevronRight className="size-4" />
           </Button>
         </div>
 
@@ -152,7 +152,7 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
             variant="outline"
             onClick={() => changeScale(-0.1)}
           >
-            <ZoomOut className="size-4" />
+            <IconZoomOut className="size-4" />
           </Button>
 
           <span className="w-16 text-center text-sm">
@@ -165,11 +165,11 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
             variant="outline"
             onClick={() => changeScale(0.1)}
           >
-            <ZoomIn className="size-4" />
+            <IconZoomIn className="size-4" />
           </Button>
 
           <Button size="icon" variant="outline" onClick={rotateDocument}>
-            <RotateCw className="size-4" />
+            <IconRotate className="size-4" />
           </Button>
         </div>
       </div>
