@@ -56,14 +56,14 @@ export const StudySets = ({ data }: StudySetsProps) => {
 
   // Effect to set the first flashcard for preview on mobile
   useEffect(() => {
-    if (data?.data?.length && !isTablet) {
+    if (data?.data?.length && Array.isArray(data.data) && !isTablet) {
       setSelectedFlashcardPreview(data.data[0]);
     }
   }, [data, isTablet]);
 
   // Effect to extract unique user IDs from flashcards
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data && Array.isArray(data.data)) {
       const uniqueUserIds = Array.from(
         new Set(data.data.map((flashcard) => flashcard.userId)),
       );

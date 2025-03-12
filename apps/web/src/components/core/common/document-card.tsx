@@ -52,7 +52,7 @@ export const DocumentCard = ({
     <Link
       key={data.id}
       passHref
-      className="flex w-full flex-col gap-2 rounded-xl border-2 border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800 md:gap-4"
+      className="flex w-full flex-col gap-2 rounded-xl border-2 border-gray-200 bg-white shadow-lg md:gap-4 dark:border-gray-700 dark:bg-gray-800"
       href={`/documents/${data.documentSlug}`}
     >
       <div className="flex flex-col gap-2 py-4">
@@ -90,7 +90,7 @@ export const DocumentCard = ({
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-2 dark:border-gray-700 ">
+        <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-4 dark:border-gray-700 ">
           {!userLoading && (
             <div className="flex w-full flex-row items-center gap-2">
               <Avatar className="size-6">

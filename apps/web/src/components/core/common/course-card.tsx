@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Course } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
-import { IconEye, IconSchool, IconUser } from "@tabler/icons-react";
+import { IconEye } from "@tabler/icons-react";
 
-import { gradeRenderer } from "./renderer/grade";
+import { gradeTextRenderer } from "./renderer/grade";
 
 interface CourseCardProps {
   course: Course;
@@ -14,7 +14,7 @@ interface CourseCardProps {
 export const CourseCard = ({ course }: CourseCardProps) => {
   return (
     <Link href={`/courses/${course.slug}`}>
-      <div className=" group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md dark:border-gray-700 dark:bg-gray-800 md:flex-col md:rounded-2xl">
+      <div className=" group flex w-full gap-4 overflow-hidden rounded-lg border-2 border-gray-50 bg-white p-3 shadow-md md:flex-col md:rounded-2xl dark:border-gray-700 dark:bg-gray-800">
         <div className="relative hidden h-[160px] w-full overflow-hidden rounded-md md:block">
           <Image
             fill
@@ -42,19 +42,12 @@ export const CourseCard = ({ course }: CourseCardProps) => {
                   {course.view ?? 0}
                 </div>
               </div>
-              <div className="flex flex-row gap-1">
-                <div className="flex items-center gap-1 text-sm font-medium">
-                  <IconSchool size={16} />
-                  {gradeRenderer(course.categoryName)}
-                </div>
-              </div>
             </div>
           </div>
           <Separator className="my-auto" />
           <div className="flex items-center justify-between">
-            <div className="flex flex-row items-center gap-1 text-muted-foreground">
-              <IconUser className="mb-1" size={16} />
-              <span>{course.numberEnrollment ?? 0}</span>
+            <div className="flex flex-row items-center gap-1 text-sm text-gray-500">
+              {gradeTextRenderer(course.categoryName)}
             </div>
             <Button size={"sm"} variant={"default"}>
               Xem môn học

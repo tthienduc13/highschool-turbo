@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -25,6 +27,7 @@ export const CareerGuidanceModal = () => {
   const pathName = usePathname();
 
   const [open, setOpen] = useState<boolean>(false);
+  const [redo, setRedo] = useState<boolean>(false);
 
   const { data, isLoading } = useOrientationStatusQuery(open);
   const testRouters = ["/career-guidance/mbti", "/career-guidance/holland"];
@@ -90,9 +93,9 @@ export const CareerGuidanceModal = () => {
               <Skeleton className="h-[150px] w-full" />
               <Skeleton className="h-[150px] w-full" />
             </div>
-          ) : isBothDone ? (
+          ) : !redo && isBothDone ? (
             <Button
-              className="h-[150px] w-full border-gray-100 shadow-lg dark:border-gray-700"
+              className="h-[180px] w-full border-gray-100  shadow-lg dark:border-gray-700"
               variant={"outline"}
               onClick={() => {
                 router.push("/career-guidance/summary");
@@ -107,92 +110,118 @@ export const CareerGuidanceModal = () => {
                   Bạn đã hoàn thành 2 bài test , hãy xem ngay kết quả về <br />
                   định hướng nghề nghiệp dành riêng cho bạn
                 </div>
+                <div className="flex flex-row items-center justify-center">
+                  <div
+                    className={cn(
+                      buttonVariants({ variant: "default" }),
+                      "flex   cursor-pointer mt-5 w-fit",
+                    )}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setRedo(true);
+                    }}
+                  >
+                    Làm lại
+                  </div>
+                </div>
               </div>
             </Button>
           ) : (
-            <div className="flex flex-col gap-5 md:flex-row">
-              <LinkWrapper href="/career-guidance/mbti" status={isDoneMbti!}>
-                <div
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "flex min-h-[150px] w-full cursor-pointer",
-                    isDoneMbti
-                      ? "relative border-emerald-500 bg-emerald-500/10"
-                      : "border-gray-100 shadow-lg dark:border-gray-700",
-                  )}
-                >
-                  <div className="flex flex-col items-center justify-center gap-y-2">
-                    <div className="text-lg font-medium">
-                      Bài kiểm tra tính cách
-                    </div>
-                    <div className="text-center text-sm text-gray-500">
-                      Tìm hiểu bản thân và <br /> khám phá những điểm mạnh của
-                      bạn
+            <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 md:flex-row">
+                <LinkWrapper href="/career-guidance/mbti" status={isDoneMbti!}>
+                  <div
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "flex min-h-[150px] w-full cursor-pointer",
+                      isDoneMbti
+                        ? "relative border-emerald-500 bg-emerald-500/10"
+                        : "border-gray-100 shadow-lg dark:border-gray-700",
+                    )}
+                  >
+                    <div className="flex flex-col items-center justify-center gap-y-2">
+                      <div className="text-lg font-medium">
+                        Bài kiểm tra tính cách
+                      </div>
+                      <div className="text-center text-sm text-gray-500">
+                        Tìm hiểu bản thân và <br /> khám phá những điểm mạnh của
+                        bạn
+                      </div>
+                      {isDoneMbti && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push("/career-guidance/mbti");
+                            setOpen(false);
+                          }}
+                        >
+                          Làm lại
+                        </Button>
+                      )}
                     </div>
                     {isDoneMbti && (
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push("/career-guidance/mbti");
-                          setOpen(false);
-                        }}
-                      >
-                        Làm lại
-                      </Button>
+                      <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
+                        <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
+                          <IconCircleCheck className="!size-6" size={24} />
+                        </div>
+                      </div>
                     )}
                   </div>
-                  {isDoneMbti && (
-                    <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
-                      <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
-                        <IconCircleCheck className="!size-6" size={24} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </LinkWrapper>
-              <LinkWrapper
-                href="/career-guidance/holland"
-                status={isDoneHolland!}
-              >
-                <div
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "min-h-[150px] w-full cursor-pointer",
-                    isDoneHolland
-                      ? "relative border-emerald-500 bg-emerald-500/10"
-                      : "border-gray-100 shadow-lg dark:border-gray-700",
-                  )}
+                </LinkWrapper>
+                <LinkWrapper
+                  href="/career-guidance/holland"
+                  status={isDoneHolland!}
                 >
-                  <div className="flex flex-col items-center justify-center gap-y-2">
-                    <div className="text-lg font-medium">
-                      Định hướng nghề nghiệp
-                    </div>
-                    <div className="text-center text-sm text-gray-500">
-                      Tìm hiểu bản thân <br /> và khám phá những điểm mạnh của
-                      bạn
+                  <div
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "min-h-[150px] w-full cursor-pointer",
+                      isDoneHolland
+                        ? "relative border-emerald-500 bg-emerald-500/10"
+                        : "border-gray-100 shadow-lg dark:border-gray-700",
+                    )}
+                  >
+                    <div className="flex flex-col items-center justify-center gap-y-2">
+                      <div className="text-lg font-medium">
+                        Định hướng nghề nghiệp
+                      </div>
+                      <div className="text-center text-sm text-gray-500">
+                        Tìm hiểu bản thân <br /> và khám phá những điểm mạnh của
+                        bạn
+                      </div>
+                      {isDoneHolland && (
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push("/career-guidance/holland");
+                            setOpen(false);
+                          }}
+                        >
+                          Làm lại
+                        </Button>
+                      )}
                     </div>
                     {isDoneHolland && (
-                      <Button
-                        asChild
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push("/career-guidance/holland");
-                          setOpen(false);
-                        }}
-                      >
-                        Làm lại
-                      </Button>
+                      <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
+                        <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
+                          <IconCircleCheck className="!size-6" size={24} />
+                        </div>
+                      </div>
                     )}
                   </div>
-                  {isDoneHolland && (
-                    <div className="absolute -right-3 -top-4 rounded-full p-1 text-blue-600 dark:text-blue-200">
-                      <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
-                        <IconCircleCheck className="!size-6" size={24} />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </LinkWrapper>
+                </LinkWrapper>
+              </div>
+              {isBothDone && redo && (
+                <Button
+                  onClick={() => {
+                    router.push("/career-guidance/summary");
+                    setOpen(false);
+                  }}
+                >
+                  {" "}
+                  Xem kết quả hướng nghiệp
+                </Button>
+              )}
             </div>
           )}
         </CredenzaBody>

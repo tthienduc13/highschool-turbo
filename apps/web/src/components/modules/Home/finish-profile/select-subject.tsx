@@ -2,10 +2,18 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
   useCoursesQuery,
+  useCurriculumQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconLoader2 } from "@tabler/icons-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@highschool/ui/components/ui/select";
 
 import { WizardLayout } from "./wizard-layout";
 
@@ -28,6 +36,8 @@ export const SelectSubject = () => {
     setCurrentStep,
     selectedCity,
     selectedClass,
+    selectedCurriculum,
+    setSelectedCurriculum,
     selectedSubjects,
     setSelectedSubjects,
     selectedSchool,
@@ -35,11 +45,15 @@ export const SelectSubject = () => {
     setOpen,
     selectedDob,
   } = useAccountInformationStore();
+
   const { data, isLoading } = useCoursesQuery({
     grade: selectedClass!,
     pageNumber: 1,
     pageSize: 100,
   });
+
+  const { data: curriculumData, isLoading: curriculumLoading } =
+    useCurriculumQuery();
 
   const transformData =
     data?.data.map((course) => ({
@@ -73,11 +87,35 @@ export const SelectSubject = () => {
   return (
     <WizardLayout
       currentStep={currentStep}
-      description="Hãy chọn đủ 4 môn mà bạn đang chuẩn bị cho kì thi THPTQG"
+      description="Hãy chọn đủ 4 môn mà bạn đang chuẩn bị cho kì thi THPTQG và chương trình học của bạn"
       steps={6}
       title="Chọn các môn học "
     >
       <div className="flex flex-col gap-6 pt-4">
+        <Select
+          disabled={curriculumLoading}
+          value={selectedCurriculum ?? ""}
+          onValueChange={(curriculum) => {
+            setSelectedCurriculum(curriculum);
+          }}
+        >
+          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
+            <SelectValue
+              className="px-4"
+              placeholder={"Bạn học bộ sách nào?"}
+            />
+          </SelectTrigger>
+          <SelectContent
+            className="placeholder:text-muted-foreground"
+            onCloseAutoFocus={(e) => e.preventDefault()}
+          >
+            {curriculumData?.map((curriculum) => (
+              <SelectItem key={curriculum.id} value={curriculum.curriculumName}>
+                {curriculum.curriculumName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <MultiSelect
           animation={2}
           defaultValue={selectedSubjects}

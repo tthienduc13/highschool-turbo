@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
     "@highschool/lib",
     "@highschool/components",
   ],
+  webpack: (config) => {
+    config.resolve.alias.canvas = false;
+
+    return config;
+  },
   images: {
     remotePatterns: [
       {
