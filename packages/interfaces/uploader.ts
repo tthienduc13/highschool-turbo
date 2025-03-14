@@ -32,9 +32,9 @@ export enum ImageFormat {
 
 export interface UploadImagePayload {
   image: File;
-  fileName: string;
+  fileName?: string;
   folder: HighSchoolAssets;
-  presetName: "avatar" | "thumbnail";
+  presetName?: "avatar" | "thumbnail";
   presetWidth?: number;
   presetHeight?: number;
   typeResize?: ImageResizeMode;

@@ -340,7 +340,7 @@ export default function ImageUploader({
           onDrop={handleDrop}
         >
           {singleImage ? (
-            <div className="relative">
+            <div className="relative flex">
               <button
                 className="group relative mx-auto aspect-square w-full max-w-[200px] cursor-pointer overflow-hidden rounded-lg"
                 onClick={() => openLightbox(0)}

@@ -1,7 +1,17 @@
-import { endpointNews } from "@highschool/endpoints";
-import { News, Pagination } from "@highschool/interfaces";
+import { endpointNews, endPointTag } from "@highschool/endpoints";
+import {
+  Metadata,
+  News,
+  NewsCreate,
+  Pagination,
+  Tag,
+} from "@highschool/interfaces";
 
-import { axiosClientWithoutAuth } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  axiosClientWithoutAuth,
+} from "../lib/axios.ts";
+
 import fetchPaginatedData from "./common.ts";
 
 export const getHotNews = async (): Promise<News[]> => {
@@ -9,6 +19,7 @@ export const getHotNews = async (): Promise<News[]> => {
     const { data } = await axiosClientWithoutAuth.get(
       endpointNews.GET_HOT_NEWS,
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting hot new", error);
@@ -20,6 +31,7 @@ export const getPopularNews = async (): Promise<News[]> => {
     const { data } = await axiosClientWithoutAuth.get(
       endpointNews.GET_POPULAR_NEWS,
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting popular news", error);
@@ -33,12 +45,16 @@ export const getNews = async ({
   pageSize,
   sort = "date",
   direction,
+  location,
+  newsTagId,
 }: {
   search?: string;
   pageNumber: number;
   pageSize: number;
   sort?: string;
   direction: "asc" | "desc";
+  location?: string | null;
+  newsTagId?: string | null;
 }): Promise<Pagination<News[]>> => {
   return fetchPaginatedData<News[]>(endpointNews.GET_NEWS, {
     search,
@@ -46,6 +62,8 @@ export const getNews = async ({
     pageSize,
     sort,
     direction,
+    location,
+    newsTagId,
   });
 };
 
@@ -54,6 +72,7 @@ export const getNewBySlug = async (slug: string): Promise<News> => {
     const { data } = await axiosClientWithoutAuth.get(
       endpointNews.GET_NEW_SLUG(slug),
     );
+
     return data;
   } catch (error) {
     console.error("Error while getting new ", slug, error);
@@ -66,6 +85,7 @@ export const getAuthorNews = async (authorId: string): Promise<News[]> => {
     const { data } = await axiosClientWithoutAuth.get(
       endpointNews.GET_AUTHOR_NEW(authorId),
     );
+
     return data;
   } catch (error) {
     console.error("Error while author getting new ", authorId, error);
@@ -92,9 +112,70 @@ export const getRelatedNews = async ({
         },
       },
     );
+
     return data;
   } catch (error) {
     console.log("error while getting realted news", error);
     throw error;
   }
+};
+
+export const GetAllTag = async ({
+  pageSize,
+  pageNumber,
+  search,
+}: {
+  pageSize: number;
+  pageNumber: number;
+  search?: string;
+}): Promise<Pagination<Tag[]>> => {
+  try {
+    const response = await axiosServices.get(endPointTag.GET_ALL_TAG, {
+      params: { pageSize, pageNumber, search },
+    });
+
+    const paginationHeader = response.headers["x-pagination"];
+    const metadata: Metadata = JSON.parse(paginationHeader || "{}");
+
+    return {
+      data: response.data,
+      currentPage: metadata.CurrentPage,
+      pageSize: metadata.PageSize,
+      totalCount: metadata.TotalCount,
+      totalPages: metadata.TotalPages,
+    };
+  } catch (error) {
+    console.error("Error fetching subjects:", error);
+    throw error;
+  }
+};
+
+export const CreateTag = async ({ newTagName }: { newTagName: string }) => {
+  try {
+    const response = await axiosServices.post(endPointTag.CREATE_TAG, {
+      newTagName,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching subjects:", error);
+    throw error;
+  }
+};
+
+export const createBlog = async (data: NewsCreate) => {
+  const reponse = await axiosClientUpload.postForm(
+    `${endpointNews.CREATE_NEWS}`,
+    data,
+  );
+
+  return reponse.data;
+};
+
+export const getNewsDetail = async (slug: string): Promise<News> => {
+  const response = await axiosServices.get(
+    `${endpointNews.GET_NEWS_DETAIL(slug)}`,
+  );
+
+  return response.data;
 };

@@ -1,10 +1,20 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import {
+  createBlog,
+  CreateTag,
+  GetAllTag,
   getAuthorNews,
   getHotNews,
   getNewBySlug,
   getNews,
+  getNewsDetail,
   getRelatedNews,
 } from "../apis/news.ts";
 
@@ -18,23 +28,29 @@ export const useHotNewsQuery = () => {
 
 export const useNewsQuery = ({
   search,
-  pageSize,
-  pageNumber,
+  page,
+  eachPage,
+  location,
+  newsTagId,
 }: {
   search?: string;
-  pageSize: number;
-  pageNumber: number;
+  page: number;
+  eachPage: number;
+  location?: string | null;
+  newsTagId?: string | null;
 }) => {
   return useQuery({
-    queryKey: ["hot news", search, pageNumber, pageSize],
+    queryKey: ["news", search, location, newsTagId, page, eachPage],
     queryFn: () =>
       getNews({
         search: search,
-        pageNumber: pageNumber,
-        pageSize: pageSize,
+        pageNumber: page,
+        pageSize: eachPage,
+        location: location,
+        newsTagId: newsTagId,
         direction: "desc",
+        sort: "date",
       }),
-    refetchInterval: 30000,
   });
 };
 
@@ -92,5 +108,81 @@ export const useRelatedNewsQuery = ({
         location: location!,
       }),
     enabled: Boolean(newsTagId && newsId && location),
+  });
+};
+
+export const useTagQuery = ({
+  pageSize,
+  pageNumber,
+  search,
+}: {
+  pageSize: number;
+  pageNumber: number;
+  search?: string;
+}) => {
+  const queryKey = ["tags", pageSize, pageNumber, search];
+  const queryFn = async () => {
+    return GetAllTag({
+      pageSize: pageSize ?? 1,
+      pageNumber: pageNumber ?? 10,
+      search,
+    });
+  };
+
+  return { queryKey, queryFn };
+};
+
+export const useTagCreateMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ newTagName }: { newTagName: string }) =>
+      CreateTag({ newTagName }),
+    onSuccess: (data) => {
+      toast.success(data.message ?? "Create new tag successfully");
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some errors occured");
+
+      return error;
+    },
+  });
+};
+
+export const useCreateBlogMutation = () => {
+  return useMutation({
+    mutationFn: ({
+      newsTagId,
+      newName,
+      content,
+      contentHtml,
+      image,
+      location,
+    }: {
+      newsTagId: string;
+      newName: string;
+      content: string;
+      contentHtml: string;
+      image: string;
+      location: string;
+    }) =>
+      createBlog({ newsTagId, newName, content, contentHtml, image, location }),
+    onSuccess: (data) => {
+      return data;
+    },
+    onError: (error) => {
+      // eslint-disable-next-line no-console
+      return error;
+    },
+  });
+};
+
+export const useNewsDetailQuery = (slug: string) => {
+  return useQuery({
+    queryKey: ["news-detail", slug],
+    queryFn: () => getNewsDetail(slug),
   });
 };

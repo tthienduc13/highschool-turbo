@@ -205,7 +205,7 @@ function OccupationModifyModule() {
 
 
     return (
-        <div className="space-y-8 p-6">
+        <div className="py-4">
             <Card>
                 <CardHeader>
                     <CardTitle className="text-primary text-3xl font-bold tracking-tight">Career Information</CardTitle>
@@ -228,7 +228,7 @@ function OccupationModifyModule() {
                         </div>
                     </div>
 
-                    <div className="flex w-full space-x-12">
+                    <div className="flex space-x-12">
                         <div className="w-[25vw] space-y-2">
                             <Label>Major Codes</Label>
                             <FancyBox

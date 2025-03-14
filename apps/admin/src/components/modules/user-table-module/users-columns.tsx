@@ -12,7 +12,7 @@ import { DataTableColumnHeader } from "../../core/table/data-table-column-header
 
 import { callTypes, userTypes } from "@/domain/constants/user";
 import LongText from "@/components/ui/long-text";
-import { DataTableRowActions } from "@/components/modules/user-table-module/data-table-row-actions";
+import { DataTableRowActions } from "@/components/core/table/data-table-row-actions";
 
 export const columns: ColumnDef<UserPreview>[] = [
   {

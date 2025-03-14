@@ -24,6 +24,12 @@ const endpointInformation = {
   GET_ALL_CITY_SCHOOL: (cityId: number) =>
     `${prefixDocumentServices}${prefixFirstVersion}/information/provice/${cityId}/schools`,
   GET_ALL_CITIES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
+  CREATE_SCHOOLS: `${prefixDocumentServices}${prefixFirstVersion}/information/province/schools`,
+  GET_SCHOOLS: `${prefixDocumentServices}${prefixFirstVersion}/information/schools`,
+  GET_ALL_PROVINCE_SCHOOL: (provinceId: string) =>
+    `${prefixDocumentServices}${prefixFirstVersion}/information/provice/${provinceId}/schools`,
+  CREATE_PROVINCES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
+  GET_PROVINCES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
 };
 
 const endpointUser = {
@@ -202,6 +208,21 @@ const endpointQuiz = {
 
 const endpointUniversity = {
   GET_UNI_LIST: `${prefixUserServices}${prefixFirstVersion}/university`,
+  GET_UNIVERSITY_NAME: `${prefixUserServices}${prefixFirstVersion}/university/name`,
+  CREATE_UNIVERSITY: `${prefixUserServices}${prefixFirstVersion}/university`,
+  GET_UNIVERSITY_DETAIL: (universityId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
+  UPDATE_UNIVERSITY: (universityId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
+  DELETE_UNIVERSITY: (universityId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
+  GET_UNIVERSITY_MAJOR: `${prefixUserServices}${prefixFirstVersion}/universityMajor`,
+  GET_UNIVERSITY_MAJOR_NAME: `${prefixUserServices}${prefixFirstVersion}/universityMajor/name`,
+  CREATE_UNIVERSITY_MAJOR: `${prefixUserServices}${prefixFirstVersion}/universityMajor`,
+  UPDATE_UNIVERSITY_MAJOR: (universityMajorId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/universityMajor/${universityMajorId}`,
+  DELETE_UNIVERSITY_MAJOR: (universityMajorId: string) =>
+    `${prefixUserServices}${prefixFirstVersion}/universityMajor/${universityMajorId}`,
 };
 const endpointCurriculum = {
   GET: `${prefixDocumentServices}${prefixFirstVersion}/curriculum`,
@@ -236,6 +257,14 @@ const endpointNews = {
     `${prefixMediaServices}${prefixFirstVersion}/new/authorId/${authorId}`,
   GET_RELATED_NEW: (newTagId: string) =>
     `${prefixMediaServices}${prefixFirstVersion}/relatednews/${newTagId}`,
+  CREATE_NEWS: `${prefixMediaServices}${prefixFirstVersion}/new`,
+  GET_NEWS_DETAIL: (slug: string) =>
+    `${prefixMediaServices}${prefixFirstVersion}/new/slug/${slug}`,
+};
+
+const endPointTag = {
+  GET_ALL_TAG: `${prefixMediaServices}${prefixFirstVersion}/newstags`,
+  CREATE_TAG: `${prefixMediaServices}${prefixFirstVersion}/newstag`,
 };
 
 const endpointGame = {
@@ -276,6 +305,7 @@ const endPointMajor = {
 };
 
 export {
+  endPointTag,
   endPointMajor,
   endPointOccupation,
   endpointKet,

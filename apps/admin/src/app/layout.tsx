@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import "@highschool/ui/globals.css";
+import "@/styles/globals.css";
+import "@/styles/editor.css";
+import "katex/dist/katex.min.css";
 import "@/app/admin.css";
 import { cn } from "@highschool/ui/lib/utils";
 import { auth } from "@highschool/react-query/auth";

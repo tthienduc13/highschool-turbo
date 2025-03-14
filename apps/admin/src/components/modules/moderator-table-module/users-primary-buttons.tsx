@@ -1,10 +1,10 @@
 import { IconUserPlus } from "@tabler/icons-react";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { useUsers } from "@/stores/users-context";
+import { useTable } from "@/stores/table-context";
 
 export function UsersPrimaryButtons() {
-  const { setOpen } = useUsers();
+  const { setOpen } = useTable();
 
   return (
     <div className="flex gap-2">

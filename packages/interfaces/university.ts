@@ -14,15 +14,15 @@ export interface University {
 }
 
 export interface UniversityMajor {
-  id: string;
+  id?: string;
   uniCode: string;
   majorCode: string;
-  admissionMethods: AdmissionMethod[];
+  admissionMethods: AdmissionMethod[] | string;
   quota: number;
-  degreeLevel: DegreeLevel;
-  major: Major;
-  tuitionPerYear: number;
-  yearOfReference: number;
+  degreeLevel: DegreeLevel | string;
+  major?: Major;
+  tuitionPerYear?: number;
+  yearOfReference?: number;
 }
 
 export enum AdmissionMethod {
@@ -33,6 +33,10 @@ export enum AdmissionMethod {
 
 export enum DegreeLevel {
   Bachelor = "Bachelor",
+  Vocational = "Vocational",
+  Associate = "Associate",
+  Master = "Master",
+  Doctorate = "Doctorate",
 }
 
 export enum UniversityCity {
@@ -41,4 +45,55 @@ export enum UniversityCity {
   QuyNhon = "QuyNhon",
   TpHCM = "TpHCM",
   CanTho = "CanTho",
+}
+
+export type UniversityCreate = {
+  uniCode: string;
+  name: string;
+  description: string;
+  region: string;
+  contactPhone: string;
+  contactEmail: string;
+  websiteLink: string;
+  logoUrl: string;
+};
+
+export const getAdmissionMethodLabel = (method: string) => {
+  switch (method) {
+    case AdmissionMethod.Dgnl:
+      return "Đánh Giá Năng Lực";
+    case AdmissionMethod.Thptqg:
+      return "Xét điểm thi tốt nghiệp";
+    case AdmissionMethod.HighschoolTranscript:
+      return "Xét điểm học bạ";
+    default:
+      return method;
+  }
+};
+
+export const degreeLevels: Record<DegreeLevel, string> = {
+  [DegreeLevel.Vocational]: "Trung cấp",
+  [DegreeLevel.Associate]: "Cao đẳng",
+  [DegreeLevel.Bachelor]: "Đại học",
+  [DegreeLevel.Master]: "Thạc sĩ",
+  [DegreeLevel.Doctorate]: "Tiến sĩ",
+};
+
+interface MajorCategoryCode {
+  id: string;
+  majorCategoryCode: string;
+  name: string;
+  mbtiTypes: string[];
+  primaryHollandTrait: string;
+  secondaryHollandTrait: string;
+}
+
+interface MajorCode {
+  id: string;
+  majorCode: string;
+  name: string;
+  description: string;
+  skillYouLearn: string;
+  majorCategoryCode: string;
+  majorCategory: MajorCategoryCode;
 }

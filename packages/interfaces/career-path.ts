@@ -25,7 +25,7 @@ export interface Major {
   name: string;
   description: string;
   skillYouLearn: string;
-  majorCategory: MajorCategory;
+  majorCategory?: MajorCategory;
   majorCategoryCode?: string;
 }
 

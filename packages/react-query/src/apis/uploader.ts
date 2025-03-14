@@ -10,9 +10,9 @@ export const uploadImage = async (
     const formData = new FormData();
 
     formData.append("Image", payload.image);
-    formData.append("FileName", payload.fileName);
+    formData.append("FileName", payload.fileName ?? "");
     formData.append("Folder", payload.folder);
-    formData.append("Preset.Name", payload.presetName);
+    formData.append("Preset.Name", payload.presetName ?? "");
 
     const optionalFields = [
       { key: "Preset.Width", value: payload.presetWidth?.toString() },

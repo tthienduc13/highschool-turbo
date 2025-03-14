@@ -1,11 +1,10 @@
-import { UsersActionDialog } from "../moderator-table-module/users-action-dialog";
-
+import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 
-import { useUsers } from "@/stores/users-context";
+import { useTable } from "@/stores/table-context";
 
 export function UsersDialogs() {
-  const { open, setOpen, currentRow, setCurrentRow } = useUsers();
+  const { open, setOpen, currentRow, setCurrentRow } = useTable();
 
   return (
     <>

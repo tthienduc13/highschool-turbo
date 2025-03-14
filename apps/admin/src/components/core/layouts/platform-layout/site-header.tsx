@@ -19,6 +19,8 @@ import { ThemeSwitcher } from "../../common/theme-switcher";
 
 import { SearchForm } from "./search-form";
 
+import LongText from "@/components/ui/long-text";
+
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
   const pathName = usePathname();
@@ -47,9 +49,16 @@ export function SiteHeader() {
                 <Fragment key={slug}>
                   <BreadcrumbItem>
                     {index < slugs.length - 1 ? (
-                      <BreadcrumbLink href={`/${slug}`}>{slug}</BreadcrumbLink>
+                      <BreadcrumbLink href={`/${slug}`}>
+                        <LongText className="max-w-[15vw]">{slug}</LongText>
+                      </BreadcrumbLink>
                     ) : (
-                      <BreadcrumbPage> {slug} </BreadcrumbPage>
+                      <BreadcrumbPage>
+                        {" "}
+                        <LongText className="max-w-[15vw]">
+                          {slug}
+                        </LongText>{" "}
+                      </BreadcrumbPage>
                     )}
                   </BreadcrumbItem>
                   {index < slugs.length - 1 && <BreadcrumbSeparator />}

@@ -1,6 +1,6 @@
 export type City = {
   provinceName: string;
-  provinceId: number;
+  provinceId?: number;
   numberSchool: number;
 };
 
@@ -10,4 +10,10 @@ export type School = {
   provinceId: number;
   provinceName: string;
   numberDocuments: number;
+};
+
+export type CreateSchoolData = {
+  provinceId: number;
+  schoolName: string;
+  locationDetail: string;
 };

@@ -29,6 +29,7 @@ interface DataTableFacetedFilterProps<TData, TValue> {
     icon?: React.ComponentType<{ className?: string }>;
   }[];
   setSelect?: (value: string[]) => void;
+  setSingleSelect?: (value: string) => void;
 }
 
 export function DataTableFacetedFilter<TData, TValue>({
@@ -36,6 +37,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
   setSelect,
+  setSingleSelect,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const facets = column?.getFacetedUniqueValues();
   const selectedValues = new Set(column?.getFilterValue() as string[]);
@@ -94,17 +96,39 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
-                      if (isSelected) {
-                        selectedValues.delete(option.value);
-                      } else {
-                        selectedValues.add(option.value);
-                      }
-                      const filterValues = Array.from(selectedValues);
+                      if (setSingleSelect) {
+                        selectedValues.clear();
+                        if (isSelected) {
+                          selectedValues.delete(option.value);
+                        } else {
+                          selectedValues.add(option.value);
+                        }
+                        const filterValues = Array.from(selectedValues);
 
-                      column?.setFilterValue(
-                        filterValues.length ? filterValues : undefined,
-                      );
-                      setSelect && setSelect(filterValues);
+                        column?.setFilterValue(
+                          filterValues.length ? filterValues : undefined,
+                        );
+
+                        setSingleSelect &&
+                          setSingleSelect(
+                            filterValues.length ? filterValues[0] : "",
+                          );
+                      } else if (setSelect) {
+                        if (isSelected) {
+                          selectedValues.delete(option.value);
+                        } else {
+                          selectedValues.add(option.value);
+                        }
+                        const filterValues = Array.from(selectedValues);
+
+                        column?.setFilterValue(
+                          filterValues.length ? filterValues : undefined,
+                        );
+
+                        setSelect && setSelect(filterValues);
+                      } else {
+                        console.log("No action");
+                      }
                     }}
                   >
                     <div
@@ -139,6 +163,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                     onSelect={() => {
                       column?.setFilterValue(undefined);
                       setSelect && setSelect([]);
+                      setSingleSelect && setSingleSelect("");
                     }}
                   >
                     Clear filters

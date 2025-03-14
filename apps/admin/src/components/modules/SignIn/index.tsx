@@ -63,9 +63,9 @@ function SignInModule() {
             ? "Invalid credentials!"
             : "Something went wrong!",
         );
-
-        return router.push("/dashboard");
       }
+
+      return router.push("/dashboard/overview");
     } catch (error) {
       if (error instanceof AuthError) {
         switch (error.type) {

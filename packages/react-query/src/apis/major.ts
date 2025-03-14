@@ -121,8 +121,8 @@ export const getMajorCategoryName = async ({
   search: string;
   pageNumber: number;
   pageSize: number;
-}>): Promise<Pagination<MajorCategory>> => {
-  return fetchPaginatedData<MajorCategory>(
+}>): Promise<Pagination<MajorCategory[]>> => {
+  return fetchPaginatedData<MajorCategory[]>(
     endPointMajor.GET_MAJOR_CATEGORY_NAME,
     {
       search,

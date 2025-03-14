@@ -85,7 +85,7 @@ export const briefFormatter = new Intl.DateTimeFormat("vi-VN", {
 });
 
 export const formatElapsedTime = (ms: number) => {
-  const value = new Date(ms).toISOString().substring(11, 19);
+  const value = new Date(ms).toString().substring(11, 19);
 
   if (value.startsWith("00:")) {
     return value.substring(3);

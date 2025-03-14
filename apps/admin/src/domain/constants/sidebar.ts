@@ -9,10 +9,31 @@ import {
   IconMap2,
   IconUserCircle,
   IconSettings,
+  IconDashboard,
 } from "@tabler/icons-react";
 
 export const navModerator = {
   navMain: [
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      isActive: true,
+      icon: IconDashboard,
+      items: [
+        {
+          title: "Overview",
+          url: "/dashboard/overview",
+        },
+        {
+          title: "Content",
+          url: "/dashboard/content",
+        },
+        {
+          title: "Engagement",
+          url: "/dashboard/engagement",
+        },
+      ],
+    },
     {
       title: "Master data",
       url: "/master-data",
@@ -26,14 +47,6 @@ export const navModerator = {
         {
           title: "Schools",
           url: "/master-data/school",
-        },
-        {
-          title: "Course",
-          url: "/master-data/courses",
-        },
-        {
-          title: "Limits",
-          url: "#",
         },
         {
           title: "University",
@@ -90,10 +103,6 @@ export const navModerator = {
         {
           title: "Create New",
           url: "/news-management/create",
-        },
-        {
-          title: "Quantum",
-          url: "#",
         },
       ],
     },

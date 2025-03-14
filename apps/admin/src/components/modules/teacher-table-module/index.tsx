@@ -1,11 +1,12 @@
 "use client";
 
 import { columns } from "../user-table-module/users-columns";
-import { UsersTable } from "../user-table-module/users-table";
+import { DataTable } from "../../core/table/table";
+import { UsersDialogs } from "../user-table-module/users-dialogs";
 
 import { UserRole } from "@/domain/enums/user";
-import UsersProvider from "@/stores/users-context";
 import { useAccountFilter } from "@/hooks/use-filter-account";
+import TableProvider from "@/stores/table-context";
 
 function TeacherTableModule() {
   const filter = useAccountFilter({
@@ -15,14 +16,15 @@ function TeacherTableModule() {
   });
 
   return (
-    <UsersProvider>
-      <UsersTable
+    <TableProvider>
+      <DataTable
         columns={columns}
         filter={filter}
         subTitle="Manage your Teachers roles here."
         title="Teacher List"
       />
-    </UsersProvider>
+      <UsersDialogs />
+    </TableProvider>
   );
 }
 

@@ -25,3 +25,6 @@ export * from "./game.ts";
 export * from "./occupation.ts";
 export * from "./major.ts";
 export * from "./search.ts";
+export * from "./school.ts";
+export * from "./province.ts";
+export * from "./ai.ts";

@@ -6,6 +6,7 @@ import { useDebounceValue } from "@highschool/hooks";
 import { usePagination } from "./use-pagination";
 
 import { UserRole } from "@/domain/enums/user";
+import { DataFacedFilter, FilterTable } from "@/domain/interfaces/filter-table";
 
 interface AccountFilterProps {
   initSearch: string;
@@ -13,13 +14,8 @@ interface AccountFilterProps {
   initRole: UserRole;
 }
 
-export interface AccountFilter {
-  data: UserPreview[];
-  pagination: ReturnType<typeof usePagination>;
-  isLoading: boolean;
-  search: string;
+export interface AccountFilter extends FilterTable<UserPreview> {
   status: string[];
-  setSearch: Dispatch<SetStateAction<string>>;
   setStatus: Dispatch<SetStateAction<string[]>>;
 }
 
@@ -47,6 +43,19 @@ export function useAccountFilter({
     }
   }, [data]);
 
+  const facedList: DataFacedFilter[] = [
+    {
+      name: "status",
+      list: [
+        { label: "Active", value: "Active" },
+        { label: "Pending", value: "Pending" },
+        { label: "Deleted", value: "Deleted" },
+        { label: "Blocked", value: "Blocked" },
+      ],
+      setSelect: setStatus,
+    },
+  ];
+
   return {
     data: Array.isArray(data?.data) ? data.data : [],
     pagination,
@@ -55,5 +64,6 @@ export function useAccountFilter({
     status,
     setSearch,
     setStatus,
+    facedFilter: facedList,
   };
 }

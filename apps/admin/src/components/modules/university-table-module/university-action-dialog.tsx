@@ -1,0 +1,353 @@
+"use client";
+
+import { Button } from "@highschool/ui/components/ui/button";
+import { Input } from "@highschool/ui/components/ui/input";
+import { HighSchoolAssets, University } from "@highschool/interfaces";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@highschool/ui/components/ui/sheet";
+import { Label } from "@highschool/ui/components/ui/label";
+import { Textarea } from "@highschool/ui/components/ui/textarea";
+import { useState } from "react";
+import {
+  useCreateUniversityListMutation,
+  useProvincesQuery,
+  useUploaderMutation,
+} from "@highschool/react-query/queries";
+import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@highschool/ui/components/ui/select";
+
+import ImageUploader from "@/components/ui/image-upload";
+import { useTable } from "@/stores/table-context";
+
+interface Props {
+  currentRow?: University;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
+export function UniversityActionDialog({
+  currentRow,
+  open,
+  onOpenChange,
+}: Props) {
+  const { open: typeOpen } = useTable();
+  const title =
+    typeOpen === "add"
+      ? "Add Profile"
+      : typeOpen === "edit"
+        ? "Edit Profile"
+        : "View Profile";
+
+  const { mutate: createUniversity } = useCreateUniversityListMutation();
+
+  const [university, setUniversity] = useState<University>(
+    currentRow ?? ({} as University),
+  );
+
+  const [singleFile, setSingleFile] = useState<File | null>(null);
+
+  const uploadImage = useUploaderMutation();
+
+  const clearFields = () => {
+    setUniversity({} as University);
+    setSingleFile(null);
+  };
+
+  const handleUpload = async () => {
+    if (singleFile) {
+      toast.info("Uploading image...");
+
+      try {
+        // Simulate upload delay
+        const data = await uploadImage.mutateAsync(
+          {
+            image: singleFile,
+            fileName: title,
+            folder: HighSchoolAssets.Test,
+            presetName: "avatar",
+          },
+          {
+            onSuccess: (data) => {
+              return data;
+            },
+          },
+        );
+
+        toast.success("Image uploaded successfully");
+
+        return data.data ?? "";
+      } catch {
+        toast.error("Failed to upload image");
+
+        return "";
+      }
+    }
+
+    return "";
+  };
+
+  const validationFields = () => {
+    const {
+      uniCode,
+      name,
+      description,
+      contactPhone,
+      contactEmail,
+      websiteLink,
+      logoUrl,
+    } = university;
+
+    if (
+      !uniCode ||
+      !name ||
+      !description ||
+      !contactPhone ||
+      !contactEmail ||
+      !websiteLink ||
+      !logoUrl
+    ) {
+      return "Please fill all required fields";
+    }
+
+    if (uniCode.length < 3) {
+      return "University code must be at least 3 characters";
+    }
+
+    if (name.length < 3) {
+      return "Name must be at least 3 characters";
+    }
+
+    if (description.length < 10) {
+      return "Description must be at least 10 characters";
+    }
+
+    if (!/^\d{10,15}$/.test(contactPhone)) {
+      return "Contact phone must be a valid number with 10-15 digits";
+    }
+
+    if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(contactEmail)
+    ) {
+      return "Invalid email format";
+    }
+
+    if (!singleFile) {
+      return "Please upload an image";
+    }
+
+    return "";
+  };
+
+  const handleImageChange = (file: File | null) => {
+    if (file === null) {
+      setSingleFile(null);
+    } else {
+      setSingleFile(file);
+    }
+  };
+
+  const handleSaveChange = async () => {
+    const error = validationFields();
+
+    if (error !== "") {
+      toast.error(error);
+
+      return;
+    }
+    const profilePicture = await handleUpload();
+
+    createUniversity([
+      {
+        name: university.name,
+        websiteLink: university.websiteLink,
+        contactEmail: university.contactEmail,
+        contactPhone: university.contactPhone,
+        description: university.description,
+        region: university.city,
+        uniCode: university.uniCode,
+        logoUrl: profilePicture,
+      },
+    ]);
+
+    clearFields();
+    onOpenChange(false);
+  };
+
+  const { data: provinces } = useProvincesQuery({
+    pageNumber: 1,
+    pageSize: 99999,
+  });
+
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>
+            Make changes to your profile here. Click save when you&apos;re done.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="grid gap-4 overflow-y-auto py-4">
+          <div>
+            <Label className="text-sm font-semibold">
+              UniCode <span className="text-primary">(required)</span>
+            </Label>
+            <div className="relative">
+              <Input
+                placeholder="University Code"
+                type="text"
+                value={university.uniCode}
+                onChange={(e) =>
+                  setUniversity((prev) => ({
+                    ...prev,
+                    uniCode: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Name <span className="text-primary">(required)</span>
+            </Label>
+            <Input
+              placeholder="Name"
+              type="text"
+              value={university.name}
+              onChange={(e) =>
+                setUniversity((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Description <span className="text-primary">(required)</span>
+            </Label>
+            <Textarea
+              placeholder="Description"
+              value={university.description}
+              onChange={(e) =>
+                setUniversity((prev) => ({
+                  ...prev,
+                  description: e.target.value,
+                }))
+              }
+            />
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Contact Phone <span className="text-primary">(required)</span>
+            </Label>
+            <div className="relative">
+              <Input
+                placeholder="Phone Number"
+                type="tel"
+                value={university.contactPhone}
+                onChange={(e) =>
+                  setUniversity((prev) => ({
+                    ...prev,
+                    contactPhone: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Contact Email <span className="text-primary">(required)</span>
+            </Label>
+            <div className="relative">
+              <Input
+                placeholder="Email Address"
+                type="email"
+                value={university.contactEmail}
+                onChange={(e) =>
+                  setUniversity((prev) => ({
+                    ...prev,
+                    contactEmail: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Region <span className="text-primary">(required)</span>
+            </Label>
+            <Select
+              value={university.city ?? ""}
+              onValueChange={(e) =>
+                setUniversity((prev) => ({ ...prev, city: e }))
+              }
+            >
+              <SelectTrigger className="bg-background mr-4 rounded-lg border-2 text-left">
+                <SelectValue
+                  className="px-4"
+                  placeholder="Select your province"
+                />
+              </SelectTrigger>
+              <SelectContent
+                className="placeholder:text-muted-foreground h-[50vh] overflow-y-auto"
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
+                {provinces?.data.map((country) => (
+                  <SelectItem
+                    key={country.provinceId}
+                    value={country.provinceId?.toString() ?? ""}
+                  >
+                    {country.provinceName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Website Link <span className="text-primary">(required)</span>
+            </Label>
+            <div className="relative">
+              <Input
+                placeholder="Website URL"
+                type="url"
+                value={university.websiteLink}
+                onChange={(e) =>
+                  setUniversity((prev) => ({
+                    ...prev,
+                    websiteLink: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <ImageUploader
+              defaultMode="single"
+              label="Avatar"
+              maxImages={1}
+              showModeToggle={false}
+              value={university.logoUrl ?? ""}
+              onChange={(e) => handleImageChange(Array.isArray(e) ? e[0] : e)}
+            />
+          </div>
+        </div>
+        <SheetFooter>
+          <Button type="submit" onClick={handleSaveChange}>
+            Save changes
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
+  );
+}

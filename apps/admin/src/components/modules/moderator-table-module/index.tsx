@@ -1,14 +1,14 @@
 "use client";
 
 import { columns } from "../user-table-module/users-columns";
-import { UsersTable } from "../user-table-module/users-table";
+import { DataTable } from "../../core/table/table";
 import { UsersDialogs } from "../user-table-module/users-dialogs";
 
 import { UsersPrimaryButtons } from "./users-primary-buttons";
 
 import { UserRole } from "@/domain/enums/user";
-import UsersProvider from "@/stores/users-context";
 import { useAccountFilter } from "@/hooks/use-filter-account";
+import TableProvider from "@/stores/table-context";
 
 function ModeratorTableModule() {
   const filter = useAccountFilter({
@@ -18,8 +18,8 @@ function ModeratorTableModule() {
   });
 
   return (
-    <UsersProvider>
-      <UsersTable
+    <TableProvider>
+      <DataTable
         columns={columns}
         extraButton={<UsersPrimaryButtons />}
         filter={filter}
@@ -27,7 +27,7 @@ function ModeratorTableModule() {
         title="Moderator List"
       />
       <UsersDialogs />
-    </UsersProvider>
+    </TableProvider>
   );
 }
 

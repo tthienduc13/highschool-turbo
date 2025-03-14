@@ -1,6 +1,6 @@
 export interface News {
   id: string;
-  author: NewsAuthor;
+  author?: NewsAuthor;
   newName: string;
   content: string;
   contentHtml: string;
@@ -30,3 +30,24 @@ export interface StudyGuide {
   slug: string;
   author: NewsAuthor;
 }
+
+export type Tag = {
+  id: string;
+  newTagName: string;
+  createdAt: string;
+  createdBy: string;
+};
+
+export type TagPreview = {
+  newsTagId: string;
+  newsTagName: string;
+};
+
+export type NewsCreate = {
+  newsTagId: string;
+  newName: string;
+  content: string;
+  contentHtml: string;
+  image: string;
+  location: string;
+};

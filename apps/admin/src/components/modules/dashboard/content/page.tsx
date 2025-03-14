@@ -1,0 +1,39 @@
+"use client";
+
+import React from "react";
+
+import CardContent from "@/components/ui/card-content";
+import { contentAnalysts } from "@/domain/constants/analyst-card";
+import { ContentCreationChart } from "@/components/ui/charts/content-creation-trend";
+
+function ContentModule() {
+    return (
+        <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
+            <div>
+                <h1 className="text-3xl font-semibold">Content Dashboard</h1>
+                <p className="text-muted-foreground">
+                    Welcome back! Here&apos;s what&apos;s happening with your platform
+                    today
+                </p>
+            </div>
+            <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {contentAnalysts.map((content, index) => {
+                    return (
+                        <CardContent
+                            key={index}
+                            color={content.bgColor}
+                            icon={content.icon}
+                            items={content.items}
+                            title={content.title}
+                        />
+                    );
+                })}
+            </div>
+            <div>
+                <ContentCreationChart />
+            </div>
+        </div>
+    );
+}
+
+export default ContentModule;
