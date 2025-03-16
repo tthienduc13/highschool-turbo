@@ -68,14 +68,14 @@ function NewsDetailModule({ slug }: NewsDetailModuleProps) {
                                 <span>{initialNewsData?.location}</span>
                             </div>
                             {initialNewsData?.hot && (
-                                <div className="text-muted-foreground inline-flex items-center gap-1 rounded-full border bg-red-500 px-2.5 py-0.5 text-xs font-semibold text-white">
+                                <div className="text-muted-foreground inline-flex items-center gap-1 rounded-full border bg-red-500 px-2.5 py-0.5 text-xs font-semibold ">
                                     <IconFlame size={14} />
                                     <span>Hot</span>
                                 </div>
                             )}
 
                             {initialNewsData?.isDeleted && (
-                                <div className="text-muted-foreground inline-flex items-center gap-1 rounded-full border bg-slate-500 px-2.5 py-0.5 text-xs font-semibold text-white">
+                                <div className="text-muted-foreground inline-flex items-center gap-1 rounded-full border bg-slate-500 px-2.5 py-0.5 text-xs font-semibold ">
                                     <IconTrash size={14} />
                                     <span>Deleted</span>
                                 </div>

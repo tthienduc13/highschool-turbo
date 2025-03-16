@@ -15,6 +15,15 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { cn } from "@highschool/ui/lib/utils";
 import { useUploaderMutation } from "@highschool/react-query/queries";
 import { toast } from "sonner";
+import BulletList from "@tiptap/extension-bullet-list";
+import ListItem from "@tiptap/extension-list-item";
+import Blockquote from "@tiptap/extension-blockquote";
+import OrderedList from "@tiptap/extension-ordered-list";
+import Paragraph from "@tiptap/extension-paragraph";
+import Bold from "@tiptap/extension-bold";
+import Code from "@tiptap/extension-code";
+import Strike from "@tiptap/extension-strike";
+import Italic from "@tiptap/extension-italic";
 
 import { CustomTableCell } from "../ui/table/custom-table-cell";
 import { storageCustom } from "../ui/storage/storage-custom";
@@ -65,6 +74,15 @@ const createExtensions = (placeholder: string) => [
     code: { HTMLAttributes: { class: "inline", spellcheck: "false" } },
     dropcursor: { width: 2, class: "ProseMirror-dropcursor border" },
   }),
+  Italic,
+  Strike,
+  Code,
+  Bold,
+  Paragraph,
+  OrderedList,
+  Blockquote,
+  BulletList,
+  ListItem,
   Link,
   Underline,
   Table.configure({
@@ -221,7 +239,7 @@ export const useMinimalTiptapEditor = ({
               // reset image src on contentHtml
               this.contentHtml = this.contentHtml?.replaceAll(
                 jsonContent.attrs?.src,
-                urlImage,
+                urlImage as string,
               );
 
               // reset image src on contentJson
@@ -253,7 +271,7 @@ export const useMinimalTiptapEditor = ({
   );
 
   const editor = useEditor({
-    extensions: createExtensions(placeholder),
+    extensions: createExtensions(placeholder) as any,
     editorProps: {
       attributes: {
         autocomplete: "off",

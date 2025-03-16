@@ -12,7 +12,8 @@ export const MathExtension = Extension.create<MathExtensionOption>({
   },
 
   addExtensions() {
-    const extensions = [];
+    const extensions: any[] = [];
+
     if (this.options.addInlineMath !== false) {
       extensions.push(InlineMathNode.configure(this.options));
     }

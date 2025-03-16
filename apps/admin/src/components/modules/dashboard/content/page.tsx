@@ -2,9 +2,12 @@
 
 import React from "react";
 
+import { TopCourse } from "./top-course";
+
 import CardContent from "@/components/ui/card-content";
 import { contentAnalysts } from "@/domain/constants/analyst-card";
 import { ContentCreationChart } from "@/components/ui/charts/content-creation-trend";
+import { EngagementChart } from "@/components/ui/charts/engagement-chart";
 
 function ContentModule() {
     return (
@@ -29,8 +32,12 @@ function ContentModule() {
                     );
                 })}
             </div>
-            <div>
+            <div className="space-y-5">
                 <ContentCreationChart />
+                <div className="grid gap-4 md:grid-cols-2">
+                    <TopCourse />
+                    <EngagementChart />
+                </div>
             </div>
         </div>
     );

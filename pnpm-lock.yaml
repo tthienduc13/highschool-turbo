@@ -555,9 +555,18 @@ importers:
       '@tiptap/core':
         specifier: ^2.9.1
         version: 2.10.4(@tiptap/pm@2.10.4)
+      '@tiptap/extension-blockquote':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-bold':
-        specifier: ^2.9.1
+        specifier: ^2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
+      '@tiptap/extension-bullet-list':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
+      '@tiptap/extension-code':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-code-block-lowlight':
         specifier: ^2.9.1
         version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/extension-code-block@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)(highlight.js@11.11.1)(lowlight@3.3.0)
@@ -583,11 +592,17 @@ importers:
         specifier: ^2.9.1
         version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-italic':
-        specifier: ^2.9.1
+        specifier: ^2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-link':
         specifier: ^2.9.1
         version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
+      '@tiptap/extension-list-item':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
+      '@tiptap/extension-ordered-list':
+        specifier: ^2.11.5
+        version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-paragraph':
         specifier: ^2.9.1
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
@@ -595,7 +610,7 @@ importers:
         specifier: ^2.9.1
         version: 2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))(@tiptap/pm@2.10.4)
       '@tiptap/extension-strike':
-        specifier: ^2.9.1
+        specifier: ^2.10.4
         version: 2.10.4(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))
       '@tiptap/extension-subscript':
         specifier: ^2.9.1
@@ -983,6 +998,9 @@ importers:
       react-hook-form:
         specifier: ^7.54.1
         version: 7.54.1(react@19.0.0)
+      recharts:
+        specifier: ^2.15.1
+        version: 2.15.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       sonner:
         specifier: ^1.7.1
         version: 1.7.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -7371,6 +7389,10 @@ snapshots:
     dependencies:
       '@tiptap/pm': 2.11.5
 
+  '@tiptap/extension-blockquote@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
+
   '@tiptap/extension-blockquote@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))':
     dependencies:
       '@tiptap/core': 2.11.5(@tiptap/pm@2.11.5)
@@ -7409,6 +7431,10 @@ snapshots:
       '@tiptap/pm': 2.11.5
       tippy.js: 6.3.7
 
+  '@tiptap/extension-bullet-list@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
+
   '@tiptap/extension-bullet-list@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))':
     dependencies:
       '@tiptap/core': 2.11.5(@tiptap/pm@2.11.5)
@@ -7430,6 +7456,10 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.11.5(@tiptap/pm@2.11.5)
       '@tiptap/pm': 2.11.5
+
+  '@tiptap/extension-code@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
 
   '@tiptap/extension-code@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))':
     dependencies:
@@ -7555,9 +7585,17 @@ snapshots:
       '@tiptap/pm': 2.10.4
       linkifyjs: 4.2.0
 
+  '@tiptap/extension-list-item@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
+
   '@tiptap/extension-list-item@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))':
     dependencies:
       '@tiptap/core': 2.11.5(@tiptap/pm@2.11.5)
+
+  '@tiptap/extension-ordered-list@2.11.5(@tiptap/core@2.10.4(@tiptap/pm@2.10.4))':
+    dependencies:
+      '@tiptap/core': 2.10.4(@tiptap/pm@2.10.4)
 
   '@tiptap/extension-ordered-list@2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))':
     dependencies:

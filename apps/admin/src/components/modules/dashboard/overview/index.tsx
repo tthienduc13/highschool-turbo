@@ -1,7 +1,13 @@
+"use client";
+
 import { IconNews, IconUser } from "@tabler/icons-react";
 
 import AnalystCard from "@/components/ui/card-analyst";
 import { UserActivityChart } from "@/components/ui/charts/user-activity-chart";
+import TeacherExperienceChart from "@/components/ui/charts/experience-teacher-chart";
+import { ExperienceRatingChart } from "@/components/ui/charts/experience-rating-chart";
+import { UserRetentionChart } from "@/components/ui/charts/user-retention";
+import { UserGrowthChart } from "@/components/ui/charts/user-growth";
 
 function OverviewModule() {
     return (
@@ -55,8 +61,16 @@ function OverviewModule() {
                     title="Total News"
                 />
             </div>
-            <div>
+            <div className="space-y-5">
                 <UserActivityChart />
+                <div className="grid gap-4 md:grid-cols-2">
+                    <TeacherExperienceChart />
+                    <ExperienceRatingChart />
+                </div>
+                <div>
+                    <UserRetentionChart />
+                    <UserGrowthChart />
+                </div>
             </div>
         </div>
     );
