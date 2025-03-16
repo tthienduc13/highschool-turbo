@@ -1,22 +1,24 @@
 import { Metadata } from "next";
-import { getFlashcardBySlug } from "@highschool/react-query/apis";
 
 import StudySetLearnModule from "@/components/modules/StudySetLearn";
+import { getCachedMetadata } from "@/utils/study-set-meta";
 
 export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> => {
-  const slug = (await params).slug;
-  const data = await getFlashcardBySlug({ slug });
+  const { slug } = await params;
+  const metadata = await getCachedMetadata(slug);
 
-  if (!data) return;
+  if (metadata) {
+    return {
+      ...metadata,
+      title: `Học - ${metadata.title}`,
+    };
+  }
 
-  return {
-    title: `Học - ${data.flashcardName}`,
-    description: data.flashcardDescription,
-  };
+  return undefined;
 };
 
 function StudySetLearn() {

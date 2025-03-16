@@ -19,7 +19,7 @@ export const Activities = () => {
             />
             <div
               aria-hidden="true"
-              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
+              className="via-transpare bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">
@@ -46,7 +46,7 @@ export const Activities = () => {
             />
             <div
               aria-hidden="true"
-              className="bg-gradient-radial via-transpare absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
+              className="via-transparet bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 to-transparent opacity-30 blur-2xl"
             />
           </div>
           <div className="flex h-full flex-1 flex-col p-4">

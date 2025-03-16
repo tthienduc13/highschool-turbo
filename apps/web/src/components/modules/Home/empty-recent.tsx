@@ -54,11 +54,11 @@ export const EmptyRecent = () => {
   const isTeacher = useIsTeacher();
 
   return (
-    <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white px-6 py-10 md:p-12 dark:border-gray-800/50 dark:bg-gray-800">
+    <div className="flex w-full items-center justify-center overflow-hidden rounded-3xl border-2 border-gray-200 bg-white px-6 py-10 dark:border-gray-800/50 dark:bg-gray-800 md:p-12">
       <div className="relative flex flex-col items-center justify-center gap-10 text-center">
         <div
           aria-hidden="true"
-          className="bg-gradient-radial absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full from-blue-300 via-transparent to-transparent opacity-50 blur-2xl"
+          className="absolute left-0 top-0 z-[5] h-[500px] w-full rounded-full bg-gradient-radial from-blue-300 via-transparent to-transparent opacity-50 blur-2xl"
         />
         <div className="relative z-10 flex flex-row gap-[-12px]">
           <motion.div {...studySet} className="opacity-50">
@@ -82,7 +82,7 @@ export const EmptyRecent = () => {
           <motion.div {...folder} className="opacity-50">
             <IconFolder opacity="0.9" size={40} strokeWidth="2px" />
           </motion.div>
-          <div className="absolute left-0 top-10 -z-10 size-full rounded-full bg-gradient-to-b from-gray-500 to-transparent" />
+          <div className="bg-gradient-to-b absolute left-0 top-10 -z-10 size-full rounded-full from-gray-500 to-transparent" />
         </div>
         <div className="z-10 flex flex-col gap-2 px-7">
           <h1 className="text-3xl font-bold md:text-4xl">

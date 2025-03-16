@@ -25,10 +25,8 @@ export const SlideFade: React.FC<SlideFadeProps> = ({
 
   return (
     <div
-      className={`transition-all duration-300 ease-in-out ${
-        isVisible
-          ? "translate-y-0 transform opacity-100"
-          : "-translate-y-2.5 transform opacity-0"
+      className={`ease-in-out transition-all duration-300 ${
+        isVisible ? "translate-y-0 opacity-100" : "-translate-y-2.5 opacity-0"
       } `}
     >
       {children}

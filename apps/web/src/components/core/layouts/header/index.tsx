@@ -11,6 +11,7 @@ import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
 import { IconMenu, IconSearch, IconX } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 
 import { LeftNav } from "./left-nav";
 import { MobileMenu } from "./mobile-menu";
@@ -34,6 +35,7 @@ export const Header = () => {
   const { data: session, status } = useSession();
   const { theme } = useTheme();
   const user = session?.user;
+  const pathName = usePathname();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [folderModalOpen, setFolderModalOpen] = useState(false);
@@ -156,12 +158,12 @@ export const Header = () => {
           {session?.user && <UserMenu />}
           {status !== "loading" && !session && (
             <div className="grid grid-cols-2 gap-2">
-              <Link href={"/sign-in"}>
+              <Link href={`/sign-in?callbackUrl=${pathName}`}>
                 <Button className="w-full" size="lg" variant={"outline"}>
                   Đăng nhập
                 </Button>
               </Link>
-              <Link href={"/sign-up"}>
+              <Link href={`/sign-up?callbackUrl=${pathName}`}>
                 <Button className="w-full" size={"lg"}>
                   Đăng kí ngay
                 </Button>

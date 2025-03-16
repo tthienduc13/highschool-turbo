@@ -4,7 +4,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@highschool/ui/components/ui/input";
 import { IconSearch } from "@tabler/icons-react";
 import { useSearchQuery } from "@highschool/react-query/queries";
-import { Flashcard, SearchAll, SearchType } from "@highschool/interfaces";
+import {
+  Flashcard,
+  Pagination,
+  SearchAll,
+  SearchType,
+} from "@highschool/interfaces";
 import Image from "next/image";
 import {
   Tabs,
@@ -13,9 +18,8 @@ import {
   TabsTrigger,
 } from "@highschool/ui/components/ui/tabs";
 
-import { AllResult } from "./tabs/all-results";
-import { StudySets } from "./tabs/study-sets";
-
+import { AllResult } from "@/components/core/search/tabs/all-results";
+import { StudySets } from "@/components/core/search/tabs/study-sets";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
 
@@ -29,6 +33,8 @@ function SearchModule() {
   const { data, isLoading } = useSearchQuery({
     type: _type ?? SearchType.All,
     value: _searchQuery!,
+    pageNumber: 1,
+    pageSize: _type === SearchType.All ? 4 : 8,
   });
 
   const handleSearch = (search: string) => {
@@ -39,7 +45,7 @@ function SearchModule() {
     } else {
       params.delete("q");
     }
-    router.replace(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -70,7 +76,7 @@ function SearchModule() {
                 value={SearchType.All}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.All}`,
                   );
                 }}
@@ -82,7 +88,7 @@ function SearchModule() {
                 value={SearchType.Flashcard}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.Flashcard}`,
                   );
                 }}
@@ -91,10 +97,10 @@ function SearchModule() {
               </TabsTrigger>
               <TabsTrigger
                 className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
-                value={SearchType.Flashcard}
+                value={SearchType.Folder}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.Folder}`,
                   );
                 }}
@@ -106,7 +112,7 @@ function SearchModule() {
                 value={SearchType.Subject}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.Subject}`,
                   );
                 }}
@@ -118,7 +124,7 @@ function SearchModule() {
                 value={SearchType.Document}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.Document}`,
                   );
                 }}
@@ -130,7 +136,7 @@ function SearchModule() {
                 value={SearchType.News}
                 variant={"outline"}
                 onClick={() => {
-                  router.replace(
+                  router.push(
                     `/search?q=${_searchQuery?.trim() ?? ""}&type=${SearchType.News}`,
                   );
                 }}
@@ -142,7 +148,7 @@ function SearchModule() {
               {isLoading ? (
                 <div />
               ) : data ? (
-                <AllResult data={data as SearchAll} />
+                <AllResult data={data.data as SearchAll} />
               ) : (
                 <SearchNotFound query={_searchQuery!} />
               )}
@@ -151,7 +157,7 @@ function SearchModule() {
               {isLoading ? (
                 <div />
               ) : data ? (
-                <StudySets data={data as Flashcard[]} />
+                <StudySets data={data as Pagination<Flashcard[]>} />
               ) : (
                 <SearchNotFound query={_searchQuery!} />
               )}

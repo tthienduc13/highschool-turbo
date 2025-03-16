@@ -28,7 +28,7 @@ export const UserPanel = () => {
         onClose={() => setOpenShareModal(false)}
       />
       <Panel
-        className="bg-background flex flex-row items-center gap-x-2 rounded-md border px-4 py-2 shadow-xl"
+        className="flex flex-row items-center gap-x-2 rounded-md border bg-background px-4 py-2 shadow-xl"
         position="top-right"
       >
         <Hint label="Tài liệu liên quan">

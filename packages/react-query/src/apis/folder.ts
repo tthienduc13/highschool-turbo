@@ -1,10 +1,10 @@
-import { endpointFolder } from "@highschool/endpoints";
 import {
   Folder,
   Pagination,
   ResponseModel,
   UserFolder,
 } from "@highschool/interfaces";
+import { folderEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -25,7 +25,7 @@ export const getUserFolderList = async ({
   flashcardId?: string;
   documentId?: string;
 }): Promise<Pagination<Folder[]>> => {
-  return fetchPaginatedData<Folder[]>(endpointFolder.GET_USER_FOLDER, {
+  return fetchPaginatedData<Folder[]>(folderEndpoints.getUserFolders, {
     pageNumber,
     pageSize,
     userName,
@@ -44,7 +44,7 @@ export const getFolderDetail = async ({
   pageNumber: number;
 }): Promise<ResponseModel<UserFolder>> => {
   try {
-    const { data } = await axiosServices.get(endpointFolder.GET_FOLDER_DETAIL, {
+    const { data } = await axiosServices.get(folderEndpoints.getFolderDetail, {
       params: { pageNumber, pageSize, id: folderId },
     });
 
@@ -67,14 +67,11 @@ export const createFolder = async ({
   documentIds?: string[];
 }): Promise<ResponseModel<string>> => {
   try {
-    const { data } = await axiosServices.post(
-      `${endpointFolder.CREATE_FOLDER}`,
-      {
-        folderName,
-        flashcardIds,
-        documentIds,
-      },
-    );
+    const { data } = await axiosServices.post(`${folderEndpoints.create}`, {
+      folderName,
+      flashcardIds,
+      documentIds,
+    });
 
     return data;
   } catch (error) {
@@ -94,7 +91,7 @@ export const addToFolder = async ({
 }) => {
   try {
     const { data } = await axiosServices.post(
-      endpointFolder.ADD_TO_FOLDER(folderId),
+      folderEndpoints.addToFolder(folderId),
       {
         flashcardIds,
         documentIds,
@@ -122,7 +119,7 @@ export const updateFolder = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.patch(
-      endpointFolder.UPDATE_FOLDER(folderId),
+      folderEndpoints.update(folderId),
       {
         folderName,
         flashcardIds,
@@ -142,7 +139,7 @@ export const updateFolder = async ({
 export const deleteFolder = async ({ folderId }: { folderId: string }) => {
   try {
     const { data } = await axiosServices.delete(
-      endpointFolder.DELETE_FOLDER(folderId),
+      folderEndpoints.delete(folderId),
     );
 
     return data;
@@ -161,7 +158,7 @@ export const removeFlashcardFromFolder = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointFolder.REMOVE_FLASHCARD(flashcardId),
+      folderEndpoints.removeFlashcard(flashcardId),
       { params: { folderId } },
     );
 
@@ -181,7 +178,7 @@ export const removeDocumentFromFolder = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointFolder.REMOVE_DOCUMENT(documentId),
+      folderEndpoints.removeDocument(documentId),
       { params: { folderId } },
     );
 

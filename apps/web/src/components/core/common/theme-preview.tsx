@@ -65,7 +65,7 @@ export const ThemePreview = ({ variant, selected }: ThemePreviewProps) => {
                 light ? "bg-white" : "bg-gray-800/50",
               )}
             >
-              <div className="absolute left-0 top-0 h-[1px] w-1/3 bg-orange-300" />
+              <div className="absolute left-0 top-0 h-px w-1/3 bg-orange-300" />
             </div>
           </div>
         </div>

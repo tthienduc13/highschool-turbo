@@ -57,7 +57,7 @@ export const ActionArea = () => {
         isOpen={exportOpen}
         onClose={() => setExportOpen(false)}
       />
-      <div className="flex w-fit flex-row divide-x-[1px] overflow-hidden rounded-lg border">
+      <div className="flex w-fit flex-row divide-x overflow-hidden rounded-lg border">
         <ActionButton
           icon={IconPlus}
           label="Thêm vào thư mục"
@@ -121,7 +121,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     <Hint label={label} side="bottom">
       <Button
         aria-label={label}
-        className="rounded-none"
+        className="rounded-none bg-background"
         disabled={isLoading}
         size={"icon"}
         variant={"ghost"}

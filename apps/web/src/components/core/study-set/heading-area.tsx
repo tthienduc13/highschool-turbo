@@ -22,6 +22,8 @@ import { useSet } from "@/hooks/use-set";
 
 export const HeadingArea = () => {
   const { flashcard } = useSet();
+
+  console.log(flashcard.container, "container");
   const { data: session } = useSession();
   const router = useRouter();
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -71,7 +73,7 @@ export const HeadingArea = () => {
             <p> {flashcard.numberOfFlashcardContent} thẻ ghi nhớ</p>
           </div>
           {session && session.user.userId === flashcard.userId ? (
-            <div className="bg-background flex w-fit flex-row overflow-hidden rounded-lg border">
+            <div className="flex w-fit flex-row overflow-hidden rounded-lg border bg-background">
               <Hint label="Chỉnh sửa bộ thẻ" side="bottom" sideOffset={10}>
                 <Button
                   className="rounded-none"

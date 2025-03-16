@@ -20,7 +20,7 @@ export const SegmentedProgress = ({
   const [currentHover, setCurrentHover] = useState<number | null>(null);
 
   return (
-    <div className="flex h-12 w-full flex-row items-center gap-2">
+    <div className="flex h-[12px] w-full flex-row items-center gap-2">
       {Array.from({ length: steps }).map((_, i) => (
         <Segment
           key={i}

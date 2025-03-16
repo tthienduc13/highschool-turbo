@@ -34,9 +34,7 @@ export const SpecificResource = ({ selectedNodeId }: SpecificResourceProps) => {
 
   if (!data) {
     return (
-      <div className="mx-auto my-auto text-xl font-bold">
-        Phần này không có tài liệu
-      </div>
+      <div className="m-auto text-xl font-bold">Phần này không có tài liệu</div>
     );
   }
 

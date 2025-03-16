@@ -158,7 +158,7 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
               <div className="flex w-full items-center gap-4">
                 {!answered || !isHighlightedTerm(option.id) ? (
                   <div
-                    className={`flex h-6 w-6 min-w-6 items-center justify-center rounded-full border-2 ${defaultBorder}`}
+                    className={`flex size-6 min-w-6 items-center justify-center rounded-full border-2 ${defaultBorder}`}
                   >
                     <span
                       className={`font-heading text-[11px] leading-none ${questionNumText}`}
@@ -168,14 +168,14 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
                   </div>
                 ) : isCorrectTerm(option.id) ? (
                   <div
-                    className="h-6 w-6 scale-110 transform"
+                    className="size-6 scale-110"
                     style={{ color: "green", transform: "scale(1.1)" }}
                   >
                     <AnimatedCheckCircle />
                   </div>
                 ) : (
                   <div
-                    className="h-6 w-6 scale-110 transform"
+                    className="size-6 scale-110"
                     style={{ color: "red", transform: "scale(1.1)" }}
                   >
                     <AnimatedXCircle />

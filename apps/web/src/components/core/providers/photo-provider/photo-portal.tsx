@@ -27,7 +27,7 @@ export const PhotoPortal: React.FC<PhotoPortalProps> = ({
 
   return createPortal(
     <div
-      className={`fixed left-0 top-0 z-[2000] h-full w-full touch-none overflow-hidden ${className || ""} pointer-events-${pointerEvents}`}
+      className={`fixed left-0 top-0 z-[2000] size-full touch-none overflow-hidden ${className || ""} pointer-events-${pointerEvents}`}
       {...props}
     >
       {children}

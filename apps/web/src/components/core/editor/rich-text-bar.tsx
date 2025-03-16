@@ -17,7 +17,7 @@ export interface RichTextBarProps {
 export const RichTextBar: React.FC<RichTextBarProps> = ({ activeEditor }) => {
   return (
     <>
-      <div className="bg-secondary/50 flex w-fit flex-row gap-x-1 rounded-full p-1 shadow-sm">
+      <div className="flex w-fit flex-row gap-x-1 rounded-full bg-secondary/50 p-1 shadow-sm">
         <RichTextProperty
           icon={<IconBold size={16} />}
           isActive={activeEditor?.isActive("bold")}

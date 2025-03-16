@@ -4,7 +4,7 @@ import { TablerIcon } from "@tabler/icons-react";
 
 // Trying to replicate Shadcn's Component Styling System
 const backgroundVariants = cva(
-  "rounded-full flex items-center justify-center",
+  "flex items-center justify-center rounded-full",
   {
     variants: {
       variant: {
@@ -30,8 +30,8 @@ const iconVariants = cva("", {
       success: "text-emerald-700",
     },
     size: {
-      default: "h-8 w-8",
-      sm: "h-4 w-4",
+      default: "size-8",
+      sm: "size-4",
     },
   },
   defaultVariants: {

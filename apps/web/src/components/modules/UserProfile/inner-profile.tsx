@@ -38,11 +38,11 @@ export const InnerProfile = () => {
         <ProfileArea />
         <Tabs className="w-full  " defaultValue={_type ?? NavTab.Overview}>
           <TabsList
-            className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 md:mb-10 dark:border-gray-800/50 "
+            className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 dark:border-gray-800/50 md:mb-10 "
             variant={"outline"}
           >
             <TabsTrigger
-              className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
+              className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
               value={NavTab.Overview}
               variant={"outline"}
               onClick={() => {
@@ -52,7 +52,7 @@ export const InnerProfile = () => {
               Thông tin tổng quan
             </TabsTrigger>
             <TabsTrigger
-              className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
+              className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
               value={NavTab.Flashcard}
               variant={"outline"}
               onClick={() => {
@@ -62,7 +62,7 @@ export const InnerProfile = () => {
               Thẻ ghi nhớ
             </TabsTrigger>
             <TabsTrigger
-              className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
+              className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400 md:text-base"
               value={NavTab.Folder}
               variant={"outline"}
               onClick={() => {

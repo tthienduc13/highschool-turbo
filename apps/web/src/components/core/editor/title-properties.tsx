@@ -69,7 +69,7 @@ export const TitleProperties = () => {
       </div>
       <div className="flex flex-col gap-8 md:flex-row">
         <AutosizeTextarea
-          className="bg-background text-muted-foreground w-full rounded-lg border-gray-50 px-4 py-2 text-base shadow-sm dark:border-gray-700"
+          className="w-full rounded-lg border-gray-50 bg-background px-4 py-2 text-base text-muted-foreground shadow-sm dark:border-gray-700"
           placeholder="Thêm mô tả"
           value={description}
           onBlur={() => {

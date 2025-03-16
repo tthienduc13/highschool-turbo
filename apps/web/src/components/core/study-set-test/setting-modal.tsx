@@ -205,7 +205,7 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
         <div className="flex flex-row items-start justify-between gap-8 md:items-center">
           <div className="flex flex-col">
             <div className="font-semibold">Trả lời bằng</div>
-            <div className="text-muted-foreground text-sm">
+            <div className="text-sm text-muted-foreground">
               Chọn cách bạn trả lời
             </div>
           </div>
@@ -268,7 +268,7 @@ const Slider = React.forwardRef<
       )}
     >
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-full px-2 py-1 text-sm font-bold transition-all group-hover:scale-110 group-active:scale-110"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full px-2 py-1 text-sm font-bold transition-all group-hover:scale-110 group-active:scale-110"
         style={{ zIndex: 1000 }}
       >
         {questionCount}

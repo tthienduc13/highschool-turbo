@@ -7,6 +7,7 @@ import {
   UniversityCreate,
   UniversityMajor,
 } from "@highschool/interfaces";
+import { universityEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -29,7 +30,7 @@ export const getUniversities = async ({
   maxTuition: number;
   city: UniversityCity;
 }>): Promise<Pagination<University[]>> => {
-  return fetchPaginatedData<University[]>(endpointUniversity.GET_UNI_LIST, {
+  return fetchPaginatedData<University[]>(universityEndpoints.getList, {
     pageNumber,
     pageSize,
     search,

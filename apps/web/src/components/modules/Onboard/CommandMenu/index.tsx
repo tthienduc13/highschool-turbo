@@ -41,10 +41,10 @@ function OnboardCommandMenuModule() {
                   Hãy thử mở menu lệnh với:
                 </p>
                 <div className="flex flex-row gap-2 text-3xl text-gray-800 dark:text-gray-200">
-                  <div className="ease-cubic-ease cursor-pointer rounded-lg border-b-[3px] border-b-gray-300 bg-gray-200 px-4 py-2 shadow-lg transition-all duration-150 hover:border-b-gray-400 hover:bg-gray-300 dark:border-b-gray-600 dark:bg-gray-700 dark:hover:border-b-gray-500 dark:hover:bg-gray-600">
+                  <div className="cursor-pointer rounded-lg border-b-[3px] border-b-gray-300 bg-gray-200 px-4 py-2 shadow-lg transition-all duration-150 ease-cubic-ease hover:border-b-gray-400 hover:bg-gray-300 dark:border-b-gray-600 dark:bg-gray-700 dark:hover:border-b-gray-500 dark:hover:bg-gray-600">
                     {MOD == "Control" ? "Ctrl" : "⌘"}
                   </div>
-                  <div className="ease-cubic-ease cursor-pointer rounded-lg border-b-[3px] border-b-gray-300 bg-gray-200 px-5 py-2 shadow-lg transition-all duration-150 hover:border-b-gray-400 hover:bg-gray-300 dark:border-b-gray-600 dark:bg-gray-700 dark:hover:border-b-gray-500 dark:hover:bg-gray-600">
+                  <div className="cursor-pointer rounded-lg border-b-[3px] border-b-gray-300 bg-gray-200 px-5 py-2 shadow-lg transition-all duration-150 ease-cubic-ease hover:border-b-gray-400 hover:bg-gray-300 dark:border-b-gray-600 dark:bg-gray-700 dark:hover:border-b-gray-500 dark:hover:bg-gray-600">
                     K
                   </div>
                 </div>

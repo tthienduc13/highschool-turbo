@@ -75,9 +75,9 @@ export const UniversitySection = ({
         <div className="flex flex-col gap-2">
           <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
             Chọn trường
-            <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+            <div className="absolute bottom-0 left-0 h-1 w-1/2 bg-primary transition-all duration-200 group-hover:w-full" />
           </h1>
-          <h2 className="text-muted-foreground font-medium">
+          <h2 className="font-medium text-muted-foreground">
             Để chọn được trường, bạn vui lòng chọn ngành học mong muốn ở trên
             trước
           </h2>
@@ -91,7 +91,7 @@ export const UniversitySection = ({
       <div className="flex flex-col gap-8">
         <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
           Chọn trường
-          <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+          <div className="absolute bottom-0 left-0 h-1 w-1/2 bg-primary transition-all duration-200 group-hover:w-full" />
         </h1>
         <Loading />
       </div>
@@ -121,9 +121,9 @@ export const UniversitySection = ({
           <div className="flex flex-col gap-2">
             <h1 className="group relative w-fit cursor-pointer text-3xl font-bold md:text-4xl">
               Chọn trường
-              <div className="bg-primary absolute bottom-0 left-0 h-1 w-1/2 transition-all duration-200 group-hover:w-full" />
+              <div className="absolute bottom-0 left-0 h-1 w-1/2 bg-primary transition-all duration-200 group-hover:w-full" />
             </h1>
-            <h2 className="text-muted-foreground font-medium">
+            <h2 className="font-medium text-muted-foreground">
               Hãy đánh dấu những trường bạn muốn tìm hiểu thêm
             </h2>
           </div>
@@ -175,7 +175,7 @@ const UniversityCard = ({
                   width={64}
                 />
                 <Link href={university.websiteLink}>
-                  <h2 className="hover:text-primary text-lg font-semibold">
+                  <h2 className="text-lg font-semibold hover:text-primary">
                     {university.name}
                   </h2>
                 </Link>
@@ -233,7 +233,7 @@ const UniversityCard = ({
                 </a>
               </div>
             </div>
-            <p className="text-muted-foreground text-sm font-medium">
+            <p className="text-sm font-medium text-muted-foreground">
               {university.description}
             </p>
           </div>

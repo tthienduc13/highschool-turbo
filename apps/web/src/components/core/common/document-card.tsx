@@ -90,7 +90,7 @@ export const DocumentCard = ({
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-2 dark:border-gray-700 ">
+        <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-4 dark:border-gray-700 ">
           {!userLoading && (
             <div className="flex w-full flex-row items-center gap-2">
               <Avatar className="size-6">

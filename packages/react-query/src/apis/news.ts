@@ -6,6 +6,7 @@ import {
   Pagination,
   Tag,
 } from "@highschool/interfaces";
+import { mediaEndpoints } from "@highschool/endpoints";
 
 import axiosServices, {
   axiosClientUpload,
@@ -56,7 +57,7 @@ export const getNews = async ({
   location?: string | null;
   newsTagId?: string | null;
 }): Promise<Pagination<News[]>> => {
-  return fetchPaginatedData<News[]>(endpointNews.GET_NEWS, {
+  return fetchPaginatedData<News[]>(mediaEndpoints.getNews, {
     search,
     pageNumber,
     pageSize,
@@ -69,8 +70,8 @@ export const getNews = async ({
 
 export const getNewBySlug = async (slug: string): Promise<News> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_NEW_SLUG(slug),
+    const { data } = await axiosServices.get(
+      mediaEndpoints.getNewsBySlug(slug),
     );
 
     return data;
@@ -82,8 +83,8 @@ export const getNewBySlug = async (slug: string): Promise<News> => {
 
 export const getAuthorNews = async (authorId: string): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_AUTHOR_NEW(authorId),
+    const { data } = await axiosServices.get(
+      mediaEndpoints.getNewsByAuthor(authorId),
     );
 
     return data;
@@ -103,8 +104,8 @@ export const getRelatedNews = async ({
   location: string;
 }): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_RELATED_NEW(newsTagId),
+    const { data } = await axiosServices.get(
+      mediaEndpoints.getRelatedNews(newsTagId),
       {
         params: {
           location,

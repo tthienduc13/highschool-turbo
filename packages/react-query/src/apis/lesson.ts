@@ -1,12 +1,13 @@
-import { endpointLesson } from "@highschool/endpoints";
 import {
   Lesson,
   LessonDetail,
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
+import { lessonEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
+
 import fetchPaginatedData from "./common.ts";
 
 export const getLessonList = async ({
@@ -18,7 +19,7 @@ export const getLessonList = async ({
   pageNumber: number;
   pageSize: number;
 }): Promise<Pagination<Lesson[]>> => {
-  return fetchPaginatedData<Lesson[]>(endpointLesson.GET_LESSONS(chapterId), {
+  return fetchPaginatedData<Lesson[]>(lessonEndpoints.getLessons(chapterId), {
     pageNumber,
     pageSize,
   });
@@ -31,8 +32,9 @@ export const getLessonDetail = async ({
 }): Promise<LessonDetail> => {
   try {
     const { data } = await axiosServices.get(
-      endpointLesson.GET_LESSON_DETAIL(lessonId),
+      lessonEndpoints.getLessonDetail(lessonId),
     );
+
     return data;
   } catch (error) {
     console.log("Error while getting lesson detail", error);
@@ -47,8 +49,9 @@ export const markLessonDone = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointLesson.FINISH_LESSON(lessonId),
+      lessonEndpoints.finishLesson(lessonId),
     );
+
     return data;
   } catch (error) {
     console.log("Error while updating lesson progress", error);

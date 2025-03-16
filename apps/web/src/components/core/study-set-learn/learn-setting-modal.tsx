@@ -66,8 +66,15 @@ export const LearnSettingModal: React.FC<LearnSettingModalProps> = ({
               size={"lg"}
               variant={"ghost"}
               onClick={async () => {
-                resetProgress({ flashcardId: flashcard.id });
-                router.refresh();
+                resetProgress(
+                  { flashcardId: flashcard.id },
+                  {
+                    onSuccess: () => {
+                      router.refresh();
+                      onClose();
+                    },
+                  },
+                );
               }}
             >
               <IconReload

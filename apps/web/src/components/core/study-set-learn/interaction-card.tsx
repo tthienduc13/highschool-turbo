@@ -45,7 +45,7 @@ export const InteractionCard = () => {
         marginBottom: 100,
       }}
     >
-      <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
+      <Card className="relative rounded-2xl border-2 border-gray-50 bg-background shadow-xl dark:border-gray-700">
         {status !== undefined && (
           <motion.div
             animate={{ opacity: isVisible ? 0.2 : 0 }}
@@ -64,7 +64,7 @@ export const InteractionCard = () => {
             transition={{ duration: 0.3 }}
           />
         )}
-        <CardContent className="h-full w-full overflow-hidden rounded-2xl p-0">
+        <CardContent className="size-full overflow-hidden rounded-2xl p-0">
           <div className="h-1 w-full overflow-hidden bg-gray-200">
             <motion.div
               animate={{ width: `${progress * 100}%` }}

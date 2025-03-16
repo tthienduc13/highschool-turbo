@@ -37,7 +37,7 @@ export const GeneralResource = () => {
     <>
       <div className="flex flex-col">
         <div className="text-xl font-bold">{roadmapData?.name}</div>
-        <div className="text-muted-foreground text-justify text-sm">
+        <div className="text-justify text-sm text-muted-foreground">
           {roadmapData?.description}
         </div>
       </div>

@@ -34,7 +34,7 @@ export const TitleBar = () => {
       />
       <div className="flex flex-row items-center justify-between">
         <Button
-          className="text-blue hover:text-blue h-10 w-10 rounded-full"
+          className="text-blue hover:text-blue size-10 rounded-full"
           size={"icon"}
           variant={"ghost"}
           onClick={() => router.push(`/study-set/${flashcard.slug}`)}
@@ -49,7 +49,7 @@ export const TitleBar = () => {
               : "Hãy thử sức"}
         </h1>
         <Button
-          className="text-blue hover:text-blue h-10 w-10 rounded-full"
+          className="text-blue hover:text-blue size-10 rounded-full"
           size={"icon"}
           variant={"ghost"}
           onClick={() => setOpenSetting(true)}
@@ -64,11 +64,11 @@ export const TitleBar = () => {
 TitleBar.Skeleton = function TitlebarSkeleton() {
   return (
     <div className="flex w-full items-center">
-      <Skeleton className="h-10 w-10 rounded-full" />
+      <Skeleton className="size-10 rounded-full" />
       <div className="flex flex-1 justify-center">
         <Skeleton className="h-8 w-24 rounded-lg" />
       </div>
-      <Skeleton className="h-10 w-10 rounded-full" />
+      <Skeleton className="size-10 rounded-full" />
     </div>
   );
 };

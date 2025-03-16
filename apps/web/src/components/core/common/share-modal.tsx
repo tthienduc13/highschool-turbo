@@ -35,7 +35,7 @@ export const ShareModal = ({ open, onClose, pathName }: ShareModalProps) => {
           Copy đường link dưới đây để chia sẻ với mọi người
         </CredenzaDescription>
         <CredenzaBody className="flex flex-row items-center gap-x-4">
-          <div className="bg-background flex flex-grow flex-row gap-x-2 rounded-lg border px-4 py-2">
+          <div className="flex grow flex-row gap-x-2 rounded-lg border bg-background px-4 py-2">
             <IconLink />
             {currentPath}
           </div>

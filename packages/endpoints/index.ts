@@ -1,23 +1,54 @@
-const prefixUserServices = "/users-service";
-const prefixDocumentServices = "/documents-service";
-const prefixGameServices = "/game-service";
-const prefixMediaServices = "/media-service";
-const prefixAnalyseServices = "/analyse-service";
+// Base service prefixes
+const SERVICE_PREFIXES = {
+  USER: "/users-service",
+  DOCUMENT: "/documents-service",
+  GAME: "/game-service",
+  MEDIA: "/media-service",
+  ANALYSE: "/analyse-service",
+  ACADEMIC_HUB: "/academic-hub-service",
+} as const;
 
-const prefixFirstVersion = "/api/v1";
-const prefixSecondVerson = "/api/v2";
+// API version prefixes
+const API_VERSIONS = {
+  V1: "/api/v1",
+  V2: "/api/v2",
+} as const;
 
-const endpointUploadImage = {
-  UPLOAD_IMAGE: `${prefixMediaServices}${prefixFirstVersion}/upload/image`,
-};
+// Utility function to construct endpoint paths
+const createEndpoint = (
+  service: string,
+  version: string,
+  path: string,
+): string => `${service}${version}${path}`;
 
-const endpointAuth = {
-  GOOGLE: `${prefixUserServices}${prefixSecondVerson}/authentication/google`,
-  MAGIC_LINK: `${prefixUserServices}${prefixSecondVerson}/authentication/login`,
-  CREDENTIALS: `${prefixUserServices}${prefixFirstVersion}/authentication/login`,
-  VERIFY_ACCOUNT: `${prefixUserServices}${prefixSecondVerson}/authentication/verify-account`,
-  REFRESH_TOKEN: `${prefixUserServices}${prefixSecondVerson}/authentication/refresh-token`,
-};
+// Authentication Endpoints
+export const authEndpoints = {
+  google: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V2,
+    "/authentication/google",
+  ),
+  magicLink: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V2,
+    "/authentication/login",
+  ),
+  credentials: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/authentication/login",
+  ),
+  verifyAccount: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V2,
+    "/authentication/verify-account",
+  ),
+  refreshToken: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V2,
+    "/authentication/refresh-token",
+  ),
+} as const;
 
 const endpointInformation = {
   GET_ALL_SCHOOL: `${prefixDocumentServices}${prefixFirstVersion}/information/schools`,
@@ -32,179 +63,569 @@ const endpointInformation = {
   GET_PROVINCES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
 };
 
-const endpointUser = {
-  GET_AUTHOR: `${prefixUserServices}${prefixFirstVersion}/users/author`,
-  GET_AUTHOR_BY_ID: (authorId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/author/${authorId}`,
-  CHECK_USER_NAME: `${prefixUserServices}${prefixFirstVersion}/users/checkusername`,
-  UPDATE_BASE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
-  COMPLETE_ONBOARD: (userId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/newuser/${userId}`,
-  PROFILE_USER: (username: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/infor/${username}`,
-  USER_FLASHCARD: (username: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user/${username}`,
-  OWNER_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/user`,
-  ORIENTATION_STATUS: `${prefixUserServices}${prefixFirstVersion}/users/personalityTestStatus`,
-  PROGRESS_STATE: `${prefixUserServices}${prefixFirstVersion}/users/progressStage`,
-  CACHE_PERSONALITY: `${prefixUserServices}${prefixFirstVersion}/users/cachePersonality`,
-  REPORT: `${prefixUserServices}${prefixFirstVersion}/reports`,
-  GET_USER: `${prefixUserServices}${prefixFirstVersion}/users`,
-  UPDATE_STATUS_USER: `${prefixUserServices}${prefixFirstVersion}/users/status`,
-  GET_USER_DETAIL: (userId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/infor/${userId}`,
-  UPDATE_USER: `${prefixUserServices}${prefixFirstVersion}/users/baseuser`,
-  CREATE_USER: `${prefixUserServices}${prefixFirstVersion}/users/createaccount`,
-};
+// User Endpoints
+export const userEndpoints = {
+  getAuthor: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/author",
+  ),
+  getAuthorById: (authorId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/author/${authorId}`,
+    ),
+  checkUsername: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/checkusername",
+  ),
+  updateBaseUser: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/baseuser",
+  ),
+  completeOnboard: (userId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/newuser/${userId}`,
+    ),
+  getProfile: (username: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/infor/${username}`,
+    ),
+  getUserFlashcards: (username: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/user/${username}`,
+    ),
+  getOwnerFlashcards: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/user",
+  ),
+  getOrientationStatus: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/personalityTestStatus",
+  ),
+  getProgressState: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/progressStage",
+  ),
+  cachePersonality: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/cachePersonality",
+  ),
+  report: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/reports"),
+  getUser: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/users"),
+  updateStatus: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/status",
+  ),
+  getUserDetail: (userId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/infor/${userId}`,
+    ),
+  updateUser: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/baseuser",
+  ),
+  createUser: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/createaccount",
+  ),
+} as const;
 
-const endpointFolder = {
-  CREATE_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
-  GET_USER_FOLDER: `${prefixDocumentServices}${prefixFirstVersion}/folders`,
-  GET_FOLDER_DETAIL: `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards`,
-  ADD_TO_FOLDER: (folderId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}/add`,
-  UPDATE_FOLDER: (folderId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
-  DELETE_FOLDER: (folderId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/folders/${folderId}`,
-  REMOVE_FLASHCARD: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/folders/flashcards/${flashcardId}`,
-  REMOVE_DOCUMENT: (documentId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/folders/documents/${documentId}`,
-};
+// Media Endpoints
+export const mediaEndpoints = {
+  uploadImage: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/upload/image",
+  ),
+  getDocument: (documentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/document/${documentId}`,
+    ),
+  uploadDocument: (documentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/document/${documentId}`,
+    ),
+  downloadDocument: (documentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/document/download/${documentId}`,
+    ),
+  getHotNews: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/hotnews",
+  ),
+  getPopularNews: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/popularnews",
+  ),
+  getNews: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/news"),
+  getNewsBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/new/slug/${slug}`,
+    ),
+  getNewsByAuthor: (authorId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/new/authorId/${authorId}`,
+    ),
+  getRelatedNews: (newTagId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/relatednews/${newTagId}`,
+    ),
+} as const;
 
-const endpointUserPersonalized = {
-  RECENT_VIEW: `${prefixAnalyseServices}${prefixFirstVersion}/recent-view`,
-  GET_RECOMMENED: `${prefixDocumentServices}${prefixFirstVersion}/data/recommended`,
-};
+// Document Endpoints
+export const documentEndpoints = {
+  getAllSchools: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/schools",
+  ),
+  getCitySchools: (cityId: number) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/information/provice/${cityId}/schools`,
+    ),
+  getAllCities: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/provinces",
+  ),
+  getDocuments: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/documents/advance",
+  ),
+  getDocumentBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/document/slug/${slug}`,
+    ),
+  getRecommendedData: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/data/recommended",
+  ),
+  getAllCategories: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/categories",
+  ),
+  getCurriculum: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/curriculum",
+  ),
+} as const;
 
-const endpointFlashcard = {
-  GET_TOP_FLASHCARD: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/top`,
-  DRAFT: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/draft`,
-  RELATED: `${prefixDocumentServices}${prefixFirstVersion}/flashcard/related`,
-  GET_BY_SLUG: (slug: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}`,
-  GET_BY_ID: (id: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}`,
-  CREATE_FLASHCARD_FROM_DRAFT: (id: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/created/${id}`,
-  EDIT_SET: (id: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}`,
-  DELETE: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}`,
-};
+// Folder Endpoints
+export const folderEndpoints = {
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/folders",
+  ),
+  getUserFolders: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/folders",
+  ),
+  getFolderDetail: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/folders/flashcards",
+  ),
+  addToFolder: (folderId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/folders/${folderId}/add`,
+    ),
+  update: (folderId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/folders/${folderId}`,
+    ),
+  delete: (folderId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/folders/${folderId}`,
+    ),
+  removeFlashcard: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/folders/flashcards/${flashcardId}`,
+    ),
+  removeDocument: (documentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/folders/documents/${documentId}`,
+    ),
+} as const;
 
-const endpointFlashcardContent = {
-  GET_LIST_BY_SLUG: (slug: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/slug/${slug}/contents`,
-  GET_LIST_BY_ID: (id: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${id}/contents`,
-  EDIT_CONTENT: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/content`,
-  CREATE_CONTENT: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/content`,
-  CREATE_CONTENTS: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/contents`,
-  UPDATE_CONTENTS_BY_ID: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/contents`,
-  REORDER_TERM: (flashcardContentId: string, newRank: number) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/content/${flashcardContentId}/rank/${newRank}`,
-  DELETE: ({
+// User Personalized Endpoints
+export const userPersonalizedEndpoints = {
+  recentView: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/recent-view",
+  ),
+  getRecommended: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/data/recommended",
+  ),
+} as const;
+
+// Flashcard Endpoints
+export const flashcardEndpoints = {
+  getTop: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/top",
+  ),
+  draft: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/draft",
+  ),
+  related: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/related",
+  ),
+  getBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/slug/${slug}`,
+    ),
+  getById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${id}`,
+    ),
+  createFromDraft: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/created/${id}`,
+    ),
+  editSet: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${id}`,
+    ),
+  delete: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}`,
+    ),
+  starTerm: (flashcardContentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/starredTerm/${flashcardContentId}`,
+    ),
+  updateContainer: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/container/flashcard/${flashcardId}`,
+    ),
+} as const;
+
+// Flashcard Content Endpoints
+export const flashcardContentEndpoints = {
+  getListBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/slug/${slug}/contents`,
+    ),
+  getListById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${id}/contents`,
+    ),
+  editContent: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}/content`,
+    ),
+  createContent: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}/content`,
+    ),
+  createContents: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}/contents`,
+    ),
+  updateContentsById: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}/contents`,
+    ),
+  reorderTerm: (flashcardContentId: string, newRank: number) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/content/${flashcardContentId}/rank/${newRank}`,
+    ),
+  delete: ({
     flashcardId,
     flashcardContentId,
   }: {
     flashcardId: string;
     flashcardContentId: string;
   }) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/flashcard/${flashcardId}/contents/${flashcardContentId}`,
-};
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/${flashcardId}/contents/${flashcardContentId}`,
+    ),
+} as const;
 
-const endpointCourse = {
-  GET_COURSES: `${prefixDocumentServices}${prefixFirstVersion}/subjects`,
-  GET_BY_SLUG: (slug: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/subject/slug/${slug}`,
-  ENROLL_COURSE: ({
+// Course Endpoints
+export const courseEndpoints = {
+  getCourses: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/subjects",
+  ),
+  getBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/subject/slug/${slug}`,
+    ),
+  enroll: ({
     subjectId,
     curriculumId,
   }: {
     subjectId: string;
     curriculumId: string;
   }) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/enroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
-  UNENROLL_COURSE: ({
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/enroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
+    ),
+  unenroll: ({
     subjectId,
     curriculumId,
   }: {
     subjectId: string;
     curriculumId: string;
   }) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
-};
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
+    ),
+} as const;
 
-const endpointMBTI = {
-  GET_MBTI_TEST: `${prefixUserServices}${prefixFirstVersion}/mbti`,
-  SUBMIT_MBTI: `${prefixUserServices}${prefixFirstVersion}/mbti`,
-  UPDATE_STUDENT_MBTI: (mbtiType: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/student/mbti/${mbtiType}`,
-};
+// MBTI Endpoints
+export const mbtiEndpoints = {
+  getTest: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/mbti"),
+  submit: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/mbti"),
+  updateStudentMbti: (mbtiType: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/student/mbti/${mbtiType}`,
+    ),
+} as const;
 
-const endpointHolland = {
-  GET_HOLLAND_TEST: `${prefixUserServices}${prefixFirstVersion}/holland`,
-  GET_STUDENT_HOLLAND: `${prefixUserServices}${prefixFirstVersion}/users/student/hollandType`,
-  SUBMIT_HOLLAND: `${prefixUserServices}${prefixFirstVersion}/holland`,
-  UPDATE_STUDENT_HOLLAND: (hollandType: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/users/student/holland/${hollandType}`,
-};
+// Holland Endpoints
+export const hollandEndpoints = {
+  getTest: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/holland"),
+  getStudentHolland: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/student/hollandType",
+  ),
+  submit: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/holland"),
+  updateStudentHolland: (hollandType: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/users/student/holland/${hollandType}`,
+    ),
+} as const;
 
-const endpointFlashcardLearn = {
-  POST_PROGRESS: `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/progress`,
-  GET_LEARN_SET: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/study`,
-  GET_LEARN_PROGRESS: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/progress`,
-  RESET_PROGRESS: (flashcardId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/feature/flashcard/${flashcardId}/reset-progress`,
-};
+// Flashcard Learn Endpoints
+export const flashcardLearnEndpoints = {
+  postProgress: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/feature/flashcard/progress",
+  ),
+  getLearnSet: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${flashcardId}/study`,
+    ),
+  getLearnProgress: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${flashcardId}/progress`,
+    ),
+  resetProgress: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${flashcardId}/reset-progress`,
+    ),
+} as const;
 
-const endpointChapter = {
-  GET_CHAPTERS: (courseSlug: string, curriculumId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`,
-};
+// Chapter Endpoints
+export const chapterEndpoints = {
+  getChapters: (courseSlug: string, curriculumId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`,
+    ),
+} as const;
 
-const endpointLesson = {
-  GET_LESSONS: (chapterId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/chapter/${chapterId}/lessons`,
-  GET_LESSON_DETAIL: (lessonId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/chapter/lesson/${lessonId}`,
-  FINISH_LESSON: (lessonId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/enrollProgress/${lessonId}`,
-};
+// Lesson Endpoints
+export const lessonEndpoints = {
+  getLessons: (chapterId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/${chapterId}/lessons`,
+    ),
+  getLessonDetail: (lessonId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/lesson/${lessonId}`,
+    ),
+  finishLesson: (lessonId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/enrollProgress/${lessonId}`,
+    ),
+} as const;
 
-const endpointCareerGuidance = {
-  GET_BRIEF: `${prefixUserServices}${prefixFirstVersion}/users/brief?isHardCode=true`,
-  GET_RECOMMEND_MAJOR: `${prefixUserServices}${prefixFirstVersion}/users/recommendMajor`,
-};
+// Career Guidance Endpoints
+export const careerGuidanceEndpoints = {
+  getBrief: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/brief?isHardCode=true",
+  ),
+  getRecommendMajor: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/recommendMajor",
+  ),
+} as const;
 
-const endpointData = {
-  GET_RECOMMEND_DATA: `${prefixDocumentServices}${prefixFirstVersion}/data/recommended`,
-};
+// Roadmap Endpoints
+export const roadmapEndpoints = {
+  getUserRoadmap: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/roadmap",
+  ),
+  getNodeResource: (resourceId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/roadmap/node/data/${resourceId}`,
+    ),
+  relatedSubjectsByIds: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/subject/related/ids",
+  ),
+  relatedDocumentsByIds: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/document/related/ids",
+  ),
+} as const;
 
-const endpointRoadmap = {
-  GET_USER_ROADMAP: `${prefixUserServices}${prefixFirstVersion}/users/roadmap`,
-  GET_NODE_RESOURCE: (resourceId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/roadmap/node/data/${resourceId}`,
-  RELATED_SUBJECT_BY_IDS: `${prefixDocumentServices}${prefixFirstVersion}/subject/related/ids`,
-  RELATED_DOCUMENT_BY_IDS: `${prefixDocumentServices}${prefixFirstVersion}/document/related/ids`,
-};
+// Search Endpoints
+export const searchEndpoints = {
+  search: createEndpoint(SERVICE_PREFIXES.ANALYSE, API_VERSIONS.V1, "/search"),
+} as const;
 
-const endpointSearch = {
-  SEARCH: `${prefixAnalyseServices}${prefixFirstVersion}/search`,
-};
+// Quiz Endpoints
+export const quizEndpoints = {
+  getQuiz: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/questions/quiz",
+  ),
+  submitQuiz: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/questions/quiz/submit",
+  ),
+} as const;
 
-const endpointQuiz = {
-  GET_QUIZ: `${prefixDocumentServices}${prefixFirstVersion}/questions/quiz`,
-  SUBMIT_QUIZ: `${prefixDocumentServices}${prefixFirstVersion}/questions/quiz/submit`,
-};
+// University Endpoints
+export const universityEndpoints = {
+  getList: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university",
+  ),
+} as const;
 
 const endpointUniversity = {
   GET_UNI_LIST: `${prefixUserServices}${prefixFirstVersion}/university`,
@@ -228,24 +649,90 @@ const endpointCurriculum = {
   GET: `${prefixDocumentServices}${prefixFirstVersion}/curriculum`,
 };
 
-const endpointCategory = {
-  GET_ALL_CATEGORIES: `${prefixDocumentServices}${prefixFirstVersion}/categories`,
-};
+// KET Endpoints
+export const ketEndpoints = {
+  getKets: "/kets", // Note: No service prefix provided in original
+  getKetCategories: "/kets/categories", // Note: No service prefix provided in original
+} as const;
 
-const endpointDocument = {
-  GET_DOCUMENTS: `${prefixDocumentServices}${prefixFirstVersion}/documents/advance`,
-  GET_BY_SLUG: (slug: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/document/slug/${slug}`,
-};
+// Occupation Endpoints
+export const occupationEndpoints = {
+  getOccupations: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/occupation",
+  ),
+  create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/occupation"),
+  update: (occupationId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/occupation/${occupationId}`,
+    ),
+  delete: (occupationId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/occupation/${occupationId}`,
+    ),
+} as const;
 
-const endpointDocumentMedia = {
-  GET_DOCUMENT: (documentId: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/document/${documentId}`,
-  UP_LOAD: (documentId: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/document/${documentId}`,
-  DOWNLOAD_DOCUMENT: (documentId: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/document/download/${documentId}`,
-};
+// Major Endpoints
+export const majorEndpoints = {
+  getMajor: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/major"),
+  getMajorName: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/major/name",
+  ),
+  create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/major"),
+  update: (majorId: string) =>
+    createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, `/major/${majorId}`),
+  delete: (majorId: string) =>
+    createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, `/major/${majorId}`),
+  getMajorCategory: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/majorCategory",
+  ),
+  getMajorCategoryName: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/majorCategory/name",
+  ),
+  createMajorCategory: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/majorCategory",
+  ),
+  updateMajorCategory: (majorCategoryId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/majorCategory/${majorCategoryId}`,
+    ),
+  deleteMajorCategory: (majorCategoryId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/majorCategory/${majorCategoryId}`,
+    ),
+} as const;
+
+// Zone Endpoints
+export const zoneEndpoints = {
+  create: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/zones",
+  ),
+  getById: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/zones/${zoneId}`,
+    ),
+} as const;
 
 const endpointNews = {
   GET_HOT_NEWS: `${prefixMediaServices}${prefixFirstVersion}/hotnews`,
@@ -267,11 +754,33 @@ const endPointTag = {
   CREATE_TAG: `${prefixMediaServices}${prefixFirstVersion}/newstag`,
 };
 
-const endpointGame = {
-  CHECK_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/check-room`,
-  JOIN_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/join-room`,
-  CREATE_ROOM: `${prefixGameServices}${prefixFirstVersion}/games/create-room`,
-};
+// Game Endpoints
+export const gameEndpoints = {
+  checkRoom: createEndpoint(
+    SERVICE_PREFIXES.GAME,
+    API_VERSIONS.V1,
+    "/games/check-room",
+  ),
+  joinRoom: createEndpoint(
+    SERVICE_PREFIXES.GAME,
+    API_VERSIONS.V1,
+    "/games/join-room",
+  ),
+  createRoom: createEndpoint(
+    SERVICE_PREFIXES.GAME,
+    API_VERSIONS.V1,
+    "/games/create-room",
+  ),
+} as const;
+
+// Category Endpoints
+export const categoryEndpoints = {
+  getAll: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/categories",
+  ),
+} as const;
 
 const endpointKet = {
   GET_KETS: `/kets`,
@@ -336,3 +845,10 @@ export {
   endpointHolland,
   endpointFlashcardLearn,
 };
+export const curriculumEndpoints = {
+  get: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/curriculum",
+  ),
+} as const;

@@ -62,7 +62,7 @@ export const AvatarSetting = () => {
               .map((avatar) => (
                 <Avatar
                   key={avatar.image}
-                  className="bg-primary/50 size-12 cursor-pointer hover:opacity-80"
+                  className="size-12 cursor-pointer bg-primary/50 hover:opacity-80"
                   onClick={() => updateUser(avatar.image)}
                 >
                   <AvatarImage alt={avatar.name} src={avatar.image} />

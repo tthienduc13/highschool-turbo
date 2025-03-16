@@ -1,40 +1,54 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useMBTITestQuery } from "@highschool/react-query/queries";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { MBTITestQuestion } from "@highschool/interfaces";
 
-import { Loading } from "@/components/core/common/loading";
 import {
+  createMBTITestStore,
   MBTITestContext,
   MBTITestStore,
-  createMBTITestStore,
-} from "@/stores/use-mbti-store";
+} from "@/stores/use-mbti-test-store";
 
 interface HydrateMBTITestDataProps {
   children: React.ReactNode;
 }
 
 export const HydrateMBTITestData = ({ children }: HydrateMBTITestDataProps) => {
-  const { data, isLoading, isError } = useMBTITestQuery();
+  const router = useRouter();
+  const { data, isError } = useMBTITestQuery();
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("Có lỗi xảy ra khi tải dữ liệu, vui lòng thử lại sau");
+      router.push("/");
+    }
+  }, [isError, router]);
+
+  if (!data?.length) {
+    return null;
+  }
+
+  return <ContextLayer data={data}>{children}</ContextLayer>;
+};
+
+interface ContextLayerProps {
+  data: MBTITestQuestion[];
+  children: React.ReactNode;
+}
+
+const ContextLayer = ({ data, children }: ContextLayerProps) => {
   const storeRef = useRef<MBTITestStore | null>(null);
 
-  if (data && !storeRef.current) {
-    storeRef.current = createMBTITestStore({
-      testQuestions: data,
-    });
-  }
-
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return <div>Error loading MBTI test data. Please try again later.</div>;
-  }
-
   if (!storeRef.current) {
-    return <div>Unable to initialize MBTI test store.</div>;
+    storeRef.current = createMBTITestStore();
   }
+
+  useEffect(() => {
+    storeRef.current?.getState().initialize(data);
+  }, [data]);
 
   return (
     <MBTITestContext.Provider value={storeRef.current}>

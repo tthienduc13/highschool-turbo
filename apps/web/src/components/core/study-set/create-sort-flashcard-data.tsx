@@ -1,14 +1,20 @@
 import React, { useContext, useRef } from "react";
-import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
+import {
+  FlashcardContent,
+  SetData,
+  StudiableTerm,
+} from "@highschool/interfaces";
 
 import { RootFlashcardContext } from "./root-flashcard-wrapper";
 
 import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
 import {
+  createSortFlashcardsStore,
   SortFlashcardsContext,
   SortFlashcardsStore,
 } from "@/stores/use-sort-flashcard-store";
+import { queryEventChannel } from "@/events/query";
 
 export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
   children,
@@ -49,33 +55,34 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     storeRef.current!.getState().initialize(round, flashcardTerms, terms);
   };
 
-  //   if (!storeRef.current) {
-  //     storeRef.current = createSortFlashcardsStore();
-  //     initState(
-  //       flashcard.container.cardsRound,
-  //       flashcard.container.studiableTerms.filter((x) => x.mode == "Flashcards"),
-  //       terms,
-  //       termOrder,
-  //       container.cardsStudyStarred,
-  //     );
-  //   }
+  if (!storeRef.current) {
+    storeRef.current = createSortFlashcardsStore();
+    initState(
+      flashcard.container.cardsRound,
+      flashcard.container.studiableTerms,
+      terms,
+      termOrder,
+      flashcard.container.cardsStudyStarred,
+    );
+  }
 
-  //   React.useEffect(() => {
-  //     const trigger = (data: SetData) =>
-  //       initState(
-  //         data.container!.cardsRound,
-  //         data.container!.studiableTerms.filter((x) => x.mode == "Flashcards"),
-  //         data.terms,
-  //         termOrder,
-  //         data.container!.cardsStudyStarred,
-  //       );
+  React.useEffect(() => {
+    const trigger = (data: SetData) =>
+      initState(
+        flashcard.container!.cardsRound,
+        flashcard.container!.studiableTerms,
+        data.terms,
+        termOrder,
+        flashcard.container!.cardsStudyStarred,
+      );
 
-  //     queryEventChannel.on("setQueryRefetched", trigger);
-  //     return () => {
-  //       queryEventChannel.off("setQueryRefetched", trigger);
-  //     };
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, []);
+    queryEventChannel.on("setQueryRefetched", trigger);
+
+    return () => {
+      queryEventChannel.off("setQueryRefetched", trigger);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <SortFlashcardsContext.Provider value={storeRef.current}>

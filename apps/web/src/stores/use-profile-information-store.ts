@@ -10,6 +10,7 @@ interface AccountInformationState {
   open: boolean;
   currentStep: number;
   selectedCity: ICity;
+  selectedCurriculum: string | null;
   selectedSchool: string | null;
   selectedDob: Date | null;
   selectedExamTypes: TypeExam[];
@@ -20,6 +21,7 @@ interface AccountInformationState {
   setSelectedCity: (city: ICity) => void;
   setSelectedDob: (dob: Date) => void;
   setSelectedSchool: (school: string | null) => void;
+  setSelectedCurriculum: (curriculum: string | null) => void;
   setSelectedExamTypes: (examTypes: TypeExam[]) => void;
   setSelectedSubjects: (subjects: string[]) => void;
   setSelectedClass: (classGrade: Grade | null) => void;
@@ -30,6 +32,7 @@ export const useAccountInformationStore = create<AccountInformationState>(
     open: false,
     currentStep: 0,
     selectedDob: null,
+    selectedCurriculum: null,
     selectedCity: { name: null, id: null },
     selectedSchool: null,
     selectedExamTypes: [],
@@ -38,6 +41,8 @@ export const useAccountInformationStore = create<AccountInformationState>(
     setOpen: (open: boolean) => set({ open }),
     setCurrentStep: (step: number) => set({ currentStep: step }),
     setSelectedCity: (city: ICity) => set({ selectedCity: city }),
+    setSelectedCurriculum: (curriculum: string | null) =>
+      set({ selectedCurriculum: curriculum }),
     setSelectedSchool: (school: string | null) =>
       set({ selectedSchool: school }),
     setSelectedExamTypes: (examTypes: TypeExam[]) =>

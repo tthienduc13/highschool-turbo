@@ -54,14 +54,14 @@ export const ResultCard = () => {
         <div className="flex flex-col items-stretch gap-4 md:flex-row">
           <div className="flex flex-row items-center gap-4">
             <AnimatedCircularProgressBar
-              className="h-[140px] w-[140px]"
+              className="size-[140px]"
               gaugePrimaryColor="#7faeff"
               gaugeSecondaryColor="#f3f4f6"
               max={100}
               min={0}
               value={perc}
             />
-            <div className="flex h-full w-full items-center justify-center">
+            <div className="flex size-full items-center justify-center">
               <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-2">
                   <IconCircleCheck className="text-blue/70" />

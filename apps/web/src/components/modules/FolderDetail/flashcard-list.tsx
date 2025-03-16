@@ -86,7 +86,7 @@ export const FlashcardList = () => {
             />
           ))}
           <Button
-            className="text-primary h-full min-h-[120px] text-lg"
+            className="h-full min-h-[120px] text-lg text-primary"
             variant={"outline"}
             onClick={() => {
               setAddSetsModalOpen(true);

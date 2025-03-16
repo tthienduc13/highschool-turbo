@@ -8,7 +8,7 @@ interface UsernameLinkProps {
 export const UsernameLink = ({ displayName, username }: UsernameLinkProps) => {
   return (
     <Link
-      className="font-bold transition-all duration-200 ease-in-out hover:text-blue-500 dark:hover:text-blue-200"
+      className="ease-in-out font-bold transition-all duration-200 hover:text-blue-500 dark:hover:text-blue-200"
       href={`/profile/${username}`}
     >
       {displayName}

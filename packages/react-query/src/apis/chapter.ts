@@ -1,5 +1,5 @@
-import { endpointChapter } from "@highschool/endpoints";
 import { ChapterListResponse, Pagination } from "@highschool/interfaces";
+import { chapterEndpoints } from "@highschool/endpoints";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -15,7 +15,7 @@ export const getChapterList = async ({
   pageSize: number;
 }): Promise<Pagination<ChapterListResponse>> => {
   return fetchPaginatedData<ChapterListResponse>(
-    endpointChapter.GET_CHAPTERS(courseSlug, curriculumId),
+    chapterEndpoints.getChapters(courseSlug, curriculumId),
     {
       pageNumber,
       pageSize,

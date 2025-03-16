@@ -17,7 +17,7 @@ import { Wrapper } from "./wrapper";
 
 import { StudySetCard } from "@/components/core/common/study-set-card";
 
-export const TopFlascard = () => {
+export const TopFlashcard = () => {
   const [userIds, setUserIds] = useState<string[]>([]);
   const {
     data,

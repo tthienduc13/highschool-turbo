@@ -40,7 +40,6 @@ export const PopularNews = ({ news }: PopularNewsProps) => {
           </div>
         ) : (
           <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-gray-200">
-            {/* Placeholder for missing image */}
             <p className="flex h-full items-center justify-center text-gray-500">
               Không có hình ảnh
             </p>

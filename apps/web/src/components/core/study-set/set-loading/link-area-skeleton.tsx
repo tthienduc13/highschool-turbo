@@ -11,7 +11,7 @@ export const LinkAreaSkeletonRaw = () => {
             className="h-[59px] rounded-xl border-b-[3px] bg-white px-5 py-4 shadow-md"
           >
             <div className="flex flex-row items-center gap-x-3">
-              <Skeleton className="h-6 w-6 rounded-lg" />
+              <Skeleton className="size-6 rounded-lg" />
               <Skeleton className="h-[14px] flex-1 rounded-lg" />
             </div>
           </div>

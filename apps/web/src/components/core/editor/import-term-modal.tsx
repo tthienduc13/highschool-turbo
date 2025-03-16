@@ -88,7 +88,7 @@ export const ImportTermModal = ({
               </p>
             </div>
             <Input
-              className="rounded-none border border-x-0 border-b-[1px] border-t-0 border-gray-200 px-0 py-2 !text-base shadow-none outline-none transition-all duration-200 focus-within:ring-0 focus-visible:border-b-2 focus-visible:border-t-0 focus-visible:border-b-blue-700 focus-visible:ring-0 dark:border-gray-800/50 dark:focus-visible:border-b-blue-400"
+              className="rounded-none border border-x-0 border-t-0 border-gray-200 px-0 py-2 !text-base shadow-none outline-none transition-all duration-200 focus-within:ring-0 focus-visible:border-b-2 focus-visible:border-t-0 focus-visible:border-b-blue-700 focus-visible:ring-0 dark:border-gray-800/50 dark:focus-visible:border-b-blue-400"
               placeholder="Tab"
               value={_termDelimiter}
               onChange={(e) => setTermDelimiter(e.target.value)}
@@ -102,7 +102,7 @@ export const ImportTermModal = ({
               </p>
             </div>
             <Input
-              className="rounded-none border border-x-0 border-b-[1px] border-t-0 border-gray-200 px-0 py-2 !text-base shadow-none outline-none transition-all duration-200 focus-within:ring-0 focus-visible:border-b-2 focus-visible:border-t-0 focus-visible:border-b-blue-700 focus-visible:ring-0 dark:border-gray-800/50 dark:focus-visible:border-b-blue-400"
+              className="rounded-none border border-x-0 border-t-0 border-gray-200 px-0 py-2 !text-base shadow-none outline-none transition-all duration-200 focus-within:ring-0 focus-visible:border-b-2 focus-visible:border-t-0 focus-visible:border-b-blue-700 focus-visible:ring-0 dark:border-gray-800/50 dark:focus-visible:border-b-blue-400"
               placeholder="Dòng mới"
               value={_cardDelimiter}
               onChange={(e) => setCardDelimiter(e.target.value)}
@@ -117,10 +117,10 @@ export const ImportTermModal = ({
           {previewTerms.map(({ term, definition }, i) => (
             <div
               key={i}
-              className="bg-secondary/40 flex flex-row divide-x-[1px] overflow-hidden rounded-lg py-2"
+              className="flex flex-row divide-x overflow-hidden rounded-lg bg-secondary/40 py-2"
             >
-              <div className="w-[60%] px-4">{term}</div>
-              <div className="w-[40%] px-4">{definition}</div>
+              <div className="w-3/5 px-4">{term}</div>
+              <div className="w-2/5 px-4">{definition}</div>
             </div>
           ))}
           {!previewTerms.length && (

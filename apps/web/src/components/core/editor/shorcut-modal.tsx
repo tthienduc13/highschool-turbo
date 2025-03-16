@@ -53,7 +53,7 @@ const Shortcut: React.FC<ShortcutProps> = ({ name, label, shortcut }) => {
     <div className="flex w-full items-start justify-between">
       <div className="flex flex-col">
         <p className="text-lg font-bold md:text-xl">{name}</p>
-        {label && <div className="text-muted-foreground text-sm">{label}</div>}
+        {label && <div className="text-sm text-muted-foreground">{label}</div>}
       </div>
       {shortcut}
     </div>
@@ -65,7 +65,7 @@ interface KbdProps {
 }
 const Kbd = ({ children }: KbdProps) => {
   return (
-    <div className="flex items-center justify-center rounded-md border border-x-[1px] border-b-[3px] border-t-[1px] bg-gray-100 px-[5px] text-xs font-bold dark:bg-gray-700">
+    <div className="flex items-center justify-center rounded-md border border-b-[3px] bg-gray-100 px-[5px] text-xs font-bold dark:bg-gray-700">
       {children}
     </div>
   );

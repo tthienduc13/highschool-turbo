@@ -4,6 +4,10 @@ import { useSession } from "next-auth/react";
 import { createContext, useState } from "react";
 import React from "react";
 import { FlashcardContent } from "@highschool/interfaces";
+import {
+  useStarTermMutation,
+  useUnStarTermMutation,
+} from "@highschool/react-query/queries";
 
 import { CreateSortFlashcardsData } from "./create-sort-flashcard-data";
 import { DefaultFlashcardWrapper } from "./default-flashcard-wrapper";
@@ -14,6 +18,7 @@ import { SortFlashcardWrapper } from "./sort-flashcard-wrapper";
 
 import { useContainerContext } from "@/stores/use-container-store";
 import { menuEventChannel } from "@/events/menu";
+import { useSet } from "@/hooks/use-set";
 
 export interface RootFlashcardWrapperProps {
   terms: FlashcardContent[];
@@ -43,16 +48,19 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
   h = "500px",
   isDirty = false,
 }) => {
+  const { flashcard } = useSet();
   const authed = useSession().status == "authenticated";
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editTerm, setEditTerm] = useState<FlashcardContent | null>(null);
   const [focusDefinition, setFocusDefinition] = useState(false);
 
-  // const setStarMutation = api.container.starTerm.useMutation();
-  // const folderStarMutation = api.folders.starTerm.useMutation();
-  // const unstarMutation = api.container.unstarTerm.useMutation();
+  const setStarMutation = useStarTermMutation();
+  const unStarMutation = useUnStarTermMutation();
 
   const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
+  const starredTerms = useContainerContext((s) => s.starredTerms);
+  const starTerm = useContainerContext((s) => s.starTerm);
+  const unstarTerm = useContainerContext((s) => s.unstarTerm);
 
   const FlashcardWrapper = enableCardsSorting
     ? SortFlashcardWrapper
@@ -60,7 +68,8 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
 
   const Wrapper = authed ? CreateSortFlashcardsData : React.Fragment;
 
-  if (isDirty) return <LoadingFlashcard h={h} />;
+  if (isDirty || (!termOrder.length && !flashcard.container))
+    return <LoadingFlashcard h={h} />;
   if (!termOrder.length) return <FlashcardsEmpty h={h} />;
 
   return (
@@ -77,38 +86,31 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
         starTerm: (term) => {
           if (!authed) {
             menuEventChannel.emit("openSignup", {
-              message: "Create an account for free to customize and star terms",
+              message:
+                "Tạo tài khoản miễn phí để tùy chỉnh và đánh dấu thuật ngữ.",
             });
 
             return;
           }
 
-          // if (!starredTerms.includes(term.id)) {
-          //     if (entityType === "set") {
-          //         setStarMutation.mutate({
-          //             termId: term.id,
-          //             containerId: container.id,
-          //         });
-          //     } else {
-          //         folderStarMutation.mutate({
-          //             termId: term.id,
-          //             studySetId: term.studySetId,
-          //         });
-          //     }
+          if (!starredTerms.includes(term.id)) {
+            setStarMutation.mutate({
+              flashcardContentId: term.id,
+            });
 
-          //     starTerm(term.id);
-          // } else {
-          //     unstarMutation.mutate({
-          //         termId: term.id,
-          //     });
-          //     unstarTerm(term.id);
-          // }
+            starTerm(term.id);
+          } else {
+            unStarMutation.mutate({
+              flashcardContentId: term.id,
+            });
+            unstarTerm(term.id);
+          }
         },
       }}
     >
       <Wrapper>
         <div
-          className="relative h-full w-full"
+          className="relative size-full"
           style={{ minHeight: h, zIndex: 100 }}
         >
           <EditTermModal

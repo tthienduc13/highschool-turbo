@@ -1,5 +1,5 @@
-import { endpointUploadImage } from "@highschool/endpoints";
 import { ResponseModel, UploadImagePayload } from "@highschool/interfaces";
+import { mediaEndpoints } from "@highschool/endpoints";
 
 import { axiosClientUpload } from "../lib/axios.ts";
 
@@ -28,7 +28,7 @@ export const uploadImage = async (
     });
 
     const { data } = await axiosClientUpload.post(
-      endpointUploadImage.UPLOAD_IMAGE,
+      mediaEndpoints.uploadImage,
       formData,
     );
 

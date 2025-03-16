@@ -1,7 +1,6 @@
 import { createApi } from "unsplash-js";
 import { ApiResponse } from "unsplash-js/dist/helpers/response.js";
 import { Photos } from "unsplash-js/dist/methods/search/types/response.js";
-
 import { env } from "@highschool/env";
 
 export const unsplash = env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY

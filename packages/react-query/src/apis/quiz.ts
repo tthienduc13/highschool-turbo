@@ -1,10 +1,10 @@
-import { endpointQuiz } from "@highschool/endpoints";
 import {
   CourseQuiz,
   QuizCategory,
   QuizSubmission,
   ResponseModel,
 } from "@highschool/interfaces";
+import { quizEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -16,12 +16,13 @@ export const getQuiz = async ({
   categoryId: string;
 }): Promise<ResponseModel<CourseQuiz>> => {
   try {
-    const { data } = await axiosServices.get(endpointQuiz.GET_QUIZ, {
+    const { data } = await axiosServices.get(quizEndpoints.getQuiz, {
       params: {
         questionCategory,
         categoryId,
       },
     });
+
     return data;
   } catch (error) {
     console.log("Error while getting quiz", error);
@@ -32,9 +33,10 @@ export const getQuiz = async ({
 export const submitQuiz = async (submitData: QuizSubmission) => {
   try {
     const { data } = await axiosServices.post(
-      endpointQuiz.SUBMIT_QUIZ,
+      quizEndpoints.submitQuiz,
       submitData,
     );
+
     return data;
   } catch (error) {
     console.log("Error while submitting quiz", error);

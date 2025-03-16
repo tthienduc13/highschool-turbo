@@ -4,14 +4,14 @@ import { useState } from "react";
 import { useSubmitMBTITestMutation } from "@highschool/react-query/queries";
 
 import { HydrateMBTITestData } from "./hydrate-mbti-test-data";
-import { Instruction } from "./instruction";
-import { LoadingView } from "./loading-view";
-import { ResultView } from "./result-view";
-import { TestView } from "./test";
 
-import { useMBTITestContext } from "@/stores/use-mbti-store";
 import { Container } from "@/components/core/layouts/container";
 import { WithFooter } from "@/components/core/common/with-footer";
+import { useMBTITestContext } from "@/stores/use-mbti-test-store";
+import { Instruction } from "@/components/core/mbti/instruction";
+import { LoadingView } from "@/components/core/mbti/loading-view";
+import { ResultView } from "@/components/core/mbti/result-view";
+import { TestView } from "@/components/core/mbti/test";
 
 function MBTIModule() {
   return (
@@ -39,7 +39,10 @@ const TestContainer = () => {
       ) : result ? (
         <ResultView />
       ) : (
-        <TestView submitAnswer={submitAnswer} />
+        <TestView
+          showInstruction={() => setShowInstruction(true)}
+          submitAnswer={submitAnswer}
+        />
       )}
     </div>
   );

@@ -26,7 +26,7 @@ export const Interactor = () => {
           exit={{ opacity: 0, y: 100 }}
           initial={{ opacity: 0, y: 100 }}
         >
-          <div className="border-input flex flex-row items-center overflow-hidden rounded-xl border">
+          <div className="flex flex-row items-center overflow-hidden rounded-xl border border-input">
             <Button
               className={cn("rounded-none", !isMobile && "!text-base")}
               size={isMobile ? "sm" : "lg"}
@@ -38,10 +38,10 @@ export const Interactor = () => {
                 ? "định nghĩa"
                 : "thuật ngữ"}
             </Button>
-            {hideFlashcard && <Separator className="h-8 w-[1px]" />}
+            {hideFlashcard && <Separator className="h-8 w-px" />}
             {hideFlashcard && (
               <Button
-                className="h-10 w-10 rounded-none"
+                className="size-10 rounded-none"
                 size={"icon"}
                 variant={"ghost"}
                 onClick={() => {

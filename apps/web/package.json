@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "pnpm with-env next dev --turbopack",
         "build": "pnpm with-env next build",
-        "lint": "dotenv -v SKIP_ENV_VALIDATION=1 next lint",
+        "lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix",
         "start": "pnpm with-env next start",
         "with-env": "dotenv -e ../../.env --"
     },
@@ -63,14 +63,17 @@
         "next-auth": "5.0.0-beta.25",
         "next-nprogress-bar": "^2.4.3",
         "next-themes": "^0.4.3",
+        "pdfjs-dist": "^4.4.168",
         "react": "^19.0.0",
         "react-canvas-confetti": "^1.4.0",
         "react-dom": "^19.0.0",
         "react-easy-crop": "^5.2.0",
         "react-hook-form": "^7.53.2",
+        "react-pdf": "^9.1.1",
         "react-to-print": "^2.15.1",
         "react-top-loading-bar": "^3.0.2",
         "sonner": "^1.7.1",
+        "thumbhash": "^0.1.1",
         "use-fit-text": "^2.4.0",
         "zod": "^3.23.8",
         "zustand": "^5.0.2"

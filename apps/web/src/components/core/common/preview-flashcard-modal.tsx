@@ -35,15 +35,15 @@ export const PreviewFlashcardModal = ({
         router.push(`/study-set/${slug}`);
       }}
     >
-      <div className="max-h-[400px] overflow-y-scroll flex flex-col gap-8 mt-5 no-scrollbar  ">
+      <div className="no-scrollbar mt-5 flex max-h-[400px] flex-col gap-8 overflow-y-scroll  ">
         {isLoading ? (
-          <div className="w-full h-10 flex items-center justify-center">
+          <div className="flex h-10 w-full items-center justify-center">
             <IconLoader2 className="animate-spin" size={20} />
           </div>
         ) : data ? (
           data?.map((content) => (
             <div key={content.id} className="flex flex-col gap-2">
-              <p className="font-semibold text-sm">
+              <p className="text-sm font-semibold">
                 {content.flashcardContentTerm}
               </p>
               <p className="text-sm">{content.flashcardContentDefinition}</p>

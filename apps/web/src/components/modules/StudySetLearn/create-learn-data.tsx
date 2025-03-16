@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { StudibaleTerms } from "@highschool/interfaces/flashcard-learn";
 import { useLearnDataQuery } from "@highschool/react-query/queries";
+import { StudiableTerms } from "@highschool/interfaces";
 
 import { useSet } from "@/hooks/use-set";
 import {
@@ -39,7 +39,7 @@ export const CreateLearnData: React.FC<
 };
 
 interface ContextLayerProps {
-  data: StudibaleTerms;
+  data: StudiableTerms;
   children: React.ReactNode;
   isFetching: boolean;
   placeholder?: React.ReactNode;

@@ -1,7 +1,6 @@
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import React from "react";
 import { Button } from "@highschool/ui/components/ui/button";
-import { Separator } from "@highschool/ui/components/ui/separator";
 import { cn } from "@highschool/ui/lib/utils";
 import { IconLoader2 } from "@tabler/icons-react";
 
@@ -21,6 +20,7 @@ interface ModalProps {
   title?: string;
   children?: React.ReactNode;
   buttonLabel?: string;
+  buttonVariant?: string;
   cancelLabel?: string;
   onConfirm?: () => void;
   description?: string;
@@ -51,7 +51,7 @@ export const Modal = ({
       <CredenzaContent
         className={cn(
           className,
-          "gap-0 border-2 border-none border-gray-300 p-0 shadow-lg dark:border-gray-700",
+          "gap-0 border-2 max-w-xl w-full border-none border-gray-300 p-0 shadow-lg dark:border-gray-700",
         )}
       >
         <CredenzaHeader className="px-5 pt-4 md:px-10 md:pt-8">
@@ -74,17 +74,19 @@ export const Modal = ({
             </VisuallyHidden>
           )}
         </CredenzaHeader>
-        <CredenzaBody className="mt-4 px-5 pb-8 md:px-10">
+        <CredenzaBody className="mt-8 px-5 pb-8 md:px-10">
           {children}
         </CredenzaBody>
-        {!withoutFooter && <Separator />}
+        {!withoutFooter && (
+          <div className="h-0.5 w-full bg-gray-200 dark:bg-gray-800/50" />
+        )}
         {!withoutFooter && (
           <CredenzaFooter className="px-5 py-6 md:px-10">
             {!withoutCancel && (
               <Button
                 className="!text-base"
                 disabled={isPending}
-                size={"lg"}
+                size={"default"}
                 variant="ghost"
                 onClick={onClose}
               >
@@ -94,7 +96,7 @@ export const Modal = ({
             <Button
               className="!text-base"
               disabled={isPending || isDisabled}
-              size={"lg"}
+              size={"default"}
               onClick={onConfirm}
             >
               {isPending ? (

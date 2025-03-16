@@ -30,7 +30,7 @@ export const SelectClass = () => {
             setSelectedClass(grade as Grade);
           }}
         >
-          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
+          <SelectTrigger className="h-12 w-full rounded-lg border-2 border-gray-200 bg-background text-left text-lg font-bold dark:border-gray-800">
             <SelectValue className="px-4" placeholder={"Bạn học lớp mấy?"} />
           </SelectTrigger>
           <SelectContent

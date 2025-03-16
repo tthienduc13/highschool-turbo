@@ -185,7 +185,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                       >
                         {apiSignIn.isPending ? (
                           <IconLoader2
-                            className="animate-loading text-primary !size-6"
+                            className="!size-6 animate-loading text-primary"
                             stroke={"3px"}
                           />
                         ) : (
@@ -212,7 +212,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
                 </form>
               </Form>
             </div>
-            <div className="text-muted-foreground px-4 text-center text-xs font-light">
+            <div className="px-4 text-center text-xs font-light text-muted-foreground">
               Bằng cách đăng kí, bạn đồng ý với Chính sách bảo mật và Điều khoản
               dịch vụ.
             </div>

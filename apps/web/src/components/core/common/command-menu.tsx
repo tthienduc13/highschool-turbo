@@ -86,9 +86,15 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
 
   const dismiss = pathName == `/onboard/command-menu`;
 
-  const { data, isLoading, isSuccess } = useSearchQuery({
+  const {
+    data: searchResult,
+    isLoading,
+    isSuccess,
+  } = useSearchQuery({
     type: SearchType.Name,
     value: query,
+    pageNumber: 1,
+    pageSize: 3,
   });
 
   const filteredOptions: MenuOption[] = options
@@ -231,7 +237,7 @@ export const CommandMenu = ({ open, onClose }: CommandMenuProps) => {
     }
 
     if (isSuccess) {
-      data?.map((searchValue) => {
+      searchResult?.data?.map((searchValue) => {
         total.push({
           icon: <IconSearch className="size-6" />,
           name: `Tìm kiếm: "${searchValue}"`,

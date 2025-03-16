@@ -60,14 +60,14 @@ export const RecentView = () => {
               variant={"ghost"}
             >
               <div className="flex w-full flex-row gap-4">
-                <div className="bg-primary/20 text-primary rounded-md p-2">
+                <div className="rounded-md bg-primary/20 p-2 text-primary">
                   {IconRenderer(item.typeDocument)}
                 </div>
                 <div className="flex flex-col justify-start">
                   <p className="line-clamp-1 w-full text-start text-sm font-medium">
                     {item.documentName}
                   </p>
-                  <p className="text-muted-foreground text-start text-sm">
+                  <p className="text-start text-sm text-muted-foreground">
                     {LabelRenderer(item.typeDocument)} •{" "}
                     {getRelativeTime(new Date(item.time))}
                   </p>
@@ -85,15 +85,15 @@ const IconRenderer = (type: DocumentType) => {
   switch (type) {
     case DocumentType.Flashcard:
       return (
-        <IconCards className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
+        <IconCards className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
       );
     case DocumentType.Document:
       return (
-        <IconFileTypePdf className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
+        <IconFileTypePdf className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
       );
     case DocumentType.Subject:
       return (
-        <IconBooks className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
+        <IconBooks className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
       );
     default:
       break;

@@ -20,8 +20,8 @@ export const TestOptions: React.FC<TestOptionsProps> = ({
     if (!skeleton) return <>{children}</>;
 
     return (
-      <div className="flex h-10 w-10 items-center justify-end">
-        <Skeleton className="h-8 w-8 rounded-full" />
+      <div className="flex size-10 items-center justify-end">
+        <Skeleton className="size-8 rounded-full" />
       </div>
     );
   };

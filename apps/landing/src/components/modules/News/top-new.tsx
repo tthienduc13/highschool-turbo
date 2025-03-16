@@ -68,7 +68,7 @@ export const TopNews = ({ news }: { news: News[] }) => {
               <Avatar className="size-8 md:size-10">
                 {hotNewsItem?.author?.authorImage ? (
                   <AvatarImage
-                    alt={hotNewsItem.author.authorName || "Author"}
+                    alt={hotNewsItem.author.authorName || "Tác giả Highschool"}
                     src={hotNewsItem.author.authorImage}
                   />
                 ) : (
@@ -82,12 +82,12 @@ export const TopNews = ({ news }: { news: News[] }) => {
                 href={`/tac-gia/${hotNewsItem?.author?.authorId}`}
               >
                 <p className="text-xs md:text-sm">
-                  {hotNewsItem?.author?.authorName || "Unknown Author"}
+                  {hotNewsItem?.author?.authorName || "Tác giả Highschool"}
                 </p>
                 <p className="text-muted-foreground text-xs md:text-sm">
                   {hotNewsItem?.createdAt
                     ? formatDate(hotNewsItem.createdAt)
-                    : "Unknown Date"}
+                    : "Không có ngày"}
                 </p>
               </Link>
             </div>

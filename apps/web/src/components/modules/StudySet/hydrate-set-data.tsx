@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { createContext, useEffect, useRef } from "react";
+import { createContext, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import {
   Flashcard,
@@ -29,7 +29,6 @@ import { useSetPropertiesStore } from "@/stores/use-set-properties";
 export interface HydrateSetDataProps {
   isPublic?: boolean;
   withDistractors?: boolean;
-  withCollab?: boolean;
   disallowDirty?: boolean;
   requireFresh?: boolean;
   placeholder?: React.ReactNode;
@@ -40,7 +39,6 @@ export const HydrateSetData: React.FC<
 > = ({
   isPublic,
   withDistractors = false,
-  //   withCollab = false,
   disallowDirty = false,
   requireFresh,
   placeholder,
@@ -57,7 +55,8 @@ export const HydrateSetData: React.FC<
     refetch: refetchFlashcard,
     error,
     isFetchedAfterMount,
-    isSuccess: flaschardSuccess,
+
+    isSuccess: flashcardSuccess,
   } = useFlashcardBySlugQuery({
     slug: params.slug as string,
   });
@@ -65,69 +64,77 @@ export const HydrateSetData: React.FC<
   const {
     data: flashcardContentData,
     refetch: refetchFlashcardContent,
-    isSuccess: flsahcardContentSuccess,
+    isSuccess: flashcardContentSuccess,
   } = useContentsBySlugQuery({
     slug: params.slug as string,
     pageNumber: 1,
     pageSize: status === "authenticated" ? 1000 : 10,
   });
 
+  const createInjectedData = useCallback(
+    (flashcard: Flashcard, terms: FlashcardContent[]): SetData => {
+      const updatedTerms = terms.map((term) => ({
+        ...term,
+        distractors: withDistractors ? [] : undefined,
+      }));
+      const studiableTerms: StudiableTerm[] = terms.map((term) => ({
+        ...term,
+        correctness: 0,
+        incorrectCount: 0,
+        distractors: withDistractors ? [] : undefined,
+      }));
+
+      const studiableLearnTerms = studiableTerms.filter(
+        (t) => t.correctness > 0,
+      );
+      const studiableFlashcardTerms = studiableTerms.filter(
+        (t) => t.correctness === 0,
+      );
+
+      return {
+        flashcard,
+        terms: updatedTerms,
+        injected: {
+          studiableLearnTerms,
+          studiableFlashcardTerms,
+        },
+      };
+    },
+    [withDistractors],
+  );
+
   useEffect(() => {
-    if (flaschardSuccess && flsahcardContentSuccess) {
+    if (flashcardSuccess && flashcardContentSuccess) {
       if (isDirty) setIsDirty(false);
       queryEventChannel.emit(
         "setQueryRefetched",
         createInjectedData(flashcardData!, flashcardContentData),
       );
     }
-  }, [isDirty]);
-
-  const createInjectedData = (
-    flashcard: Flashcard,
-    terms: FlashcardContent[],
-  ): SetData => {
-    const updatedTerms = terms.map((term) => ({
-      ...term,
-      distractors: withDistractors ? [] : undefined,
-    }));
-    const studiableTerms: StudiableTerm[] = terms.map((term) => ({
-      ...term,
-      correctness: 0,
-      incorrectCount: 0,
-      distractors: withDistractors ? [] : undefined,
-    }));
-
-    const studiableLearnTerms = studiableTerms.filter((t) => t.correctness > 0);
-    const studiableFlashcardTerms = studiableTerms.filter(
-      (t) => t.correctness === 0,
-    );
-
-    return {
-      flashcard,
-      terms: updatedTerms,
-      injected: {
-        studiableLearnTerms,
-        studiableFlashcardTerms,
-      },
-    };
-  };
+  }, [
+    isDirty,
+    flashcardSuccess,
+    flashcardContentSuccess,
+    flashcardData,
+    flashcardContentData,
+    createInjectedData,
+    setIsDirty,
+  ]);
 
   useEffect(() => {
     const refetch = async () => {
-      await refetchFlashcard();
-      await refetchFlashcardContent();
+      await Promise.all([refetchFlashcard(), refetchFlashcardContent()]);
     };
 
     if (isDirty) {
       refetch();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDirty]);
 
   if (error) return <SetNotFound />;
 
   if (
-    status == "loading" ||
+    status === "loading" ||
     (!isPublic && !session) ||
     !flashcardData ||
     !flashcardContentData ||
@@ -158,48 +165,38 @@ export const SetContext = createContext<SetContextProps | undefined>(undefined);
 const ContextLayer = ({ data, children }: ContextLayerProps) => {
   const storeRef = useRef<ContainerStore>(null);
   const { status } = useSession();
-  //   const extendedFeedbackBank = useFeature(EnabledFeature.ExtendedFeedbackBank);
 
-  const getVal = (data: Flashcard): Partial<ContainerStoreProps> => ({
-    hideFlashcard: false,
-    flashcardHideWith: LimitedStudySetAnswerMode.Definition,
-    shuffleFlashcards: data.container.shuffleFlashcards,
-    shuffleLearn: data.container.shuffleLearn,
-    studyStarred: data.container.studyStarred,
-    answerWith: data.container.answerWith,
-    // starredTerms: data.container.starredTerms,
-    multipleAnswerMode: data.container.multipleAnswerMode,
-    // extendedFeedbackBank:
-    //   data.container.extendedFeedbackBank && extendedFeedbackBank,
-    enableCardsSorting: data.container.enableCardsSorting,
-    cardsStudyStarred: data.container.cardsStudyStarred,
-    cardsAnswerWith: data.container.cardsAnswerWith,
-    matchStudyStarred: data.container.matchStudyStarred,
-  });
+  const getVal = (data: Flashcard): Partial<ContainerStoreProps> => {
+    if (!data.container) return {};
 
-  //   if (!storeRef.current) {
-  //     storeRef.current = createContainerStore({
-  //       hideFlashcard: false,
-  //       flashcardHideWith: LimitedStudySetAnswerMode.Definition,
-  //       shuffleFlashcards: false,
-  //       autoplayFlashcards: false,
-  //       shuffleLearn: false,
-  //       answerWith: StudySetAnswerMode.FlashcardContentDefinition,
-  //       multipleAnswerMode: MultipleAnswerMode.Unknown,
-  //       enableCardsSorting: false,
-  //       cardsAnswerWith: LimitedStudySetAnswerMode.Definition,
-  //     });
-  //   }
+    return {
+      hideFlashcard: false,
+      flashcardHideWith: LimitedStudySetAnswerMode.Definition,
+      shuffleFlashcards: data.container.shuffleFlashcards,
+      shuffleLearn: data.container.shuffleLearn,
+      studyStarred: data.container.studyStarred,
+      answerWith: data.container.answerWith,
+      starredTerms: data.container.starredTerms,
+      multipleAnswerMode: data.container.multipleAnswerMode,
+      enableCardsSorting: data.container.enableCardsSorting,
+      cardsStudyStarred: data.container.cardsStudyStarred,
+      cardsAnswerWith: data.container.cardsAnswerWith,
+      matchStudyStarred: data.container.matchStudyStarred,
+      studiableTerms: data.container.studiableTerms ?? [],
+    };
+  };
+
   if (!storeRef.current) {
     storeRef.current = createContainerStore(
-      status == "authenticated" ? getVal(data.flashcard) : undefined,
+      status === "authenticated" ? getVal(data.flashcard) : undefined,
     );
   }
 
   useEffect(() => {
     const trigger = (data: SetData) => {
-      if (status == "authenticated")
+      if (status === "authenticated") {
         storeRef.current?.setState(getVal(data.flashcard));
+      }
     };
 
     queryEventChannel.on("setQueryRefetched", trigger);
@@ -207,8 +204,7 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
     return () => {
       queryEventChannel.off("setQueryRefetched", trigger);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [status]);
 
   return (
     <SetContext.Provider value={{ data }}>
@@ -218,3 +214,5 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
     </SetContext.Provider>
   );
 };
+
+export default ContextLayer;

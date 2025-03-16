@@ -65,8 +65,8 @@ export const QuestionSkeleton = () => {
           <div className="w-full pr-0 sm:pr-4">
             <SkeletonPromptDisplay label="Definition" />
           </div>
-          <div className="hidden bg-gray-200 sm:block dark:bg-gray-700" />
-          <div className="my-4 block h-0.5 w-full bg-gray-200 sm:hidden dark:bg-gray-700" />
+          <div className="hidden bg-gray-200 dark:bg-gray-700 sm:block" />
+          <div className="my-4 block h-0.5 w-full bg-gray-200 dark:bg-gray-700 sm:hidden" />
           <div className="w-full pl-0 sm:pl-4">
             <SkeletonPromptDisplay label="Term" />
           </div>
