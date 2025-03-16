@@ -1,17 +1,16 @@
-import { endpointHolland } from "@highschool/endpoints";
 import {
   HollandQuestion,
   HollandUserOption,
   SubmitHollandResponse,
 } from "@highschool/interfaces";
+import { hollandEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
 export const getHollandTest = async (): Promise<HollandQuestion[]> => {
   try {
-    const { data } = await axiosServices.get(
-      `${endpointHolland.GET_HOLLAND_TEST}`,
-    );
+    const { data } = await axiosServices.get(`${hollandEndpoints.getTest}`);
+
     return data;
   } catch (error) {
     console.log("Error fetching Holland test", error);
@@ -38,9 +37,10 @@ export const submitHolland = async (
 ): Promise<SubmitHollandResponse> => {
   try {
     const { data } = await axiosServices.post(
-      `${endpointHolland.SUBMIT_HOLLAND}`,
+      `${hollandEndpoints.submit}`,
       answers,
     );
+
     return data;
   } catch (error) {
     console.log("Error submitting Holland", error);
@@ -51,8 +51,9 @@ export const submitHolland = async (
 export const updateStudentHolland = async (hollandType: string) => {
   try {
     const { data } = await axiosServices.put(
-      `${endpointHolland.UPDATE_STUDENT_HOLLAND(hollandType)}`,
+      `${hollandEndpoints.updateStudentHolland(hollandType)}`,
     );
+
     return data;
   } catch (error) {
     console.error("Error updating student Holland:", error);

@@ -1,4 +1,3 @@
-import { endpointDocument, endpointDocumentMedia } from "@highschool/endpoints";
 import {
   Document,
   DocumentMedia,
@@ -6,6 +5,7 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
+import { documentEndpoints, mediaEndpoints } from "@highschool/endpoints";
 
 import { axiosClientWithoutAuth } from "../lib/axios.ts";
 
@@ -25,7 +25,7 @@ export const getDocuments = async ({
   subjectId,
 }: FilterPayload): Promise<Pagination<Document[]>> => {
   return fetchUnauthedPaginatedData<Document[]>(
-    endpointDocument.GET_DOCUMENTS,
+    documentEndpoints.getDocuments,
     {
       search: search,
       pageNumber: pageNumber,
@@ -49,7 +49,7 @@ export const getDocumentBySlug = async ({
 }): Promise<Document> => {
   try {
     const { data } = await axiosClientWithoutAuth.get(
-      `${endpointDocument.GET_BY_SLUG(documentSlug)}`,
+      `${documentEndpoints.getDocumentBySlug(documentSlug)}`,
     );
 
     return data;
@@ -65,7 +65,7 @@ export const getDocumentMedia = async ({
 }): Promise<ResponseModel<DocumentMedia>> => {
   try {
     const { data } = await axiosClientWithoutAuth.get(
-      `${endpointDocumentMedia.GET_DOCUMENT(documentId)}`,
+      `${mediaEndpoints.getDocument(documentId)}`,
     );
 
     return data;
@@ -84,7 +84,7 @@ export const getDownloadDocument = async ({
   documentId: string;
 }) => {
   const response = await axiosClientWithoutAuth.get(
-    `${endpointDocumentMedia.DOWNLOAD_DOCUMENT(documentId)}`,
+    `${mediaEndpoints.downloadDocument(documentId)}`,
     {
       responseType: "blob",
     },

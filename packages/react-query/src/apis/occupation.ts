@@ -1,6 +1,6 @@
 import { CareerInfo } from "@highschool/interfaces/occupation.ts";
-import { endPointOccupation } from "@highschool/endpoints";
 import { ResponseModel } from "@highschool/interfaces";
+import { occupationEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -17,7 +17,7 @@ export const GetOccupations = async ({
 }>) => {
   try {
     return fetchPaginatedData<CareerInfo[]>(
-      endPointOccupation.GET_OCCUPATIONS,
+      occupationEndpoints.getOccupations,
       {
         search: search ?? "",
         pageNumber,
@@ -37,7 +37,7 @@ export const CreateOccupation = async ({
 }): Promise<ResponseModel<CareerInfo[]>> => {
   try {
     const { data } = await axiosServices.post(
-      endPointOccupation.CREATE_OCCUPATION,
+      occupationEndpoints.create,
       careerInfoList,
     );
 
@@ -55,7 +55,7 @@ export const UpdateOccupation = async ({
 }): Promise<ResponseModel<CareerInfo>> => {
   try {
     const { data } = await axiosServices.put(
-      endPointOccupation.UPDATE_OCCUPATION(careerInfo.id ?? ""),
+      occupationEndpoints.update(careerInfo.id ?? ""),
       {
         majorCodes: careerInfo.majorCodes,
         name: careerInfo.name,
@@ -86,9 +86,7 @@ export const DeleteOccupation = async ({
   id: string;
 }): Promise<ResponseModel<CareerInfo>> => {
   try {
-    const { data } = await axiosServices.delete(
-      endPointOccupation.DELETE_OCCUPATION(id),
-    );
+    const { data } = await axiosServices.delete(occupationEndpoints.delete(id));
 
     return data;
   } catch (error) {

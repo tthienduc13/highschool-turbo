@@ -1,4 +1,4 @@
-import { endpointNews } from "@highschool/endpoints";
+import { mediaEndpoints } from "@highschool/endpoints";
 import { News, Pagination } from "@highschool/interfaces";
 
 import axiosServices from "../lib/axios.ts";
@@ -7,7 +7,7 @@ import fetchPaginatedData from "./common.ts";
 
 export const getHotNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosServices.get(endpointNews.GET_HOT_NEWS);
+    const { data } = await axiosServices.get(mediaEndpoints.getHotNews);
 
     return data;
   } catch (error) {
@@ -17,7 +17,7 @@ export const getHotNews = async (): Promise<News[]> => {
 };
 export const getPopularNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosServices.get(endpointNews.GET_POPULAR_NEWS);
+    const { data } = await axiosServices.get(mediaEndpoints.getPopularNews);
 
     return data;
   } catch (error) {
@@ -39,7 +39,7 @@ export const getNews = async ({
   sort?: string;
   direction: "asc" | "desc";
 }): Promise<Pagination<News[]>> => {
-  return fetchPaginatedData<News[]>(endpointNews.GET_NEWS, {
+  return fetchPaginatedData<News[]>(mediaEndpoints.getNews, {
     search,
     pageNumber,
     pageSize,
@@ -50,7 +50,9 @@ export const getNews = async ({
 
 export const getNewBySlug = async (slug: string): Promise<News> => {
   try {
-    const { data } = await axiosServices.get(endpointNews.GET_NEW_SLUG(slug));
+    const { data } = await axiosServices.get(
+      mediaEndpoints.getNewsBySlug(slug),
+    );
 
     return data;
   } catch (error) {
@@ -62,7 +64,7 @@ export const getNewBySlug = async (slug: string): Promise<News> => {
 export const getAuthorNews = async (authorId: string): Promise<News[]> => {
   try {
     const { data } = await axiosServices.get(
-      endpointNews.GET_AUTHOR_NEW(authorId),
+      mediaEndpoints.getNewsByAuthor(authorId),
     );
 
     return data;
@@ -83,7 +85,7 @@ export const getRelatedNews = async ({
 }): Promise<News[]> => {
   try {
     const { data } = await axiosServices.get(
-      endpointNews.GET_RELATED_NEW(newsTagId),
+      mediaEndpoints.getRelatedNews(newsTagId),
       {
         params: {
           location,

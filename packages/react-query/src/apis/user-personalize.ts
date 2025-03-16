@@ -1,4 +1,4 @@
-import { endpointUserPersonalized } from "@highschool/endpoints";
+import { userPersonalizedEndpoints } from "@highschool/endpoints";
 import {
   Course,
   Document,
@@ -18,8 +18,9 @@ export interface RecommnededData {
 export const getRecentView = async (): Promise<RecentView> => {
   try {
     const { data } = await axiosServices.get(
-      endpointUserPersonalized.RECENT_VIEW,
+      userPersonalizedEndpoints.recentView,
     );
+
     return data;
   } catch (error) {
     console.log("Error while getting recent view", error);
@@ -30,8 +31,9 @@ export const getRecentView = async (): Promise<RecentView> => {
 export const getRecommendedData = async (): Promise<RecommnededData> => {
   try {
     const { data } = await axiosServices.get(
-      endpointUserPersonalized.GET_RECOMMENED,
+      userPersonalizedEndpoints.getRecommended,
     );
+
     return data;
   } catch (error) {
     console.log("Error while getting recommended data", error);

@@ -4,7 +4,7 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
-import { endPointMajor } from "@highschool/endpoints";
+import { majorEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -19,7 +19,7 @@ export const getMajor = async ({
   pageNumber: number;
   pageSize: number;
 }>): Promise<Pagination<Major>> => {
-  return fetchPaginatedData<Major>(endPointMajor.GET_MAJOR, {
+  return fetchPaginatedData<Major>(majorEndpoints.getMajor, {
     search,
     pageNumber,
     pageSize,
@@ -35,7 +35,7 @@ export const getMajorName = async ({
   pageNumber: number;
   pageSize: number;
 }>): Promise<Pagination<Major[]>> => {
-  return fetchPaginatedData<Major[]>(endPointMajor.GET_MAJOR_NAME, {
+  return fetchPaginatedData<Major[]>(majorEndpoints.getMajorName, {
     search,
     pageNumber,
     pageSize,
@@ -46,7 +46,7 @@ export const deleteMajor = async (
   id: string,
 ): Promise<ResponseModel<string>> => {
   try {
-    const { data } = await axiosServices.delete(endPointMajor.DELETE_MAJOR(id));
+    const { data } = await axiosServices.delete(majorEndpoints.delete(id));
 
     return data;
   } catch (error) {
@@ -61,10 +61,7 @@ export const createMajor = async ({
   majors: Major[];
 }): Promise<ResponseModel<Major[]>> => {
   try {
-    const { data } = await axiosServices.post(
-      endPointMajor.CREATE_MAJOR,
-      majors,
-    );
+    const { data } = await axiosServices.post(majorEndpoints.create, majors);
 
     return data;
   } catch (error) {
@@ -79,16 +76,13 @@ export const updateMajor = async ({
   major: Major;
 }): Promise<ResponseModel<Major>> => {
   try {
-    const { data } = await axiosServices.put(
-      endPointMajor.UPDATE_MAJOR(major.id!),
-      {
-        majorCode: major.majorCode,
-        name: major.name,
-        description: major.description,
-        skillYouLearn: major.skillYouLearn,
-        majorCategoryCode: major.majorCategoryCode,
-      },
-    );
+    const { data } = await axiosServices.put(majorEndpoints.update(major.id!), {
+      majorCode: major.majorCode,
+      name: major.name,
+      description: major.description,
+      skillYouLearn: major.skillYouLearn,
+      majorCategoryCode: major.majorCategoryCode,
+    });
 
     return data;
   } catch (error) {
@@ -106,7 +100,7 @@ export const getMajorCategory = async ({
   pageNumber: number;
   pageSize: number;
 }>): Promise<Pagination<MajorCategory>> => {
-  return fetchPaginatedData<MajorCategory>(endPointMajor.GET_MAJOR_CATEGORY, {
+  return fetchPaginatedData<MajorCategory>(majorEndpoints.getMajorCategory, {
     search,
     pageNumber,
     pageSize,
@@ -123,7 +117,7 @@ export const getMajorCategoryName = async ({
   pageSize: number;
 }>): Promise<Pagination<MajorCategory>> => {
   return fetchPaginatedData<MajorCategory>(
-    endPointMajor.GET_MAJOR_CATEGORY_NAME,
+    majorEndpoints.getMajorCategoryName,
     {
       search,
       pageNumber,
@@ -139,7 +133,7 @@ export const createMajorCategory = async ({
 }): Promise<ResponseModel<MajorCategory[]>> => {
   try {
     const { data } = await axiosServices.post(
-      endPointMajor.CREATE_MAJOR_CATEGORY,
+      majorEndpoints.createMajorCategory,
       majorCategories,
     );
 
@@ -157,7 +151,7 @@ export const updateMajorCategory = async ({
 }): Promise<ResponseModel<MajorCategory>> => {
   try {
     const { data } = await axiosServices.put(
-      endPointMajor.UPDATE_MAJOR_CATEGORY(majorCategory.id!),
+      majorEndpoints.updateMajorCategory(majorCategory.id!),
       {
         majorCategoryCode: majorCategory?.majorCategoryCode,
         name: majorCategory?.name,
@@ -179,7 +173,7 @@ export const deleteMajorCategory = async (
 ): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      endPointMajor.DELETE_MAJOR_CATEGORY(id),
+      majorEndpoints.deleteMajorCategory(id),
     );
 
     return data;

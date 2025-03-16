@@ -1,9 +1,9 @@
 import axios from "axios";
-
 import { env } from "@highschool/env";
 
 export const uploadUserImage = async (file: File) => {
   const formData = new FormData();
+
   formData.append("file", file);
   formData.append("upload_preset", env.NEXT_PUBLIC_CLOUDINARY_USER_PRESET);
 

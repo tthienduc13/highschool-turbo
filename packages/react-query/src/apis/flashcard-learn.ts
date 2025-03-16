@@ -1,11 +1,11 @@
 // GET
-import { endpointFlashcardLearn } from "@highschool/endpoints";
 import {
   ResponseModel,
   RoundSummary,
   StudiableTerms,
   UpdateProgressPayload,
 } from "@highschool/interfaces";
+import { flashcardLearnEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -16,7 +16,7 @@ export const getLearnSet = async ({
 }): Promise<StudiableTerms> => {
   try {
     const { data } = await axiosServices.get(
-      endpointFlashcardLearn.GET_LEARN_SET(flashcardId),
+      flashcardLearnEndpoints.getLearnSet(flashcardId),
     );
 
     return data;
@@ -33,7 +33,7 @@ export const getLearnProgress = async ({
 }): Promise<RoundSummary> => {
   try {
     const { data } = await axiosServices.get(
-      endpointFlashcardLearn.GET_LEARN_PROGRESS(flashcardId),
+      flashcardLearnEndpoints.getLearnProgress(flashcardId),
     );
 
     return data;
@@ -51,7 +51,7 @@ export const updateLearnProgress = async ({
 }: UpdateProgressPayload): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointFlashcardLearn.POST_PROGRESS,
+      flashcardLearnEndpoints.postProgress,
       {
         flashcardId,
         flashcardContentId,
@@ -75,7 +75,7 @@ export const resetLearnProgress = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointFlashcardLearn.RESET_PROGRESS(flashcardId),
+      flashcardLearnEndpoints.resetProgress(flashcardId),
     );
 
     return data;

@@ -12,6 +12,7 @@ import {
 import { richTextToHtml } from "@highschool/lib/editor";
 import {
   addTerm,
+  bulkAddTerms,
   createFlashcardStatus,
   deleteFlashcardContent,
   patchFlashcard,
@@ -129,10 +130,21 @@ export const EditorContextLayer = ({
     },
   });
 
+  const apiBulkAddTerms = useMutation({
+    mutationKey: ["bulk-add-terms"],
+    mutationFn: bulkAddTerms,
+    onSuccess: (data) => {
+      const state = storeRef.current!.getState();
+
+      state.addServerTerms(data?.data!.map((x) => x));
+    },
+  });
+
   const isSaving =
     apiCreate.isPending ||
     apiEditSet.isPending ||
     apiAddTerm.isPending ||
+    apiBulkAddTerms.isPending ||
     apiDeleteTerm.isPending ||
     apiEditTerm.isPending ||
     apiReorderTerm.isPending;
@@ -231,6 +243,29 @@ export const EditorContextLayer = ({
               flashcardContentId: termId,
               flashcardId: data?.id!,
             });
+        },
+        bulkAddTerms: (terms, deleted) => {
+          void (async () => {
+            // if (!!deleted?.length) {
+            //   await apiBulkDeleteTerms.mutateAsync({
+            //     studySetId: data.id,
+            //     terms: deleted,
+            //   });
+            // }
+
+            apiBulkAddTerms.mutate({
+              flashcardId: data?.id!,
+              values: terms.map((value) => {
+                return {
+                  flashcardContentTerm: value.term,
+                  flashcardContentDefinition: value.definition,
+                  flashcardContentTermRichText: "",
+                  flashcardContentDefinitionRichText: "",
+                  image: "",
+                };
+              }),
+            });
+          })();
         },
         removeImage: (id) => {
           apiEditTerm.mutate({

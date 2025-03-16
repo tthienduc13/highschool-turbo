@@ -1,4 +1,3 @@
-import { endpointCareerGuidance, endpointUser } from "@highschool/endpoints";
 import {
   Author,
   CareerGuidanceStatus,
@@ -11,6 +10,7 @@ import {
   UserProfile,
   UserSession,
 } from "@highschool/interfaces";
+import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
 
 import axiosServices, {
   axiosClientUpload,
@@ -50,7 +50,7 @@ export const getUserProgressStage = async (): Promise<
   ResponseModel<string>
 > => {
   try {
-    const { data } = await axiosServices.get(endpointUser.PROGRESS_STATE);
+    const { data } = await axiosServices.get(userEndpoints.getProgressState);
 
     return data;
   } catch (error) {
@@ -63,7 +63,9 @@ export const careerOrientationStatus = async (): Promise<
   ResponseModel<CareerGuidanceStatus>
 > => {
   try {
-    const { data } = await axiosServices.get(endpointUser.ORIENTATION_STATUS);
+    const { data } = await axiosServices.get(
+      userEndpoints.getOrientationStatus,
+    );
 
     return data;
   } catch (error) {
@@ -76,7 +78,7 @@ export const getCareerGuidanceBrief = async (): Promise<
   ResponseModel<CareerGuidanceBrief>
 > => {
   try {
-    const { data } = await axiosServices.get(endpointCareerGuidance.GET_BRIEF);
+    const { data } = await axiosServices.get(careerGuidanceEndpoints.getBrief);
 
     return data;
   } catch (error) {
@@ -92,7 +94,7 @@ export const getUserProfile = async ({
 }): Promise<ResponseModel<UserProfile>> => {
   try {
     const { data } = await axiosServices.get(
-      endpointUser.PROFILE_USER(username),
+      userEndpoints.getProfile(username),
     );
 
     return data;
@@ -108,14 +110,11 @@ export const checkUserNameExist = async ({
   userName: string;
 }): Promise<boolean> => {
   try {
-    const { data } = await axiosServices.get(
-      `${endpointUser.CHECK_USER_NAME}`,
-      {
-        params: {
-          userName,
-        },
+    const { data } = await axiosServices.get(`${userEndpoints.checkUsername}`, {
+      params: {
+        userName,
       },
-    );
+    });
 
     return data;
   } catch (error) {
@@ -134,7 +133,7 @@ export const getAuthorList = async ({
 
     userIds.forEach((id) => params.append("userIds", id));
 
-    const { data } = await axiosServices.get(`${endpointUser.GET_AUTHOR}`, {
+    const { data } = await axiosServices.get(`${userEndpoints.getAuthor}`, {
       params,
     });
 
@@ -152,7 +151,7 @@ export const getAuthorById = async ({
 }): Promise<ResponseModel<Author>> => {
   try {
     const { data } = await axiosServices.get(
-      `${endpointUser.GET_AUTHOR_BY_ID(authorId)}`,
+      `${userEndpoints.getAuthorById(authorId)}`,
     );
 
     return data;
@@ -212,7 +211,7 @@ export const updateBaseUserInfo = async ({
     };
 
     const { data } = await axiosServices.put(
-      `${endpointUser.UPDATE_BASE_USER}`,
+      `${userEndpoints.updateBaseUser}`,
       payload,
     );
 
@@ -230,7 +229,7 @@ export const completeOnboard = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.put(
-      `${endpointUser.COMPLETE_ONBOARD(userId)}`,
+      `${userEndpoints.completeOnboard(userId)}`,
     );
 
     return data;
@@ -246,7 +245,7 @@ export const saveCachePersonality = async ({
   mbtiType,
 }: CachePersonality): Promise<ResponseModel<string>> => {
   try {
-    const { data } = await axiosServices.post(endpointUser.CACHE_PERSONALITY, {
+    const { data } = await axiosServices.post(userEndpoints.cachePersonality, {
       email,
       hollandType: hollandType ?? "",
       mbtiType: mbtiType ?? "",
@@ -277,7 +276,7 @@ export const report = async ({
     files.forEach((file) => formData.append("Images", file));
 
     const { data } = await axiosClientUpload.post(
-      endpointUser.REPORT,
+      userEndpoints.report,
       formData,
       {
         headers: {
@@ -304,7 +303,7 @@ export const getUsers = async (params: {
   try {
     const queryString = createQueryString(params);
     const response = await axiosServices.get(
-      `${endpointUser.GET_USER}?${queryString}`,
+      `${userEndpoints.getUser}?${queryString}`,
     );
 
     const paginationHeader = response.headers["x-pagination"];
@@ -329,7 +328,7 @@ export const createAccount = async ({
   user: UserCreate;
 }): Promise<ResponseModel<string>> => {
   try {
-    const response = await axiosServices.post(endpointUser.CREATE_USER, user);
+    const response = await axiosServices.post(userEndpoints.createUser, user);
 
     return response.data;
   } catch (error) {

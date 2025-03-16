@@ -1,6 +1,5 @@
 // GET
 import axios from "axios";
-import { endpointFlashcard, endpointUser } from "@highschool/endpoints";
 import {
   DraftData,
   EditSetPayload,
@@ -9,6 +8,7 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
+import { flashcardEndpoints, userEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -24,7 +24,7 @@ export const getUserFlashcard = async ({
   pageNumber: number;
 }): Promise<Pagination<Flashcard[]>> => {
   return fetchPaginatedData<Flashcard[]>(
-    endpointUser.USER_FLASHCARD(username),
+    userEndpoints.getUserFlashcards(username),
     {
       pageNumber,
       pageSize,
@@ -39,7 +39,7 @@ export const getOwnerFlashcard = async ({
   pageSize: number;
   pageNumber: number;
 }): Promise<Pagination<Flashcard[]>> => {
-  return fetchPaginatedData<Flashcard[]>(endpointUser.OWNER_FLASHCARD, {
+  return fetchPaginatedData<Flashcard[]>(userEndpoints.getOwnerFlashcards, {
     pageNumber,
     pageSize,
   });
@@ -47,9 +47,7 @@ export const getOwnerFlashcard = async ({
 
 export const getTopFlashcard = async (): Promise<Flashcard[]> => {
   try {
-    const { data } = await axiosServices.get(
-      endpointFlashcard.GET_TOP_FLASHCARD,
-    );
+    const { data } = await axiosServices.get(flashcardEndpoints.getTop);
 
     return data;
   } catch (error) {
@@ -60,7 +58,7 @@ export const getTopFlashcard = async (): Promise<Flashcard[]> => {
 
 export const getRelatedFlashcard = async (): Promise<Flashcard[]> => {
   try {
-    const { data } = await axiosServices.get(endpointFlashcard.RELATED);
+    const { data } = await axiosServices.get(flashcardEndpoints.related);
 
     return data;
   } catch (error) {
@@ -76,7 +74,7 @@ export const getFlashcardBySlug = async ({
 }): Promise<Flashcard> => {
   try {
     const { data } = await axiosServices.get(
-      endpointFlashcard.GET_BY_SLUG(slug),
+      flashcardEndpoints.getBySlug(slug),
     );
 
     return data;
@@ -92,7 +90,7 @@ export const getFlashcardById = async ({
   id: string;
 }): Promise<Flashcard> => {
   try {
-    const { data } = await axiosServices.get(endpointFlashcard.GET_BY_ID(id));
+    const { data } = await axiosServices.get(flashcardEndpoints.getById(id));
 
     return data;
   } catch (error) {
@@ -105,7 +103,10 @@ export const getDraftFlashcard = async (): Promise<
   ResponseModel<DraftData | string>
 > => {
   try {
-    const { data } = await axiosServices.post(`${endpointFlashcard.DRAFT}`, {});
+    const { data } = await axiosServices.post(
+      `${flashcardEndpoints.draft}`,
+      {},
+    );
 
     return data;
   } catch (error) {
@@ -126,7 +127,7 @@ export const createFlashcardStatus = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.patch(
-      endpointFlashcard.CREATE_FLASHCARD_FROM_DRAFT(flashcardId),
+      flashcardEndpoints.createFromDraft(flashcardId),
     );
 
     return data;
@@ -155,7 +156,7 @@ export const patchFlashcard = async ({
       ),
     );
     const { data } = await axiosServices.patch(
-      endpointFlashcard.EDIT_SET(flashcardId),
+      flashcardEndpoints.editSet(flashcardId),
       cleanValues,
     );
 
@@ -173,7 +174,7 @@ export const deleteFlashcard = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointFlashcard.DELETE(flashcardId),
+      flashcardEndpoints.delete(flashcardId),
     );
 
     return data;
@@ -190,7 +191,7 @@ export const starTerm = async ({
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(
-      `${endpointFlashcard.STAR_TERM(flashcardContentId)}`,
+      `${flashcardEndpoints.starTerm(flashcardContentId)}`,
       {},
     );
 
@@ -217,7 +218,7 @@ export const updateContainer = async ({
 }) => {
   try {
     const { data } = await axiosServices.patch(
-      `${endpointFlashcard.UPDATE_CONTAINER(flashcardId)}`,
+      `${flashcardEndpoints.updateContainer(flashcardId)}`,
       { ...values },
     );
 

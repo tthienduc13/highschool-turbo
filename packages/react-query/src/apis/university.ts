@@ -1,5 +1,5 @@
-import { endpointUniversity } from "@highschool/endpoints";
 import { Pagination, University, UniversityCity } from "@highschool/interfaces";
+import { universityEndpoints } from "@highschool/endpoints";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -20,7 +20,7 @@ export const getUniversities = async ({
   maxTuition: number;
   city: UniversityCity;
 }>): Promise<Pagination<University[]>> => {
-  return fetchPaginatedData<University[]>(endpointUniversity.GET_UNI_LIST, {
+  return fetchPaginatedData<University[]>(universityEndpoints.getList, {
     pageNumber,
     pageSize,
     search,

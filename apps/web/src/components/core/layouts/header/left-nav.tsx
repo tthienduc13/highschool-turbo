@@ -17,9 +17,9 @@ import { cn } from "@highschool/ui/lib/utils";
 import {
   IconCards,
   IconChevronDown,
-  IconDice6,
   IconFileTypePdf,
   IconFolder,
+  IconSchool,
   IconSparkles,
   TablerIcon,
 } from "@tabler/icons-react";
@@ -73,16 +73,16 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
       teacherOnly: true,
     },
     {
-      label: "Coolket",
-      icon: IconDice6,
-      onClick: () => handleItemClick("Coolket"),
-      teacherOnly: true,
-    },
-    {
       label: "Thư mục mới",
       icon: IconFolder,
       onClick: onFolderClick,
       separator: true,
+    },
+    {
+      label: "Zone",
+      icon: IconSchool,
+      onClick: () => router.push("/zone/new"),
+      teacherOnly: true,
     },
   ];
 

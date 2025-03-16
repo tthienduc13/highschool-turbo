@@ -4,7 +4,7 @@ import {
   SearchResult,
   SearchType,
 } from "@highschool/interfaces";
-import { endpointSearch } from "@highschool/endpoints";
+import { searchEndpoints } from "@highschool/endpoints";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -32,7 +32,7 @@ export async function search<T extends SearchType>({
   pageSize,
   pageNumber,
 }: SearchParams): Promise<Pagination<SearchResult<T>>> {
-  return fetchPaginatedData<SearchResult<T>>(endpointSearch.SEARCH, {
+  return fetchPaginatedData<SearchResult<T>>(searchEndpoints.search, {
     pageNumber,
     pageSize,
     type,
