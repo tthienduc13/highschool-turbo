@@ -50,18 +50,51 @@ export const authEndpoints = {
   ),
 } as const;
 
-const endpointInformation = {
-  GET_ALL_SCHOOL: `${prefixDocumentServices}${prefixFirstVersion}/information/schools`,
-  GET_ALL_CITY_SCHOOL: (cityId: number) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/information/provice/${cityId}/schools`,
-  GET_ALL_CITIES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
-  CREATE_SCHOOLS: `${prefixDocumentServices}${prefixFirstVersion}/information/province/schools`,
-  GET_SCHOOLS: `${prefixDocumentServices}${prefixFirstVersion}/information/schools`,
-  GET_ALL_PROVINCE_SCHOOL: (provinceId: string) =>
-    `${prefixDocumentServices}${prefixFirstVersion}/information/provice/${provinceId}/schools`,
-  CREATE_PROVINCES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
-  GET_PROVINCES: `${prefixDocumentServices}${prefixFirstVersion}/information/provinces`,
-};
+// Information Endpoints
+export const informationEndpoints = {
+  getAllSchools: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/schools",
+  ),
+  getCitySchools: (cityId: number) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/information/provice/${cityId}/schools`,
+    ),
+  getAllCities: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/provinces",
+  ),
+  createSchools: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/province/schools",
+  ),
+  getSchools: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/schools",
+  ),
+  getAllProvinceSchool: (provinceId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/information/provice/${provinceId}/schools`,
+    ),
+  createProvinces: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/provinces",
+  ),
+  getProvinces: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/information/provinces",
+  ),
+} as const;
 
 // User Endpoints
 export const userEndpoints = {
@@ -625,29 +658,58 @@ export const universityEndpoints = {
     API_VERSIONS.V1,
     "/university",
   ),
+  getUniversityName: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/name",
+  ),
+  create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/university"),
+  getUniversityDetail: (universityId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/university/${universityId}`,
+    ),
+  updateUniversity: (universityId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/university/${universityId}`,
+    ),
+  deleteUniversity: (universityId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/university/${universityId}`,
+    ),
+  getUniversityMajor: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/universityMajor",
+  ),
+  getUniversityMajorName: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/universityMajor/name",
+  ),
+  createUniversityMajor: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/universityMajor",
+  ),
+  updateUniversityMajor: (universityMajorId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/universityMajor/${universityMajorId}`,
+    ),
+  deleteUniversityMajor: (universityMajorId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.USER,
+      API_VERSIONS.V1,
+      `/universityMajor/${universityMajorId}`,
+    ),
 } as const;
-
-const endpointUniversity = {
-  GET_UNI_LIST: `${prefixUserServices}${prefixFirstVersion}/university`,
-  GET_UNIVERSITY_NAME: `${prefixUserServices}${prefixFirstVersion}/university/name`,
-  CREATE_UNIVERSITY: `${prefixUserServices}${prefixFirstVersion}/university`,
-  GET_UNIVERSITY_DETAIL: (universityId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
-  UPDATE_UNIVERSITY: (universityId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
-  DELETE_UNIVERSITY: (universityId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/university/${universityId}`,
-  GET_UNIVERSITY_MAJOR: `${prefixUserServices}${prefixFirstVersion}/universityMajor`,
-  GET_UNIVERSITY_MAJOR_NAME: `${prefixUserServices}${prefixFirstVersion}/universityMajor/name`,
-  CREATE_UNIVERSITY_MAJOR: `${prefixUserServices}${prefixFirstVersion}/universityMajor`,
-  UPDATE_UNIVERSITY_MAJOR: (universityMajorId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/universityMajor/${universityMajorId}`,
-  DELETE_UNIVERSITY_MAJOR: (universityMajorId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/universityMajor/${universityMajorId}`,
-};
-const endpointCurriculum = {
-  GET: `${prefixDocumentServices}${prefixFirstVersion}/curriculum`,
-};
 
 // KET Endpoints
 export const ketEndpoints = {
@@ -734,25 +796,51 @@ export const zoneEndpoints = {
     ),
 } as const;
 
-const endpointNews = {
-  GET_HOT_NEWS: `${prefixMediaServices}${prefixFirstVersion}/hotnews`,
-  GET_POPULAR_NEWS: `${prefixMediaServices}${prefixFirstVersion}/popularnews`,
-  GET_NEWS: `${prefixMediaServices}${prefixFirstVersion}/news`,
-  GET_NEW_SLUG: (slug: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/new/slug/${slug}`,
-  GET_AUTHOR_NEW: (authorId: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/new/authorId/${authorId}`,
-  GET_RELATED_NEW: (newTagId: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/relatednews/${newTagId}`,
-  CREATE_NEWS: `${prefixMediaServices}${prefixFirstVersion}/new`,
-  GET_NEWS_DETAIL: (slug: string) =>
-    `${prefixMediaServices}${prefixFirstVersion}/new/slug/${slug}`,
-};
+// News Endpoints
+export const newsEndpoints = {
+  getHotNews: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/hotnews",
+  ),
+  getPopularNews: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/popularnews",
+  ),
+  getNews: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/news"),
+  getNewsBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/new/slug/${slug}`,
+    ),
+  getNewsByAuthor: (authorId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/new/authorId/${authorId}`,
+    ),
+  getRelatedNews: (newTagId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/relatednews/${newTagId}`,
+    ),
+  create: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/new"),
+  getNewsDetail: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/new/slug/${slug}`,
+    ),
+} as const;
 
-const endPointTag = {
-  GET_ALL_TAG: `${prefixMediaServices}${prefixFirstVersion}/newstags`,
-  CREATE_TAG: `${prefixMediaServices}${prefixFirstVersion}/newstag`,
-};
+// Tag Endpoints
+export const tagEndpoints = {
+  getAll: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/newstags"),
+  create: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/newstag"),
+} as const;
 
 // Game Endpoints
 export const gameEndpoints = {
@@ -787,64 +875,6 @@ const endpointKet = {
   GET_KETS_CATEGORY: `/kets/categories`,
 };
 
-const endPointOccupation = {
-  GET_OCCUPATIONS: `${prefixUserServices}${prefixFirstVersion}/occupation`,
-  CREATE_OCCUPATION: `${prefixUserServices}${prefixFirstVersion}/occupation`,
-  UPDATE_OCCUPATION: (occupationId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/occupation/${occupationId}`,
-  DELETE_OCCUPATION: (occupationId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/occupation/${occupationId}`,
-};
-
-const endPointMajor = {
-  GET_MAJOR: `${prefixUserServices}${prefixFirstVersion}/major`,
-  GET_MAJOR_NAME: `${prefixUserServices}${prefixFirstVersion}/major/name`,
-  CREATE_MAJOR: `${prefixUserServices}${prefixFirstVersion}/major`,
-  UPDATE_MAJOR: (majorId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/major/${majorId}`,
-  DELETE_MAJOR: (majorId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/major/${majorId}`,
-  GET_MAJOR_CATEGORY: `${prefixUserServices}${prefixFirstVersion}/majorCategory`,
-  GET_MAJOR_CATEGORY_NAME: `${prefixUserServices}${prefixFirstVersion}/majorCategory/name`,
-  CREATE_MAJOR_CATEGORY: `${prefixUserServices}${prefixFirstVersion}/majorCategory`,
-  UPDATE_MAJOR_CATEGORY: (majorCategoryId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/majorCategory/${majorCategoryId}`,
-  DELETE_MAJOR_CATEGORY: (majorCategoryId: string) =>
-    `${prefixUserServices}${prefixFirstVersion}/majorCategory/${majorCategoryId}`,
-};
-
-export {
-  endPointTag,
-  endPointMajor,
-  endPointOccupation,
-  endpointKet,
-  endpointUploadImage,
-  endpointGame,
-  endpointNews,
-  endpointDocumentMedia,
-  endpointDocument,
-  endpointCategory,
-  endpointCurriculum,
-  endpointUniversity,
-  endpointQuiz,
-  endpointSearch,
-  endpointRoadmap,
-  endpointData,
-  endpointInformation,
-  endpointCareerGuidance,
-  endpointLesson,
-  endpointChapter,
-  endpointCourse,
-  endpointAuth,
-  endpointUser,
-  endpointFolder,
-  endpointUserPersonalized,
-  endpointFlashcard,
-  endpointFlashcardContent,
-  endpointMBTI,
-  endpointHolland,
-  endpointFlashcardLearn,
-};
 export const curriculumEndpoints = {
   get: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,

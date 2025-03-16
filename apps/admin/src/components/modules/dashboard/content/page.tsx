@@ -25,6 +25,7 @@ function ContentModule() {
                         <CardContent
                             key={index}
                             color={content.bgColor}
+                            darkColor={content.darkColor}
                             icon={content.icon}
                             items={content.items}
                             title={content.title}

@@ -4,7 +4,7 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
-import { endpointInformation } from "@highschool/endpoints";
+import { informationEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -13,7 +13,7 @@ export const createProvinces = async (
 ): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointInformation.CREATE_PROVINCES,
+      informationEndpoints.createProvinces,
       provinceList,
     );
 
@@ -35,7 +35,7 @@ export const getProvinces = async ({
 }): Promise<Pagination<City[]>> => {
   try {
     const response = await axiosServices.get(
-      endpointInformation.GET_PROVINCES,
+      informationEndpoints.getProvinces,
       {
         params: {
           search,

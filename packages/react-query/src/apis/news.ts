@@ -1,4 +1,3 @@
-import { endpointNews, endPointTag } from "@highschool/endpoints";
 import {
   Metadata,
   News,
@@ -6,7 +5,11 @@ import {
   Pagination,
   Tag,
 } from "@highschool/interfaces";
-import { mediaEndpoints } from "@highschool/endpoints";
+import {
+  mediaEndpoints,
+  newsEndpoints,
+  tagEndpoints,
+} from "@highschool/endpoints";
 
 import axiosServices, {
   axiosClientUpload,
@@ -17,9 +20,7 @@ import fetchPaginatedData from "./common.ts";
 
 export const getHotNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_HOT_NEWS,
-    );
+    const { data } = await axiosClientWithoutAuth.get(newsEndpoints.getHotNews);
 
     return data;
   } catch (error) {
@@ -30,7 +31,7 @@ export const getHotNews = async (): Promise<News[]> => {
 export const getPopularNews = async (): Promise<News[]> => {
   try {
     const { data } = await axiosClientWithoutAuth.get(
-      endpointNews.GET_POPULAR_NEWS,
+      newsEndpoints.getPopularNews,
     );
 
     return data;
@@ -131,7 +132,7 @@ export const GetAllTag = async ({
   search?: string;
 }): Promise<Pagination<Tag[]>> => {
   try {
-    const response = await axiosServices.get(endPointTag.GET_ALL_TAG, {
+    const response = await axiosServices.get(tagEndpoints.getAll, {
       params: { pageSize, pageNumber, search },
     });
 
@@ -153,7 +154,7 @@ export const GetAllTag = async ({
 
 export const CreateTag = async ({ newTagName }: { newTagName: string }) => {
   try {
-    const response = await axiosServices.post(endPointTag.CREATE_TAG, {
+    const response = await axiosServices.post(tagEndpoints.create, {
       newTagName,
     });
 
@@ -166,7 +167,7 @@ export const CreateTag = async ({ newTagName }: { newTagName: string }) => {
 
 export const createBlog = async (data: NewsCreate) => {
   const reponse = await axiosClientUpload.postForm(
-    `${endpointNews.CREATE_NEWS}`,
+    `${newsEndpoints.create}`,
     data,
   );
 
@@ -175,7 +176,7 @@ export const createBlog = async (data: NewsCreate) => {
 
 export const getNewsDetail = async (slug: string): Promise<News> => {
   const response = await axiosServices.get(
-    `${endpointNews.GET_NEWS_DETAIL(slug)}`,
+    `${newsEndpoints.getNewsDetail(slug)}`,
   );
 
   return response.data;

@@ -14,6 +14,7 @@ interface CardContentProps {
     icon: React.ReactNode;
     items: ItemData[];
     color: string;
+    darkColor?: string;
 }
 
 export default function CardContent({
@@ -21,19 +22,22 @@ export default function CardContent({
     icon,
     items,
     color,
+    darkColor,
 }: CardContentProps) {
-    console.log("CardContent", title, icon, items, color);
-
     return (
-        <div className={`bg-[${color}] w-full max-w-xs rounded-xl p-4 shadow-sm`}>
+        <div
+            className={`${color} dark:bg-background w-full max-w-xs rounded-xl p-4 shadow-sm`}
+        >
             <div className="mb-4 flex flex-col gap-4">
                 <div className="flex size-10 items-center justify-center rounded-full bg-white shadow-sm">
                     {icon}
                 </div>
-                <h3 className="text-lg font-medium text-gray-800">{title}</h3>
+                <h3 className="text-lg font-medium text-gray-800 dark:text-white">
+                    {title}
+                </h3>
             </div>
 
-            <div className="mt-4 flex rounded-xl bg-white p-2">
+            <div className="mt-4 flex rounded-xl bg-white p-2 dark:bg-[#09132b]">
                 {items.map((item, index) => (
                     <TooltipProvider key={index} delayDuration={0}>
                         <Tooltip>
@@ -41,7 +45,7 @@ export default function CardContent({
                                 <div className="flex-1">
                                     <div
                                         key={item.title}
-                                        className="flex flex-1 items-center justify-center gap-2 p-2"
+                                        className="flex flex-1 items-center justify-center gap-2 p-2 "
                                     >
                                         <item.icon className="size-4 text-gray-500" />
                                         <span className="text-sm font-medium">{item.data}</span>

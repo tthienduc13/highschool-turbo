@@ -1,4 +1,3 @@
-import { endpointUniversity } from "@highschool/endpoints";
 import {
   Pagination,
   ResponseModel,
@@ -46,7 +45,7 @@ export const createUniversityList = async (
 ): Promise<ResponseModel<University[]>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointUniversity.CREATE_UNIVERSITY,
+      universityEndpoints.create,
       universityList,
     );
 
@@ -62,7 +61,7 @@ export const updateUniversity = async (
 ): Promise<ResponseModel<University>> => {
   try {
     const { data } = await axiosServices.put(
-      endpointUniversity.UPDATE_UNIVERSITY(university.id),
+      universityEndpoints.updateUniversity(university.id),
       {
         uniCode: university.uniCode,
         name: university.name,
@@ -86,7 +85,7 @@ export const deleteUniversity = async (
 ): Promise<ResponseModel<University>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointUniversity.DELETE_UNIVERSITY(universityId),
+      universityEndpoints.deleteUniversity(universityId),
     );
 
     return data;
@@ -103,7 +102,7 @@ export const createUniversityMajorList = async ({
 }): Promise<ResponseModel<UniversityMajor[]>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointUniversity.CREATE_UNIVERSITY_MAJOR,
+      universityEndpoints.createUniversityMajor,
       universityMajorList,
     );
 
@@ -121,7 +120,7 @@ export const updateUniversityMajor = async ({
 }): Promise<ResponseModel<UniversityMajor>> => {
   try {
     const { data } = await axiosServices.put(
-      endpointUniversity.UPDATE_UNIVERSITY_MAJOR(universityMajor.id ?? ""),
+      universityEndpoints.updateUniversityMajor(universityMajor.id ?? ""),
       {
         uniCode: universityMajor.uniCode,
         majorCode: universityMajor.majorCode,
@@ -145,7 +144,7 @@ export const deleteUniversityMajor = async ({
 }): Promise<ResponseModel<UniversityMajor>> => {
   try {
     const { data } = await axiosServices.delete(
-      endpointUniversity.DELETE_UNIVERSITY_MAJOR(universityMajorId),
+      universityEndpoints.deleteUniversityMajor(universityMajorId),
     );
 
     return data;
@@ -164,14 +163,11 @@ export const getUniversityName = async ({
   pageNumber: number;
   pageSize: number;
 }>): Promise<Pagination<University>> => {
-  return fetchPaginatedData<University>(
-    endpointUniversity.GET_UNIVERSITY_NAME,
-    {
-      search,
-      pageNumber,
-      pageSize,
-    },
-  );
+  return fetchPaginatedData<University>(universityEndpoints.getUniversityName, {
+    search,
+    pageNumber,
+    pageSize,
+  });
 };
 
 export const getUniversityMajorName = async ({
@@ -184,7 +180,7 @@ export const getUniversityMajorName = async ({
   pageSize: number;
 }>): Promise<Pagination<UniversityMajor>> => {
   return fetchPaginatedData<UniversityMajor>(
-    endpointUniversity.GET_UNIVERSITY_MAJOR_NAME,
+    universityEndpoints.getUniversityMajorName,
     {
       search,
       pageNumber,
@@ -204,7 +200,7 @@ export const getUniversityMajor = async ({
 }>): Promise<Pagination<UniversityMajor[]>> => {
   try {
     return fetchPaginatedData<UniversityMajor[]>(
-      endpointUniversity.GET_UNIVERSITY_MAJOR,
+      universityEndpoints.getUniversityMajor,
       {
         search: uniCode,
         pageNumber,

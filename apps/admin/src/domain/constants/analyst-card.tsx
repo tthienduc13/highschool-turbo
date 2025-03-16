@@ -27,13 +27,14 @@ export interface ContentAnalyst {
   bgColor: string;
   icon: React.ReactNode;
   items: ItemData[];
+  darkColor?: string;
 }
 
 export const contentAnalysts: ContentAnalyst[] = [
   {
     id: "flashcard",
     title: "Flashcards",
-    bgColor: "#F8EFE2",
+    bgColor: "bg-[#F8EFE2]",
     icon: <IconPlayCardStar className="size-5 text-orange-400" />,
     items: [
       { title: "Open", data: 0, icon: IconLockOpen2 },
@@ -44,7 +45,7 @@ export const contentAnalysts: ContentAnalyst[] = [
   {
     id: "course",
     title: "Courses",
-    bgColor: "#EFF7E2",
+    bgColor: "bg-[#EFF7E2]",
     icon: <IconBrandParsinta className="size-5 text-green-500" />,
     items: [
       { title: "Published", data: 0, icon: IconLockOpen2 },
@@ -54,7 +55,7 @@ export const contentAnalysts: ContentAnalyst[] = [
   {
     id: "news",
     title: "News",
-    bgColor: "#e2f3f7",
+    bgColor: "bg-[#e2f3f7]",
     icon: <IconNews className="size-5 text-blue-500" />,
     items: [
       { title: "Hot", data: 0, icon: IconFlame },
@@ -64,7 +65,7 @@ export const contentAnalysts: ContentAnalyst[] = [
   {
     id: "material",
     title: "Materials",
-    bgColor: "#EAE8F5",
+    bgColor: "bg-[#EAE8F5]",
     icon: <IconFileTypeDoc className="size-5 text-indigo-500" />,
     items: [
       { title: "Lessons", data: 0, icon: IconVocabulary },

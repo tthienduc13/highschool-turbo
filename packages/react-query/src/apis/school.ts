@@ -4,7 +4,7 @@ import {
   ResponseModel,
   School,
 } from "@highschool/interfaces";
-import { endpointInformation } from "@highschool/endpoints";
+import { informationEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -15,7 +15,7 @@ export const createSchools = async (
 ): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(
-      endpointInformation.CREATE_SCHOOLS,
+      informationEndpoints.createSchools,
       schoolList,
     );
 
@@ -37,7 +37,7 @@ export const getSchools = async ({
   pageSize: number;
   searchProvince?: string;
 }): Promise<Pagination<School[]>> => {
-  return fetchPaginatedData<School[]>(endpointInformation.GET_SCHOOLS, {
+  return fetchPaginatedData<School[]>(informationEndpoints.getSchools, {
     search,
     pageNumber,
     pageSize,
@@ -57,7 +57,7 @@ export const getProvinceSchools = async ({
   pageSize: number;
 }): Promise<Pagination<School[]>> => {
   return fetchPaginatedData<School[]>(
-    endpointInformation.GET_ALL_PROVINCE_SCHOOL(provinceId),
+    informationEndpoints.getAllProvinceSchool(provinceId),
     {
       search,
       pageNumber,

@@ -28,10 +28,6 @@ export const navModerator = {
           title: "Content",
           url: "/dashboard/content",
         },
-        {
-          title: "Engagement",
-          url: "/dashboard/engagement",
-        },
       ],
     },
     {
