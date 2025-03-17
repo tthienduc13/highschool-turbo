@@ -105,7 +105,7 @@ export const Filter = ({ setFilters, filters, categoryName }: FilterProps) => {
               {provinces?.data.map((province) => (
                 <SelectItem
                   key={province.provinceId}
-                  value={province.provinceId.toString()}
+                  value={province?.provinceId!.toString()}
                 >
                   {province.provinceName}
                 </SelectItem>
