@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Card,
     CardContent,
@@ -37,230 +37,46 @@ import {
     XAxis,
     YAxis,
 } from "@/components/ui/chart";
-
-// Generate sample data for different time periods
-const generateActivityData = (
-    timeRange: string,
-    customValue: string = "0",
-    customUnit: string = "0",
-) => {
-    const data = [];
-    const now = new Date();
-
-    let startDate, endDate, interval;
-
-    if (timeRange === "custom" && customValue && customUnit) {
-        // Calculate custom time range
-        const customTime = Number.parseInt(customValue);
-
-        if (isNaN(customTime) || customTime <= 0) {
-            // Default to 1 hour if invalid input
-            startDate = new Date(now);
-            startDate.setHours(startDate.getHours() - 1);
-        } else {
-            startDate = new Date(now);
-            if (customUnit === "minutes") {
-                startDate.setMinutes(startDate.getMinutes() - customTime);
-            } else if (customUnit === "hours") {
-                startDate.setHours(startDate.getHours() - customTime);
-            } else if (customUnit === "months") {
-                startDate.setMonth(startDate.getMonth() - customTime);
-            } else if (customUnit === "years") {
-                startDate.setFullYear(startDate.getFullYear() - customTime);
-            }
-        }
-        endDate = new Date(now);
-
-        // Choose interval based on unit
-        if (customUnit === "years") {
-            interval = "years"; // One data point per year
-        } else if (customUnit === "months") {
-            interval = "months"; // One data point per month
-        } else if (customUnit === "hours") {
-            interval = "hours"; // One data point per hour
-        } else {
-            interval = "minutes"; // Minute-by-minute for minutes
-        }
-    } else {
-        // Predefined ranges
-        switch (timeRange) {
-            case "week":
-                interval = "days";
-                // Find the most recent Monday
-                startDate = new Date(now);
-                startDate.setDate(
-                    startDate.getDate() -
-                    startDate.getDay() +
-                    (startDate.getDay() === 0 ? -6 : 1),
-                );
-                startDate.setHours(0, 0, 0, 0);
-                // Find the upcoming Sunday
-                endDate = new Date(startDate);
-                endDate.setDate(endDate.getDate() + 6);
-                endDate.setHours(23, 59, 59, 999);
-                break;
-            case "month":
-                interval = "days";
-                // First day of current month
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                // Last day of current month
-                endDate = new Date(
-                    now.getFullYear(),
-                    now.getMonth() + 1,
-                    0,
-                    23,
-                    59,
-                    59,
-                    999,
-                );
-                break;
-            case "year":
-            default:
-                interval = "months";
-                // First day of current year
-                startDate = new Date(now.getFullYear(), 0, 1);
-                // Last day of current year
-                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
-                break;
-        }
-    }
-
-    if (interval === "years") {
-        // Generate yearly data
-        const currentYear = now.getFullYear();
-        const startYear = currentYear - Number.parseInt(customValue) + 1;
-
-        for (let year = startYear; year <= currentYear; year++) {
-            // Base values with growth trend
-            const yearIndex = year - startYear;
-            const growthFactor = 1 + yearIndex * 0.15; // Stronger growth for yearly view
-
-            // Add some randomness
-            const randomFactor = 0.9 + Math.random() * 0.2;
-
-            data.push({
-                year: year, // Use year directly as the x-axis value
-                students: Math.floor(8000 * growthFactor * randomFactor),
-                teachers: Math.floor(600 * growthFactor * randomFactor),
-                moderators: Math.floor(120 * growthFactor * randomFactor),
-            });
-        }
-    } else if (interval === "months") {
-        // Generate monthly data
-        const totalMonths = Number.parseInt(customValue) || 12; // Default to 12 months for year view
-
-        for (let i = 0; i < totalMonths; i++) {
-            const date = new Date(now);
-
-            date.setMonth(date.getMonth() - (totalMonths - 1 - i));
-
-            // Growth trend over time
-            const growthFactor = 1 + i * 0.05;
-
-            // Seasonal variations (higher in fall and spring)
-            const month = date.getMonth();
-            const seasonalFactor =
-                (month >= 8 && month <= 10) || (month >= 1 && month <= 3) ? 1.2 : 1;
-
-            data.push({
-                month: date.getMonth(), // Store month number (0-11)
-                monthYear: `${date.getMonth() + 1}/${date.getFullYear().toString().substr(2, 2)}`, // For display
-                students: Math.floor(
-                    2000 * growthFactor * seasonalFactor + Math.random() * 500,
-                ),
-                teachers: Math.floor(
-                    150 * growthFactor * seasonalFactor + Math.random() * 40,
-                ),
-                moderators: Math.floor(
-                    30 * growthFactor * seasonalFactor + Math.random() * 10,
-                ),
-            });
-        }
-    } else if (interval === "hours") {
-        // Generate hourly data
-        const totalHours = Number.parseInt(customValue) || 24;
-
-        for (let i = 0; i < totalHours; i++) {
-            const date = new Date(now);
-
-            date.setHours(date.getHours() - (totalHours - 1 - i));
-
-            // Base values with time-of-day pattern
-            const hour = date.getHours();
-            const timeOfDayFactor =
-                hour >= 9 && hour <= 17 ? 1.2 : hour >= 18 && hour <= 22 ? 1.5 : 0.6;
-
-            data.push({
-                hour: hour, // Store hour (0-23)
-                hourDay: `${hour}h00`, // For display
-                students: Math.floor(800 + Math.random() * 400 * timeOfDayFactor),
-                teachers: Math.floor(60 + Math.random() * 30 * timeOfDayFactor),
-                moderators: Math.floor(15 + Math.random() * 10 * timeOfDayFactor),
-            });
-        }
-    } else if (interval === "minutes") {
-        // Generate minute-by-minute data
-        const totalMinutes = Number.parseInt(customValue) || 60;
-
-        for (let i = 0; i < totalMinutes; i++) {
-            const date = new Date(now);
-
-            date.setMinutes(date.getMinutes() - (totalMinutes - 1 - i));
-
-            // Random fluctuations
-            const randomFactor = 0.9 + Math.random() * 0.2;
-
-            data.push({
-                minute: i,
-                minuteTime: `${date.getHours()}h${date.getMinutes().toString().padStart(2, "0")}`, // Format as "11h33"
-                date: date.toISOString(), // Keep for compatibility
-                students: Math.floor(800 * randomFactor),
-                teachers: Math.floor(60 * randomFactor),
-                moderators: Math.floor(15 * randomFactor),
-            });
-        }
-    } else if (interval === "days") {
-        // Generate daily data
-        const totalDays = Math.ceil(
-            (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
-        );
-
-        for (let i = 0; i < totalDays; i++) {
-            const date = new Date(startDate);
-
-            date.setDate(date.getDate() + i);
-
-            // Base value with some randomness
-            const students = Math.floor(2000 + Math.random() * 800);
-            const teachers = Math.floor(150 + Math.random() * 50);
-            const moderators = Math.floor(30 + Math.random() * 10);
-
-            // Add weekly pattern - higher on weekdays, lower on weekends
-            const day = date.getDay();
-            const weekendFactor = day === 0 || day === 6 ? 0.7 : 1;
-
-            data.push({
-                date: date.toISOString().split("T")[0],
-                students: Math.floor(students * weekendFactor),
-                teachers: Math.floor(teachers * weekendFactor),
-                moderators: Math.floor(moderators * weekendFactor),
-            });
-        }
-    }
-
-    return data;
-};
+import { monthData, weekData, yearData } from "@/domain/constants/analyst-card";
 
 export function UserActivityChart() {
     const [timeRange, setTimeRange] = useState("month");
     const [customValue, setCustomValue] = useState("1");
     const [customUnit, setCustomUnit] = useState("hours");
+    const [data, setData] = useState<any>([]);
+    const isLoading = false;
 
-    // Generate data based on selected time range
-    const data =
-        timeRange === "custom"
-            ? generateActivityData(timeRange, customValue, customUnit)
-            : generateActivityData(timeRange);
+    useEffect(() => {
+        if (timeRange === "week") {
+            setData(weekData);
+        } else if (timeRange === "month") {
+            setData(monthData);
+        } else if (timeRange === "year") {
+            setData(yearData);
+        }
+    }, [timeRange]);
+
+    // Handle time range changes and trigger API fetch if callback provided
+    const handleTimeRangeChange = (newRange: any) => {
+        setTimeRange(newRange);
+    };
+
+    // Handle custom range changes
+    const handleCustomValueChange = (value: any) => {
+        setCustomValue(value);
+    };
+
+    const handleCustomUnitChange = (unit: any) => {
+        setCustomUnit(unit);
+    };
+
+    // Process data to ensure all data points have default values
+    const processedData = data.map((item: any) => ({
+        ...item,
+        students: item.students ?? 0,
+        teachers: item.teachers ?? 0,
+        moderators: item.moderators ?? 0,
+    }));
 
     // Determine which data key to use for X-axis
     const getXAxisDataKey = () => {
@@ -436,7 +252,7 @@ export function UserActivityChart() {
                     </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Select value={timeRange} onValueChange={setTimeRange}>
+                    <Select value={timeRange} onValueChange={handleTimeRangeChange}>
                         <SelectTrigger className="w-[130px]">
                             <SelectValue placeholder="Select range" />
                         </SelectTrigger>
@@ -460,7 +276,7 @@ export function UserActivityChart() {
                                     {customValue} {customUnit}
                                 </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-80">
+                            <PopoverContent className="">
                                 <div className="grid gap-4">
                                     <div className="space-y-2">
                                         <h4 className="font-medium leading-none">
@@ -470,23 +286,28 @@ export function UserActivityChart() {
                                             Set a specific time range to view data
                                         </p>
                                     </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label className="text-right" htmlFor="custom-value">
-                                            Show last
-                                        </Label>
-                                        <Input
-                                            className="col-span-1"
-                                            id="custom-value"
-                                            min="1"
-                                            type="number"
-                                            value={customValue}
-                                            onChange={(e) => setCustomValue(e.target.value)}
-                                        />
+                                    <div className="grid grid-cols-2 items-center gap-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-right" htmlFor="custom-value">
+                                                Show last
+                                            </Label>
+                                            <Input
+                                                className="col-span-1"
+                                                id="custom-value"
+                                                min="1"
+                                                type="number"
+                                                value={customValue}
+                                                onChange={(e) =>
+                                                    handleCustomValueChange(e.target.value)
+                                                }
+                                            />
+                                            <Button className="w-full">Save</Button>
+                                        </div>
                                         <div className="col-span-1">
                                             <RadioGroup
                                                 className="flex flex-col space-y-1"
                                                 value={customUnit}
-                                                onValueChange={setCustomUnit}
+                                                onValueChange={handleCustomUnitChange}
                                             >
                                                 <div className="flex items-center space-x-2">
                                                     <RadioGroupItem id="minutes" value="minutes" />
@@ -514,94 +335,104 @@ export function UserActivityChart() {
                 </div>
             </CardHeader>
             <CardContent className="pl-2">
-                <ResponsiveContainer height={300} width="100%">
-                    <LineChart data={data}>
-                        <XAxis
-                            axisLine={false}
-                            dataKey={getXAxisDataKey()}
-                            fontSize={12}
-                            stroke="#888888"
-                            tickFormatter={formatXAxis}
-                            tickLine={false}
-                        />
-                        <YAxis
-                            axisLine={false}
-                            fontSize={12}
-                            stroke="#888888"
-                            tickFormatter={(value) => `${value}`}
-                            tickLine={false}
-                        />
-                        <Tooltip
-                            content={({ active, payload }) => {
-                                if (active && payload && payload.length) {
-                                    const data = payload[0].payload;
+                {isLoading ? (
+                    <div className="flex h-[300px] items-center justify-center">
+                        <div className="border-primary size-8 animate-spin rounded-full border-b-2" />
+                    </div>
+                ) : processedData.length > 0 ? (
+                    <ResponsiveContainer height={300} width="100%">
+                        <LineChart data={processedData}>
+                            <XAxis
+                                axisLine={false}
+                                dataKey={getXAxisDataKey()}
+                                fontSize={12}
+                                stroke="#888888"
+                                tickFormatter={formatXAxis}
+                                tickLine={false}
+                            />
+                            <YAxis
+                                axisLine={false}
+                                fontSize={12}
+                                stroke="#888888"
+                                tickFormatter={(value) => `${value}`}
+                                tickLine={false}
+                            />
+                            <Tooltip
+                                content={({ active, payload }) => {
+                                    if (active && payload && payload.length) {
+                                        const data = payload[0].payload;
 
-                                    return (
-                                        <div className="bg-background rounded-lg border p-2 shadow-sm">
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <div className="flex flex-col">
-                                                    <span className="text-muted-foreground text-[0.70rem] uppercase">
-                                                        {getTooltipLabel()}
-                                                    </span>
-                                                    <span className="text-xs font-bold">
-                                                        {formatTooltipDate(data)}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-muted-foreground text-[0.70rem] uppercase">
-                                                        Students
-                                                    </span>
-                                                    <span className="text-xs font-bold">
-                                                        {data.students.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-muted-foreground text-[0.70rem] uppercase">
-                                                        Teachers
-                                                    </span>
-                                                    <span className="text-xs font-bold">
-                                                        {data.teachers.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-muted-foreground text-[0.70rem] uppercase">
-                                                        Moderators
-                                                    </span>
-                                                    <span className="text-xs font-bold">
-                                                        {data.moderators.toLocaleString()}
-                                                    </span>
+                                        return (
+                                            <div className="bg-background rounded-lg border p-2 shadow-sm">
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-muted-foreground text-[0.70rem] uppercase">
+                                                            {getTooltipLabel()}
+                                                        </span>
+                                                        <span className="text-xs font-bold">
+                                                            {formatTooltipDate(data)}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-muted-foreground text-[0.70rem] uppercase">
+                                                            Students
+                                                        </span>
+                                                        <span className="text-xs font-bold">
+                                                            {data.students.toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-muted-foreground text-[0.70rem] uppercase">
+                                                            Teachers
+                                                        </span>
+                                                        <span className="text-xs font-bold">
+                                                            {data.teachers.toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-muted-foreground text-[0.70rem] uppercase">
+                                                            Moderators
+                                                        </span>
+                                                        <span className="text-xs font-bold">
+                                                            {data.moderators.toLocaleString()}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                }
+                                        );
+                                    }
 
-                                return null;
-                            }}
-                        />
-                        <Line
-                            activeDot={{ r: 6, style: { fill: "#2563eb", opacity: 0.8 } }}
-                            dataKey="students"
-                            stroke="#2563eb"
-                            strokeWidth={2}
-                            type="monotone"
-                        />
-                        <Line
-                            activeDot={{ r: 6, style: { fill: "#16a34a", opacity: 0.8 } }}
-                            dataKey="teachers"
-                            stroke="#16a34a"
-                            strokeWidth={2}
-                            type="monotone"
-                        />
-                        <Line
-                            activeDot={{ r: 6, style: { fill: "#dc2626", opacity: 0.8 } }}
-                            dataKey="moderators"
-                            stroke="#dc2626"
-                            strokeWidth={2}
-                            type="monotone"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                                    return null;
+                                }}
+                            />
+                            <Line
+                                activeDot={{ r: 6, style: { fill: "#2563eb", opacity: 0.8 } }}
+                                dataKey="students"
+                                stroke="#2563eb"
+                                strokeWidth={2}
+                                type="monotone"
+                            />
+                            <Line
+                                activeDot={{ r: 6, style: { fill: "#16a34a", opacity: 0.8 } }}
+                                dataKey="teachers"
+                                stroke="#16a34a"
+                                strokeWidth={2}
+                                type="monotone"
+                            />
+                            <Line
+                                activeDot={{ r: 6, style: { fill: "#dc2626", opacity: 0.8 } }}
+                                dataKey="moderators"
+                                stroke="#dc2626"
+                                strokeWidth={2}
+                                type="monotone"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
+                ) : (
+                    <div className="text-muted-foreground flex h-[300px] items-center justify-center">
+                        No data available
+                    </div>
+                )}
                 <div className="mt-2 flex items-center justify-center gap-4">
                     <div className="flex items-center gap-1">
                         <div className="size-3 rounded-full bg-[#2563eb]" />
