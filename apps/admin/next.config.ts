@@ -22,6 +22,13 @@ const nextConfig: NextConfig = {
         search: "",
       },
       {
+        protocol: "http",
+        hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/dhdyel6be/image/upload/**",
+        search: "",
+      },
+      {
         protocol: "https",
         hostname: "avatar.iran.liara.run",
         port: "",

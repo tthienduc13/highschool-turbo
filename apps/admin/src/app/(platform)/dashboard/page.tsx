@@ -1,4 +1,4 @@
-import OverviewModule from "@/components/modules/dashboard/overview";
+import OverviewModule from "@/components/modules/dashboard";
 
 function OverviewPage() {
     return <OverviewModule />;

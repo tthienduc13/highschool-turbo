@@ -9,7 +9,7 @@ import { contentAnalysts } from "@/domain/constants/analyst-card";
 import { ContentCreationChart } from "@/components/ui/charts/content-creation-trend";
 import { EngagementChart } from "@/components/ui/charts/engagement-chart";
 
-function ContentModule() {
+function ModeratorDashboardModule() {
     return (
         <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
             <div>
@@ -44,4 +44,4 @@ function ContentModule() {
     );
 }
 
-export default ContentModule;
+export default ModeratorDashboardModule;

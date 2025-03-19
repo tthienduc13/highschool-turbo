@@ -26,3 +26,4 @@ export * from "./search.ts";
 export * from "./school.ts";
 export * from "./province.ts";
 export * from "./ai.ts";
+export * from "./report.ts";

@@ -10,9 +10,10 @@ import {
 
 import { DataTableColumnHeader } from "../../core/table/data-table-column-header";
 
+import { UserTableRowActions } from "./user-table-row-actions";
+
 import { callTypes, userTypes } from "@/domain/constants/user";
 import LongText from "@/components/ui/long-text";
-import { DataTableRowActions } from "@/components/core/table/data-table-row-actions";
 
 export const columns: ColumnDef<UserPreview>[] = [
   {
@@ -46,13 +47,6 @@ export const columns: ColumnDef<UserPreview>[] = [
     cell: ({ row }) => (
       <LongText className="max-w-36 ">{row.getValue("username")}</LongText>
     ),
-    meta: {
-      className: cn(
-        "drop-shadow-[0_1px_2px_rgb(0_0_0_/_0.1)] dark:drop-shadow-[0_1px_2px_rgb(255_255_255_/_0.1)] lg:drop-shadow-none",
-        "bg-background transition-colors duration-200 group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-        "sticky md:table-cell",
-      ),
-    },
     enableHiding: false,
   },
   {
@@ -103,7 +97,6 @@ export const columns: ColumnDef<UserPreview>[] = [
     cell: ({ row }) => {
       const { roleName } = row.original;
 
-      console.log("roleName", roleName);
       const userType = userTypes.find(
         ({ value }: { value: string }) => value === roleName,
       );
@@ -132,6 +125,6 @@ export const columns: ColumnDef<UserPreview>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Actions" />
     ),
-    cell: DataTableRowActions,
+    cell: UserTableRowActions,
   },
 ];

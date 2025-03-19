@@ -9,7 +9,7 @@ import { ExperienceRatingChart } from "@/components/ui/charts/experience-rating-
 import { UserRetentionChart } from "@/components/ui/charts/user-retention";
 import { UserGrowthChart } from "@/components/ui/charts/user-growth";
 
-function OverviewModule() {
+function AdminDashboardModule() {
     return (
         <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
             <div>
@@ -76,4 +76,4 @@ function OverviewModule() {
     );
 }
 
-export default OverviewModule;
+export default AdminDashboardModule;

@@ -15,6 +15,7 @@ import {
   report,
   saveCachePersonality,
   updateBaseUserInfo,
+  updateStatusUser,
 } from "../apis/user.ts";
 
 export const useOrientationStatusQuery = (isOpen: boolean) => {
@@ -154,6 +155,24 @@ export const useCreateUserMutation = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toast.success(data.message ?? "Create successfully");
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some error occured");
+    },
+  });
+};
+
+export const useUpdateUserStatusMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-user-status"],
+    mutationFn: updateStatusUser,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      toast.success(data.message ?? "Deleted successfully");
 
       return data;
     },

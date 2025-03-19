@@ -180,6 +180,11 @@ export const userEndpoints = {
     API_VERSIONS.V1,
     "/users/createaccount",
   ),
+  updateStatusUser: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/status",
+  ),
 } as const;
 
 // Media Endpoints
@@ -882,3 +887,7 @@ export const curriculumEndpoints = {
     "/curriculum",
   ),
 } as const;
+
+export const reportEndpoint = {
+  get: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/reports"),
+};

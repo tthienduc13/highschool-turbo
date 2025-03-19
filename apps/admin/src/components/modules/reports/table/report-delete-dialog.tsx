@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { IconAlertTriangle } from "@tabler/icons-react";
+import { toast } from "sonner";
 import {
   Alert,
   AlertDescription,
@@ -9,8 +10,7 @@ import {
 } from "@highschool/ui/components/ui/alert";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
-import { UserPreview } from "@highschool/interfaces";
-import { useUpdateUserStatusMutation } from "@highschool/react-query/queries";
+import { Report } from "@highschool/interfaces";
 import {
   Select,
   SelectContent,
@@ -22,30 +22,33 @@ import {
 } from "@highschool/ui/components/ui/select";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
-import { UserStatus } from "@/domain/enums/user";
+import { ReportStatus } from "@/domain/enums/report";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow: UserPreview;
+  currentRow: Report;
 }
 
-export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
+export function ReportDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const [value, setValue] = useState("");
-  const { mutateAsync: updateUser } = useUpdateUserStatusMutation();
-  const [statusSelected, setStatusSelected] = useState<UserStatus>(
-    UserStatus[currentRow.status as keyof typeof UserStatus],
+  const [statusSelected, setStatusSelected] = useState<ReportStatus>(
+    ReportStatus[currentRow.status as keyof typeof ReportStatus],
   );
 
-  const handleDelete = async () => {
-    if (value.trim() !== currentRow.username) return;
-
-    await updateUser({
-      userId: currentRow.id,
-      status: UserStatus[statusSelected],
-    });
+  const handleDelete = () => {
+    if (value.trim() !== currentRow.reportTitle) return;
 
     onOpenChange(false);
+    toast("The following user has been deleted:", {
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">
+            {JSON.stringify(currentRow, null, 2)}
+          </code>
+        </pre>
+      ),
+    });
   };
 
   return (
@@ -56,19 +59,19 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
         <div className="space-y-4">
           <p className="mb-2">
             Are you sure you want to delete{" "}
-            <span className="font-bold">{currentRow.username}</span>?
+            <span className="font-bold">{currentRow.reportTitle}</span>?
             <br />
             This action will permanently remove the user with the role of{" "}
             <span className="font-bold">
-              {currentRow.roleName?.toUpperCase()}
+              {currentRow.reportTitle?.toUpperCase()}
             </span>{" "}
             from the system. This cannot be undone.
           </p>
 
           <Label className="my-2">
-            Username:
+            Report Name:
             <Input
-              placeholder="Enter username to confirm deletion."
+              placeholder="Enter report name to confirm deletion."
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
@@ -76,21 +79,18 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
 
           <Select
             value={statusSelected}
-            onValueChange={(value) => setStatusSelected(value as UserStatus)}
+            onValueChange={(value) => setStatusSelected(value as ReportStatus)}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select a Status" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {Object.values(UserStatus).map(
-                  (status) =>
-                    status !== UserStatus.All && (
-                      <SelectItem key={status} value={status}>
-                        <SelectLabel>{status}</SelectLabel>
-                      </SelectItem>
-                    ),
-                )}
+                {Object.values(ReportStatus).map((status) => (
+                  <SelectItem key={status} value={status}>
+                    <SelectLabel>{status}</SelectLabel>
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -98,13 +98,12 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           <Alert variant="destructive">
             <AlertTitle>Warning!</AlertTitle>
             <AlertDescription>
-              Please be carefull, this operation can be affected directly to
-              user.
+              Please be carefull, this operation can not be rolled back.
             </AlertDescription>
           </Alert>
         </div>
       }
-      disabled={value.trim() !== currentRow.username}
+      disabled={value.trim() !== currentRow.reportTitle}
       handleConfirm={handleDelete}
       open={open}
       title={
@@ -113,7 +112,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             className="stroke-destructive mr-1 inline-block"
             size={18}
           />{" "}
-          Delete User
+          Change Status Report
         </span>
       }
       onOpenChange={onOpenChange}

@@ -27,3 +27,4 @@ export * from "./avatar";
 export * from "./search";
 export * from "./ai";
 export * from "./zone";
+export * from "./report";

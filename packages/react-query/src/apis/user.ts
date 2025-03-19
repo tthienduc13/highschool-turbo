@@ -336,3 +336,24 @@ export const createAccount = async ({
     throw error;
   }
 };
+
+export const updateStatusUser = async ({
+  userId,
+  status,
+}: {
+  userId: string;
+  status: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const response = await axiosServices.put(userEndpoints.updateStatusUser, {
+      userId: userId,
+      status: status,
+    });
+
+    return response.data;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Error fetching subjects:", error);
+    throw error;
+  }
+};

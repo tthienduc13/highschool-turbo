@@ -9,27 +9,10 @@ import {
   IconMap2,
   IconUserCircle,
   IconSettings,
-  IconDashboard,
 } from "@tabler/icons-react";
 
 export const navModerator = {
   navMain: [
-    {
-      title: "Dashboard",
-      url: "/dashboard",
-      isActive: true,
-      icon: IconDashboard,
-      items: [
-        {
-          title: "Overview",
-          url: "/dashboard/overview",
-        },
-        {
-          title: "Content",
-          url: "/dashboard/content",
-        },
-      ],
-    },
     {
       title: "Master data",
       url: "/master-data",
@@ -199,7 +182,7 @@ export const navAdmin = {
         },
         {
           title: "Reports",
-          url: "/reports",
+          url: "/report",
         },
       ],
     },

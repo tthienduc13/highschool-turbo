@@ -1,6 +1,10 @@
 "use client";
 
-import { IconChevronRight, TablerIcon } from "@tabler/icons-react";
+import {
+  IconChevronRight,
+  IconDashboard,
+  TablerIcon,
+} from "@tabler/icons-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -35,7 +39,7 @@ export function NavMain({
     <SidebarGroup>
       {/* <SidebarGroupLabel>Platform</SidebarGroupLabel> */}
       <SidebarMenu>
-        {/* <Collapsible key={"dashboard"} asChild>
+        <Collapsible key={"dashboard"} asChild>
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip={"dashboard"}>
               <a href={"/dashboard"}>
@@ -44,7 +48,7 @@ export function NavMain({
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </Collapsible> */}
+        </Collapsible>
         {items.map((item) => (
           <Collapsible
             key={item.title}
