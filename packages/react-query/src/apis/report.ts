@@ -1,4 +1,9 @@
-import { Metadata, Pagination, Report } from "@highschool/interfaces";
+import {
+  Metadata,
+  Pagination,
+  Report,
+  ResponseModel,
+} from "@highschool/interfaces";
 import { reportEndpoint } from "@highschool/endpoints";
 
 import axiosServices, { createQueryString } from "../lib/axios.ts";
@@ -9,6 +14,7 @@ export const getReportsApp = async (params: {
   startDate?: Date;
   endDate?: Date;
   status?: string;
+  reportId?: string;
 }): Promise<Pagination<Report[]>> => {
   const queryString = createQueryString(params);
   const response = await axiosServices.get(
@@ -25,4 +31,24 @@ export const getReportsApp = async (params: {
     totalCount: metadata.TotalCount,
     totalPages: metadata.TotalPages,
   };
+};
+
+export const updateStatusReportsApp = async ({
+  reportId,
+  status,
+}: {
+  reportId: string;
+  status: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.put(reportEndpoint.updateStatus, {
+      reportId,
+      status,
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Error while update status report ", error);
+    throw error;
+  }
 };

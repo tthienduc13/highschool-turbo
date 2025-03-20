@@ -890,4 +890,9 @@ export const curriculumEndpoints = {
 
 export const reportEndpoint = {
   get: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/reports"),
+  updateStatus: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/reports",
+  ),
 };

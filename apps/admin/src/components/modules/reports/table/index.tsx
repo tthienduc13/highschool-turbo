@@ -9,7 +9,7 @@ import { useReportFilter } from "@/hooks/use-filter-report";
 
 // Status badge component
 
-export default function ReportsModule() {
+export default function ReportModule() {
     const filter = useReportFilter({
         initSearch: "",
     });

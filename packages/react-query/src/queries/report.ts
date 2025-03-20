@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import { getReportsApp } from "../apis/report.ts";
+import { getReportsApp, updateStatusReportsApp } from "../apis/report.ts";
 
 export const useReportAppQuery = (param: {
   page: number;
@@ -8,6 +9,7 @@ export const useReportAppQuery = (param: {
   startDate?: Date;
   endDate?: Date;
   status?: string;
+  reportId?: string;
 }) => {
   return useQuery({
     queryKey: [
@@ -17,7 +19,28 @@ export const useReportAppQuery = (param: {
       param.startDate,
       param.endDate,
       param.status,
+      param.reportId,
     ],
     queryFn: () => getReportsApp(param),
+  });
+};
+
+export const useUpdateReportStatusAppMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-report-status"],
+    mutationFn: updateStatusReportsApp,
+    onSuccess: (data) => {
+      toast.success(data.message ?? "Report status updated");
+      queryClient.invalidateQueries({ queryKey: ["reports"] });
+
+      return true;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some errors occured");
+
+      return false;
+    },
   });
 };

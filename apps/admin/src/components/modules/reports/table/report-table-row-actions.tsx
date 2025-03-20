@@ -13,17 +13,20 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { Report } from "@highschool/interfaces";
 
 import { useTable } from "@/stores/table-context";
 
-interface ReportTableRowActionsProps<T> {
-  row: Row<T>;
+interface ReportTableRowActionsProps {
+  row: Row<Report>;
 }
 
-export function ReportTableRowActions<T>({
+export function ReportTableRowActions({
   row,
-}: Readonly<ReportTableRowActionsProps<T>>) {
+}: Readonly<ReportTableRowActionsProps>) {
   const { setOpen, setCurrentRow } = useTable();
+  const router = useRouter();
 
   return (
     <DropdownMenu modal={false}>
@@ -41,6 +44,7 @@ export function ReportTableRowActions<T>({
           onClick={() => {
             setCurrentRow(row.original);
             setOpen("edit");
+            router.push(`/report/${row.original.id}`);
           }}
         >
           View Detail

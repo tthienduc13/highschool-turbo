@@ -9,7 +9,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@highschool/ui/components/ui/card";
-import { Badge } from "@highschool/ui/components/ui/badge";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import {
     Dialog,
@@ -25,101 +24,58 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@highschool/ui/components/ui/select";
-import { Textarea } from "@highschool/ui/components/ui/textarea";
-import { toast } from "sonner";
+import { IconMail, IconUserCircle } from "@tabler/icons-react";
 import {
-    IconAlertCircle,
-    IconCalendar,
-    IconCheck,
-    IconClock,
-    IconMail,
-    IconUser,
-    IconX,
-} from "@tabler/icons-react";
-import { Button } from "@highschool/ui/components/ui/button";
+    useReportAppQuery,
+    useUpdateReportStatusAppMutation,
+} from "@highschool/react-query/queries";
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@highschool/ui/components/ui/avatar";
+import { useRouter } from "next/navigation";
 
-// Status badge component
-const StatusBadge = ({ status }: { status: string }) => {
-    switch (status) {
-        case "New":
-            return (
-                <Badge
-                    className="border-blue-200 bg-blue-50 text-blue-600"
-                    variant="outline"
-                >
-                    <IconClock className="mr-1 size-3" /> New
-                </Badge>
-            );
-        case "In Progress":
-            return (
-                <Badge
-                    className="border-yellow-200 bg-yellow-50 text-yellow-600"
-                    variant="outline"
-                >
-                    <IconAlertCircle className="mr-1 size-3" /> In Progress
-                </Badge>
-            );
-        case "Resolved":
-            return (
-                <Badge
-                    className="border-green-200 bg-green-50 text-green-600"
-                    variant="outline"
-                >
-                    <IconCheck className="mr-1 size-3" /> Resolved
-                </Badge>
-            );
-        case "Rejected":
-            return (
-                <Badge
-                    className="border-red-200 bg-red-50 text-red-600"
-                    variant="outline"
-                >
-                    <IconX className="mr-1 size-3" /> Rejected
-                </Badge>
-            );
-        default:
-            return <Badge variant="outline">{status}</Badge>;
-    }
-};
+import { StatusBadge } from "../table/status-badge";
+
+import { ReportStatus } from "@/domain/enums/report";
 
 export default function ReportDetailModule({ id }: { id: string }) {
+    const router = useRouter();
     const [status, setStatus] = useState("New");
     const [imageDialogOpen, setImageDialogOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState("");
-    const [note, setNote] = useState("");
+    const { mutateAsync: updateReportStatus } =
+        useUpdateReportStatusAppMutation();
 
-    // Mock report data - in a real app, you would fetch this based on the ID
-    const report = {
-        id: id,
-        reportTitle: "Inappropriate Content",
-        reportContent:
-            "I found inappropriate content in the forum section. A user posted offensive material that violates community guidelines. Please review and take action as soon as possible.",
-        status: "New",
-        userId: "01955b94-3dca-74d8-4211-e36701ddb7ec",
-        fullName: "John Smith",
-        email: "john.smith@example.com",
-        createdAt: "2025-03-19T13:21:35.675084",
-        imageReports: [
-            "http://res.cloudinary.com/dhdyel6be/image/upload/v1742390497/HighSchool/reports/f0bebc0a-e6f5-4429-9d56-890dcaba8c39%40638779872957167397..jpg.jpg",
-        ],
-    };
+    const { data: reports } = useReportAppQuery({
+        page: 1,
+        eachPage: 1,
+        reportId: id,
+    });
 
-    const handleStatusChange = (newStatus: string) => {
-        setStatus(newStatus);
-        toast.success(`Report status changed to ${newStatus}`);
+    // useEffect(() => {
+    //     if (reports === undefined) {
+    //         return router.push("/report");
+    //     }
+    // }, [reports]);
+
+    const report = reports?.data[0];
+
+    const handleStatusChange = async (newStatus: string) => {
+        const result = await updateReportStatus({
+            reportId: id,
+            status: newStatus,
+        });
+
+        if (result) {
+            setStatus(newStatus);
+        }
     };
 
     const handleImageClick = (imageUrl: string) => {
         setSelectedImage(imageUrl);
         setImageDialogOpen(true);
-    };
-
-    const handleSaveNote = () => {
-        if (note.trim()) {
-            toast.success("Your note has been saved successfully");
-        } else {
-            toast.error("Please enter a note before saving");
-        }
     };
 
     return (
@@ -130,9 +86,8 @@ export default function ReportDetailModule({ id }: { id: string }) {
                         <p className="text-primary mb-0 pb-0 text-2xl font-bold">
                             Report Detail
                         </p>
-                        <span className="text-lg text-gray-400">{report.id}</span>
+                        <span className="text-lg text-gray-400">{report?.id}</span>
                     </div>
-                    <Button onClick={handleSaveNote}>Save Note</Button>
                 </div>
 
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -141,7 +96,7 @@ export default function ReportDetailModule({ id }: { id: string }) {
                             <CardHeader>
                                 <div className="flex items-start justify-between">
                                     <div>
-                                        <CardTitle>{report.reportTitle}</CardTitle>
+                                        <CardTitle>{report?.reportTitle}</CardTitle>
                                         <CardDescription>
                                             Submitted on {"12/12/2032"}
                                         </CardDescription>
@@ -155,7 +110,7 @@ export default function ReportDetailModule({ id }: { id: string }) {
                                         <h3 className="text-muted-foreground mb-2 text-sm font-medium">
                                             Report Content
                                         </h3>
-                                        <p className="text-sm">{report.reportContent}</p>
+                                        <p className="text-sm">{report?.reportContent}</p>
                                     </div>
 
                                     <Separator />
@@ -164,13 +119,20 @@ export default function ReportDetailModule({ id }: { id: string }) {
                                         <h3 className="text-muted-foreground mb-2 text-sm font-medium">
                                             Attached Images
                                         </h3>
-                                        {report.imageReports.length > 0 ? (
+                                        {(report?.imageReports.length ?? 0 > 0) ? (
                                             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                                                {report.imageReports.map((image, index) => (
+                                                {report?.imageReports.map((image, index) => (
                                                     <div
-                                                        key={index}
+                                                        key={image}
                                                         className="relative aspect-square cursor-pointer overflow-hidden rounded-md border transition-opacity hover:opacity-90"
+                                                        role="button"
+                                                        tabIndex={0}
                                                         onClick={() => handleImageClick(image)}
+                                                        onKeyPress={(e) => {
+                                                            if (e.key === "Enter" || e.key === " ") {
+                                                                handleImageClick(image);
+                                                            }
+                                                        }}
                                                     >
                                                         <Image
                                                             fill
@@ -200,18 +162,25 @@ export default function ReportDetailModule({ id }: { id: string }) {
                             <CardContent>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2">
-                                        <IconUser className="text-muted-foreground size-4" />
-                                        <span className="text-sm">{report.fullName}</span>
+                                        {/* <IconUser className="text-muted-foreground size-4" /> */}
+                                        <Avatar className="size-8">
+                                            <AvatarImage
+                                                alt={"image"}
+                                                src={report?.user.profilePicture ?? ""}
+                                            />
+                                            <AvatarFallback>
+                                                {report?.user.fullname[0]}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                        <span className="text-sm">{report?.fullName}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <IconMail className="text-muted-foreground size-4" />
-                                        <span className="text-sm">{report.email}</span>
+                                        <span className="text-sm">{report?.email}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <IconCalendar className="text-muted-foreground size-4" />
-                                        <span className="text-sm">
-                                            User ID: {report.userId.substring(0, 8)}...
-                                        </span>
+                                        <IconUserCircle className="text-muted-foreground size-4" />
+                                        <span className="text-sm">{report?.user.roleName}</span>
                                     </div>
                                 </div>
                             </CardContent>
@@ -230,29 +199,13 @@ export default function ReportDetailModule({ id }: { id: string }) {
                                         <SelectValue placeholder="Select status" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="New">New</SelectItem>
-                                        <SelectItem value="In Progress">In Progress</SelectItem>
-                                        <SelectItem value="Resolved">Resolved</SelectItem>
-                                        <SelectItem value="Rejected">Rejected</SelectItem>
+                                        {Object.values(ReportStatus).map((status) => (
+                                            <SelectItem key={status} value={status}>
+                                                {status}
+                                            </SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Add Note</CardTitle>
-                                <CardDescription>
-                                    Add internal notes about this report
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Textarea
-                                    className="min-h-[100px]"
-                                    placeholder="Add internal note about this report..."
-                                    value={note}
-                                    onChange={(e) => setNote(e.target.value)}
-                                />
                             </CardContent>
                         </Card>
                     </div>
