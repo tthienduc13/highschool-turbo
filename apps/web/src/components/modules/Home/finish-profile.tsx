@@ -59,7 +59,7 @@ export const FinishProfile = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex flex-col rounded-3xl border-2 border-gray-100 bg-background p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+      <div className="bg-background flex flex-col rounded-3xl border-2 border-gray-100 p-4 shadow-lg dark:border-gray-700 dark:bg-gray-800">
         {isTeacher ? (
           <h2 className="px-4 py-2 text-xl font-medium">
             Xin chào! Điền thông tin để có thêm quyền truy cập
@@ -69,7 +69,7 @@ export const FinishProfile = () => {
             Xin chào! Cùng hoàn thiện thông tin cá nhân để nhận quà nhé
           </h2>
         )}
-        <div className="px-4">
+        <div className="px-4 py-5">
           <SegmentedProgress currentStep={currentStep} steps={totalSteps} />
         </div>
         {data?.data === progressEnum.SubjectInformation && (
@@ -87,7 +87,7 @@ export const FinishProfile = () => {
                     <IconUser className="mb-1 !size-[18px]" />
                     Thông tin cá nhân
                   </div>
-                  <p className="text-xs text-muted-foreground md:text-sm">
+                  <p className="text-muted-foreground text-xs md:text-sm">
                     Hãy hoàn thiện thông tin cá nhân để được xác thực 🚀
                   </p>
                 </div>
@@ -105,7 +105,7 @@ export const FinishProfile = () => {
                     <IconUser className="mb-1 !size-[18px]" />
                     Thông tin cá nhân
                   </div>
-                  <p className="text-xs text-muted-foreground md:text-sm">
+                  <p className="text-muted-foreground text-xs md:text-sm">
                     Thêm vào thông tin trường, lớp để được gợi ý học tập tốt
                     nhất 🚀
                   </p>
@@ -129,7 +129,7 @@ export const FinishProfile = () => {
                   <IconArrowMergeAltLeft className="mb-1 !size-[18px]" />
                   Hướng nghiệp
                 </div>
-                <p className="text-xs text-muted-foreground md:text-sm">
+                <p className="text-muted-foreground text-xs md:text-sm">
                   Hoàn thành 2 bài kiểm tra MBTI và Holland để tìm ra công việc
                   phù hợp🚀
                 </p>
@@ -149,7 +149,7 @@ export const FinishProfile = () => {
                 <IconCircleCheck className="mb-1 !size-[18px]" />
                 Xác thực người dùng
               </div>
-              <p className="text-xs text-muted-foreground md:text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 Kết quả của bạn đang được quản trị viên xác thực, vui lòng chờ
                 📍
               </p>

@@ -34,10 +34,12 @@ export const WizardLayout: React.FC<
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col">
-        <div className="text-base font-medium text-gray-600 dark:text-gray-400 md:text-lg">
+        <div className="text-base font-medium text-gray-600 md:text-lg dark:text-gray-400">
           Bước {currentStep + 1} trên {steps}
         </div>
-        <SegmentedProgress currentStep={currentStep} steps={steps} />
+        <div className="py-4">
+          <SegmentedProgress currentStep={currentStep} steps={steps} />
+        </div>
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="text-lg font-bold md:text-xl">{title}</h2>

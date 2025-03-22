@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { Chapter } from "@highschool/interfaces";
 import {
   useChapterListQuery,
@@ -21,6 +21,8 @@ import {
 } from "@tabler/icons-react";
 
 import AnimatedCircularProgressBar from "@/components/core/common/animated-progress-bar";
+import { useMe } from "@/hooks/use-me";
+import { CurriculumData } from "@/components/core/common/select-curriculum-modal";
 
 interface ChapterListProps {
   courseId: string;
@@ -29,15 +31,18 @@ interface ChapterListProps {
 
 export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
   const { slug } = useParams();
-  const searchParams = useSearchParams();
   const pathName = usePathname();
   const queryClient = useQueryClient();
 
-  const curriculumId = searchParams.get("curriculum");
+  const me = useMe();
+
+  const currentCurriculum = CurriculumData.find((curriculum) => {
+    return curriculum.id === me?.curriculumId;
+  });
 
   const { data, isLoading } = useChapterListQuery({
     courseSlug: slug as string,
-    curriculumId: curriculumId as string,
+    curriculumId: me?.curriculumId as string,
     pageNumber: 1,
     pageSize: 100,
   });
@@ -49,7 +54,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
 
   const handleEnroll = () => {
     enrollCourse.mutate(
-      { subjectId: courseId, curriculumId: curriculumId! },
+      { subjectId: courseId, curriculumId: me?.curriculumId! },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
@@ -61,7 +66,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
 
   const handleUnEnroll = () => {
     unEnrollCourse.mutate(
-      { subjectId: courseId, curriculumId: curriculumId! },
+      { subjectId: courseId, curriculumId: me?.curriculumId! },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
@@ -86,7 +91,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
   const chapters = data?.data?.items || [];
   const enrollmentProgress = data?.data?.subjectModel?.enrollmentProgress;
 
-  if (!curriculumId) {
+  if (!me?.curriculumId) {
     return (
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold md:text-2xl">
@@ -94,7 +99,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
         </h2>
         <Button variant="outline" onClick={() => setSelectOpen(true)}>
           <IconSettings />
-          Chọn chương trình học
+          Chọn chương trình
         </Button>
       </div>
     );
@@ -106,26 +111,36 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
         <h2 className="text-xl font-semibold md:text-2xl">
           Chương trong khoá học ({chapters.length})
         </h2>
-        {chapters.length > 0 ? (
-          <Button
-            disabled={isPending}
-            variant={isEnroll ? "destructive" : "default"}
-            onClick={isEnroll ? handleUnEnroll : handleEnroll}
-          >
-            {isPending ? (
-              <IconLoader2 className="animate-spin" />
-            ) : isEnroll ? (
-              "Xoá khoá học"
-            ) : (
-              "Tham gia khoá học"
-            )}
-          </Button>
-        ) : (
+        <div className="flex flex-row items-center gap-2">
+          {chapters.length > 0 && (
+            <Button
+              disabled={isPending}
+              variant={isEnroll ? "destructive" : "default"}
+              onClick={isEnroll ? handleUnEnroll : handleEnroll}
+            >
+              {isPending ? (
+                <IconLoader2 className="animate-spin" />
+              ) : isEnroll ? (
+                "Xoá khoá học"
+              ) : (
+                "Tham gia khoá học"
+              )}
+            </Button>
+          )}
           <Button variant="outline" onClick={() => setSelectOpen(true)}>
-            <IconSettings />
-            Chọn chương trình khác
+            {me.curriculumId ? (
+              <Image
+                alt={currentCurriculum?.curriculumName!}
+                height={18}
+                src={currentCurriculum?.image!}
+                width={18}
+              />
+            ) : (
+              <IconSettings />
+            )}
+            {me?.curriculumId ? "Thay đổi chương trình" : "Chọn chương trình"}
           </Button>
-        )}
+        </div>
       </div>
 
       {chapters.length > 0 ? (
@@ -211,20 +226,20 @@ const ChapterCard = ({ chapter, isEnroll, href, index }: ChapterCardProps) => {
     <Wrapper>
       <div className="flex h-full flex-1 flex-col gap-2">
         <h2 className="truncate font-bold">{chapter.chapterName}</h2>
-        <p className="line-clamp-2 h-10 text-sm text-muted-foreground">
+        <p className="text-muted-foreground line-clamp-2 h-10 text-sm">
           {chapter.description}
         </p>
       </div>
       <div className="flex justify-between">
         <div className="flex items-center gap-x-2">
           <IconHistory size={16} />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {new Date(chapter.createdAt).toLocaleDateString()}
           </p>
         </div>
         <div className="flex items-center gap-x-2">
           <IconBook size={16} />
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {chapter.numberLesson} bài học
           </p>
         </div>

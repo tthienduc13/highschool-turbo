@@ -11,6 +11,7 @@ export interface UserSession {
   accessToken: string;
   refreshToken: string;
   expiresAt: Date;
+  curriculumId: string;
 }
 
 export interface GoogleLoginRequest {

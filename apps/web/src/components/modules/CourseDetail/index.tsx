@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useCourseBySlugQuery } from "@highschool/react-query/queries";
 import {
   IconEye,
@@ -15,13 +15,15 @@ import { ChapterList } from "./chapter-list";
 
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
-import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-moda";
+import { SelectCurriculumModal } from "@/components/core/common/select-curriculum-modal";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
+import { useMe } from "@/hooks/use-me";
+import { Loading } from "@/components/core/common/loading";
 
 function CourseDetailModule() {
   const { slug } = useParams();
-  const searchParams = useSearchParams();
+  const me = useMe();
 
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const { data, isLoading } = useCourseBySlugQuery({ slug: slug as string });
@@ -42,12 +44,13 @@ function CourseDetailModule() {
   ];
 
   useEffect(() => {
-    if (!searchParams.get("curriculum")) {
+    if (!me?.curriculumId) {
       setSelectOpen(true);
     }
   }, []);
+
   if (isLoading) {
-    return <div>is loading</div>;
+    return <Loading />;
   }
 
   return (
@@ -60,7 +63,7 @@ function CourseDetailModule() {
         <div className="flex flex-col gap-12">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex flex-col gap-5 md:flex-row">
-            <div className="relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 bg-background shadow-md dark:border-gray-700 md:w-[250px]">
+            <div className="bg-background relative aspect-video w-full overflow-hidden rounded-md border-2 border-gray-50 shadow-md md:w-[250px] dark:border-gray-700">
               <Image
                 fill
                 alt={`Image of ${data?.subjectName || "Subject"}`}
@@ -73,7 +76,7 @@ function CourseDetailModule() {
                 <h1 className="text-2xl font-bold md:text-3xl">
                   {data?.subjectName}
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-muted-foreground text-sm">
                   {data?.information}
                 </p>
               </div>

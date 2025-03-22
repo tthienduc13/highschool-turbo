@@ -11,6 +11,7 @@ import {
   UserSession,
 } from "@highschool/interfaces";
 import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
+import axios from "axios";
 
 import axiosServices, {
   axiosClientUpload,
@@ -184,6 +185,7 @@ export const updateBaseUserInfo = async ({
   student: Partial<{
     major: string;
     grade: number;
+    curriculumId: string;
     schoolName: string;
     typeExams: TypeExam[];
     subjectIds: string[];
@@ -217,6 +219,11 @@ export const updateBaseUserInfo = async ({
 
     return data;
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+
+      return data;
+    }
     console.error("Error while updating base user", error);
     throw error;
   }

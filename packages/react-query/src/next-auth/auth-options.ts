@@ -48,10 +48,7 @@ const refreshAccessToken = async (token: JWT) => {
       throw new Error("RefreshTokenFailed");
     }
 
-    // const cookieStore = await cookies();
-
-    // cookieStore.set(ACCESS_TOKEN, result.data.accessToken);
-
+    // Remove the cookie setting here as it won't work
     return {
       ...token,
       accessToken: result.data.accessToken,
@@ -180,6 +177,7 @@ export const AuthOptions: NextAuthConfig = {
           roleName: userInfo.roleName,
           accessToken: userInfo.accessToken,
           refreshToken: userInfo.refreshToken,
+          curriculumId: userInfo.curriculumId,
           sessionId: userInfo.sessionId,
           progressStage: userInfo.progressStage,
           expiresAt: userInfo.expiresAt,
@@ -204,6 +202,7 @@ export const AuthOptions: NextAuthConfig = {
           roleName: userInfo.roleName,
           accessToken: userInfo.accessToken,
           refreshToken: userInfo.refreshToken,
+          curriculumId: userInfo.curriculumId,
           sessionId: userInfo.sessionId,
           progressStage: userInfo.progressStage,
           expiresAt: userInfo.expiresAt,
@@ -232,9 +231,6 @@ export const AuthOptions: NextAuthConfig = {
       if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
         const response = (await refreshAccessToken(token)) as JWT;
 
-        // const cookieStore = await cookies();
-
-        // cookieStore.set(ACCESS_TOKEN, response.accessToken);
         setClientCookie(ACCESS_TOKEN, response.accessToken);
 
         return response;
@@ -253,6 +249,7 @@ export const AuthOptions: NextAuthConfig = {
         fullname: token.fullname,
         roleName: token.roleName,
         progressStage: token.progressStage,
+        curriculumId: token.curriculumId,
         accessToken: token.accessToken,
         sessionId: token.sessionId,
         refreshToken: token.refreshToken,

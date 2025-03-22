@@ -1,15 +1,18 @@
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconCircleCheck } from "@tabler/icons-react";
+import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
+import { useSession } from "next-auth/react";
+
+import { useMe } from "@/hooks/use-me";
 
 interface SelectCurriculumModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CurriculumData = [
+export const CurriculumData = [
   {
     id: "01931f33-7d05-758c-9580-aa477f5249a4",
     curriculumName: "Chân trời sáng tạo",
@@ -31,11 +34,11 @@ export const SelectCurriculumModal = ({
   isOpen,
   onClose,
 }: SelectCurriculumModalProps) => {
-  const pathName = usePathname();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const { data: session, update } = useSession();
 
-  const currentCurriculum = searchParams.get("curriculum");
+  const updateBaseUser = useUpdateBaseUserInfoMutation();
+
+  const me = useMe();
 
   return (
     <Modal
@@ -50,9 +53,26 @@ export const SelectCurriculumModal = ({
             key={curriculum.id}
             className="relative h-full border-gray-200 dark:border-gray-700"
             variant={"outline"}
-            onClick={() => {
-              router.replace(`${pathName}?curriculum=${curriculum.id}`);
-              onClose();
+            onClick={async () => {
+              await updateBaseUser.mutateAsync(
+                {
+                  student: {
+                    curriculumId: curriculum.id,
+                  },
+                },
+                {
+                  onSuccess: async () => {
+                    await update({
+                      ...session,
+                      user: {
+                        ...session?.user,
+                        curriculumId: curriculum.id,
+                      },
+                    });
+                    onClose();
+                  },
+                },
+              );
             }}
           >
             <div className="flex flex-col items-center justify-center">
@@ -67,7 +87,7 @@ export const SelectCurriculumModal = ({
               </div>
               <p className="font-medium">{curriculum.curriculumName}</p>
             </div>
-            {currentCurriculum === curriculum.id && (
+            {me?.curriculumId === curriculum.id && (
               <div className="absolute -right-3 -top-3 rounded-full bg-gray-50 p-1 dark:bg-gray-900">
                 <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
                   <IconCircleCheck className="!size-[18px]" size={18} />
