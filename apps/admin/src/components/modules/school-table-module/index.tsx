@@ -9,22 +9,22 @@ import { DataTable } from "@/components/core/table/table";
 import { useSchoolFilter } from "@/hooks/use-filter-school";
 
 function MasterSchoolModule() {
-    const filter = useSchoolFilter({
-        initSearch: "",
-    });
+  const filter = useSchoolFilter({
+    initSearch: "",
+  });
 
-    return (
-        <TableProvider>
-            <DataTable
-                columns={columns}
-                extraButton={<SchoolPrimaryButtons />}
-                filter={filter}
-                subTitle="Manage your School here."
-                title="School List"
-            />
-            <SchoolDialogs />
-        </TableProvider>
-    );
+  return (
+    <TableProvider>
+      <DataTable
+        columns={columns}
+        extraButton={<SchoolPrimaryButtons />}
+        filter={filter}
+        subTitle="Manage your School here."
+        title="School List"
+      />
+      <SchoolDialogs />
+    </TableProvider>
+  );
 }
 
 export default MasterSchoolModule;

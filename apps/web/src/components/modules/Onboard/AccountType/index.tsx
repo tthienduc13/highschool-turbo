@@ -6,14 +6,15 @@ import { UserType } from "@highschool/interfaces";
 import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
 import { cn } from "@highschool/ui/lib/utils";
 import { IconBooks, IconSchool } from "@tabler/icons-react";
-import { setClientCookie } from "@highschool/lib/cookies";
 import { ACCESS_TOKEN } from "@highschool/lib/constants";
+import { setClientCookie } from "@highschool/lib/cookies";
 
 import { DefaultLayout } from "@/components/core/common/onboard/default-layout";
 import {
   PresentWrapper,
   useNextStep,
 } from "@/components/core/common/onboard/present-wrapper";
+import { updateAccessTokenCookie } from "@/actions/auth";
 
 function OnboardAccountTypeModule() {
   const next = useNextStep();
@@ -31,25 +32,36 @@ function OnboardAccountTypeModule() {
         nextLoading={loading}
         onNext={async () => {
           setLoading(true);
-          await updateRole.mutateAsync(
-            {
-              roleName: selectedType.toLocaleLowerCase(),
-            },
-            {
-              onSuccess: async (data) => {
-                setClientCookie(ACCESS_TOKEN, data.data?.accessToken!);
-                await update({
-                  ...session,
-                  user: {
-                    ...session?.user,
-                    roleName: selectedType,
-                    accessToken: data.data?.accessToken,
-                  },
-                });
-                next();
-              },
-            },
-          );
+          try {
+            const result = await updateRole.mutateAsync({
+              roleName: selectedType.toLowerCase(),
+            });
+
+            if (result.data?.accessToken) {
+              // 1. Set client-side cookie for immediate client access
+              setClientCookie(ACCESS_TOKEN, result.data.accessToken);
+
+              // 2. Update the server-side HTTP-only cookie via server action
+              await updateAccessTokenCookie(result.data.accessToken);
+
+              // 3. Update the session with the new role and token
+              await update({
+                ...session,
+                user: {
+                  ...session?.user,
+                  roleName: selectedType,
+                  accessToken: result.data.accessToken,
+                },
+              });
+
+              // Move to next step
+              next();
+            }
+          } catch (error) {
+            console.error("Failed to update role:", error);
+          } finally {
+            setLoading(false);
+          }
         }}
       >
         <div className="grid grid-cols-2 overflow-hidden rounded-xl border-2">

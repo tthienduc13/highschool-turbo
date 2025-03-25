@@ -52,6 +52,8 @@ export const ChangeUsernameInput = ({
   const isTooLong = usernameValue.length > 40;
   const isTaken = checkUsername.data;
 
+  console.log(isTaken, "take");
+
   const isInvalid =
     !!usernameValue.length &&
     (!USERNAME_REGEXP.test(usernameValue) || isTooLong);
@@ -122,7 +124,7 @@ export const ChangeUsernameInput = ({
           )}
         >
           <Input
-            className="size-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 dark:bg-gray-800/50 sm:!text-base md:!text-xl"
+            className="size-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
             disabled={changeUsername.isPending}
             placeholder="Nhập tên người dùng"
             value={usernameValue}

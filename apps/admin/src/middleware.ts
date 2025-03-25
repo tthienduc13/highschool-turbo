@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@highschool/react-query/auth";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { apiAuthPrefix, authRoutes, DEFAULT_LOGIN_REDIRECT } from "../routes";
 
@@ -11,6 +12,18 @@ export default auth((req) => {
   const pathname = nextUrl.pathname;
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
+
+  let response = NextResponse.next();
+
+  // Add access token to cookies if available
+  if (req.auth?.user?.accessToken) {
+    response.cookies.set(ACCESS_TOKEN, req.auth.user.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+  }
 
   if (isApiAuthRoute) return;
 
@@ -34,5 +47,10 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    "/((?!.+\\.[\\w]+$|_next|api/proxy).*)",
+    "/",
+    "/(api(?!/proxy).*)",
+    "/(trpc)(.*)",
+  ],
 };

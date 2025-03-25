@@ -20,7 +20,7 @@ import {
 } from "@highschool/ui/components/ui/tooltip";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 import { IconRepeat } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   useCheckUsernameQuery,
   useCreateUserMutation,
@@ -55,12 +55,12 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
   const { mutate: createUser, isPending: isCreating } = useCreateUserMutation();
 
   const [username, setUsername] = useState<string>(currentRow?.username ?? "");
+  const debouncedUsername = useDebounceValue(username, 1000);
   const [email, setEmail] = useState<string>(currentRow?.email ?? "");
   const [password, setPassword] = useState<string>("");
   const [bio, setBio] = useState<string>("");
   const [fullName, setFullName] = useState<string>(currentRow?.fullname ?? "");
 
-  const debouncedUsername = useDebounceValue(username, 1000);
   const checkUsername = useCheckUsernameQuery({
     username: debouncedUsername,
   });
@@ -110,10 +110,6 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
 
     return "";
   };
-
-  useEffect(() => {
-    checkUsername.refetch();
-  }, [checkUsername.isLoading]);
 
   const validationFields = () => {
     if (!username && !email && !password && !fullName && !singleFile) {

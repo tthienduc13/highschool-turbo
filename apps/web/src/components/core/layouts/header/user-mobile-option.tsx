@@ -12,8 +12,8 @@ import {
   IconSun,
   IconUser,
 } from "@tabler/icons-react";
-import { deleteClientCookie } from "@highschool/lib/cookies";
-import { ACCESS_TOKEN } from "@highschool/lib/constants";
+
+import { serverLogout } from "@/actions/logout";
 
 interface UserMobileOptionProps {
   onClose: () => void;
@@ -79,7 +79,7 @@ export const UserMobileOption = ({ onClose }: UserMobileOptionProps) => {
           size={"lg"}
           variant="outline"
           onClick={async () => {
-            await deleteClientCookie(ACCESS_TOKEN);
+            await serverLogout();
             await signOut();
             onClose();
           }}

@@ -31,6 +31,10 @@ export const navModerator = {
           title: "University",
           url: "/master-data/university",
         },
+        {
+          title: "Subject",
+          url: "/master-data/subject",
+        },
       ],
     },
     {

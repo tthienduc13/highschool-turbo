@@ -1,7 +1,7 @@
 import NewsManagementModule from "@/components/modules/news/news-management";
 
-function NewsManagment() {
-    return <NewsManagementModule />;
+function NewsManagement() {
+  return <NewsManagementModule />;
 }
 
-export default NewsManagment;
+export default NewsManagement;
