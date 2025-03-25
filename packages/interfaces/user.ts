@@ -97,3 +97,26 @@ export type UserCreate = {
   password: string;
   profilePicture: string;
 };
+
+export type UserStatistics = {
+  totalUser: number;
+  thisMonthUser: number;
+  increaseUserPercent: number;
+  totalStudent: number;
+  totalTeacher: number;
+  totalActive: number;
+  totalBlocked: number;
+  totalDeleted: number;
+};
+
+export type TecherExperience = {
+  range: string;
+  count: number;
+};
+
+export type UserGrowth = {
+  date: Date;
+  students: number;
+  teachers: number;
+  moderators: number;
+};

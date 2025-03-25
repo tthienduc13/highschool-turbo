@@ -17,6 +17,7 @@ import {
   getNewsDetail,
   getPopularNews,
   getRelatedNews,
+  getStatisticNews,
 } from "../apis/news.ts";
 
 export const useHotNewsQuery = () => {
@@ -193,5 +194,12 @@ export const useNewsDetailQuery = (slug: string) => {
   return useQuery({
     queryKey: ["news-detail", slug],
     queryFn: () => getNewsDetail(slug),
+  });
+};
+
+export const useStatisticNewsQuery = ({ newType }: { newType: string }) => {
+  return useQuery({
+    queryKey: ["statistic-news", newType],
+    queryFn: () => getStatisticNews({ newType }),
   });
 };

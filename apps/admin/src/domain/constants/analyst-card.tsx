@@ -2,14 +2,11 @@ import {
   IconBrandParsinta,
   IconCircleKey,
   IconFileTypeDoc,
-  IconFlame,
   IconFolder,
   IconLock,
   IconLockOpen2,
-  IconNews,
   IconPlayCardStar,
   IconScript,
-  IconTrashX,
   IconVocabulary,
   TablerIcon,
 } from "@tabler/icons-react";
@@ -52,16 +49,16 @@ export const contentAnalysts: ContentAnalyst[] = [
       { title: "Unpublished", data: 0, icon: IconLock },
     ],
   },
-  {
-    id: "news",
-    title: "News",
-    bgColor: "bg-[#e2f3f7]",
-    icon: <IconNews className="size-5 text-blue-500" />,
-    items: [
-      { title: "Hot", data: 0, icon: IconFlame },
-      { title: "Deleted", data: 0, icon: IconTrashX },
-    ],
-  },
+  // {
+  //   id: "news",
+  //   title: "News",
+  //   bgColor: "bg-[#e2f3f7]",
+  //   icon: <IconNews className="size-5 text-blue-500" />,
+  //   items: [
+  //     { title: "Hot", data: 0, icon: IconFlame },
+  //     { title: "Deleted", data: 0, icon: IconTrashX },
+  //   ],
+  // },
   {
     id: "material",
     title: "Materials",

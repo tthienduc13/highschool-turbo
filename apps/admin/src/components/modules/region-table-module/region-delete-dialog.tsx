@@ -10,21 +10,21 @@ import {
 } from "@highschool/ui/components/ui/alert";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
-import { School } from "@highschool/interfaces";
+import { City } from "@highschool/interfaces";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow: School;
+  currentRow: City;
 }
 
 export function RegionDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const [value, setValue] = useState("");
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.schoolName) return;
+    if (value.trim() !== currentRow.provinceName) return;
 
     onOpenChange(false);
     toast("The following user has been deleted:", {
@@ -46,17 +46,17 @@ export function RegionDeleteDialog({ open, onOpenChange, currentRow }: Props) {
         <div className="space-y-4">
           <p className="mb-2">
             Are you sure you want to delete{" "}
-            <span className="font-bold">{currentRow.schoolName}</span>?
+            <span className="font-bold">{currentRow.provinceName}</span>?
             <br />
             This action will permanently remove the user with the role of{" "}
             <span className="font-bold">
-              {currentRow.schoolName?.toUpperCase()}
+              {currentRow.provinceName?.toUpperCase()}
             </span>{" "}
             from the system. This cannot be undone.
           </p>
 
           <Label className="my-2">
-            Schoolname:
+            Region Name:
             <Input
               placeholder="Enter schoolname to confirm deletion."
               value={value}
@@ -72,7 +72,7 @@ export function RegionDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           </Alert>
         </div>
       }
-      disabled={value.trim() !== currentRow.schoolName}
+      disabled={value.trim() !== currentRow.provinceName}
       handleConfirm={handleDelete}
       open={open}
       title={
@@ -81,7 +81,7 @@ export function RegionDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             className="stroke-destructive mr-1 inline-block"
             size={18}
           />{" "}
-          Delete School
+          Delete Region
         </span>
       }
       onOpenChange={onOpenChange}

@@ -9,6 +9,9 @@ import {
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
+  getStatisticUsers,
+  getTeacherExperience,
+  getUserGrowth,
   getUserProfile,
   getUserProgressStage,
   getUsers,
@@ -179,5 +182,30 @@ export const useUpdateUserStatusMutation = () => {
     onError: (error) => {
       toast.error(error.message ?? "Some error occured");
     },
+  });
+};
+
+export const useStatisticUsersQuery = ({ userType }: { userType: string }) => {
+  return useQuery({
+    queryKey: ["statistic-users", userType],
+    queryFn: () => getStatisticUsers({ userType }),
+  });
+};
+
+export const useTeacherExperienceQuery = () => {
+  return useQuery({
+    queryKey: ["teacher-experience"],
+    queryFn: () => getTeacherExperience(),
+  });
+};
+
+export const useUserGrowthQuery = (param: {
+  userActivityType: string;
+  amount: number;
+  isCountFromNow: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["user-growth", param],
+    queryFn: () => getUserGrowth(param),
   });
 };

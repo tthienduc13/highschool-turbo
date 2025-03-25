@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 "use client";
 
 import {
@@ -26,8 +27,10 @@ import {
     RadioGroup,
     RadioGroupItem,
 } from "@highschool/ui/components/ui/radio-group";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IconClock } from "@tabler/icons-react";
+import { useUserGrowthQuery } from "@highschool/react-query/queries";
+import { UserGrowth } from "@highschool/interfaces";
 
 import {
     Area,
@@ -37,28 +40,47 @@ import {
     XAxis,
     YAxis,
 } from "@/components/ui/chart";
-import {
-    monthData,
-    weekData,
-    yearData,
-} from "@/domain/constants/data-example-usergrowth";
+import { monthNames, weekDays } from "@/domain/constants/data-const";
 
 export function UserGrowthChart() {
-    const [timeRange, setTimeRange] = useState("year");
+    const [timeRange, setTimeRange] = useState("Year");
     const [customValue, setCustomValue] = useState("1");
-    const [customUnit, setCustomUnit] = useState("months");
-    const [data, setData] = useState<any>([]);
+    const [customUnit, setCustomUnit] = useState("Year");
     const isLoading = false;
 
-    useEffect(() => {
-        if (timeRange === "week") {
-            setData(weekData);
-        } else if (timeRange === "month") {
-            setData(monthData);
-        } else if (timeRange === "year") {
-            setData(yearData);
+    const { data: usersData } = useUserGrowthQuery({
+        amount: Number(customValue),
+        isCountFromNow: false,
+        userActivityType: timeRange === "Custom" ? customUnit : timeRange,
+    });
+
+    const result: UserGrowth[] = [];
+    usersData?.forEach(({ date, students, teachers, moderators }) => {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = d.getMonth(); // 0-based month
+
+        const index = result.findIndex((item) => {
+            const itemYear = new Date(item.date).getFullYear();
+            const itemMonth = new Date(item.date).getMonth();
+            return itemYear === year && itemMonth === month;
+        });
+
+        if (index === -1) {
+            result.push({
+                date: date,
+                students: 0,
+                teachers: 0,
+                moderators: 0,
+            });
+        } else {
+            result[index].students += students;
+            result[index].teachers += teachers;
+            result[index].moderators += moderators;
         }
-    }, [timeRange]);
+    });
+
+    const users = timeRange === "Custom" ? result : usersData;
 
     // Handle time range changes and trigger API fetch if callback provided
     const handleTimeRangeChange = (newRange: any) => {
@@ -75,54 +97,35 @@ export function UserGrowthChart() {
     };
 
     // Process data to ensure all data points have default values
-    const processedData = data.map((item: any) => ({
-        ...item,
-        students: item.students ?? 0,
-        teachers: item.teachers ?? 0,
-        moderators: item.moderators ?? 0,
-    }));
-
-    // Month and weekday names for formatting
-    const monthNames = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-
-    const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const processedData =
+        users?.map((item: any) => ({
+            ...item,
+            students: item.students ?? 0,
+            teachers: item.teachers ?? 0,
+            moderators: item.moderators ?? 0,
+        })) ?? [];
 
     // Get appropriate title based on time range
     const getTimeRangeTitle = () => {
         const now = new Date();
 
         switch (timeRange) {
-            case "week":
+            case "Week":
                 return "current week (Monday to Sunday)";
-            case "month":
+            case "Month":
                 return `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
-            case "year":
+            case "Year":
                 return now.getFullYear().toString();
-            case "custom":
-                if (customUnit === "years") {
+            case "Custom":
+                if (customUnit === "Year") {
                     const endYear = now.getFullYear();
                     const startYear = endYear - Number.parseInt(customValue) + 1;
 
                     return `${startYear} - ${endYear}`;
-                } else if (customUnit === "months") {
+                } else if (customUnit === "Month") {
                     return `past ${customValue} months`;
-                } else if (customUnit === "days") {
-                    return `past ${customValue} days`;
-                } else if (customUnit === "hours") {
-                    return `past ${customValue} hours`;
+                } else if (customUnit === "Day") {
+                    return `past ${customValue} Days`;
                 }
 
                 return `past ${customValue} ${customUnit}`;
@@ -133,12 +136,12 @@ export function UserGrowthChart() {
 
     // Format the x-axis labels based on time range
     const formatXAxis = (value: any) => {
-        if (timeRange === "custom") {
-            if (customUnit === "years" && typeof value === "number") {
+        if (timeRange === "Custom") {
+            if (customUnit === "Year" && typeof value === "number") {
                 return value.toString();
             }
             if (
-                customUnit === "months" &&
+                customUnit === "Month" &&
                 typeof value === "string" &&
                 value.includes("-")
             ) {
@@ -146,7 +149,7 @@ export function UserGrowthChart() {
 
                 return `${monthNames[Number.parseInt(month) - 1].substring(0, 3)}`;
             }
-            if (customUnit === "days" && typeof value === "string") {
+            if (customUnit === "Day" && typeof value === "string") {
                 try {
                     const date = new Date(value);
 
@@ -155,20 +158,17 @@ export function UserGrowthChart() {
                     return value;
                 }
             }
-            if (customUnit === "hours" && typeof value === "string") {
-                return value;
-            }
         }
 
         try {
             const date = new Date(value);
 
-            if (timeRange === "week") {
+            if (timeRange === "Week") {
                 return weekDays[date.getDay()];
-            } else if (timeRange === "month") {
+            } else if (timeRange === "Month") {
                 return date.getDate().toString();
-            } else if (timeRange === "year") {
-                return monthNames[date.getMonth()].substring(0, 3);
+            } else if (timeRange === "Year") {
+                return monthNames[new Date(date).getMonth()].substring(0, 3);
             }
         } catch (e) {
             // If date parsing fails, return the value as is
@@ -193,14 +193,14 @@ export function UserGrowthChart() {
                             <SelectValue placeholder="Select range" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="week">Week</SelectItem>
-                            <SelectItem value="month">Month</SelectItem>
-                            <SelectItem value="year">Year</SelectItem>
-                            <SelectItem value="custom">Custom</SelectItem>
+                            <SelectItem value="Week">Week</SelectItem>
+                            <SelectItem value="Month">Month</SelectItem>
+                            <SelectItem value="Year">Year</SelectItem>
+                            <SelectItem value="Custom">Custom</SelectItem>
                         </SelectContent>
                     </Select>
 
-                    {timeRange === "custom" && (
+                    {timeRange === "Custom" && (
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
@@ -241,19 +241,15 @@ export function UserGrowthChart() {
                                                 onValueChange={handleCustomUnitChange}
                                             >
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="hours" value="hours" />
-                                                    <Label htmlFor="hours">Hours</Label>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="days" value="days" />
+                                                    <RadioGroupItem id="days" value="Day" />
                                                     <Label htmlFor="days">Days</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="months" value="months" />
+                                                    <RadioGroupItem id="months" value="Month" />
                                                     <Label htmlFor="months">Months</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="years" value="years" />
+                                                    <RadioGroupItem id="years" value="Year" />
                                                     <Label htmlFor="years">Years</Label>
                                                 </div>
                                             </RadioGroup>
@@ -307,7 +303,7 @@ export function UserGrowthChart() {
                             </defs>
                             <XAxis
                                 axisLine={false}
-                                dataKey="month"
+                                dataKey="date"
                                 fontSize={12}
                                 stroke="#888888"
                                 tickFormatter={formatXAxis}
@@ -324,38 +320,35 @@ export function UserGrowthChart() {
                                 content={({ active, payload }) => {
                                     if (active && payload && payload.length) {
                                         const data = payload[0].payload;
-                                        let timeLabel = data.month;
+                                        const date = new Date(data.date);
+                                        let timeLabel = data.date;
 
                                         // Format time label based on time range
                                         if (
-                                            timeRange === "year" ||
-                                            (timeRange === "custom" && customUnit === "months")
+                                            timeRange === "Year" ||
+                                            (timeRange === "Custom" && customUnit === "Month")
                                         ) {
                                             if (
-                                                typeof data.month === "string" &&
-                                                data.month.includes("-")
+                                                typeof data.date === "string" &&
+                                                data.date.includes("-")
                                             ) {
-                                                const [year, month] = data.month.split("-");
+                                                const [year, month] = data.date.split("-");
                                                 const monthName =
                                                     monthNames[Number.parseInt(month) - 1];
 
                                                 timeLabel = `${monthName} ${year}`;
                                             }
                                         } else if (
-                                            timeRange === "week" ||
-                                            (timeRange === "custom" && customUnit === "days")
+                                            timeRange === "Week" ||
+                                            (timeRange === "Custom" && customUnit === "Day")
                                         ) {
                                             try {
-                                                const date = new Date(data.month);
-
                                                 timeLabel = date.toLocaleDateString();
                                             } catch (e) {
                                                 // Use as is
                                             }
-                                        } else if (timeRange === "month") {
+                                        } else if (timeRange === "Month") {
                                             try {
-                                                const date = new Date(data.month);
-
                                                 timeLabel = date.toLocaleDateString();
                                             } catch (e) {
                                                 // Use as is
@@ -367,17 +360,17 @@ export function UserGrowthChart() {
                                                 <div className="grid gap-2">
                                                     <div className="flex flex-col">
                                                         <span className="text-muted-foreground text-[0.70rem] uppercase">
-                                                            {timeRange === "custom"
-                                                                ? customUnit === "years"
+                                                            {timeRange === "Custom"
+                                                                ? customUnit === "Year"
                                                                     ? "Year"
-                                                                    : customUnit === "months"
+                                                                    : customUnit === "Month"
                                                                         ? "Month"
-                                                                        : customUnit === "days"
+                                                                        : customUnit === "Day"
                                                                             ? "Day"
                                                                             : "Hour"
-                                                                : timeRange === "week"
+                                                                : timeRange === "Week"
                                                                     ? "Day"
-                                                                    : timeRange === "month"
+                                                                    : timeRange === "Month"
                                                                         ? "Date"
                                                                         : "Month"}
                                                         </span>

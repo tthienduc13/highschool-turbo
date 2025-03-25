@@ -2,6 +2,7 @@ import {
   Metadata,
   News,
   NewsCreate,
+  NewsStatistic,
   Pagination,
   Tag,
 } from "@highschool/interfaces";
@@ -180,4 +181,21 @@ export const getNewsDetail = async (slug: string): Promise<News> => {
   );
 
   return response.data;
+};
+
+export const getStatisticNews = async ({
+  newType,
+}: {
+  newType: string;
+}): Promise<NewsStatistic> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${newsEndpoints.getStatistic}?NewType=${newType}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting realted news", error);
+    throw error;
+  }
 };

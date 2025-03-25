@@ -4,11 +4,14 @@ import {
   Metadata,
   Pagination,
   ResponseModel,
+  TecherExperience,
   TypeExam,
   UserCreate,
+  UserGrowth,
   UserPreview,
   UserProfile,
   UserSession,
+  UserStatistics,
 } from "@highschool/interfaces";
 import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
 
@@ -354,6 +357,55 @@ export const updateStatusUser = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error fetching subjects:", error);
+    throw error;
+  }
+};
+
+export const getStatisticUsers = async ({
+  userType,
+}: {
+  userType: string;
+}): Promise<UserStatistics> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getStatisticUser}?UserType=${userType}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting realted news", error);
+    throw error;
+  }
+};
+
+export const getTeacherExperience = async (): Promise<TecherExperience[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getTeacherExperience}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting realted news", error);
+    throw error;
+  }
+};
+
+export const getUserGrowth = async (param: {
+  userActivityType: string;
+  amount: number;
+  isCountFromNow: boolean;
+}): Promise<UserGrowth[]> => {
+  try {
+    const queryString = createQueryString(param);
+
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserGrowth}?${queryString}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user growth", error);
     throw error;
   }
 };
