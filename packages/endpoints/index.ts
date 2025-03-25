@@ -473,6 +473,11 @@ export const flashcardContentEndpoints = {
 
 // Course Endpoints
 export const courseEndpoints = {
+  getMasterCourse: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/master-subjects",
+  ),
   getCourses: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,

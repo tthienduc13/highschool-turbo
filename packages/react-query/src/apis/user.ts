@@ -1,7 +1,6 @@
 import {
   Author,
   CareerGuidanceStatus,
-  Metadata,
   Pagination,
   ResponseModel,
   TypeExam,
@@ -13,10 +12,9 @@ import {
 import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
 import axios from "axios";
 
-import axiosServices, {
-  axiosClientUpload,
-  createQueryString,
-} from "../lib/axios.ts";
+import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+
+import fetchPaginatedData from "./common.ts";
 
 export interface CareerGuidanceBrief {
   mbtiResponse: MBTIResponse;
@@ -113,7 +111,7 @@ export const checkUserNameExist = async ({
   try {
     const { data } = await axiosServices.get(`${userEndpoints.checkUsername}`, {
       params: {
-        userName,
+        UserName: userName,
       },
     });
 
@@ -300,33 +298,27 @@ export const report = async ({
 };
 
 // Dashboard
-export const getUsers = async (params: {
+
+export const getUsers = async ({
+  search,
+  eachPage,
+  page,
+  status,
+  roleName,
+}: Partial<{
   page: number;
   eachPage: number;
   status: string[];
   search?: string;
   roleName: string;
-}): Promise<Pagination<UserPreview>> => {
-  try {
-    const queryString = createQueryString(params);
-    const response = await axiosServices.get(
-      `${userEndpoints.getUser}?${queryString}`,
-    );
-
-    const paginationHeader = response.headers["x-pagination"];
-    const metadata: Metadata = JSON.parse(paginationHeader || "{}");
-
-    return {
-      data: response.data,
-      currentPage: metadata.CurrentPage,
-      pageSize: metadata.PageSize,
-      totalCount: metadata.TotalCount,
-      totalPages: metadata.TotalPages,
-    };
-  } catch (error) {
-    console.error("Error while getting user", error);
-    throw error;
-  }
+}>): Promise<Pagination<UserPreview[]>> => {
+  return fetchPaginatedData<UserPreview[]>(userEndpoints.getUser, {
+    eachPage,
+    page,
+    search,
+    status,
+    roleName,
+  });
 };
 
 export const createAccount = async ({

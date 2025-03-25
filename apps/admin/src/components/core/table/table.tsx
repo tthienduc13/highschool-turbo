@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   ColumnDef,
@@ -27,6 +29,7 @@ import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 
 import { useTable } from "@/stores/table-context";
+import { FilterTable } from "@/domain/interfaces/filter-table";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -37,7 +40,7 @@ declare module "@tanstack/react-table" {
 
 interface DataTableProps<T> {
   columns: ColumnDef<T>[];
-  filter: any;
+  filter: FilterTable<T>;
   title?: string;
   subTitle?: string;
   extraButton?: React.ReactNode;
@@ -112,9 +115,9 @@ export function DataTable<T>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
                     </TableHead>
                   );
                 })}

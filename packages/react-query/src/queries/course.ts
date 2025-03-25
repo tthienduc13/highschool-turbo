@@ -1,12 +1,20 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
   enrollCourse,
   getCategories,
   getCourseBySlug,
   getCourses,
+  getMasterCourses,
   unEnrollCourse,
 } from "../apis/course.ts";
+
+export const useMasterCoursesQuery = () => {
+  return useQuery({
+    queryKey: ["masterCourses"],
+    queryFn: getMasterCourses,
+  });
+};
 
 export const useCoursesQuery = ({
   search,

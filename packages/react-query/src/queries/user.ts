@@ -39,7 +39,7 @@ export const useCheckUsernameQuery = ({ username }: { username: string }) => {
     queryKey: ["user-name-check", username],
     queryFn: () => checkUserNameExist({ userName: username }),
     enabled: username.length >= 4,
-    staleTime: 5 * 60 * 1000,
+    retry: false,
   });
 };
 

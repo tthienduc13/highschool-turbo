@@ -1,6 +1,7 @@
 import {
   Course,
   CourseCategory,
+  MasterCourse,
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
@@ -9,6 +10,17 @@ import { categoryEndpoints, courseEndpoints } from "@highschool/endpoints";
 import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 
 import { fetchUnauthedPaginatedData } from "./common.ts";
+
+export const getMasterCourses = async (): Promise<MasterCourse[]> => {
+  try {
+    const { data } = await axiosServices.get(courseEndpoints.getMasterCourse);
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting master courses", error);
+    throw error;
+  }
+};
 
 export const getCourses = async ({
   search,

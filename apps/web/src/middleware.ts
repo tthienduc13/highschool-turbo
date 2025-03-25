@@ -1,5 +1,7 @@
+// middleware.ts
 import { NextResponse } from "next/server";
 import { auth } from "@highschool/react-query/auth";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import {
   DEFAULT_LOGIN_REDIRECT,
@@ -22,7 +24,7 @@ const isRouteMatch = (pathname: string, routes: string[]): boolean => {
   });
 };
 
-export default auth((req) => {
+export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
   const isNewUser = req.auth?.user?.progressStage === "NewUser";
@@ -34,8 +36,21 @@ export default auth((req) => {
   const isOnboardingRoute = nextUrl.pathname.startsWith("/onboard");
   const isSignInRoute = nextUrl.pathname === "/sign-in";
 
+  // Create a response object we can modify
+  let response = NextResponse.next();
+
+  // Add access token to cookies if available
+  if (req.auth?.user?.accessToken) {
+    response.cookies.set(ACCESS_TOKEN, req.auth.user.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+    });
+  }
+
   // Allow API authentication routes without restrictions
-  if (isApiAuthRoute) return;
+  if (isApiAuthRoute) return response;
 
   // Handle logged-in users
   if (isLoggedIn) {
@@ -50,14 +65,14 @@ export default auth((req) => {
         );
       }
 
-      return; // Allow access to onboarding routes for new users
+      return response; // Allow access to onboarding routes for new users
     }
 
     if (isOnboardingRoute) {
       return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
 
-    return; // Allow access to all other routes for logged-in users
+    return response; // Allow access to all other routes for logged-in users
   }
 
   // Handle unauthenticated users
@@ -82,11 +97,16 @@ export default auth((req) => {
       );
     }
 
-    return; // Allow access to public routes and the sign-in page
+    return response; // Allow access to public routes and the sign-in page
   }
 });
 
 // Matcher configuration
 export const config = {
-  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: [
+    "/((?!.+\\.[\\w]+$|_next|api/proxy).*)",
+    "/",
+    "/(api(?!/proxy).*)",
+    "/(trpc)(.*)",
+  ],
 };

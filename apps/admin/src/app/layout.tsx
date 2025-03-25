@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 
 import { Suspense } from "react";
-
 import "@highschool/ui/globals.css";
 import "@/styles/globals.css";
 import "@/styles/editor.css";
@@ -30,7 +29,7 @@ export default async function RootLayout({
     <html suppressHydrationWarning lang="vi">
       <body
         className={cn(
-          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50 w-full",
+          "w-screen bg-gray-50 font-sans dark:bg-gray-900/50 ",
           sofiaFontVN.variable,
         )}
       >

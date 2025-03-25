@@ -1,5 +1,11 @@
 import { Grade } from "./common";
 
+export interface MasterCourse {
+  id: string;
+  masterSubjectName: string;
+  masterSubjectSlug: string;
+}
+
 export interface Course {
   id: string;
   subjectName: string;
