@@ -200,6 +200,16 @@ export const userEndpoints = {
     API_VERSIONS.V1,
     "/users/userGrowth",
   ),
+  getUserActivities: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/userActivity",
+  ),
+  getUserRetention: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/userRetention",
+  ),
 } as const;
 
 // Media Endpoints

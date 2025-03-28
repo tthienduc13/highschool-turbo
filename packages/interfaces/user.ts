@@ -120,3 +120,9 @@ export type UserGrowth = {
   teachers: number;
   moderators: number;
 };
+
+export type UserRetention = {
+  range: string;
+  count: number;
+  percent: number;
+};

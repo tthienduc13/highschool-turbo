@@ -11,9 +11,11 @@ import {
   getCareerGuidanceBrief,
   getStatisticUsers,
   getTeacherExperience,
+  getUserActivities,
   getUserGrowth,
   getUserProfile,
   getUserProgressStage,
+  getUserRetention,
   getUsers,
   report,
   saveCachePersonality,
@@ -207,5 +209,23 @@ export const useUserGrowthQuery = (param: {
   return useQuery({
     queryKey: ["user-growth", param],
     queryFn: () => getUserGrowth(param),
+  });
+};
+
+export const useUserActivityQuery = (param: {
+  type: string;
+  amount: number;
+  isCount: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["user-activities", param],
+    queryFn: () => getUserActivities(param),
+  });
+};
+
+export const useUserRetentionQuery = (type: string) => {
+  return useQuery({
+    queryKey: ["user-retention", type],
+    queryFn: () => getUserRetention({ type }),
   });
 };

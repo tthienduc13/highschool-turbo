@@ -28,6 +28,8 @@ import {
 } from "@highschool/ui/components/ui/popover";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconClock } from "@tabler/icons-react";
+import { useUserActivityQuery } from "@highschool/react-query/queries";
+import { UserGrowth } from "@highschool/interfaces";
 
 import {
     Line,
@@ -42,8 +44,76 @@ export function UserActivityChart() {
     const [timeRange, setTimeRange] = useState("Month");
     const [customValue, setCustomValue] = useState("1");
     const [customUnit, setCustomUnit] = useState("Month");
-    const [data, setData] = useState<any>([]);
     const isLoading = false;
+
+    const { data: usersData } = useUserActivityQuery({
+        amount: Number(customValue),
+        isCount: false,
+        type: timeRange === "Custom" ? customUnit : timeRange,
+    });
+
+    const formatDataCustom = () => {
+        const result: UserGrowth[] = [];
+
+        if (timeRange === "Custom" && customUnit === "Month") {
+            usersData?.forEach(({ date, students, teachers, moderators }) => {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const month = d.getMonth(); // 0-based month
+
+                const index = result.findIndex((item) => {
+                    const itemYear = new Date(item.date).getFullYear();
+                    const itemMonth = new Date(item.date).getMonth();
+
+                    return itemYear === year && itemMonth === month;
+                });
+
+                if (index === -1) {
+                    result.push({
+                        date: date,
+                        students: 0,
+                        teachers: 0,
+                        moderators: 0,
+                    });
+                } else {
+                    result[index].students += students;
+                    result[index].teachers += teachers;
+                    result[index].moderators += moderators;
+                }
+            });
+
+            return result;
+        } else if (timeRange === "Custom" && customUnit === "Year") {
+            usersData?.forEach(({ date, students, teachers, moderators }) => {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const index = result.findIndex((item) => {
+                    const itemYear = new Date(item.date).getFullYear();
+
+                    return itemYear === year;
+                });
+
+                if (index === -1) {
+                    result.push({
+                        date: date,
+                        students: 0,
+                        teachers: 0,
+                        moderators: 0,
+                    });
+                } else {
+                    result[index].students += students;
+                    result[index].teachers += teachers;
+                    result[index].moderators += moderators;
+                }
+            });
+
+            return result;
+        }
+
+        return usersData;
+    };
+
+    const users = formatDataCustom();
 
     // Handle time range changes and trigger API fetch if callback provided
     const handleTimeRangeChange = (newRange: any) => {
@@ -60,39 +130,37 @@ export function UserActivityChart() {
     };
 
     // Process data to ensure all data points have default values
-    const processedData = data.map((item: any) => ({
-        ...item,
-        students: item.students ?? 0,
-        teachers: item.teachers ?? 0,
-        moderators: item.moderators ?? 0,
-    }));
-
-    // Determine which data key to use for X-axis
-    const getXAxisDataKey = () => {
-        if (timeRange === "Custom") {
-            if (customUnit === "Year") return "Year";
-            if (customUnit === "Month") return "Month";
-            if (customUnit === "Day") return "Day";
-        }
-
-        return "date";
-    };
+    const processedData =
+        users?.map((item: any) => ({
+            ...item,
+            students: item.students ?? 0,
+            teachers: item.teachers ?? 0,
+            moderators: item.moderators ?? 0,
+        })) ?? [];
 
     // Format the x-axis labels based on time range and interval
     const formatXAxis = (value: any) => {
         // Handle special cases for direct display
         if (timeRange === "Custom") {
             if (customUnit === "Year") {
-                return typeof value === "number" ? value.toString() : value;
+                return new Date(value).getFullYear().toString();
             }
-            if (customUnit === "Month") {
-                // If it's already formatted as month/year, use it directly
-                if (typeof value === "string" && value.includes("/")) {
+            if (
+                customUnit === "Month" &&
+                typeof value === "string" &&
+                value.includes("-")
+            ) {
+                const [year, month] = value.split("-");
+
+                return `${monthNames[Number.parseInt(month) - 1].substring(0, 3)}`;
+            }
+            if (customUnit === "Day" && typeof value === "string") {
+                try {
+                    const date = new Date(value);
+
+                    return `${date.getDate()}/${date.getMonth() + 1}`;
+                } catch (e) {
                     return value;
-                }
-                // Otherwise, if it's a month number, convert to name
-                if (typeof value === "number" && value >= 0 && value <= 11) {
-                    return monthNames[value].substring(0, 3);
                 }
             }
         }
@@ -178,16 +246,16 @@ export function UserActivityChart() {
     // Format tooltip date/time value
     const formatTooltipDate = (data: any) => {
         if (timeRange === "Custom") {
-            if (customUnit === "Year" && data.year) {
-                return data.year.toString();
+            if (customUnit === "Year") {
+                return new Date(data.date).getFullYear().toString();
             }
-            if (customUnit === "Month" && data.monthYear) {
-                const monthNum = data.month;
+            if (customUnit === "Month") {
+                const date = new Date(data.date);
 
-                return `${monthNames[monthNum]} ${data.monthYear.split("/")[1]}`;
+                return `${date.getMonth()}-${date.getFullYear()}`;
             }
-            if (customUnit === "Day" && data.hourDay) {
-                return data.hourDay;
+            if (customUnit === "Day") {
+                return new Date(data.date).toLocaleDateString();
             }
         }
 
@@ -305,7 +373,7 @@ export function UserActivityChart() {
                         <LineChart data={processedData}>
                             <XAxis
                                 axisLine={false}
-                                dataKey={getXAxisDataKey()}
+                                dataKey={"date"}
                                 fontSize={12}
                                 stroke="#888888"
                                 tickFormatter={formatXAxis}

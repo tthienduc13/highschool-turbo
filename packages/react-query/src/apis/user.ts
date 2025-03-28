@@ -9,13 +9,17 @@ import {
   UserGrowth,
   UserPreview,
   UserProfile,
+  UserRetention,
   UserSession,
   UserStatistics,
 } from "@highschool/interfaces";
 import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
 import axios from "axios";
 
-import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  createQueryString,
+} from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -405,6 +409,42 @@ export const getUserGrowth = async (param: {
     return data;
   } catch (error) {
     console.log("error while getting user growth", error);
+    throw error;
+  }
+};
+
+export const getUserActivities = async (param: {
+  type: string;
+  amount: number;
+  isCount: boolean;
+}): Promise<UserGrowth[]> => {
+  try {
+    const queryString = createQueryString(param);
+
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserActivities}?${queryString}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user growth", error);
+    throw error;
+  }
+};
+
+export const getUserRetention = async ({
+  type,
+}: {
+  type: string;
+}): Promise<UserRetention[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserRetention}?type=${type}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user retention", error);
     throw error;
   }
 };

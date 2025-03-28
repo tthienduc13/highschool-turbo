@@ -13,6 +13,7 @@ import {
     TabsList,
     TabsTrigger,
 } from "@highschool/ui/components/ui/tabs";
+import { useUserRetentionQuery } from "@highschool/react-query/queries";
 
 import {
     Cell,
@@ -21,6 +22,7 @@ import {
     ResponsiveContainer,
     Tooltip,
 } from "@/components/ui/chart";
+import { getRandomHexColors } from "@/lib/utils";
 
 // Generate cohort data with retention rates
 const generateCohortData = () => {
@@ -62,6 +64,11 @@ const generateCohortData = () => {
 const { cohorts, userTypes } = generateCohortData();
 
 export function UserRetentionChart() {
+    const { data: users } = useUserRetentionQuery("All");
+    const { data: students } = useUserRetentionQuery("Student");
+    const { data: teachers } = useUserRetentionQuery("Teacher");
+    const { data: moderators } = useUserRetentionQuery("Moderator");
+
     return (
         <Card>
             <CardHeader>
@@ -80,19 +87,19 @@ export function UserRetentionChart() {
                     </TabsList>
 
                     <TabsContent value="all">
-                        <RetentionPieChart data={cohorts} />
+                        <RetentionPieChart data={users ?? []} />
                     </TabsContent>
 
                     <TabsContent value="students">
-                        <RetentionPieChart data={userTypes.students} />
+                        <RetentionPieChart data={students ?? []} />
                     </TabsContent>
 
                     <TabsContent value="teachers">
-                        <RetentionPieChart data={userTypes.teachers} />
+                        <RetentionPieChart data={teachers ?? []} />
                     </TabsContent>
 
                     <TabsContent value="moderators">
-                        <RetentionPieChart data={userTypes.moderators} />
+                        <RetentionPieChart data={moderators ?? []} />
                     </TabsContent>
                 </Tabs>
             </CardContent>
@@ -103,8 +110,10 @@ export function UserRetentionChart() {
 function RetentionPieChart({
     data,
 }: {
-    data: { name: string; value: number; color: string }[];
+    data: { range: string; count: number; percent: number }[];
 }) {
+    const colors = getRandomHexColors(data.length);
+
     return (
         <>
             <ResponsiveContainer height={250} width="100%">
@@ -113,17 +122,17 @@ function RetentionPieChart({
                         cx="50%"
                         cy="50%"
                         data={data}
-                        dataKey="value"
+                        dataKey="percent"
                         endAngle={-180}
                         innerRadius={60}
-                        label={({ name, value }) => `${name}: ${value}%`}
+                        label={({ range, percent }) => `${range}: ${percent}%`}
                         labelLine={false}
                         outerRadius={90}
                         paddingAngle={2}
                         startAngle={180}
                     >
                         {data.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
+                            <Cell key={`cell-${index}`} fill={colors.at(index)} />
                         ))}
                     </Pie>
                     <Tooltip
@@ -134,12 +143,12 @@ function RetentionPieChart({
                                 return (
                                     <div className="bg-background rounded-lg border p-2 shadow-sm">
                                         <div className="flex flex-col">
-                                            <span className="text-sm font-bold">{data.name}</span>
+                                            <span className="text-sm font-bold">{data.range}</span>
                                             <span className="text-muted-foreground text-xs">
-                                                Retention rate: {data.value}%
+                                                Retention rate: {data.percent}%
                                             </span>
                                             <span className="text-muted-foreground text-xs">
-                                                Churn rate: {100 - data.value}%
+                                                Count: {data.count}
                                             </span>
                                         </div>
                                     </div>
@@ -152,16 +161,16 @@ function RetentionPieChart({
                 </PieChart>
             </ResponsiveContainer>
             <div className="mt-2 grid grid-cols-3 gap-2">
-                {data.map((item) => (
-                    <div key={item.name} className="flex items-center gap-1">
+                {data.map((item, index) => (
+                    <div key={item.range} className="flex items-center gap-1">
                         <div
                             className="size-3 rounded-full"
-                            style={{ backgroundColor: item.color }}
+                            style={{ backgroundColor: colors.at(index) }}
                         />
                         <div className="flex flex-col">
-                            <span className="text-xs font-medium">{item.name}</span>
+                            <span className="text-xs font-medium">{item.range}</span>
                             <span className="text-muted-foreground text-xs">
-                                {item.value}%
+                                {item.count}%
                             </span>
                         </div>
                     </div>

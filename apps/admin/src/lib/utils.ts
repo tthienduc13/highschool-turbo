@@ -44,6 +44,16 @@ export function getRandomHexColor(): string {
   return `#${hexString}`;
 }
 
+export function getRandomHexColors(count: number): string[] {
+  const colors: string[] = [];
+
+  for (let i = 0; i < count; i++) {
+    colors.push(getRandomHexColor());
+  }
+
+  return colors;
+}
+
 export const generateYearOptions = (
   startYear: number,
   endYear: number,
