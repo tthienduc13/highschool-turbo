@@ -32,6 +32,7 @@ export function useMajorFilter({ initSearch }: MajorFilterProps): MajorFilter {
 
   return {
     data: Array.isArray(data?.data) ? data.data : [],
+    placeholder: "Filter major",
     pagination,
     isLoading,
     search,

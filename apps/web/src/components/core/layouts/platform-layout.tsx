@@ -3,11 +3,18 @@
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { Toaster } from "@highschool/ui/components/ui/sonner";
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@highschool/ui/components/ui/sidebar";
 
 import { Header } from "./header";
+import { AppSidebar } from "./sidebar";
+import { Footer } from "./footer";
 
-import GlobalShortcutLayer from "@/components/core/common/global-shorcut-layer";
+import GlobalShortcutLayer from "@/components/core/common/global-shortcut-layer";
 import TopLoadingBar from "@/components/core/common/top-loading-bar";
+import { useAppStore } from "@/stores/use-app-store";
 
 const SignupModal = dynamic(
   () =>
@@ -72,6 +79,7 @@ function PlatformLayout({
   children: React.ReactNode;
 }>) {
   const pathName = usePathname();
+  const { isOpenSidebar, isOpenMobileSidebar } = useAppStore();
   const hideHeaders = ["/roadmap"];
 
   const isHideHeader = hideHeaders.includes(pathName);
@@ -85,7 +93,31 @@ function PlatformLayout({
             <TopLoadingBar />
           </div>
         )}
-        {children}
+        <SidebarProvider
+          className="top-[88px] flex flex-col bg-transparent "
+          defaultOpen={false}
+          open={isOpenSidebar}
+          openMobile={isOpenMobileSidebar}
+          onOpenChange={(open) => useAppStore.setState({ isOpenSidebar: open })}
+          onOpenMobileChange={(open) =>
+            useAppStore.setState({ isOpenMobileSidebar: open })
+          }
+        >
+          <div
+            className="flex flex-row"
+            style={{
+              minHeight: "calc(100vh - 80px - 32px)",
+              marginTop: "40px",
+              paddingBottom: "112px",
+            }}
+          >
+            <AppSidebar />
+            <SidebarInset className="relative flex-1 bg-transparent">
+              {children}
+            </SidebarInset>
+          </div>
+          <Footer />
+        </SidebarProvider>
         <Toaster richColors position="top-center" />
         <NetworkStatusNotifier />
         <SignupModal />

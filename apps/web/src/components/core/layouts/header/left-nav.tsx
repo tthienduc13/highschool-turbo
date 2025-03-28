@@ -23,11 +23,15 @@ import {
   IconSparkles,
   TablerIcon,
 } from "@tabler/icons-react";
+import { useIsMobile } from "@highschool/hooks";
+
+import { BurgerMenu } from "../../common/burger-menu";
 
 import { Logo } from "@/components/core/common/logo";
 import { TeacherOnly } from "@/components/core/common/teacher-only";
 import { AnimatedBackground } from "@/components/ui/animated-hover-tab";
 import { useIsTeacher } from "@/hooks/use-role";
+import { useAppStore } from "@/stores/use-app-store";
 
 type MenuItem = {
   label: string;
@@ -43,6 +47,13 @@ interface LeftNavProps {
 
 export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
   const router = useRouter();
+  const isMobile = useIsMobile();
+  const {
+    toggleSidebar,
+    toggleMobileSidebar,
+    isOpenSidebar,
+    isOpenMobileSidebar,
+  } = useAppStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const isTeacher = useIsTeacher();
   const { data: session } = useSession();
@@ -88,7 +99,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
 
   const STUDENT_TABS = [
     { name: "Trang chủ", href: "/" },
-    { name: "Môn học", href: "/courses" },
+    // { name: "Môn học", href: "/courses" },
     // { name: "Lộ trình học", href: "/roadmap" },
   ];
 
@@ -96,6 +107,18 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
 
   return (
     <div className="flex flex-row items-center gap-4">
+      {/* <Button
+        size={"icon"}
+        variant={"ghost"}
+        onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
+      >
+        <IconMenu2 className="!size-6" />
+      </Button> */}
+
+      <BurgerMenu
+        open={isMobile ? isOpenMobileSidebar : isOpenSidebar}
+        onClick={isMobile ? toggleMobileSidebar : toggleSidebar}
+      />
       <Logo />
       <div className="hidden flex-row items-center gap-4 md:flex">
         {session?.user && (

@@ -15,7 +15,14 @@ export const EditorListener = () => {
 
   useEffect(() => {
     store.subscribe(
-      (s) => [s.title, s.description, s.courseId, s.visibility],
+      (s) => [
+        s.title,
+        s.description,
+        s.entityId,
+        s.tags,
+        s.flashcardType,
+        s.visibility,
+      ],
       propertiesSaveHandler,
       {
         equalityFn: shallow,

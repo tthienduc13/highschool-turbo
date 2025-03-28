@@ -496,13 +496,33 @@ export const flashcardContentEndpoints = {
     ),
 } as const;
 
-// Course Endpoints
-export const courseEndpoints = {
+export const masterCourseEndpoints = {
   getMasterCourse: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
     "/master-subjects",
   ),
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/master-subject",
+  ),
+  edit: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/master-subject/${id}`,
+    ),
+  delete: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/master-subject/${id}`,
+    ),
+};
+
+// Course Endpoints
+export const courseEndpoints = {
   getCourses: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,

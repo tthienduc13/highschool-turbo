@@ -7,6 +7,7 @@ import {
   TestQuestionType,
   WriteData,
 } from "@highschool/interfaces";
+import { useParams } from "next/navigation";
 
 import { LoadingView } from "../../core/study-set-test/loading-view";
 import { HydrateSetData } from "../StudySet/hydrate-set-data";
@@ -24,6 +25,8 @@ import { EvaluationResult, evaluate } from "@/utils/evaluator";
 import { bulkGradeAnswers } from "@/utils/grader";
 
 function StudySetTestModule() {
+  const { slug } = useParams();
+
   return (
     <PhotoViewProvider>
       <EditorGlobalStyles />
@@ -32,6 +35,7 @@ function StudySetTestModule() {
         isPublic
         withDistractors
         placeholder={<TestLoading />}
+        slug={slug as string}
       >
         <CreateTestData>
           <TestContainer />

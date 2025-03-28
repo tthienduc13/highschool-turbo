@@ -30,7 +30,10 @@ export const Footer = () => {
   if (!initialized) return null;
 
   return (
-    <div className="w-full max-w-[100vw] border-t border-t-gray-200 bg-white dark:border-t-gray-800/50 dark:bg-gray-900/50">
+    <div
+      className="w-full max-w-[100vw] border-t border-t-gray-200 bg-white dark:border-t-gray-800/50 dark:bg-gray-900/50"
+      style={{ zIndex: 10000 }}
+    >
       <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8">
         <div className="flex flex-col gap-8">
           <div className="flex items-center justify-between">
@@ -168,7 +171,7 @@ const SocialLink: React.FC<React.PropsWithChildren<{ href: string }>> = ({
 }) => {
   return (
     <Link
-      className="ease-in-out text-gray-500 transition-colors duration-150 hover:text-gray-900 dark:hover:text-gray-50"
+      className="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-900 dark:hover:text-gray-50"
       href={href}
     >
       {children}
@@ -179,7 +182,7 @@ const SocialLink: React.FC<React.PropsWithChildren<{ href: string }>> = ({
 const FooterLink: React.FC<FooterLinkProps> = ({ href, text }) => {
   return (
     <Link className="w-fit" href={href}>
-      <p className="ease-in-out text-gray-500 transition-colors duration-150 hover:text-gray-900 dark:hover:text-gray-50">
+      <p className="text-gray-500 transition-colors duration-150 ease-in-out hover:text-gray-900 dark:hover:text-gray-50">
         {text}
       </p>
     </Link>

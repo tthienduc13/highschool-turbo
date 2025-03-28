@@ -81,18 +81,18 @@ export const UserMenu = () => {
       <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
         <DropdownMenuTrigger asChild>
           <div className="flex cursor-pointer items-center gap-2 hover:opacity-95">
-            <Avatar className="size-8">
-              <AvatarImage
-                alt={user?.fullname ?? "Chưa đặt tên"}
-                src={user?.image ?? ""}
-              />
-            </Avatar>
             <p className="font-semibold">{user?.fullname ?? "Chưa đặt tên"}</p>
             <IconChevronDown
               className={`transition-transform duration-200 ${
                 menuOpen ? "rotate-180" : "rotate-0"
               }`}
             />
+            <Avatar className="size-8">
+              <AvatarImage
+                alt={user?.fullname ?? "Chưa đặt tên"}
+                src={user?.image ?? ""}
+              />
+            </Avatar>
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent

@@ -12,28 +12,22 @@ async function fetchPaginatedData<T>(
   params: QueryParams = {},
 ): Promise<Pagination<T>> {
   try {
-    // Filter params more thoroughly
     const filteredParams = Object.fromEntries(
       Object.entries(params)
         .filter(([_, value]) => {
-          // Filter out undefined, null, and empty string values
           if (value === undefined || value === null || value === "") {
             return false;
           }
 
-          // Filter out empty arrays or arrays that only contain empty strings
           if (Array.isArray(value)) {
-            // Remove empty strings from the array
             const nonEmptyValues = value.filter((item) => item !== "");
 
-            // Only include if array has non-empty values after filtering
             return nonEmptyValues.length > 0;
           }
 
           return true;
         })
         .map(([key, value]) => {
-          // If it's an array, filter out empty strings
           if (Array.isArray(value)) {
             return [key, value.filter((item) => item !== "")];
           }

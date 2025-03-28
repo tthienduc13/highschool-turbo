@@ -5,19 +5,83 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
-import { categoryEndpoints, courseEndpoints } from "@highschool/endpoints";
+import {
+  categoryEndpoints,
+  courseEndpoints,
+  masterCourseEndpoints,
+} from "@highschool/endpoints";
 
 import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 
-import { fetchUnauthedPaginatedData } from "./common.ts";
+import fetchPaginatedData from "./common.ts";
 
-export const getMasterCourses = async (): Promise<MasterCourse[]> => {
+export const getMasterCourses = async ({
+  pageNumber,
+  pageSize,
+}: Partial<{
+  search: string;
+  grade: string;
+  pageNumber: number;
+  pageSize: number;
+}>): Promise<Pagination<MasterCourse[]>> => {
+  return fetchPaginatedData<MasterCourse[]>(
+    masterCourseEndpoints.getMasterCourse,
+    {
+      pageNumber,
+      pageSize,
+    },
+  );
+};
+
+export const createMasterCourse = async ({
+  masterSubjectName,
+}: {
+  masterSubjectName: string;
+}): Promise<ResponseModel<string>> => {
   try {
-    const { data } = await axiosServices.get(courseEndpoints.getMasterCourse);
+    const { data } = await axiosServices.post(masterCourseEndpoints.create, {
+      masterSubjectName,
+    });
 
     return data;
   } catch (error) {
-    console.error("Error while getting master courses", error);
+    console.log("Error while creating master course", error);
+    throw error;
+  }
+};
+
+export const editMasterCourse = async ({
+  id,
+  masterSubjectName,
+}: {
+  id: string;
+  masterSubjectName: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(masterCourseEndpoints.edit(id), {
+      masterSubjectName,
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while creating master course", error);
+    throw error;
+  }
+};
+
+export const deleteMasterCourse = async ({
+  id,
+}: {
+  id: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      masterCourseEndpoints.delete(id),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while deleting master course", error);
     throw error;
   }
 };
@@ -33,7 +97,7 @@ export const getCourses = async ({
   pageNumber: number;
   pageSize: number;
 }>): Promise<Pagination<Course[]>> => {
-  return fetchUnauthedPaginatedData<Course[]>(courseEndpoints.getCourses, {
+  return fetchPaginatedData<Course[]>(courseEndpoints.getCourses, {
     pageNumber,
     pageSize,
     search,

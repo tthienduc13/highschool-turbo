@@ -3,7 +3,7 @@
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconLoader2 } from "@tabler/icons-react";
 
-import GlobalShortcutLayer from "../global-shorcut-layer";
+import GlobalShortcutLayer from "../global-shortcut-layer";
 
 import { useNextStep } from "./present-wrapper";
 

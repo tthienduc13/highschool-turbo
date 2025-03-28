@@ -71,6 +71,7 @@ export const useFlashcardBySlugQuery = ({ slug }: { slug: string }) => {
     queryFn: () => getFlashcardBySlug({ slug }),
     refetchOnMount: true,
     enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
   });
 };
 
