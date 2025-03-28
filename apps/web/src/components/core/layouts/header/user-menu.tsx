@@ -25,10 +25,9 @@ import {
   IconUser,
   TablerIcon,
 } from "@tabler/icons-react";
-import { deleteClientCookie } from "@highschool/lib/cookies";
-import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { menuEventChannel } from "@/events/menu";
+import { serverLogout } from "@/actions/logout";
 
 type MenuItem = {
   label: string;
@@ -131,8 +130,8 @@ export const UserMenu = () => {
           <DropdownMenuItem
             className="cursor-pointer"
             onClick={async () => {
-              deleteClientCookie(ACCESS_TOKEN);
-              await signOut();
+              await serverLogout();
+              await signOut({ callbackUrl: "/sign-in" });
             }}
           >
             <IconLogout className="text-base" size={18} />

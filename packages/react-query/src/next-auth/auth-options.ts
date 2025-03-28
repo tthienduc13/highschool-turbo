@@ -1,13 +1,13 @@
+// packages/react-query/auth.ts
+import NextAuth from "next-auth";
 import { NextAuthConfig, User } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
-import { env } from "@highschool/env";
+import Credentials from "next-auth/providers/credentials";
 import { GoogleLoginRequest } from "@highschool/interfaces";
 import { cookies } from "next/headers.js";
+import { env } from "@highschool/env";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
-import Credentials from "next-auth/providers/credentials";
-import { signOut } from "next-auth/react";
-import { setClientCookie } from "@highschool/lib/cookies.ts";
 
 import {
   credentialLogin,
@@ -44,14 +44,10 @@ const refreshAccessToken = async (token: JWT) => {
     const result = await response.json();
 
     if (!result.data) {
-      signOut();
       throw new Error("RefreshTokenFailed");
     }
 
-    // const cookieStore = await cookies();
-
-    // cookieStore.set(ACCESS_TOKEN, result.data.accessToken);
-
+    // Return the refreshed token data
     return {
       ...token,
       accessToken: result.data.accessToken,
@@ -81,7 +77,7 @@ export const sendVerificationRequest = async (params: {
   await login({ email: params.identifier });
 };
 
-export const AuthOptions: NextAuthConfig = {
+export const authConfig: NextAuthConfig = {
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -128,28 +124,34 @@ export const AuthOptions: NextAuthConfig = {
           type: "password",
         },
       },
-      authorize: async (credentials) => {
-        const response = await credentialLogin({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        });
-
-        if (response.status === 400) {
-          throw new Error("Invalid credentials");
-        }
-        if (
-          response.data?.roleName.toLocaleLowerCase() === "moderator" ||
-          response.data?.roleName.toLocaleLowerCase() === "admin"
-        ) {
-          const userData = response.data;
-          const cookieStore = await cookies();
-
-          cookieStore.set(ACCESS_TOKEN, userData.accessToken);
-
-          return userData;
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
         }
 
-        return null;
+        try {
+          const response = await credentialLogin({
+            email: credentials.email as string,
+            password: credentials.password as string,
+          });
+
+          if (response.status === 400) {
+            return null;
+          }
+
+          if (
+            response.data?.roleName.toLowerCase() === "moderator" ||
+            response.data?.roleName.toLowerCase() === "admin"
+          ) {
+            return response.data;
+          }
+
+          return null;
+        } catch (error) {
+          console.error("Credential login error:", error);
+
+          return null;
+        }
       },
     }),
   ],
@@ -167,10 +169,6 @@ export const AuthOptions: NextAuthConfig = {
         if (!response.data) return false;
         const userInfo = response.data;
 
-        const cookieStore = await cookies();
-
-        cookieStore.set(ACCESS_TOKEN, userInfo.accessToken);
-
         Object.assign(user, {
           userId: userInfo.userId,
           email: userInfo.email,
@@ -180,6 +178,7 @@ export const AuthOptions: NextAuthConfig = {
           roleName: userInfo.roleName,
           accessToken: userInfo.accessToken,
           refreshToken: userInfo.refreshToken,
+          curriculumId: userInfo.curriculumId,
           sessionId: userInfo.sessionId,
           progressStage: userInfo.progressStage,
           expiresAt: userInfo.expiresAt,
@@ -191,10 +190,6 @@ export const AuthOptions: NextAuthConfig = {
       if (account?.provider === "magic-link") {
         const userInfo = user;
 
-        const cookieStore = await cookies();
-
-        cookieStore.set(ACCESS_TOKEN, userInfo.accessToken);
-
         Object.assign(user, {
           userId: userInfo.userId,
           email: userInfo.email,
@@ -204,6 +199,7 @@ export const AuthOptions: NextAuthConfig = {
           roleName: userInfo.roleName,
           accessToken: userInfo.accessToken,
           refreshToken: userInfo.refreshToken,
+          curriculumId: userInfo.curriculumId,
           sessionId: userInfo.sessionId,
           progressStage: userInfo.progressStage,
           expiresAt: userInfo.expiresAt,
@@ -222,22 +218,18 @@ export const AuthOptions: NextAuthConfig = {
         };
       }
 
-      if (trigger === "update" && session.user) {
+      if (trigger === "update" && session?.user) {
         return {
           ...token,
           ...session.user,
         };
       }
 
-      if (Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000) {
-        const response = (await refreshAccessToken(token)) as JWT;
-
-        // const cookieStore = await cookies();
-
-        // cookieStore.set(ACCESS_TOKEN, response.accessToken);
-        setClientCookie(ACCESS_TOKEN, response.accessToken);
-
-        return response;
+      if (
+        token.expiresAt &&
+        Date.now() > new Date(token.expiresAt).getTime() - 1 * 1000
+      ) {
+        return refreshAccessToken(token);
       }
 
       return token;
@@ -253,6 +245,7 @@ export const AuthOptions: NextAuthConfig = {
         fullname: token.fullname,
         roleName: token.roleName,
         progressStage: token.progressStage,
+        curriculumId: token.curriculumId,
         accessToken: token.accessToken,
         sessionId: token.sessionId,
         refreshToken: token.refreshToken,
@@ -273,4 +266,20 @@ export const AuthOptions: NextAuthConfig = {
   },
   trustHost: true,
   secret: process.env.AUTH_SECRET,
+  events: {
+    async signIn({ user }) {
+      const cookieStore = await cookies();
+
+      if (user.accessToken) {
+        cookieStore.set(ACCESS_TOKEN, user.accessToken as string, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          path: "/",
+        });
+      }
+    },
+  },
 };
+
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);

@@ -9,7 +9,7 @@ import { cn } from "@highschool/ui/lib/utils";
 interface ProgressProps
   extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   indeterminate?: boolean;
-  indicatorColor: string;
+  indicatorColor?: string;
 }
 
 const Progress = React.forwardRef<

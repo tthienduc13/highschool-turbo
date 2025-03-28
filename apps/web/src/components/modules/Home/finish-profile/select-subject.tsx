@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+import { toast } from "sonner";
+import { useSession } from "next-auth/react";
 
 import { WizardLayout } from "./wizard-layout";
 
@@ -31,6 +33,8 @@ export const convertToClass = (grade: Grade): number => {
 
 export const SelectSubject = () => {
   const queryClient = useQueryClient();
+  const { data: session, update } = useSession();
+
   const {
     currentStep,
     setCurrentStep,
@@ -73,12 +77,24 @@ export const SelectSubject = () => {
           subjectIds: selectedSubjects,
           schoolName: selectedSchool!,
           typeExams: selectedExamTypes,
+          curriculumId: selectedCurriculum!,
         },
       },
       {
-        onSuccess: () => {
+        onSuccess: async (data) => {
+          await update({
+            ...session,
+            user: {
+              ...session?.user,
+              curriculumId: selectedCurriculum,
+            },
+          });
           queryClient.invalidateQueries({ queryKey: ["progress-stage"] });
+          toast.success(data.message);
           setOpen(false);
+        },
+        onError: (error) => {
+          toast.error(error.message);
         },
       },
     );
@@ -110,7 +126,7 @@ export const SelectSubject = () => {
             onCloseAutoFocus={(e) => e.preventDefault()}
           >
             {curriculumData?.map((curriculum) => (
-              <SelectItem key={curriculum.id} value={curriculum.curriculumName}>
+              <SelectItem key={curriculum.id} value={curriculum.id}>
                 {curriculum.curriculumName}
               </SelectItem>
             ))}

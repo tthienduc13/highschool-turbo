@@ -64,7 +64,7 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
     {
       label: "Bộ thẻ mới với AI",
       icon: IconSparkles,
-      onClick: () => handleItemClick("Bộ thẻ mới với AI"),
+      onClick: () => router.push("/study-set/create-with-ai"),
     },
     {
       label: "Tài liệu",

@@ -14,17 +14,16 @@ import {
 } from "@highschool/ui/components/ui/select";
 import { IconFilterCancel } from "@tabler/icons-react";
 
-import { Filters } from ".";
-
 import { YearPicker } from "@/components/core/common/year-picker";
+import { Filters, useFilterStore } from "@/stores/use-filter-store";
 
 interface FilterProps {
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
-  filters: Filters;
   categoryName?: string | null;
 }
 
-export const Filter = ({ setFilters, filters, categoryName }: FilterProps) => {
+export const Filter = ({ categoryName }: FilterProps) => {
+  const filters = useFilterStore((s) => s.filters);
+  const setFilters = useFilterStore((s) => s.setFilters);
   const { data: provinces, isLoading: provincesLoading } = useCitiesQuery({
     pageSize: 63,
     pageNumber: 1,
@@ -44,11 +43,11 @@ export const Filter = ({ setFilters, filters, categoryName }: FilterProps) => {
     key: keyof Filters,
     value: string | number | null,
   ) => {
-    setFilters((prev) => ({
-      ...prev,
+    setFilters({
+      ...filters,
       [key]: value,
       ...(key === "regionId" ? { schoolId: "" } : {}),
-    }));
+    });
   };
 
   const clearFilters = () => {

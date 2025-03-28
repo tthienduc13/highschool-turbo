@@ -16,20 +16,11 @@ import {
 } from "@highschool/ui/components/ui/select";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
 
-interface InPageFilters {
-  sort: boolean | null; // null = "Mới nhất", true = "Nhiều lượt xem nhất", false = "Ít lượt xem nhất"
-  semester: number | null; // 1 = Học kì 1, 2 = Học kì 2, null = Tất cả
-}
+import { useFilterStore } from "@/stores/use-filter-store";
 
-interface InPageFilterProps {
-  inPageFilters: InPageFilters;
-  setInPageFilters: React.Dispatch<React.SetStateAction<InPageFilters>>;
-}
-
-export const InPageFilter = ({
-  inPageFilters,
-  setInPageFilters,
-}: InPageFilterProps) => {
+export const InPageFilter = () => {
+  const inPageFilters = useFilterStore((state) => state.inPageFilters);
+  const setInPageFilters = useFilterStore((state) => state.setInPageFilters);
   const semesterMap: { [key in Semester]: number | null } = {
     [Semester.ALL]: null,
     [Semester.HK1]: 1,
