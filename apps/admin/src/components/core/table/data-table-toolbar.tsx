@@ -17,7 +17,6 @@ export function DataTableToolbar<T>({ filter }: DataTableToolbarProps<T>) {
   const isFiltered = table ? table.getState().columnFilters.length > 0 : false;
 
   const resetFilter = () => {
-    console.log("resetFilter");
     table?.resetColumnFilters();
     filter.facedFilter?.forEach((data) => {
       data.setSelect?.([]);
@@ -30,9 +29,9 @@ export function DataTableToolbar<T>({ filter }: DataTableToolbarProps<T>) {
       <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
         <Input
           className="h-8 w-[150px] lg:w-[250px]"
-          placeholder="Filter users..."
+          placeholder={filter.placeholder}
           value={filter.search ?? ""}
-          onChange={(event) => filter.setSearch(event.target.value)}
+          onChange={(event) => filter.setSearch?.(event?.target?.value! ?? "")}
         />
         <div className="flex gap-x-2">
           {filter.facedFilter?.map((data) => (

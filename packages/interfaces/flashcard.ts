@@ -6,6 +6,13 @@ import {
   StudySetAnswerMode,
 } from "./study-mode";
 
+export enum FlashcardAttachToType {
+  Lesson = "Lesson",
+  Chapter = "Chapter",
+  Subject = "Subject",
+  SubjectCurriculum = "SubjectCurriculum",
+}
+
 export interface Flashcard {
   id: string;
   userId: string;
@@ -13,6 +20,8 @@ export interface Flashcard {
   subjectName: string;
   grade: Grade;
   flashcardName: string;
+  entityId: string;
+  flashcardType: FlashcardAttachToType;
   slug: string;
   flashcardDescription: string;
   created: boolean;
@@ -70,8 +79,10 @@ export interface DraftData {
 export interface EditSetPayload {
   flashcardName: string;
   flashcardDescription: string;
-  subjectId: string;
+  entityId: string;
+  flashcardType: FlashcardAttachToType;
   status: StudySetVisibility;
+  tags: string[];
 }
 
 export interface FlashcardContainer {

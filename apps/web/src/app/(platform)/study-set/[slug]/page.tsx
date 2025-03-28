@@ -1,12 +1,17 @@
+// app/study-set/[slug]/page.tsx
+import { Metadata } from "next";
 import {
   HydrationBoundary,
   QueryClient,
   dehydrate,
 } from "@tanstack/react-query";
-import { Metadata } from "next";
+import {
+  getFlashcardBySlug,
+  getFlashcardContentsBySlug,
+} from "@highschool/react-query/apis";
 
 import StudySetModule from "@/components/modules/StudySet";
-import { getCachedMetadata } from "@/utils/study-set-meta";
+import { prefetchFlashcardData } from "@/utils/study-set-meta";
 
 export const generateMetadata = async ({
   params,
@@ -14,18 +19,45 @@ export const generateMetadata = async ({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata | undefined> => {
   const { slug } = await params;
+  const flashcardData = await prefetchFlashcardData(slug);
 
-  return getCachedMetadata(slug);
+  return flashcardData
+    ? {
+        title: flashcardData.flashcardName,
+        description: flashcardData.flashcardDescription,
+      }
+    : undefined;
 };
 
-async function StudySet() {
+export default async function StudySet({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const queryClient = new QueryClient();
+
+  const { slug } = await params;
+
+  // Prefetch the data on the server
+  await Promise.all([
+    queryClient.prefetchQuery({
+      queryKey: ["flashcard", slug],
+      queryFn: () => getFlashcardBySlug({ slug: slug }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["flashcardContent", slug],
+      queryFn: () =>
+        getFlashcardContentsBySlug({
+          slug: slug,
+          pageNumber: 1,
+          pageSize: 1000, // Adjust based on your requirements
+        }),
+    }),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <StudySetModule />
+      <StudySetModule slug={slug} />
     </HydrationBoundary>
   );
 }
-
-export default StudySet;

@@ -31,6 +31,7 @@ export function useReportFilter({
 
   return {
     data: data?.data ?? [],
+    placeholder: "Filter reports",
     // data: Array.isArray(data?.data) ? data.data : [],
     pagination,
     isLoading,

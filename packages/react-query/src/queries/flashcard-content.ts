@@ -20,6 +20,7 @@ export const useContentsBySlugQuery = ({
     queryFn: () => getFlashcardContentsBySlug({ slug, pageNumber, pageSize }),
     enabled: !!slug,
     refetchOnMount: true,
+    staleTime: 5 * 60 * 1000,
   });
 };
 

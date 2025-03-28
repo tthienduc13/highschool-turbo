@@ -103,7 +103,7 @@ export const Header = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className="mx-auto flex size-full flex-row items-center justify-between px-6 py-4 md:px-8">
+      <div className="mx-auto flex size-full flex-row items-center justify-between p-4 ">
         <LeftNav onFolderClick={() => setFolderModalOpen(true)} />
         <div className="block md:hidden">
           <div className="flex flex-row gap-2">
@@ -134,7 +134,7 @@ export const Header = () => {
             onFolderClick={() => setFolderModalOpen(true)}
           />
         </div>
-        <div className="hidden items-center gap-2 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
           {session?.user && (
             <Button
               size={"icon"}
@@ -155,6 +155,7 @@ export const Header = () => {
             </Button>
           )}
           {session?.user && <UserNotification />}
+          <div className="h-4 w-[2px] rounded-full bg-gray-300" />
           {session?.user && <UserMenu />}
           {status !== "loading" && !session && (
             <div className="grid grid-cols-2 gap-2">

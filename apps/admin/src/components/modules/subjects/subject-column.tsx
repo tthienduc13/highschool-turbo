@@ -8,16 +8,26 @@ import { DataTableRowActions } from "@/components/core/table/data-table-row-acti
 
 export const columns: ColumnDef<MasterCourse>[] = [
   {
-    id: "School",
+    id: "ordinal",
+    header: "#",
+    cell: ({ row }) => {
+      return (
+        <LongText className="w-full text-center">{row.index + 1}</LongText>
+      );
+    },
+    meta: { className: "w-16 text-center" },
+  },
+  {
+    id: "subjectName",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="School" />
+      <DataTableColumnHeader column={column} title="SubjectName" />
     ),
     cell: ({ row }) => {
       const { masterSubjectName } = row.original;
 
-      return <LongText className="min-w-52">{masterSubjectName}</LongText>;
+      return <LongText className="w-full">{masterSubjectName}</LongText>;
     },
-    meta: { className: "w-36" },
+    meta: { className: "w-full" },
   },
   {
     id: "actions",

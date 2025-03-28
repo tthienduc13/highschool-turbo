@@ -231,7 +231,7 @@ export const EditorContextLayer = ({
         serverTerms: data?.flashcardContents.map((x: FlashcardContent) => x.id),
         title: data.flashcardName,
         description: data.flashcardDescription,
-        courseId: data.subjectId,
+        entityId: data.subjectId,
         visibility: data.status as StudySetVisibility,
       },
       {
@@ -350,7 +350,9 @@ export const EditorContextLayer = ({
               values: {
                 flashcardName: state.title,
                 flashcardDescription: state.description,
-                subjectId: state.courseId,
+                entityId: state.entityId,
+                flashcardType: state.flashcardType,
+                tags: state.tags,
                 status: state.visibility,
               },
             });

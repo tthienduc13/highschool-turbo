@@ -59,6 +59,7 @@ export function useSchoolFilter({
 
   return {
     data: data?.data ?? [],
+    placeholder: "Filter school",
     // data: Array.isArray(data?.data) ? data.data : [],
     pagination,
     isLoading,

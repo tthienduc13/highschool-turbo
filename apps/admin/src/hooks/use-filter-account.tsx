@@ -58,6 +58,7 @@ export function useAccountFilter({
 
   return {
     data: Array.isArray(data?.data) ? data.data : [],
+    placeholder: "Filter user",
     pagination,
     isLoading,
     search,

@@ -24,12 +24,16 @@ export const navModerator = {
           url: "/master-data/region",
         },
         {
-          title: "Schools",
+          title: "School",
           url: "/master-data/school",
         },
         {
           title: "University",
           url: "/master-data/university",
+        },
+        {
+          title: "Curriculum",
+          url: "/master-data/curriculum",
         },
         {
           title: "Subject",
