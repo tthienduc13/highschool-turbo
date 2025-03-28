@@ -15,8 +15,9 @@ export interface DataFacedFilter {
 export interface FilterTable<T> {
   data: T[];
   pagination: ReturnType<typeof usePagination>;
+  placeholder: string;
   isLoading: boolean;
-  search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
+  search?: string;
+  setSearch?: Dispatch<SetStateAction<string>>;
   facedFilter?: DataFacedFilter[];
 }

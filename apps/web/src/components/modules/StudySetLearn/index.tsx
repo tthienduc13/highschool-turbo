@@ -1,5 +1,7 @@
 "use client";
 
+import { useParams } from "next/navigation";
+
 import { HydrateSetData } from "../StudySet/hydrate-set-data";
 
 import { CreateLearnData } from "./create-learn-data";
@@ -16,6 +18,8 @@ import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { useLearnContext } from "@/stores/use-study-set-learn-store";
 
 function StudySetLearnModule() {
+  const { slug } = useParams();
+
   return (
     <>
       <EditorGlobalStyles />
@@ -31,6 +35,7 @@ function StudySetLearnModule() {
             </div>
           </Container>
         }
+        slug={slug as string}
       >
         <CreateLearnData>
           <Container className="md:mt-10" maxWidth="4xl">

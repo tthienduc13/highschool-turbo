@@ -1,45 +1,19 @@
-import { Metadata } from "next";
-import { getFlashcardBySlug } from "@highschool/react-query/apis";
+// utils/study-set-meta.ts
 import { Flashcard } from "@highschool/interfaces";
+import { getFlashcardBySlug } from "@highschool/react-query/apis";
+import { cache } from "react";
 
-const metadataCache = new Map<string, Flashcard>();
+// Use React's cache function for server-side caching
+export const prefetchFlashcardData = cache(
+  async (slug: string): Promise<Flashcard | undefined> => {
+    try {
+      const data = await getFlashcardBySlug({ slug });
 
-export const getCachedMetadata = async (
-  slug: string,
-): Promise<Metadata | undefined> => {
-  if (metadataCache.has(slug)) {
-    const cachedData = metadataCache.get(slug);
+      return data;
+    } catch (error) {
+      console.error("Error fetching flashcard data:", error);
 
-    return cachedData
-      ? {
-          title: cachedData.flashcardName,
-          description: cachedData.flashcardDescription,
-        }
-      : undefined;
-  }
-
-  const data = await getFlashcardBySlug({ slug });
-
-  if (data) metadataCache.set(slug, data);
-
-  return data
-    ? {
-        title: data.flashcardName,
-        description: data.flashcardDescription,
-      }
-    : undefined;
-};
-
-export const getFlashcardData = async (
-  slug: string,
-): Promise<Flashcard | undefined> => {
-  if (metadataCache.has(slug)) {
-    return metadataCache.get(slug);
-  }
-
-  const data = await getFlashcardBySlug({ slug });
-
-  if (data) metadataCache.set(slug, data);
-
-  return data;
-};
+      return undefined;
+    }
+  },
+);

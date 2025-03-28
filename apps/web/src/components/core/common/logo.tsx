@@ -26,14 +26,14 @@ export const Logo = () => {
         </Link>
       </div>
       <div
-        className="relative block hover:opacity-80 lg:hidden"
-        style={{ height: `32px`, width: "auto" }}
+        className="relative  hover:opacity-80 lg:hidden  "
+        // style={{ height: `32px`, width: "auto" }}
       >
         <Link href={session?.user ? "/" : env.NEXT_PUBLIC_LANDING_URL}>
           <Image
             priority
             alt="logo"
-            className="object-contain"
+            className="h-8 w-auto object-contain md:h-10"
             height={32}
             src={"/logo.svg"}
             width={32}

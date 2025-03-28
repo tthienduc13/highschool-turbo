@@ -9,22 +9,22 @@ import { DataTable } from "@/components/core/table/table";
 import { useRegionFilter } from "@/hooks/use-filter-region";
 
 function MasterRegionModule() {
-    const filter = useRegionFilter({
-        initSearch: "",
-    });
+  const filter = useRegionFilter({
+    initSearch: "",
+  });
 
-    return (
-        <TableProvider>
-            <DataTable
-                columns={columns}
-                extraButton={<RegionPrimaryButtons />}
-                filter={filter}
-                subTitle="Manage your Region here."
-                title="Region List"
-            />
-            <RegionDialogs />
-        </TableProvider>
-    );
+  return (
+    <TableProvider>
+      <DataTable
+        columns={columns}
+        extraButton={<RegionPrimaryButtons />}
+        filter={filter}
+        subTitle="Manage your Region here."
+        title="Region List"
+      />
+      <RegionDialogs />
+    </TableProvider>
+  );
 }
 
 export default MasterRegionModule;

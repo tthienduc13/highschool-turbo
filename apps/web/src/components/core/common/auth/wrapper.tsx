@@ -26,7 +26,6 @@ import { motion } from "framer-motion";
 
 import { Loading } from "../loading";
 
-// Types
 interface AuthWrapperProps {
   mode: "login" | "signup";
   onUserExists?: (callbackUrl: string) => void;
@@ -78,10 +77,7 @@ const Sparkle: React.FC<Sparkle> = ({ id, x, y, color, delay, scale }) => (
 const COLORS = { first: "#9E7AFF", second: "#FE8BBB" };
 const SPARKLE_COUNT = 10;
 
-export const AuthWrapper = ({
-  mode,
-  onUserExists = () => {},
-}: AuthWrapperProps) => {
+export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
   // Hooks
   const { status, data: session } = useSession();
   const router = useRouter();
@@ -104,7 +100,7 @@ export const AuthWrapper = ({
   const [animationFinished, setAnimationFinished] = useState(false);
 
   // Derived state
-  const callbackUrl = searchParams.get("callbackUrl") ?? "/";
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
   const title =
     mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản Highschool";
   const loading = status === "loading" || !!session?.user;

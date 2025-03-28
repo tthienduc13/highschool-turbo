@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useDebounceValue } from "@highschool/hooks";
 import {
   useCheckUsernameQuery,
@@ -38,7 +38,9 @@ export const ChangeUsernameInput = ({
     session?.user?.username || "",
   );
   const usernameRef = useRef(usernameValue);
+  const wasUpdatedRef = useRef(false);
 
+  // Keep ref in sync with state
   usernameRef.current = usernameValue;
 
   const debouncedUsername = useDebounceValue(usernameValue, 500);
@@ -49,32 +51,69 @@ export const ChangeUsernameInput = ({
 
   const changeUsername = useUpdateBaseUserInfoMutation();
 
+  // Calculate validation states
   const isTooLong = usernameValue.length > 40;
-  const isTaken = checkUsername.data;
+  const isEmpty = usernameValue.length === 0;
+  const isFormatValid = USERNAME_REGEXP.test(usernameValue);
+  const isTaken = checkUsername.data === true;
+  const isAvailable = checkUsername.data === false;
+  const isChecking = checkUsername.isLoading;
+  const isPendingChange = changeUsername.isPending;
+  const isUnchanged = usernameValue === session?.user?.username;
 
-  console.log(isTaken, "take");
-
-  const isInvalid =
-    !!usernameValue.length &&
-    (!USERNAME_REGEXP.test(usernameValue) || isTooLong);
+  const isInvalid = !isEmpty && (!isFormatValid || isTooLong);
 
   const isDisabled =
     isInvalid ||
-    checkUsername.isLoading ||
+    isChecking ||
     debouncedUsername !== usernameValue ||
-    checkUsername.data ||
-    (disabledIfUnchanged && usernameValue === session?.user?.username);
+    isTaken ||
+    (disabledIfUnchanged && isUnchanged) ||
+    isPendingChange;
 
+  // Handle button click
+  const handleUsernameChange = useCallback(async () => {
+    if (isDisabled) return;
+
+    try {
+      // Set flag to prevent multiple updates
+      wasUpdatedRef.current = true;
+
+      // Perform update mutation
+      await changeUsername.mutateAsync({
+        userName: usernameValue,
+      });
+
+      // Update session once
+      if (session) {
+        await update({
+          ...session,
+          user: {
+            ...session.user,
+            username: usernameValue,
+          },
+        });
+
+        toast.success("Tên người dùng được cập nhật");
+      }
+    } catch (error) {
+      console.error("Failed to update username:", error);
+      toast.error("Không thể cập nhật tên người dùng");
+      wasUpdatedRef.current = false;
+    }
+  }, [changeUsername, isDisabled, session, update, usernameValue]);
+
+  // Reset update flag when username changes
+  useEffect(() => {
+    wasUpdatedRef.current = false;
+  }, [usernameValue]);
+
+  // Set up event listener for external submit
   useEffect(() => {
     const mutate = async () => {
-      changeUsername.mutateAsync({ userName: usernameRef.current });
-      await update({
-        ...session,
-        user: {
-          ...session?.user,
-          username: usernameRef.current,
-        },
-      });
+      if (!wasUpdatedRef.current) {
+        handleUsernameChange();
+      }
     };
 
     mutationEventChannel.on("submitUsername", mutate);
@@ -82,35 +121,17 @@ export const ChangeUsernameInput = ({
     return () => {
       mutationEventChannel.off("submitUsername", mutate);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handleUsernameChange]);
 
+  // Notify parent component about disabled state changes
   useEffect(() => {
     onActionStateChange?.(isDisabled);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDisabled]);
+  }, [isDisabled, onActionStateChange]);
 
+  // Notify parent component about loading state changes
   useEffect(() => {
-    if (changeUsername.isSuccess) {
-      const updateSession = async () => {
-        await update({
-          ...session,
-          user: {
-            ...session?.user,
-            username: usernameValue,
-          },
-        });
-        toast.success("Tên người dùng được cập nhật");
-      };
-
-      updateSession();
-    }
-  }, [changeUsername.isSuccess]);
-
-  useEffect(() => {
-    onLoadingChange?.(changeUsername.isPending);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [changeUsername.isPending]);
+    onLoadingChange?.(isPendingChange);
+  }, [isPendingChange, onLoadingChange]);
 
   return (
     <div className="flex w-full flex-col gap-2">
@@ -125,33 +146,26 @@ export const ChangeUsernameInput = ({
         >
           <Input
             className="size-full items-center border-none bg-gray-100 px-4 py-0 font-bold focus-visible:ring-0 sm:!text-base md:!text-xl dark:bg-gray-800/50"
-            disabled={changeUsername.isPending}
+            disabled={isPendingChange}
             placeholder="Nhập tên người dùng"
             value={usernameValue}
             onChange={(e) => {
-              if (!changeUsername.isPending) setUsernameValue(e.target.value);
+              if (!isPendingChange) setUsernameValue(e.target.value);
             }}
           />
           <div
             className={cn(
               "flex h-full items-center justify-center bg-gray-200 px-3 dark:bg-gray-700",
-              checkUsername.isLoading
-                ? "text-gray-200 dark:text-gray-700"
-                : checkUsername.data === false
-                  ? "text-destructive"
-                  : "text-emerald-500",
+              isChecking || isEmpty
+                ? "text-gray-500"
+                : isAvailable && !isInvalid
+                  ? "text-emerald-500"
+                  : "text-destructive",
             )}
-            style={{
-              color: checkUsername.isLoading
-                ? "gray"
-                : checkUsername.data
-                  ? "red"
-                  : "green",
-            }}
           >
-            {checkUsername.isLoading && !isInvalid ? (
+            {isChecking || isEmpty || isUnchanged ? (
               <div className="h-full w-6" />
-            ) : checkUsername.data === false ? (
+            ) : isAvailable && !isInvalid ? (
               <AnimatedCheckCircle />
             ) : (
               <AnimatedXCircle />
@@ -161,19 +175,15 @@ export const ChangeUsernameInput = ({
         {showButton && (
           <Button
             className="h-12 w-full sm:w-[120px]"
-            disabled={isDisabled || changeUsername.isPending}
+            disabled={isDisabled}
             size="lg"
             variant="outline"
-            onClick={async () => {
-              changeUsername.mutateAsync({
-                userName: usernameValue,
-              });
-            }}
+            onClick={handleUsernameChange}
           >
-            {changeUsername.isPending ? (
+            {isPendingChange ? (
               <IconLoader2 className="animate-spin" />
             ) : (
-              " Thay đổi"
+              "Thay đổi"
             )}
           </Button>
         )}
@@ -188,7 +198,9 @@ export const ChangeUsernameInput = ({
           ? "Tên người dùng không được vượt quá 40 kí tự"
           : isTaken
             ? "Tên người dùng đã bị lấy"
-            : "Chỉ chữ, số, gạch dưới là được phép"}
+            : !isFormatValid
+              ? "Chỉ chữ, số, gạch dưới là được phép"
+              : ""}
       </p>
     </div>
   );

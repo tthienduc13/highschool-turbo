@@ -1,8 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { createContext, useEffect, useRef, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useEffect, useCallback, createContext, useRef } from "react";
 import {
   Flashcard,
   FlashcardContent,
@@ -11,22 +10,23 @@ import {
   StudiableTerm,
 } from "@highschool/interfaces";
 import {
-  useContentsBySlugQuery,
   useFlashcardBySlugQuery,
+  useContentsBySlugQuery,
 } from "@highschool/react-query/queries";
 
 import { SetNotFound } from "@/components/core/common/404s/set-404";
 import { Loading } from "@/components/core/common/loading";
 import { queryEventChannel } from "@/events/query";
+import { useSetPropertiesStore } from "@/stores/use-set-properties";
 import {
   ContainerContext,
   ContainerStore,
   ContainerStoreProps,
   createContainerStore,
 } from "@/stores/use-container-store";
-import { useSetPropertiesStore } from "@/stores/use-set-properties";
 
 export interface HydrateSetDataProps {
+  slug: string; // Add slug prop to avoid using useParams() which triggers client-side rendering
   isPublic?: boolean;
   withDistractors?: boolean;
   disallowDirty?: boolean;
@@ -37,6 +37,7 @@ export interface HydrateSetDataProps {
 export const HydrateSetData: React.FC<
   React.PropsWithChildren<HydrateSetDataProps>
 > = ({
+  slug,
   isPublic,
   withDistractors = false,
   disallowDirty = false,
@@ -44,21 +45,21 @@ export const HydrateSetData: React.FC<
   placeholder,
   children,
 }) => {
-  const params = useParams();
   const { data: session, status } = useSession();
 
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
 
+  // Use the staleTime option to prevent automatic refetching unless needed
   const {
     data: flashcardData,
     refetch: refetchFlashcard,
     error,
     isFetchedAfterMount,
-
     isSuccess: flashcardSuccess,
   } = useFlashcardBySlugQuery({
-    slug: params.slug as string,
+    slug,
+    // 5 minutes
   });
 
   const {
@@ -66,7 +67,7 @@ export const HydrateSetData: React.FC<
     refetch: refetchFlashcardContent,
     isSuccess: flashcardContentSuccess,
   } = useContentsBySlugQuery({
-    slug: params.slug as string,
+    slug,
     pageNumber: 1,
     pageSize: status === "authenticated" ? 1000 : 10,
   });
@@ -129,7 +130,7 @@ export const HydrateSetData: React.FC<
     if (isDirty) {
       refetch();
     }
-  }, [isDirty]);
+  }, [isDirty, refetchFlashcard, refetchFlashcardContent]);
 
   if (error) return <SetNotFound />;
 

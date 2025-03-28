@@ -32,12 +32,12 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
   return (
     <Modal
       withoutFooter
-      className="w-full max-w-lg"
+      className="w-full "
       isOpen={isOpen}
       title="Thay đổi trạng thái hiển thị"
       onClose={onClose}
     >
-      <div className="flex w-[400px] flex-col overflow-hidden rounded-xl border-2 border-gray-200 dark:border-gray-700">
+      <div className="flex w-full flex-col overflow-hidden rounded-xl border-2 border-gray-200 dark:border-gray-700">
         {[
           {
             visibility: StudySetVisibility.Public,

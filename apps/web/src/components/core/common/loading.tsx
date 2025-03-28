@@ -10,7 +10,7 @@ export const Loading: React.FC<LoadingProps> = ({ fullHeight = false }) => {
     <div
       className={cn(
         "flex w-full flex-row items-center justify-center",
-        !fullHeight ? "calc(100vh - 160px)" : "100vh",
+        !fullHeight ? "calc(100vh - 160px)" : "h-screen",
       )}
     >
       <IconLoader2 className="animate-spin text-blue-500" />

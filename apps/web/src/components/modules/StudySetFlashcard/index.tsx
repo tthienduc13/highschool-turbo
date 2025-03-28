@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useParams } from "next/navigation";
 
 import { HydrateSetData } from "../StudySet/hydrate-set-data";
 
@@ -15,13 +16,18 @@ import { EditorGlobalStyles } from "@/components/core/common/editor-global-style
 import { Container } from "@/components/core/layouts/container";
 
 function StudySetFlashcardModule() {
+  const { slug } = useParams();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <>
       <EditorGlobalStyles />
       <PhotoViewProvider>
-        <HydrateSetData isPublic placeholder={<FlashcardsLoading />}>
+        <HydrateSetData
+          isPublic
+          placeholder={<FlashcardsLoading />}
+          slug={slug as string}
+        >
           <SettingModal
             isOpen={settingsOpen}
             onClose={() => setSettingsOpen(false)}

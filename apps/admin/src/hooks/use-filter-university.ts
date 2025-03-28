@@ -51,6 +51,7 @@ export function useUniversityFilter({
 
   return {
     data: Array.isArray(data?.data) ? data.data : [],
+    placeholder: "Filter university",
     pagination,
     isLoading,
     search,

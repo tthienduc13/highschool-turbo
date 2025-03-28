@@ -1,6 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  createMasterCourse,
+  deleteMasterCourse,
+  editMasterCourse,
   enrollCourse,
   getCategories,
   getCourseBySlug,
@@ -9,10 +12,37 @@ import {
   unEnrollCourse,
 } from "../apis/course.ts";
 
-export const useMasterCoursesQuery = () => {
+export const useMasterCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["master-course"],
+    mutationFn: createMasterCourse,
+  });
+};
+
+export const useEditMasterCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["edit-master-course"],
+    mutationFn: editMasterCourse,
+  });
+};
+
+export const useDeleteMasterCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["delete-master-course"],
+    mutationFn: deleteMasterCourse,
+  });
+};
+
+export const useMasterCoursesQuery = ({
+  pageNumber,
+  pageSize,
+}: {
+  pageNumber: number;
+  pageSize: number;
+}) => {
   return useQuery({
-    queryKey: ["masterCourses"],
-    queryFn: getMasterCourses,
+    queryKey: ["master-courses", { pageSize, pageNumber }],
+    queryFn: () => getMasterCourses({ pageNumber, pageSize }),
   });
 };
 

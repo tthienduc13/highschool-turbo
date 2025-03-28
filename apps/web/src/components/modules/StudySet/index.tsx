@@ -18,8 +18,10 @@ import { SetLoading } from "@/components/core/study-set/set-loading";
 import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { TermOverView } from "@/components/core/study-set/term-overview";
 
-function StudySetModule() {
+// Receive slug as a prop from the page component
+function StudySetModule({ slug }: { slug: string }) {
   const [isScrollPast, setIsScrollPast] = useState(false);
+
   const handleScroll = () => {
     if (window.scrollY > 300) {
       setIsScrollPast(true);
@@ -36,7 +38,11 @@ function StudySetModule() {
 
   return (
     <PhotoViewProvider>
-      <HydrateSetData isPublic placeholder={<SetLoading />}>
+      <HydrateSetData
+        isPublic
+        placeholder={<SetLoading />}
+        slug={slug} // Pass the slug down instead of using useParams
+      >
         <EditorGlobalStyles />
         <TermImageLayer />
         <WithFooter>

@@ -4,6 +4,7 @@ import "./src/env.ts";
 
 const nextConfig: NextConfig = {
   reactStrictMode: false,
+
   transpilePackages: [
     "@highschool/ui",
     "@highschool/endpoints",
