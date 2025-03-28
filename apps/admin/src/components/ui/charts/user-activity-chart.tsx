@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     Card,
     CardContent,
@@ -37,24 +37,13 @@ import {
     XAxis,
     YAxis,
 } from "@/components/ui/chart";
-import { monthData, weekData, yearData } from "@/domain/constants/analyst-card";
 
 export function UserActivityChart() {
-    const [timeRange, setTimeRange] = useState("month");
+    const [timeRange, setTimeRange] = useState("Month");
     const [customValue, setCustomValue] = useState("1");
-    const [customUnit, setCustomUnit] = useState("hours");
+    const [customUnit, setCustomUnit] = useState("Month");
     const [data, setData] = useState<any>([]);
     const isLoading = false;
-
-    useEffect(() => {
-        if (timeRange === "week") {
-            setData(weekData);
-        } else if (timeRange === "month") {
-            setData(monthData);
-        } else if (timeRange === "year") {
-            setData(yearData);
-        }
-    }, [timeRange]);
 
     // Handle time range changes and trigger API fetch if callback provided
     const handleTimeRangeChange = (newRange: any) => {
@@ -80,11 +69,10 @@ export function UserActivityChart() {
 
     // Determine which data key to use for X-axis
     const getXAxisDataKey = () => {
-        if (timeRange === "custom") {
-            if (customUnit === "years") return "year";
-            if (customUnit === "months") return "monthYear";
-            if (customUnit === "hours") return "hourDay";
-            if (customUnit === "minutes") return "minuteTime";
+        if (timeRange === "Custom") {
+            if (customUnit === "Year") return "Year";
+            if (customUnit === "Month") return "Month";
+            if (customUnit === "Day") return "Day";
         }
 
         return "date";
@@ -93,11 +81,11 @@ export function UserActivityChart() {
     // Format the x-axis labels based on time range and interval
     const formatXAxis = (value: any) => {
         // Handle special cases for direct display
-        if (timeRange === "custom") {
-            if (customUnit === "years") {
+        if (timeRange === "Custom") {
+            if (customUnit === "Year") {
                 return typeof value === "number" ? value.toString() : value;
             }
-            if (customUnit === "months") {
+            if (customUnit === "Month") {
                 // If it's already formatted as month/year, use it directly
                 if (typeof value === "string" && value.includes("/")) {
                     return value;
@@ -107,33 +95,17 @@ export function UserActivityChart() {
                     return monthNames[value].substring(0, 3);
                 }
             }
-            if (customUnit === "hours") {
-                // If it's already formatted, use it directly
-                if (typeof value === "string" && value.includes("h")) {
-                    return value;
-                }
-                // Otherwise, if it's an hour number, format it
-                if (typeof value === "number" && value >= 0 && value <= 23) {
-                    return `${value}h00`;
-                }
-            }
-            if (customUnit === "minutes") {
-                // If it's already formatted as "11h33", use it directly
-                if (typeof value === "string" && value.includes("h")) {
-                    return value;
-                }
-            }
         }
 
         // For other data types, parse the date
         try {
             const date = new Date(value);
 
-            if (timeRange === "week") {
+            if (timeRange === "Week") {
                 return weekDays[date.getDay()];
-            } else if (timeRange === "month") {
+            } else if (timeRange === "Month") {
                 return date.getDate().toString();
-            } else if (timeRange === "year") {
+            } else if (timeRange === "Year") {
                 return monthNames[date.getMonth()].substring(0, 3);
             }
         } catch (e) {
@@ -150,24 +122,22 @@ export function UserActivityChart() {
         const now = new Date();
 
         switch (timeRange) {
-            case "week":
+            case "Week":
                 return "current week (Monday to Sunday)";
-            case "month":
+            case "Month":
                 return `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
-            case "year":
+            case "Year":
                 return now.getFullYear().toString();
-            case "custom":
-                if (customUnit === "years") {
+            case "Custom":
+                if (customUnit === "Year") {
                     const endYear = now.getFullYear();
                     const startYear = endYear - Number.parseInt(customValue) + 1;
 
                     return `${startYear} - ${endYear}`;
-                } else if (customUnit === "months") {
+                } else if (customUnit === "Month") {
                     return `past ${customValue} months`;
-                } else if (customUnit === "hours") {
-                    return `past ${customValue} hours`;
-                } else if (customUnit === "minutes") {
-                    return `past ${customValue} minutes`;
+                } else if (customUnit === "Day") {
+                    return `past ${customValue} Day`;
                 }
 
                 return `past ${customValue} ${customUnit}`;
@@ -196,11 +166,10 @@ export function UserActivityChart() {
 
     // Get tooltip label based on time range
     const getTooltipLabel = () => {
-        if (timeRange === "custom") {
-            if (customUnit === "years") return "Year";
-            if (customUnit === "months") return "Month";
-            if (customUnit === "hours") return "Hour";
-            if (customUnit === "minutes") return "Time";
+        if (timeRange === "Custom") {
+            if (customUnit === "Year") return "Year";
+            if (customUnit === "Month") return "Month";
+            if (customUnit === "Day") return "Day";
         }
 
         return "Date";
@@ -208,31 +177,28 @@ export function UserActivityChart() {
 
     // Format tooltip date/time value
     const formatTooltipDate = (data: any) => {
-        if (timeRange === "custom") {
-            if (customUnit === "years" && data.year) {
+        if (timeRange === "Custom") {
+            if (customUnit === "Year" && data.year) {
                 return data.year.toString();
             }
-            if (customUnit === "months" && data.monthYear) {
+            if (customUnit === "Month" && data.monthYear) {
                 const monthNum = data.month;
 
                 return `${monthNames[monthNum]} ${data.monthYear.split("/")[1]}`;
             }
-            if (customUnit === "hours" && data.hourDay) {
+            if (customUnit === "Day" && data.hourDay) {
                 return data.hourDay;
-            }
-            if (customUnit === "minutes" && data.minuteTime) {
-                return data.minuteTime;
             }
         }
 
         try {
             const date = new Date(data.date);
 
-            if (timeRange === "week") {
+            if (timeRange === "Week") {
                 return `${weekDays[date.getDay()]}, ${date.toLocaleDateString()}`;
-            } else if (timeRange === "month") {
+            } else if (timeRange === "Month") {
                 return date.toLocaleDateString();
-            } else if (timeRange === "year") {
+            } else if (timeRange === "Year") {
                 return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
             }
 
@@ -257,14 +223,14 @@ export function UserActivityChart() {
                             <SelectValue placeholder="Select range" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="week">Week</SelectItem>
-                            <SelectItem value="month">Month</SelectItem>
-                            <SelectItem value="year">Year</SelectItem>
-                            <SelectItem value="custom">Custom</SelectItem>
+                            <SelectItem value="Week">Week</SelectItem>
+                            <SelectItem value="Month">Month</SelectItem>
+                            <SelectItem value="Year">Year</SelectItem>
+                            <SelectItem value="Custom">Custom</SelectItem>
                         </SelectContent>
                     </Select>
 
-                    {timeRange === "custom" && (
+                    {timeRange === "Custom" && (
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
@@ -301,7 +267,6 @@ export function UserActivityChart() {
                                                     handleCustomValueChange(e.target.value)
                                                 }
                                             />
-                                            <Button className="w-full">Save</Button>
                                         </div>
                                         <div className="col-span-1">
                                             <RadioGroup
@@ -310,19 +275,15 @@ export function UserActivityChart() {
                                                 onValueChange={handleCustomUnitChange}
                                             >
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="minutes" value="minutes" />
-                                                    <Label htmlFor="minutes">Minutes</Label>
+                                                    <RadioGroupItem id="days" value="Day" />
+                                                    <Label htmlFor="days">Days</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="hours" value="hours" />
-                                                    <Label htmlFor="hours">Hours</Label>
-                                                </div>
-                                                <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="months" value="months" />
+                                                    <RadioGroupItem id="months" value="Month" />
                                                     <Label htmlFor="months">Months</Label>
                                                 </div>
                                                 <div className="flex items-center space-x-2">
-                                                    <RadioGroupItem id="years" value="years" />
+                                                    <RadioGroupItem id="years" value="Year" />
                                                     <Label htmlFor="years">Years</Label>
                                                 </div>
                                             </RadioGroup>

@@ -54,33 +54,65 @@ export function UserGrowthChart() {
         userActivityType: timeRange === "Custom" ? customUnit : timeRange,
     });
 
-    const result: UserGrowth[] = [];
-    usersData?.forEach(({ date, students, teachers, moderators }) => {
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = d.getMonth(); // 0-based month
+    const formatDataCustom = () => {
+        const result: UserGrowth[] = [];
+        if (timeRange === "Custom" && customUnit === "Month") {
+            usersData?.forEach(({ date, students, teachers, moderators }) => {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const month = d.getMonth(); // 0-based month
 
-        const index = result.findIndex((item) => {
-            const itemYear = new Date(item.date).getFullYear();
-            const itemMonth = new Date(item.date).getMonth();
-            return itemYear === year && itemMonth === month;
-        });
+                const index = result.findIndex((item) => {
+                    const itemYear = new Date(item.date).getFullYear();
+                    const itemMonth = new Date(item.date).getMonth();
+                    return itemYear === year && itemMonth === month;
+                });
 
-        if (index === -1) {
-            result.push({
-                date: date,
-                students: 0,
-                teachers: 0,
-                moderators: 0,
+                if (index === -1) {
+                    result.push({
+                        date: date,
+                        students: 0,
+                        teachers: 0,
+                        moderators: 0,
+                    });
+                } else {
+                    result[index].students += students;
+                    result[index].teachers += teachers;
+                    result[index].moderators += moderators;
+                }
             });
-        } else {
-            result[index].students += students;
-            result[index].teachers += teachers;
-            result[index].moderators += moderators;
-        }
-    });
 
-    const users = timeRange === "Custom" ? result : usersData;
+            return result;
+        } else if (timeRange === "Custom" && customUnit === "Year") {
+            usersData?.forEach(({ date, students, teachers, moderators }) => {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const index = result.findIndex((item) => {
+                    const itemYear = new Date(item.date).getFullYear();
+                    return itemYear === year;
+                });
+
+                if (index === -1) {
+                    result.push({
+                        date: date,
+                        students: 0,
+                        teachers: 0,
+                        moderators: 0,
+                    });
+                } else {
+                    result[index].students += students;
+                    result[index].teachers += teachers;
+                    result[index].moderators += moderators;
+                }
+            });
+
+            return result;
+        }
+
+        return usersData;
+    };
+
+    const users = formatDataCustom();
 
     // Handle time range changes and trigger API fetch if callback provided
     const handleTimeRangeChange = (newRange: any) => {
@@ -137,8 +169,8 @@ export function UserGrowthChart() {
     // Format the x-axis labels based on time range
     const formatXAxis = (value: any) => {
         if (timeRange === "Custom") {
-            if (customUnit === "Year" && typeof value === "number") {
-                return value.toString();
+            if (customUnit === "Year") {
+                return new Date(value).getFullYear().toString();
             }
             if (
                 customUnit === "Month" &&
@@ -324,7 +356,9 @@ export function UserGrowthChart() {
                                         let timeLabel = data.date;
 
                                         // Format time label based on time range
-                                        if (
+                                        if (timeRange === "Custom" && customUnit === "Year") {
+                                            timeLabel = date.getFullYear().toString();
+                                        } else if (
                                             timeRange === "Year" ||
                                             (timeRange === "Custom" && customUnit === "Month")
                                         ) {
