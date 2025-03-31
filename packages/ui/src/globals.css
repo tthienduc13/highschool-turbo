@@ -446,3 +446,7 @@ body {
 .fc-event-title {
   @apply h-full;
 }
+
+.heatmap-wrapper > svg  {
+   font-size: 12px !important
+}

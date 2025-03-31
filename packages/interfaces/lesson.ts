@@ -35,3 +35,13 @@ export interface Theory {
   theoryContentJson: string;
   theoryContentHtml: string;
 }
+
+export interface CreateLessonPayload {
+  lessonName: string;
+  lessonMaterial: string;
+  displayOrder: number;
+}
+
+export interface EditLessonPayload extends CreateLessonPayload {
+  lessonId: string;
+}

@@ -1,11 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  createCourse,
+  createCourseWithAutomation,
   createMasterCourse,
   deleteMasterCourse,
+  editCourses,
   editMasterCourse,
   enrollCourse,
   getCategories,
+  getCourseById,
   getCourseBySlug,
   getCourses,
   getMasterCourses,
@@ -58,7 +62,7 @@ export const useCoursesQuery = ({
   pageSize: number;
 }>) => {
   return useQuery({
-    queryKey: ["courses", search, grade, pageNumber, pageSize],
+    queryKey: ["courses", { search, grade, pageNumber, pageSize }],
     queryFn: () =>
       getCourses({
         search: search,
@@ -73,6 +77,13 @@ export const useCourseBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["course", slug],
     queryFn: () => getCourseBySlug({ slug }),
+  });
+};
+
+export const useCourseByIdQuery = ({ id }: { id: string }) => {
+  return useQuery({
+    queryKey: ["course", id],
+    queryFn: () => getCourseById({ id }),
   });
 };
 
@@ -94,5 +105,26 @@ export const useCategoriesQuery = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
+  });
+};
+
+export const useCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["create-course"],
+    mutationFn: createCourse,
+  });
+};
+
+export const useCourseWithAutoMutation = () => {
+  return useMutation({
+    mutationKey: ["create-course-with-auto"],
+    mutationFn: createCourseWithAutomation,
+  });
+};
+
+export const useEditCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["edit-course"],
+    mutationFn: editCourses,
   });
 };

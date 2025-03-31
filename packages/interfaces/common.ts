@@ -28,9 +28,9 @@ export enum TypeExam {
 }
 
 export enum Grade {
-  Grade10 = "Grade 10",
-  Grade11 = "Grade 11",
-  Grade12 = "Grade 12",
+  Grade10 = "Grade10",
+  Grade11 = "Grade11",
+  Grade12 = "Grade12",
 }
 
 export const examDescriptions: { [key in TypeExam]: string } = {

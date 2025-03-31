@@ -2,7 +2,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
   useCoursesQuery,
-  useCurriculumQuery,
+  useCurriculaQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -57,7 +57,7 @@ export const SelectSubject = () => {
   });
 
   const { data: curriculumData, isLoading: curriculumLoading } =
-    useCurriculumQuery();
+    useCurriculaQuery({ pageNumber: 1, pageSize: 100 });
 
   const transformData =
     data?.data.map((course) => ({
@@ -125,7 +125,7 @@ export const SelectSubject = () => {
             className="placeholder:text-muted-foreground"
             onCloseAutoFocus={(e) => e.preventDefault()}
           >
-            {curriculumData?.map((curriculum) => (
+            {curriculumData?.data.map((curriculum) => (
               <SelectItem key={curriculum.id} value={curriculum.id}>
                 {curriculum.curriculumName}
               </SelectItem>

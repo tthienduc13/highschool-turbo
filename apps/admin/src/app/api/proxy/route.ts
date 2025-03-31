@@ -13,10 +13,7 @@ const BASE_URL = env.NEXT_PUBLIC_API_URL;
 async function clearAuthCookies() {
   const cookieStore = await cookies();
 
-  // Clear the main access token
   cookieStore.delete(ACCESS_TOKEN);
-
-  // Clear other potential auth cookies
   cookieStore.delete("refreshToken");
   cookieStore.delete("sessionId");
   cookieStore.delete("auth_state");
@@ -24,9 +21,42 @@ async function clearAuthCookies() {
 
 export async function POST(request: NextRequest) {
   try {
-    // Parse the request body
-    const body = await request.json();
-    const { url, method, data, params, headers = {}, useAuth = true } = body;
+    // Get content type from incoming request
+    const contentType = request.headers.get("Content-Type") || "";
+
+    // Handle differently based on content type
+    let body;
+    let isFormData = contentType.includes("multipart/form-data");
+
+    if (isFormData) {
+      // For multipart/form-data, get the formData directly
+      body = await request.formData();
+    } else {
+      // For JSON, parse as usual
+      body = await request.json();
+    }
+
+    const {
+      url,
+      method,
+      data,
+      params,
+      headers = {},
+      useAuth = true,
+    } = isFormData
+      ? {
+          url: body.get("url"),
+          method: body.get("method"),
+          params: body.get("params")
+            ? JSON.parse(body.get("params") as string)
+            : undefined,
+          headers: body.get("headers")
+            ? JSON.parse(body.get("headers") as string)
+            : {},
+          useAuth: body.get("useAuth") !== "false", // Convert string to boolean
+          data: body, // Keep the entire FormData for later
+        }
+      : body;
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 });
@@ -57,7 +87,6 @@ export async function POST(request: NextRequest) {
         const value = params[key];
 
         if (Array.isArray(value)) {
-          // Filter and add array values
           value
             .filter(
               (item) => item !== null && item !== undefined && item !== "",
@@ -83,14 +112,25 @@ export async function POST(request: NextRequest) {
 
     console.log("Making request to:", targetUrl);
 
-    // Make the actual request
-    const response = await fetch(targetUrl, {
+    // Create request options based on content type
+    let requestOptions: RequestInit = {
       method: method.toUpperCase(),
       headers: combinedHeaders,
-      body: ["GET", "HEAD"].includes(method.toUpperCase())
-        ? undefined
-        : JSON.stringify(data),
-    });
+    };
+
+    // Handle request body based on method and content type
+    if (!["GET", "HEAD"].includes(method.toUpperCase())) {
+      if (isFormData) {
+        // For FormData, don't set Content-Type to let the browser set it with the boundary
+        delete combinedHeaders["Content-Type"];
+        requestOptions.body = data;
+      } else {
+        requestOptions.body = JSON.stringify(data);
+      }
+    }
+
+    // Make the actual request
+    const response = await fetch(targetUrl, requestOptions);
 
     // Handle 401 Unauthorized separately
     if (response.status === 401) {
@@ -117,7 +157,6 @@ export async function POST(request: NextRequest) {
         {
           status: response.status,
           headers: {
-            // Copy essential headers for debugging
             "x-request-id": response.headers.get("x-request-id") || "",
             "x-correlation-id": response.headers.get("x-correlation-id") || "",
           },
@@ -129,7 +168,6 @@ export async function POST(request: NextRequest) {
     const responseHeaders = new Headers();
 
     response.headers.forEach((value, key) => {
-      // Skip content-related headers which will be set by NextResponse
       if (
         key.toLowerCase() !== "content-type" &&
         key.toLowerCase() !== "content-length"
@@ -172,7 +210,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         error: "Proxy error",
-        message: "fail",
+        message: error instanceof Error ? error.message : "Unknown error",
         shouldRetry: false,
       },
       { status: 500 },

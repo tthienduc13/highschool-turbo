@@ -42,7 +42,7 @@ export const SubjectModal = ({ open, onOpenChange, currentRow }: Props) => {
   );
 
   const createMasterCourse = useMasterCourseMutation();
-  const editMasterCousre = useEditMasterCourseMutation();
+  const editMasterCourse = useEditMasterCourseMutation();
   const deleteMasterCourse = useDeleteMasterCourseMutation();
 
   const isDisabled = subjectName.trim().length === 0 || subjectName === "";
@@ -55,6 +55,7 @@ export const SubjectModal = ({ open, onOpenChange, currentRow }: Props) => {
       {
         onSuccess: (data) => {
           toast.success(data.message);
+          setSubjectName("");
           onOpenChange(false);
           queryClient.invalidateQueries({ queryKey: ["master-courses"] });
         },
@@ -63,7 +64,7 @@ export const SubjectModal = ({ open, onOpenChange, currentRow }: Props) => {
   };
 
   const handleEditSubject = async () => {
-    await editMasterCousre.mutateAsync(
+    await editMasterCourse.mutateAsync(
       {
         id: currentRow?.id!,
         masterSubjectName: subjectName,
