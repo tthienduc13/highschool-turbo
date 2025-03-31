@@ -1,10 +1,41 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getCurriculum } from "../apis/curriculum.ts";
+import {
+  createCurriculum,
+  deleteCurriculum,
+  getCurricula,
+} from "../apis/curriculum.ts";
 
-export const useCurriculumQuery = () => {
+export const useCurriculaQuery = ({
+  pageSize,
+  pageNumber,
+}: {
+  pageSize: number;
+  pageNumber: number;
+}) => {
   return useQuery({
-    queryKey: ["curriculum"],
-    queryFn: getCurriculum,
+    queryKey: ["curricula", { pageNumber, pageSize }],
+    queryFn: () => getCurricula({ pageNumber, pageSize }),
   });
 };
+
+export const useCurriculumMutation = () => {
+  return useMutation({
+    mutationKey: ["create-curriculum"],
+    mutationFn: createCurriculum,
+  });
+};
+
+export const useDeleteCurriculumMutation = () => {
+  return useMutation({
+    mutationKey: ["delete-curriculum"],
+    mutationFn: deleteCurriculum,
+  });
+};
+
+// export const useEditCurriculumMutation = () => {
+//     return useMutation({
+//         mutationKey: ["edit-curriculum"],
+//         mutationFn: edit
+//     })
+// }

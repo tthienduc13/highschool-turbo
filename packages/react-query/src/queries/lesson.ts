@@ -1,10 +1,34 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  createLesson,
+  deleteLessons,
+  editLesson,
   getLessonDetail,
   getLessonList,
   markLessonDone,
 } from "../apis/lesson.ts";
+
+export const useLessonMutation = () => {
+  return useMutation({
+    mutationKey: ["create-lesson"],
+    mutationFn: createLesson,
+  });
+};
+
+export const useEditLessonMutation = () => {
+  return useMutation({
+    mutationKey: ["edit-lesson"],
+    mutationFn: editLesson,
+  });
+};
+
+export const useDeleteLessonMutation = () => {
+  return useMutation({
+    mutationKey: ["delete-lesson"],
+    mutationFn: deleteLessons,
+  });
+};
 
 export const useLessonsQuery = ({
   chapterId,

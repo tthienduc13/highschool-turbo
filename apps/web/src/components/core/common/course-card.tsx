@@ -47,7 +47,7 @@ export const CourseCard = ({ course }: CourseCardProps) => {
           <Separator className="my-auto" />
           <div className="flex items-center justify-between">
             <div className="flex flex-row items-center gap-1 text-sm text-gray-500">
-              {gradeTextRenderer(course.categoryName)}
+              {gradeTextRenderer(course.category)}
             </div>
             <Button size={"sm"} variant={"default"}>
               Xem môn học

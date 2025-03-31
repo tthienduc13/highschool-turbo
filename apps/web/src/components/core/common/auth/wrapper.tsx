@@ -282,7 +282,7 @@ export const AuthWrapper = ({ mode }: AuthWrapperProps) => {
               variant="default"
               onClick={async () => {
                 await signIn("google", {
-                  callbackUrl,
+                  callbackUrl: callbackUrl ?? "/dashboard",
                   redirect: false,
                 });
               }}

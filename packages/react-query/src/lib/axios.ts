@@ -7,72 +7,97 @@ import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
 
-/**
- * Determines if the code is running in a client or server context
- * @returns boolean - true if server-side
- */
 export const isServerSide = () => typeof window === "undefined";
 
-/**
- * Creates an Axios instance appropriate for the current context (client or server)
- *
- * On the server: Uses direct API calls with tokens if needed
- * On the client: Always uses proxy approach
- */
 const createContextAwareAxiosInstance = (
   contentType: string,
   useAuth: boolean = false,
 ) => {
-  // Create the base instance
   const instance = axios.create({
-    baseURL: isServerSide() ? BASE_URL : undefined, // Only set baseURL on server
+    baseURL: isServerSide() ? BASE_URL : undefined,
     timeout: TIMEOUT,
   });
 
-  // Configure request interceptor based on environment
   instance.interceptors.request.use(
     async (config) => {
       try {
-        // Set content type
         config.headers = config.headers || {};
         config.headers["Content-Type"] = contentType;
 
-        // If we're on the server, add auth token if needed
         if (isServerSide()) {
           if (useAuth) {
-            // Server-side - get token from cookies
             config.headers["Authorization"] =
               `Bearer ${await getServerSideToken()}`;
           }
-        }
-        // If we're on the client, ALWAYS route through proxy (both auth and non-auth)
-        else if (!isServerSide()) {
-          // Client-side - modify the request to go through proxy
+        } else if (!isServerSide()) {
           const originalUrl = config.url || "";
           const originalMethod = config.method || "get";
           const originalData = config.data;
-          const originalParams = config.params; // Capture query parameters
+          const originalParams = config.params;
 
-          // Change to use the proxy endpoint
-          config.url = "/api/proxy";
-          config.method = "post";
-          config.baseURL = ""; // Clear baseURL so it uses relative URL
+          // Check if we're dealing with FormData (for file uploads)
+          const isFormData = originalData instanceof FormData;
 
-          // Move original request details to body
-          config.data = {
-            url: originalUrl,
-            method: originalMethod,
-            data: originalData,
-            params: originalParams, // Include params in the proxy request body
-            headers: { "Content-Type": contentType },
-            useAuth: useAuth, // Tell the proxy whether to add auth or not
-          };
+          if (isFormData) {
+            // For FormData, we need to handle it differently
+            // Create a new FormData that will be sent to the proxy
+            const proxyFormData = new FormData();
 
-          // Update headers for the proxy request
-          config.headers["Content-Type"] = "application/json";
+            // Add the original data fields to the new FormData
+            // We keep the original FormData as-is and add routing metadata
+            proxyFormData.append("url", originalUrl);
+            proxyFormData.append("method", originalMethod);
 
-          // Clear the params since we're now sending them in the body
-          config.params = undefined;
+            // Add params as JSON string if present
+            if (originalParams) {
+              proxyFormData.append("params", JSON.stringify(originalParams));
+            }
+
+            // Add headers info
+            proxyFormData.append(
+              "headers",
+              JSON.stringify({ "Content-Type": contentType }),
+            );
+
+            // Add auth flag
+            proxyFormData.append("useAuth", String(useAuth));
+
+            // Now append all the original form data fields
+            if (originalData instanceof FormData) {
+              for (const [key, value] of originalData.entries()) {
+                proxyFormData.append(key, value);
+              }
+            }
+
+            // Update config
+            config.url = "/api/proxy";
+            config.method = "post";
+            config.baseURL = "";
+            config.data = proxyFormData;
+
+            // Important: Let axios set the correct Content-Type with boundary
+            delete config.headers["Content-Type"];
+
+            // Clear the params
+            config.params = undefined;
+          } else {
+            // For JSON data, proceed as before
+            config.url = "/api/proxy";
+            config.method = "post";
+            config.baseURL = "";
+
+            config.data = {
+              url: originalUrl,
+              method: originalMethod,
+              data: originalData,
+              params: originalParams,
+              headers: { "Content-Type": contentType },
+              useAuth: useAuth,
+            };
+
+            config.headers["Content-Type"] = "application/json";
+            config.params = undefined;
+          }
         }
 
         return config;
@@ -83,11 +108,10 @@ const createContextAwareAxiosInstance = (
     (error) => Promise.reject(error),
   );
 
-  // Handle responses
+  // Interceptors for responses remain the same
   instance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error) => {
-      // If we already handled this error and marked it as non-retryable
       if (
         error.config?.__isRetryAttempt ||
         error.response?.data?.shouldRetry === false
@@ -97,11 +121,8 @@ const createContextAwareAxiosInstance = (
         return Promise.reject(error);
       }
 
-      // For 500 errors, don't retry
       if (error.response?.status >= 500) {
-        // Mark that we've decided not to retry
         error.config.__isRetryAttempt = true;
-
         console.error(
           "Server error, not retrying:",
           error.response?.data || error.message,
@@ -110,7 +131,6 @@ const createContextAwareAxiosInstance = (
         return Promise.reject(error);
       }
 
-      // Handle 401 unauthorized
       if (error.response?.status === 401 && !isServerSide()) {
         window.location.href = "/sign-in";
 
@@ -124,9 +144,6 @@ const createContextAwareAxiosInstance = (
   return instance;
 };
 
-/**
- * Get the server-side token from cookies
- */
 async function getServerSideToken() {
   const cookieStore = await cookies();
 
@@ -146,7 +163,7 @@ const axiosClientUpload = createContextAwareAxiosInstance(
 
 export { axiosClientUpload, axiosClientWithoutAuth };
 
-// Helper for query strings
+// Helper for query strings remains the same
 export const createQueryString = (params: Record<string, any>): string => {
   const urlParams = new URLSearchParams();
 

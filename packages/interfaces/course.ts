@@ -13,8 +13,11 @@ export interface Course {
   information: string;
   subjectDescription: string;
   subjectCode: string;
+  masterSubjectName: string;
+  masterSubjectSlug: string;
+  masterSubjectId: string;
   createdAt: Date;
-  categoryName: Grade;
+  category: Grade;
   updatedAt: Date;
   slug: string;
   like: null;

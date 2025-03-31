@@ -3,7 +3,7 @@ import { SubjectModal } from "./subject-modal";
 import { useTable } from "@/stores/table-context";
 
 export const SubjectActions = () => {
-  const { open, setOpen, currentRow, setCurrentRow } = useTable();
+  const { open, setOpen, currentRow } = useTable();
 
   return (
     <>

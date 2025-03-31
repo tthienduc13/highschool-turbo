@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { createContext } from "react";
 import { useUserProfileQuery } from "@highschool/react-query/queries";
+import { HeatMapValue } from "@uiw/react-heat-map";
 
 import { ProfileNotFound } from "../../core/common/404s/profile-404";
 
@@ -28,6 +29,13 @@ export interface UserDashboard {
     totalContributions: number;
     contributionGoal: number;
   };
+  heatmap: {
+    totalActivities: number;
+    viewType: "flashcard" | "login" | "learnedLesson";
+    startDate: string;
+    endDate: string;
+    values: HeatMapValue[];
+  };
 }
 
 export const DashboardContext = createContext<UserDashboard>({
@@ -42,6 +50,13 @@ export const DashboardContext = createContext<UserDashboard>({
     longestStreak: 0,
     totalContributions: 0,
     contributionGoal: 0,
+  },
+  heatmap: {
+    totalActivities: 0,
+    viewType: "flashcard",
+    startDate: "",
+    endDate: "",
+    values: [],
   },
 });
 
@@ -75,6 +90,21 @@ export const HydrateDashboardData = ({
           longestStreak: 0,
           totalContributions: 0,
           contributionGoal: 0,
+        },
+        heatmap: {
+          totalActivities: 0,
+          viewType: "flashcard",
+          startDate: "2024/01/01",
+          endDate: "2024/12/31",
+          values: [
+            { date: "2024/01/11", count: 2, content: "oknha" },
+            { date: "2024/01/12", count: 20 },
+            { date: "2024/01/13", count: 10 },
+            { date: "2024/04/11", count: 2 },
+            { date: "2024/05/01", count: 5 },
+            { date: "2024/05/02", count: 5 },
+            { date: "2024/05/04", count: 11 },
+          ],
         },
       }}
     >

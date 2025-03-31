@@ -18,8 +18,8 @@ function MasterSubjectModule() {
           columns={columns}
           extraButton={<SubjectPrimaryButton />}
           filter={filter}
-          subTitle="Manage your School here."
-          title="School List"
+          subTitle="Manage your Master Subject here."
+          title="Master Subject List"
         />
         <SubjectActions />
       </TableProvider>

@@ -1,6 +1,7 @@
 import {
   Course,
   CourseCategory,
+  Grade,
   MasterCourse,
   Pagination,
   ResponseModel,
@@ -11,9 +12,27 @@ import {
   masterCourseEndpoints,
 } from "@highschool/endpoints";
 
-import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  axiosClientWithoutAuth,
+} from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
+
+export interface CreateCoursePayload {
+  subjectName: string;
+  imageRaw: File;
+  masterSubjectId: string;
+  category: Grade;
+  subjectDescription: string;
+  subjectCode: string;
+  information: string;
+}
+
+export interface PatchCoursePayload extends CreateCoursePayload {
+  id: string;
+  image: string;
+}
 
 export const getMasterCourses = async ({
   pageNumber,
@@ -101,7 +120,7 @@ export const getCourses = async ({
     pageNumber,
     pageSize,
     search,
-    grade,
+    class: grade,
   });
 };
 
@@ -116,6 +135,21 @@ export const getCourseBySlug = async ({
     return data;
   } catch (error) {
     console.log("Error while getting course by slug", error);
+    throw error;
+  }
+};
+
+export const getCourseById = async ({
+  id,
+}: {
+  id: string;
+}): Promise<Course> => {
+  try {
+    const { data } = await axiosServices.get(courseEndpoints.getById(id));
+
+    return data;
+  } catch (error) {
+    console.log("Error while getting course by ig", error);
     throw error;
   }
 };
@@ -165,6 +199,138 @@ export const unEnrollCourse = async ({
     return data;
   } catch (error) {
     console.log("Error while unenroll", error);
+    throw error;
+  }
+};
+
+export const createCourse = async (
+  values: CreateCoursePayload,
+): Promise<ResponseModel<string>> => {
+  try {
+    // Create a FormData object
+    const formData = new FormData();
+
+    // Append all the text fields
+    formData.append("subjectName", values.subjectName);
+    formData.append("masterSubjectId", values.masterSubjectId);
+    formData.append("category", values.category);
+    formData.append("subjectDescription", values.subjectDescription);
+    formData.append("subjectCode", values.subjectCode);
+
+    // If information is an object, stringify it
+    if (typeof values.information === "object") {
+      formData.append("information", JSON.stringify(values.information));
+    } else {
+      formData.append("information", values.information);
+    }
+
+    // Append the file with the correct field name
+    // Ensure the file object is valid
+    if (values.imageRaw instanceof File) {
+      formData.append("imageRaw", values.imageRaw);
+    }
+
+    // Send the request with the FormData
+    const response = await axiosClientUpload.post(
+      courseEndpoints.create,
+      formData,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while creating course", error);
+    throw error;
+  }
+};
+
+export const createCourseWithAutomation = async (
+  values: CreateCoursePayload,
+): Promise<ResponseModel<string>> => {
+  try {
+    // Create a FormData object
+    const formData = new FormData();
+
+    // Append all the text fields
+    formData.append("subjectName", values.subjectName);
+    formData.append("masterSubjectId", values.masterSubjectId);
+    formData.append("category", values.category);
+    formData.append("subjectDescription", values.subjectDescription);
+    formData.append("subjectCode", values.subjectCode);
+
+    // If information is an object, stringify it
+    if (typeof values.information === "object") {
+      formData.append("information", JSON.stringify(values.information));
+    } else {
+      formData.append("information", values.information);
+    }
+
+    // Append the file with the correct field name
+    // Ensure the file object is valid
+    if (values.imageRaw instanceof File) {
+      formData.append("imageRaw", values.imageRaw);
+    }
+
+    // Send the request with the FormData
+    const response = await axiosClientUpload.post(
+      courseEndpoints.createWithAuto,
+      formData,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while creating course", error);
+    throw error;
+  }
+};
+
+export const editCourses = async (
+  values: Partial<PatchCoursePayload>,
+): Promise<ResponseModel<string>> => {
+  try {
+    const formData = new FormData();
+
+    // Define all the text fields that should be processed
+    const textFields: Array<keyof PatchCoursePayload> = [
+      "id",
+      "image",
+      "subjectName",
+      "masterSubjectId",
+      "category",
+      "subjectDescription",
+      "subjectCode",
+    ];
+
+    // Append all text fields that are defined
+    textFields.forEach((field) => {
+      if (values[field] !== undefined) {
+        formData.append(field, values[field]?.toString() || "");
+      }
+    });
+
+    // Handle information field separately due to special JSON processing
+    if (values.information !== undefined) {
+      const infoValue =
+        typeof values.information === "object"
+          ? JSON.stringify(values.information)
+          : values.information;
+
+      formData.append("information", infoValue);
+    }
+
+    // Handle file upload
+    // if (values.imageRaw instanceof File) {
+    formData.append("imageRaw", values.imageRaw!);
+    // }
+
+    // Send the request
+    const response = await axiosClientUpload.patch(
+      courseEndpoints.edit,
+      formData,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while editing course", error);
     throw error;
   }
 };

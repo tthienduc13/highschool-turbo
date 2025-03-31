@@ -29,7 +29,7 @@ function CourseDetailModule() {
   const { data, isLoading } = useCourseBySlugQuery({ slug: slug as string });
 
   const courseItems = [
-    { icon: IconSchool, value: gradeTextRenderer(data?.categoryName!) },
+    { icon: IconSchool, value: gradeTextRenderer(data?.category!) },
     { icon: IconFileLike, value: data?.like ?? 0 },
     { icon: IconEye, value: data?.view ?? 0 },
     {
