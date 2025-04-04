@@ -41,6 +41,26 @@ export const navModerator = {
       ],
     },
     {
+      title: "FSRS Algorithms",
+      url: "#",
+      isActive: true,
+      icon: IconBook,
+      items: [
+        {
+          title: "Information",
+          url: "/fsrs-management/information",
+        },
+        {
+          title: "Presets Managements",
+          url: "/fsrs-management/presets",
+        },
+        {
+          title: "Create Preset",
+          url: "/fsrs-management/create-preset",
+        },
+      ],
+    },
+    {
       title: "Subject Managments",
       url: "#",
       isActive: true,
@@ -99,8 +119,8 @@ export const navModerator = {
       icon: IconBriefcase2,
       items: [
         {
-          title: "MBTI",
-          url: "/career-mentor/mbti",
+          title: "Informations",
+          url: "/career-mentor/information",
         },
         {
           title: "Majors",

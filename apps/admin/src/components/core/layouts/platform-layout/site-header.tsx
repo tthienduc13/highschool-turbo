@@ -25,10 +25,7 @@ export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
   const pathName = usePathname();
 
-  const slugs = pathName
-    .split("/")
-    .filter((slug) => slug !== "")
-    .map((slug) => slug.charAt(0).toUpperCase() + slug.slice(1));
+  const slugs = pathName.split("/").filter((slug) => slug !== "");
 
   return (
     <header className="fle bg-background sticky top-0 z-50 w-full items-center border-b">
@@ -49,7 +46,13 @@ export function SiteHeader() {
                 <Fragment key={slug}>
                   <BreadcrumbItem>
                     {index < slugs.length - 1 ? (
-                      <BreadcrumbLink href={`/${slug}`}>
+                      <BreadcrumbLink
+                        href={
+                          index !== 0
+                            ? `/${slugs.at(index - 1)}/${slug}`
+                            : undefined
+                        }
+                      >
                         <LongText className="max-w-[15vw]">{slug}</LongText>
                       </BreadcrumbLink>
                     ) : (

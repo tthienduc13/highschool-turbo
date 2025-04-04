@@ -45,7 +45,7 @@ import {
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
 import { groupBy } from "lodash";
-import { IconCheck, IconChevronsUp } from "@tabler/icons-react";
+import { IconArrowsMoveVertical, IconCheck } from "@tabler/icons-react";
 import { cn } from "@highschool/ui/lib/utils";
 
 export type FancyBoxType = {
@@ -166,7 +166,7 @@ export function FancyBox({
               {selectedValues.length > 2 &&
                 `${selectedValues.length} labels selected`}
             </span>
-            <IconChevronsUp className="ml-2 size-4 shrink-0 opacity-50" />
+            <IconArrowsMoveVertical className="ml-2 size-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className={`w-full p-0`}>

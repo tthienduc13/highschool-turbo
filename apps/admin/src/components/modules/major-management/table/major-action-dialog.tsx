@@ -17,6 +17,7 @@ import { useState } from "react";
 import {
   useCreateMajorMutation,
   useGetMajorCategoryNameQuery,
+  useUpdateMajorMutation,
 } from "@highschool/react-query/queries";
 import { toast } from "sonner";
 import {
@@ -46,6 +47,8 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
 
   const { mutate: createMajor, isPending: isCreating } =
     useCreateMajorMutation();
+  const { mutate: updateMajor, isPending: isUpdating } =
+    useUpdateMajorMutation();
 
   const { data: majorCategories, isPending: isMajorCategoryLoading } =
     useGetMajorCategoryNameQuery({
@@ -119,17 +122,30 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
       return;
     }
 
-    createMajor({
-      majors: [
-        {
-          description: description,
-          majorCategoryCode: majorCategoryCode,
-          majorCode: majorCode,
+    if (typeOpen === "add") {
+      createMajor({
+        majors: [
+          {
+            description: description,
+            majorCategoryCode: majorCategoryCode,
+            majorCode: majorCode,
+            name: name,
+            skillYouLearn: skillYouLearn,
+          },
+        ],
+      });
+    } else if (typeOpen === "edit") {
+      updateMajor({
+        major: {
+          id: currentRow?.id,
           name: name,
+          majorCode: majorCode,
+          description: description,
           skillYouLearn: skillYouLearn,
+          majorCategoryCode: majorCategoryCode,
         },
-      ],
-    });
+      });
+    }
 
     clearFields();
     onOpenChange(false);
