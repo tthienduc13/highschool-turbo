@@ -97,3 +97,10 @@ export type UserCreate = {
   password: string;
   profilePicture: string;
 };
+
+export interface UserStatistics {
+  currentStreak: number;
+  longestStreak: number;
+  totalFlashcard: number;
+  totalFlashcardContent: number;
+}

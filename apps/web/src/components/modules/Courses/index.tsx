@@ -2,33 +2,27 @@
 
 import { useCoursesQuery } from "@highschool/react-query/queries";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
+import { Grade } from "@highschool/interfaces";
 
 import { CourseCard } from "@/components/core/common/course-card";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
-
-// interface Category {
-//   label: string;
-//   value: string;
-// }
-
-// const categories: Category[] = [
-//   {
-//     label: "Lớp 10",
-//     value: "Grade 10",
-//   },
-//   {
-//     label: "Lớp 11",
-//     value: "Grade 11",
-//   },
-//   { label: "Lớp 12", value: "Grade 12" },
-// ];
 
 function CoursesModule() {
   const { data, isLoading } = useCoursesQuery({
     pageNumber: 1,
     pageSize: 100,
   });
+
+  const grade10Courses = data?.data.filter(
+    (course) => course.category === Grade.Grade10,
+  );
+  const grade11Courses = data?.data.filter(
+    (course) => course.category === Grade.Grade11,
+  );
+  const grade12Courses = data?.data.filter(
+    (course) => course.category === Grade.Grade12,
+  );
 
   if (isLoading) {
     return (
@@ -58,12 +52,31 @@ function CoursesModule() {
 
   return (
     <WithFooter>
-      <Container className="flex flex-col gap-12" maxWidth="7xl">
+      <Container className="flex flex-col gap-8" maxWidth="7xl">
         <h1 className="text-3xl font-bold md:text-4xl">Tất cả môn học</h1>
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data?.data.map((course) => (
-            <CourseCard key={course.id} course={course} />
-          ))}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold md:text-2xl">Lớp 10</h2>
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {grade10Courses?.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold md:text-2xl">Lớp 11</h2>
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {grade11Courses?.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4">
+          <h2 className="text-xl font-bold md:text-2xl">Lớp 12</h2>
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {grade12Courses?.map((course) => (
+              <CourseCard key={course.id} course={course} />
+            ))}
+          </div>
         </div>
       </Container>
     </WithFooter>

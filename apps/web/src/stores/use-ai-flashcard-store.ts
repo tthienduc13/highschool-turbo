@@ -1,21 +1,18 @@
+import {
+  FlashcardContent,
+  FlashcardDifficulty,
+  FlashcardTextLength,
+} from "@highschool/interfaces";
 import { create } from "zustand";
 
 export const MAX_CHARACTERS = 5000;
 
-export enum FlashcardDifficulty {
-  Easy = "easy",
-  Medium = "medium",
-  Hard = "hard",
-}
-
-// Map for Vietnamese translations of difficulty levels
 export const DIFFICULTY_TRANSLATIONS = {
   [FlashcardDifficulty.Easy]: "Dễ",
-  [FlashcardDifficulty.Medium]: "Trung bình",
+  [FlashcardDifficulty.Normal]: "Trung bình",
   [FlashcardDifficulty.Hard]: "Khó",
 };
 
-// Example text content based on length
 export const EXAMPLE_TEXT = {
   front: {
     short: "Từ vựng cơ bản",
@@ -31,8 +28,6 @@ export const EXAMPLE_TEXT = {
   },
 };
 
-export type FlashcardTextLength = "short" | "medium" | "long";
-
 export interface FlashcardOptions {
   flashcardType: string;
   level: string;
@@ -42,6 +37,16 @@ export interface FlashcardOptions {
 }
 
 export type FlashcardStep = "upload" | "settings" | "create";
+
+export interface FlashcardSubmitData {
+  fileRaw?: File;
+  textRaw?: string;
+  note: string;
+  numberFlashcardContent: number;
+  levelHard: string;
+  frontTextLong: string;
+  backTextLong: string;
+}
 
 interface FlashcardState {
   // Current step in the flashcard creation process
@@ -76,6 +81,28 @@ interface FlashcardState {
   ) => string;
   getCharactersRemaining: () => number;
   canProceedToNextStep: () => boolean;
+
+  // Submit function
+  submit: () => FlashcardSubmitData | null;
+  setResult: ({
+    id,
+    flashcardContents,
+  }: {
+    id: string;
+    flashcardContents: FlashcardContent[];
+  }) => void;
+
+  // File management
+  clearFiles: () => void;
+  removeFile: (index: number) => void;
+
+  // Store reset
+  resetStore: () => void;
+
+  result: {
+    id: string;
+    flashcardContents: FlashcardContent[];
+  };
 }
 
 export const useFlashcardStore = create<FlashcardState>((set, get) => ({
@@ -91,23 +118,54 @@ export const useFlashcardStore = create<FlashcardState>((set, get) => ({
     frontTextLength: "short",
     backTextLength: "medium",
   },
+  result: {
+    id: "",
+    flashcardContents: [],
+  },
+
+  setResult: ({
+    id,
+    flashcardContents,
+  }: {
+    id: string;
+    flashcardContents: FlashcardContent[];
+  }) => {
+    set({ result: { id, flashcardContents } });
+  },
 
   // Actions
   setFiles: (files) => {
-    set({ files });
+    // Only keep the first file if multiple files are uploaded
+    const fileToKeep = files.length > 0 ? [files[0]] : [];
+
+    // Clear text when setting files
+    set({ files: fileToKeep, text: "" });
+
     // Automatically move to settings step if files are uploaded
     if (files.length > 0) {
       get().goToNextStep();
     }
   },
 
-  setActiveTab: (activeTab) => set({ activeTab }),
+  setActiveTab: (activeTab) => {
+    const { files, text } = get();
+
+    // Clear the other mode's data when switching tabs
+    if (activeTab === "file") {
+      // If switching to file mode, clear text
+      set({ activeTab, text: "" });
+    } else {
+      // If switching to text mode, clear files
+      set({ activeTab, files: [] });
+    }
+  },
 
   setText: (text) => {
     const maxLength = MAX_CHARACTERS;
 
     if (text.length <= maxLength) {
-      set({ text });
+      // Clear files when setting text
+      set({ text, files: [] });
     }
   },
 
@@ -172,10 +230,12 @@ export const useFlashcardStore = create<FlashcardState>((set, get) => ({
 
     switch (currentStep) {
       case "upload":
-        // Can only proceed if files are uploaded or text is entered
+        // Can only proceed if files are uploaded or text is entered with valid length
         return (
           (activeTab === "file" && files.length > 0) ||
-          (activeTab === "text" && text.trim().length > 0)
+          (activeTab === "text" &&
+            text.trim().length >= 150 &&
+            text.trim().length <= 10000)
         );
       case "settings":
         // Can always proceed from settings to create
@@ -187,4 +247,57 @@ export const useFlashcardStore = create<FlashcardState>((set, get) => ({
         return false;
     }
   },
+
+  submit: () => {
+    const { files, text, activeTab, options } = get();
+
+    // Validate that either file or text is provided
+    if (
+      (activeTab === "file" && files.length === 0) ||
+      (activeTab === "text" &&
+        (!text || text.trim().length < 150 || text.trim().length > 10000))
+    ) {
+      return null;
+    }
+
+    return {
+      fileRaw: activeTab === "file" ? files[0] : undefined,
+      textRaw: activeTab === "text" ? text : undefined,
+      note: "", // This can be filled by the user if needed
+      numberFlashcardContent: parseInt(options.maxFlashcards, 10),
+      levelHard: options.level,
+      frontTextLong: options.frontTextLength,
+      backTextLong: options.backTextLength,
+    };
+  },
+
+  // File management
+  clearFiles: () => set({ files: [] }),
+
+  removeFile: (index) => {
+    const { files } = get();
+    const newFiles = files.filter((_, i) => i !== index);
+
+    set({ files: newFiles });
+  },
+
+  // Store reset
+  resetStore: () =>
+    set({
+      currentStep: "upload",
+      files: [],
+      activeTab: "file",
+      text: "",
+      options: {
+        flashcardType: "standard",
+        level: FlashcardDifficulty.Easy,
+        maxFlashcards: "10",
+        frontTextLength: "short",
+        backTextLength: "medium",
+      },
+      result: {
+        id: "",
+        flashcardContents: [],
+      },
+    }),
 }));

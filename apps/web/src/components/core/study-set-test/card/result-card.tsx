@@ -29,7 +29,7 @@ export const ResultCard = () => {
     requestAnimationFrame(() => {
       const computedPerc = (result.score / questionCount) * 100;
 
-      setPerc(Math.floor(computedPerc));
+      setPerc(parseFloat(computedPerc.toFixed(1)));
 
       if ((result.score * 1.0) / questionCount >= 0.93) {
         effectChannel.emit("prepareConfetti");

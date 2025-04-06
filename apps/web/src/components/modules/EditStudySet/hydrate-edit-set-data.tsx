@@ -46,7 +46,8 @@ export const HydrateEditSetData = ({ children }: HydrateEditSetDataProps) => {
       ? {
           id: flashcardData.id,
           userId: flashcardData.userId,
-          subjectId: flashcardData.subjectId,
+          entityId: flashcardData.entityId,
+          flashcardType: flashcardData.flashcardType,
           flashcardName: flashcardData.flashcardName,
           slug: flashcardData.slug,
           flashcardDescription: flashcardData.flashcardDescription,

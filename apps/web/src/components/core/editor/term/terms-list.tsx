@@ -29,7 +29,7 @@ import { SortableTermCard } from "./sortable-term-card";
 import { useSetEditorContext } from "@/stores/use-set-editor-store";
 
 export const TermsList = () => {
-  const MAX_TERMS = 10;
+  // const MAX_TERMS = 20;
   const terms = useSetEditorContext((s) => s.terms);
   const reorderTerm = useSetEditorContext((s) => s.reorderTerm);
   const termLanguage = useSetEditorContext((s) => s.termLanguage);
@@ -114,10 +114,9 @@ export const TermsList = () => {
   };
 
   const items = terms.sort((a, b) => a.rank - b.rank);
-  const disableAdd = terms.length >= MAX_TERMS;
+  // const disableAdd = terms.length >= MAX_TERMS;
+  const disableAdd = !terms.length ;
 
-  // ||
-  // terms.some((x) => x.flashcardContentTerm === "");
   return (
     <div className="flex flex-col gap-4">
       <LanguageMenuWrapper

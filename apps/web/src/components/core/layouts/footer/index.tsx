@@ -32,7 +32,7 @@ export const Footer = () => {
   return (
     <div
       className="w-full max-w-[100vw] border-t border-t-gray-200 bg-white dark:border-t-gray-800/50 dark:bg-gray-900/50"
-      style={{ zIndex: 10000 }}
+      style={{ zIndex: 50 }}
     >
       <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8">
         <div className="flex flex-col gap-8">

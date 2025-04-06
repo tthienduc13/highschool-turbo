@@ -26,7 +26,7 @@ import {
 } from "@/stores/use-container-store";
 
 export interface HydrateSetDataProps {
-  slug: string; // Add slug prop to avoid using useParams() which triggers client-side rendering
+  slug: string;
   isPublic?: boolean;
   withDistractors?: boolean;
   disallowDirty?: boolean;
@@ -50,7 +50,7 @@ export const HydrateSetData: React.FC<
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
 
-  // Use the staleTime option to prevent automatic refetching unless needed
+  // Sử dụng staleTime dài hơn để ngăn gọi API trùng lặp
   const {
     data: flashcardData,
     refetch: refetchFlashcard,
@@ -59,7 +59,6 @@ export const HydrateSetData: React.FC<
     isSuccess: flashcardSuccess,
   } = useFlashcardBySlugQuery({
     slug,
-    // 5 minutes
   });
 
   const {
@@ -104,9 +103,10 @@ export const HydrateSetData: React.FC<
     [withDistractors],
   );
 
+  // Tối ưu useEffect để tránh gọi API trùng lặp
   useEffect(() => {
-    if (flashcardSuccess && flashcardContentSuccess) {
-      if (isDirty) setIsDirty(false);
+    if (flashcardSuccess && flashcardContentSuccess && isDirty) {
+      setIsDirty(false);
       queryEventChannel.emit(
         "setQueryRefetched",
         createInjectedData(flashcardData!, flashcardContentData),
@@ -122,6 +122,7 @@ export const HydrateSetData: React.FC<
     setIsDirty,
   ]);
 
+  // Chỉ refetch khi thực sự cần thiết
   useEffect(() => {
     const refetch = async () => {
       await Promise.all([refetchFlashcard(), refetchFlashcardContent()]);

@@ -13,7 +13,7 @@ export const DeloadedCard: React.FC<DeloadedCardProps> = ({
   definition,
 }) => {
   return (
-    <Card className="rouned-xl border-2 border-gray-50 bg-white dark:border-gray-700 dark:bg-gray-800/50">
+    <Card className="rounded-xl border-2 border-gray-50 bg-white dark:border-gray-700 dark:bg-gray-800/50">
       <div className="h-[54px] w-full" />
       <div className="flex w-full flex-col items-start gap-6 px-5 pb-4 pt-2 text-transparent sm:flex-row">
         <div className="flex w-full flex-col">

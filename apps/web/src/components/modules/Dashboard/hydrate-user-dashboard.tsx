@@ -2,8 +2,12 @@
 
 import { useSession } from "next-auth/react";
 import { createContext } from "react";
-import { useUserProfileQuery } from "@highschool/react-query/queries";
+import {
+  useOwnedStatisticQuery,
+  useUserProfileQuery,
+} from "@highschool/react-query/queries";
 import { HeatMapValue } from "@uiw/react-heat-map";
+import { UserStatistics } from "@highschool/interfaces";
 
 import { ProfileNotFound } from "../../core/common/404s/profile-404";
 
@@ -23,12 +27,7 @@ export interface UserDashboard {
     profilePicture: string;
     createdAt?: string;
   };
-  stats: {
-    currentStreak: number;
-    longestStreak: number;
-    totalContributions: number;
-    contributionGoal: number;
-  };
+  stats: UserStatistics;
   heatmap: {
     totalActivities: number;
     viewType: "flashcard" | "login" | "learnedLesson";
@@ -48,8 +47,8 @@ export const DashboardContext = createContext<UserDashboard>({
   stats: {
     currentStreak: 0,
     longestStreak: 0,
-    totalContributions: 0,
-    contributionGoal: 0,
+    totalFlashcard: 0,
+    totalFlashcardContent: 0,
   },
   heatmap: {
     totalActivities: 0,
@@ -71,6 +70,9 @@ export const HydrateDashboardData = ({
     status: status,
   });
 
+  const { data: statisticData, isLoading: statisticLoading } =
+    useOwnedStatisticQuery();
+
   if (data?.status === 404 || isError) return <ProfileNotFound />;
   if (isLoading || !data?.data) {
     return fallback ?? <Loading />;
@@ -86,10 +88,10 @@ export const HydrateDashboardData = ({
           profilePicture: data.data.profilePicture,
         },
         stats: {
-          currentStreak: 0,
-          longestStreak: 0,
-          totalContributions: 0,
-          contributionGoal: 0,
+          currentStreak: statisticData?.currentStreak ?? 0,
+          longestStreak: statisticData?.longestStreak ?? 0,
+          totalFlashcard: statisticData?.totalFlashcard ?? 0,
+          totalFlashcardContent: statisticData?.totalFlashcardContent ?? 0,
         },
         heatmap: {
           totalActivities: 0,

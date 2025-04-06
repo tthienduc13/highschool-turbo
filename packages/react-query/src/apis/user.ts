@@ -8,8 +8,13 @@ import {
   UserPreview,
   UserProfile,
   UserSession,
+  UserStatistics,
 } from "@highschool/interfaces";
-import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
+import {
+  careerGuidanceEndpoints,
+  userAnalyticEndpoints,
+  userEndpoints,
+} from "@highschool/endpoints";
 import axios from "axios";
 
 import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
@@ -353,6 +358,19 @@ export const updateStatusUser = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error("Error fetching subjects:", error);
+    throw error;
+  }
+};
+
+export const getOwnedStatistic = async (): Promise<UserStatistics> => {
+  try {
+    const { data } = await axiosServices.get(
+      userAnalyticEndpoints.ownedStatistic,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting owned statistic", error);
     throw error;
   }
 };

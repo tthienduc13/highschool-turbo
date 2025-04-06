@@ -18,35 +18,43 @@ const API_VERSIONS = {
 const createEndpoint = (
   service: string,
   version: string,
-  path: string,
+  path: string
 ): string => `${service}${version}${path}`;
+
+export const aIFlashcardEndpoint = {
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/beta/ai-flashcard"
+  ),
+} as const;
 
 // Authentication Endpoints
 export const authEndpoints = {
   google: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V2,
-    "/authentication/google",
+    "/authentication/google"
   ),
   magicLink: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V2,
-    "/authentication/login",
+    "/authentication/login"
   ),
   credentials: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/authentication/login",
+    "/authentication/login"
   ),
   verifyAccount: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V2,
-    "/authentication/verify-account",
+    "/authentication/verify-account"
   ),
   refreshToken: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V2,
-    "/authentication/refresh-token",
+    "/authentication/refresh-token"
   ),
 } as const;
 
@@ -55,44 +63,44 @@ export const informationEndpoints = {
   getAllSchools: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/schools",
+    "/information/schools"
   ),
   getCitySchools: (cityId: number) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/information/provice/${cityId}/schools`,
+      `/information/provice/${cityId}/schools`
     ),
   getAllCities: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/provinces",
+    "/information/provinces"
   ),
   createSchools: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/province/schools",
+    "/information/province/schools"
   ),
   getSchools: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/schools",
+    "/information/schools"
   ),
   getAllProvinceSchool: (provinceId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/information/provice/${provinceId}/schools`,
+      `/information/provice/${provinceId}/schools`
     ),
   createProvinces: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/provinces",
+    "/information/provinces"
   ),
   getProvinces: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/provinces",
+    "/information/provinces"
   ),
 } as const;
 
@@ -101,89 +109,89 @@ export const userEndpoints = {
   getAuthor: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/author",
+    "/users/author"
   ),
   getAuthorById: (authorId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/author/${authorId}`,
+      `/users/author/${authorId}`
     ),
   checkUsername: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/checkusername",
+    "/users/checkusername"
   ),
   updateBaseUser: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/baseuser",
+    "/users/baseuser"
   ),
   completeOnboard: (userId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/newuser/${userId}`,
+      `/users/newuser/${userId}`
     ),
   getProfile: (username: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/infor/${username}`,
+      `/users/infor/${username}`
     ),
   getUserFlashcards: (username: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/user/${username}`,
+      `/flashcard/user/${username}`
     ),
   getOwnerFlashcards: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/flashcard/user",
+    "/flashcard/user"
   ),
   getOrientationStatus: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/personalityTestStatus",
+    "/users/personalityTestStatus"
   ),
   getProgressState: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/progressStage",
+    "/users/progressStage"
   ),
   cachePersonality: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/cachePersonality",
+    "/users/cachePersonality"
   ),
   report: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/reports"),
   getUser: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/users"),
   updateStatus: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/status",
+    "/users/status"
   ),
   getUserDetail: (userId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/infor/${userId}`,
+      `/users/infor/${userId}`
     ),
   updateUser: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/baseuser",
+    "/users/baseuser"
   ),
   createUser: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/createaccount",
+    "/users/createaccount"
   ),
   updateStatusUser: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/status",
+    "/users/status"
   ),
 } as const;
 
@@ -192,54 +200,54 @@ export const mediaEndpoints = {
   uploadImage: createEndpoint(
     SERVICE_PREFIXES.MEDIA,
     API_VERSIONS.V1,
-    "/upload/image",
+    "/upload/image"
   ),
   getDocument: (documentId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/document/${documentId}`,
+      `/document/${documentId}`
     ),
   uploadDocument: (documentId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/document/${documentId}`,
+      `/document/${documentId}`
     ),
   downloadDocument: (documentId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/document/download/${documentId}`,
+      `/document/download/${documentId}`
     ),
   getHotNews: createEndpoint(
     SERVICE_PREFIXES.MEDIA,
     API_VERSIONS.V1,
-    "/hotnews",
+    "/hotnews"
   ),
   getPopularNews: createEndpoint(
     SERVICE_PREFIXES.MEDIA,
     API_VERSIONS.V1,
-    "/popularnews",
+    "/popularnews"
   ),
   getNews: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/news"),
   getNewsBySlug: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/new/slug/${slug}`,
+      `/new/slug/${slug}`
     ),
   getNewsByAuthor: (authorId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/new/authorId/${authorId}`,
+      `/new/authorId/${authorId}`
     ),
   getRelatedNews: (newTagId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/relatednews/${newTagId}`,
+      `/relatednews/${newTagId}`
     ),
 } as const;
 
@@ -248,39 +256,39 @@ export const documentEndpoints = {
   getAllSchools: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/schools",
+    "/information/schools"
   ),
   getCitySchools: (cityId: number) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/information/provice/${cityId}/schools`,
+      `/information/provice/${cityId}/schools`
     ),
   getAllCities: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/information/provinces",
+    "/information/provinces"
   ),
   getDocuments: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/documents/advance",
+    "/documents/advance"
   ),
   getDocumentBySlug: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/document/slug/${slug}`,
+      `/document/slug/${slug}`
     ),
   getRecommendedData: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/data/recommended",
+    "/data/recommended"
   ),
   getAllCategories: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/categories",
+    "/categories"
   ),
 } as const;
 
@@ -289,47 +297,47 @@ export const folderEndpoints = {
   create: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/folders",
+    "/folders"
   ),
   getUserFolders: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/folders",
+    "/folders"
   ),
   getFolderDetail: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/folders/flashcards",
+    "/folders/flashcards"
   ),
   addToFolder: (folderId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/folders/${folderId}/add`,
+      `/folders/${folderId}/add`
     ),
   update: (folderId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/folders/${folderId}`,
+      `/folders/${folderId}`
     ),
   delete: (folderId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/folders/${folderId}`,
+      `/folders/${folderId}`
     ),
   removeFlashcard: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/folders/flashcards/${flashcardId}`,
+      `/folders/flashcards/${flashcardId}`
     ),
   removeDocument: (documentId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/folders/documents/${documentId}`,
+      `/folders/documents/${documentId}`
     ),
 } as const;
 
@@ -338,12 +346,12 @@ export const userPersonalizedEndpoints = {
   recentView: createEndpoint(
     SERVICE_PREFIXES.ANALYSE,
     API_VERSIONS.V1,
-    "/recent-view",
+    "/recent-view"
   ),
   getRecommended: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/data/recommended",
+    "/data/recommended"
   ),
 } as const;
 
@@ -352,59 +360,59 @@ export const flashcardEndpoints = {
   getTop: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/flashcard/top",
+    "/flashcard/top"
   ),
   draft: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/flashcard/draft",
+    "/flashcard/draft"
   ),
   related: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/flashcard/related",
+    "/flashcard/related"
   ),
   getBySlug: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/slug/${slug}`,
+      `/flashcard/slug/${slug}`
     ),
   getById: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${id}`,
+      `/flashcard/${id}`
     ),
   createFromDraft: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/created/${id}`,
+      `/flashcard/created/${id}`
     ),
   editSet: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${id}`,
+      `/flashcard/${id}`
     ),
   delete: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}`,
+      `/flashcard/${flashcardId}`
     ),
   starTerm: (flashcardContentId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/starredTerm/${flashcardContentId}`,
+      `/starredTerm/${flashcardContentId}`
     ),
   updateContainer: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/container/flashcard/${flashcardId}`,
+      `/container/flashcard/${flashcardId}`
     ),
 } as const;
 
@@ -414,43 +422,43 @@ export const flashcardContentEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/slug/${slug}/contents`,
+      `/flashcard/slug/${slug}/contents`
     ),
   getListById: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${id}/contents`,
+      `/flashcard/${id}/contents`
     ),
   editContent: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}/content`,
+      `/flashcard/${flashcardId}/content`
     ),
   createContent: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}/content`,
+      `/flashcard/${flashcardId}/content`
     ),
   createContents: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}/contents`,
+      `/flashcard/${flashcardId}/contents`
     ),
   updateContentsById: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}/contents`,
+      `/flashcard/${flashcardId}/contents`
     ),
   reorderTerm: (flashcardContentId: string, newRank: number) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/content/${flashcardContentId}/rank/${newRank}`,
+      `/flashcard/content/${flashcardContentId}/rank/${newRank}`
     ),
   delete: ({
     flashcardId,
@@ -462,32 +470,52 @@ export const flashcardContentEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/flashcard/${flashcardId}/contents/${flashcardContentId}`,
+      `/flashcard/${flashcardId}/contents/${flashcardContentId}`
     ),
 } as const;
+
+export const flashcardStudyEndpoints = {
+  getFSRSById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${id}/learn`
+    ),
+  getFSRSBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${slug}/learn-slug`
+    ),
+    updateProgress: createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      "/feature/flashcard/progress"
+    ),
+};
 
 export const masterCourseEndpoints = {
   getMasterCourse: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/master-subjects",
+    "/master-subjects"
   ),
   create: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/master-subject",
+    "/master-subject"
   ),
   edit: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/master-subject/${id}`,
+      `/master-subject/${id}`
     ),
   delete: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/master-subject/${id}`,
+      `/master-subject/${id}`
     ),
 };
 
@@ -496,30 +524,30 @@ export const courseEndpoints = {
   create: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/subject",
+    "/subject"
   ),
   createWithAuto: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V2,
-    "/subject",
+    "/subject"
   ),
   edit: createEndpoint(SERVICE_PREFIXES.DOCUMENT, API_VERSIONS.V1, "/subject"),
   getCourses: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/subjects",
+    "/subjects"
   ),
   getBySlug: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/subject/slug/${slug}`,
+      `/subject/slug/${slug}`
     ),
   getById: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/subject/${id}`,
+      `/subject/${id}`
     ),
   enroll: ({
     subjectId,
@@ -531,7 +559,7 @@ export const courseEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/enroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
+      `/enroll?subjectId=${subjectId}&curriculumId=${curriculumId}`
     ),
   unenroll: ({
     subjectId,
@@ -543,7 +571,7 @@ export const courseEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
+      `/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`
     ),
 } as const;
 
@@ -555,7 +583,7 @@ export const mbtiEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/student/mbti/${mbtiType}`,
+      `/users/student/mbti/${mbtiType}`
     ),
 } as const;
 
@@ -565,14 +593,14 @@ export const hollandEndpoints = {
   getStudentHolland: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/student/hollandType",
+    "/users/student/hollandType"
   ),
   submit: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/holland"),
   updateStudentHolland: (hollandType: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/users/student/holland/${hollandType}`,
+      `/users/student/holland/${hollandType}`
     ),
 } as const;
 
@@ -581,25 +609,25 @@ export const flashcardLearnEndpoints = {
   postProgress: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/feature/flashcard/progress",
+    "/feature/flashcard/progress"
   ),
   getLearnSet: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/feature/flashcard/${flashcardId}/study`,
+      `/feature/flashcard/${flashcardId}/study`
     ),
   getLearnProgress: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/feature/flashcard/${flashcardId}/progress`,
+      `/feature/flashcard/${flashcardId}/progress`
     ),
   resetProgress: (flashcardId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/feature/flashcard/${flashcardId}/reset-progress`,
+      `/feature/flashcard/${flashcardId}/reset-progress`
     ),
 } as const;
 
@@ -609,30 +637,30 @@ export const chapterEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`,
+      `/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`
     ),
   getListById: (courseId: string, curriculumId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/subject/${courseId}/curriculum/${curriculumId}`,
+      `/chapter/subject/${courseId}/curriculum/${curriculumId}`
     ),
   createChapter: (courseId: string, curriculumId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V2,
-      `/chapter/subject/${courseId}/curriculum/${curriculumId}`,
+      `/chapter/subject/${courseId}/curriculum/${curriculumId}`
     ),
   editChapter: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    `/chapter`,
+    `/chapter`
   ),
   deleteChapter: (chapterId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/${chapterId}`,
+      `/chapter/${chapterId}`
     ),
 } as const;
 
@@ -642,35 +670,35 @@ export const lessonEndpoints = {
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/${chapterId}/lesson`,
+      `/chapter/${chapterId}/lesson`
     ),
   editLesson: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    `/lesson`,
+    `/lesson`
   ),
   deleteLessons: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    `/lessons`,
+    `/lessons`
   ),
   getLessons: (chapterId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/${chapterId}/lessons`,
+      `/chapter/${chapterId}/lessons`
     ),
   getLessonDetail: (lessonId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/chapter/lesson/${lessonId}`,
+      `/chapter/lesson/${lessonId}`
     ),
   finishLesson: (lessonId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/enrollProgress/${lessonId}`,
+      `/enrollProgress/${lessonId}`
     ),
 } as const;
 
@@ -679,12 +707,12 @@ export const careerGuidanceEndpoints = {
   getBrief: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/brief?isHardCode=true",
+    "/users/brief?isHardCode=true"
   ),
   getRecommendMajor: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/recommendMajor",
+    "/users/recommendMajor"
   ),
 } as const;
 
@@ -693,42 +721,55 @@ export const roadmapEndpoints = {
   getUserRoadmap: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/users/roadmap",
+    "/users/roadmap"
   ),
   getNodeResource: (resourceId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
-      `/roadmap/node/data/${resourceId}`,
+      `/roadmap/node/data/${resourceId}`
     ),
   relatedSubjectsByIds: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/subject/related/ids",
+    "/subject/related/ids"
   ),
   relatedDocumentsByIds: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/document/related/ids",
+    "/document/related/ids"
   ),
 } as const;
 
 // Search Endpoints
 export const searchEndpoints = {
   search: createEndpoint(SERVICE_PREFIXES.ANALYSE, API_VERSIONS.V1, "/search"),
+  searchEntity: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/search/courses"
+  ),
 } as const;
+
+export const userAnalyticEndpoints = {
+  ownedStatistic: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/ownedStatistic"
+  ),
+};
 
 // Quiz Endpoints
 export const quizEndpoints = {
   getQuiz: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/questions/quiz",
+    "/questions/quiz"
   ),
   submitQuiz: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/questions/quiz/submit",
+    "/questions/quiz/submit"
   ),
 } as const;
 
@@ -737,58 +778,58 @@ export const universityEndpoints = {
   getList: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/university",
+    "/university"
   ),
   getUniversityName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/university/name",
+    "/university/name"
   ),
   create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/university"),
   getUniversityDetail: (universityId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/university/${universityId}`,
+      `/university/${universityId}`
     ),
   updateUniversity: (universityId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/university/${universityId}`,
+      `/university/${universityId}`
     ),
   deleteUniversity: (universityId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/university/${universityId}`,
+      `/university/${universityId}`
     ),
   getUniversityMajor: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/universityMajor",
+    "/universityMajor"
   ),
   getUniversityMajorName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/universityMajor/name",
+    "/universityMajor/name"
   ),
   createUniversityMajor: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/universityMajor",
+    "/universityMajor"
   ),
   updateUniversityMajor: (universityMajorId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/universityMajor/${universityMajorId}`,
+      `/universityMajor/${universityMajorId}`
     ),
   deleteUniversityMajor: (universityMajorId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/universityMajor/${universityMajorId}`,
+      `/universityMajor/${universityMajorId}`
     ),
 } as const;
 
@@ -803,20 +844,20 @@ export const occupationEndpoints = {
   getOccupations: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/occupation",
+    "/occupation"
   ),
   create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/occupation"),
   update: (occupationId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/occupation/${occupationId}`,
+      `/occupation/${occupationId}`
     ),
   delete: (occupationId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/occupation/${occupationId}`,
+      `/occupation/${occupationId}`
     ),
 } as const;
 
@@ -826,7 +867,7 @@ export const majorEndpoints = {
   getMajorName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/major/name",
+    "/major/name"
   ),
   create: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/major"),
   update: (majorId: string) =>
@@ -836,29 +877,29 @@ export const majorEndpoints = {
   getMajorCategory: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/majorCategory",
+    "/majorCategory"
   ),
   getMajorCategoryName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/majorCategory/name",
+    "/majorCategory/name"
   ),
   createMajorCategory: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/majorCategory",
+    "/majorCategory"
   ),
   updateMajorCategory: (majorCategoryId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/majorCategory/${majorCategoryId}`,
+      `/majorCategory/${majorCategoryId}`
     ),
   deleteMajorCategory: (majorCategoryId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.USER,
       API_VERSIONS.V1,
-      `/majorCategory/${majorCategoryId}`,
+      `/majorCategory/${majorCategoryId}`
     ),
 } as const;
 
@@ -867,13 +908,13 @@ export const zoneEndpoints = {
   create: createEndpoint(
     SERVICE_PREFIXES.ACADEMIC_HUB,
     API_VERSIONS.V1,
-    "/zones",
+    "/zones"
   ),
   getById: (zoneId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.ACADEMIC_HUB,
       API_VERSIONS.V1,
-      `/zones/${zoneId}`,
+      `/zones/${zoneId}`
     ),
 } as const;
 
@@ -882,38 +923,38 @@ export const newsEndpoints = {
   getHotNews: createEndpoint(
     SERVICE_PREFIXES.MEDIA,
     API_VERSIONS.V1,
-    "/hotnews",
+    "/hotnews"
   ),
   getPopularNews: createEndpoint(
     SERVICE_PREFIXES.MEDIA,
     API_VERSIONS.V1,
-    "/popularnews",
+    "/popularnews"
   ),
   getNews: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/news"),
   getNewsBySlug: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/new/slug/${slug}`,
+      `/new/slug/${slug}`
     ),
   getNewsByAuthor: (authorId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/new/authorId/${authorId}`,
+      `/new/authorId/${authorId}`
     ),
   getRelatedNews: (newTagId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/relatednews/${newTagId}`,
+      `/relatednews/${newTagId}`
     ),
   create: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/new"),
   getNewsDetail: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.MEDIA,
       API_VERSIONS.V1,
-      `/new/slug/${slug}`,
+      `/new/slug/${slug}`
     ),
 } as const;
 
@@ -928,17 +969,17 @@ export const gameEndpoints = {
   checkRoom: createEndpoint(
     SERVICE_PREFIXES.GAME,
     API_VERSIONS.V1,
-    "/games/check-room",
+    "/games/check-room"
   ),
   joinRoom: createEndpoint(
     SERVICE_PREFIXES.GAME,
     API_VERSIONS.V1,
-    "/games/join-room",
+    "/games/join-room"
   ),
   createRoom: createEndpoint(
     SERVICE_PREFIXES.GAME,
     API_VERSIONS.V1,
-    "/games/create-room",
+    "/games/create-room"
   ),
 } as const;
 
@@ -947,7 +988,7 @@ export const categoryEndpoints = {
   getAll: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/categories",
+    "/categories"
   ),
 } as const;
 
@@ -955,17 +996,17 @@ export const curriculumEndpoints = {
   get: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/curriculum",
+    "/curriculum"
   ),
   create: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/curriculum",
+    "/curriculum"
   ),
   delete: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
-    "/curriculum",
+    "/curriculum"
   ),
 } as const;
 
@@ -974,6 +1015,6 @@ export const reportEndpoint = {
   updateStatus: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
-    "/reports",
+    "/reports"
   ),
 };

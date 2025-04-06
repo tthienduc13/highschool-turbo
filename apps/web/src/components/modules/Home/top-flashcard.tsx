@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  useAuthorsQuery,
-  useTopFlashcardQuery,
-} from "@highschool/react-query/queries";
+import { useAuthorsQuery } from "@highschool/react-query/queries";
 import {
   Carousel,
   CarouselContent,
@@ -12,38 +9,33 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
+import { Flashcard } from "@highschool/interfaces";
 
 import { Wrapper } from "./wrapper";
 
 import { StudySetCard } from "@/components/core/common/study-set-card";
 
-export const TopFlashcard = () => {
+interface TopFlashcardProps {
+  data?: Flashcard[];
+  isLoading: boolean;
+}
+
+export const TopFlashcard = ({ data, isLoading }: TopFlashcardProps) => {
   const [userIds, setUserIds] = useState<string[]>([]);
-  const {
-    data,
-    isLoading: flashcardLoading,
-    isSuccess,
-    error: flashcardError,
-  } = useTopFlashcardQuery();
+
   const { data: user, isLoading: userLoading } = useAuthorsQuery({ userIds });
 
   useEffect(() => {
-    if (isSuccess) {
+    if (data) {
       const uniqueUserIds = Array.from(
         new Set(data.map((flashcard: { userId: string }) => flashcard.userId)),
       );
 
       setUserIds(uniqueUserIds);
     }
-  }, [isSuccess]);
-
-  const isLoading = flashcardLoading;
+  }, [data]);
 
   if (isLoading) {
-    return;
-  }
-
-  if (flashcardError) {
     return;
   }
 

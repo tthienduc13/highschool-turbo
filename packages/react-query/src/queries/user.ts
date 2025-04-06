@@ -9,6 +9,7 @@ import {
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
+  getOwnedStatistic,
   getUserProfile,
   getUserProgressStage,
   getUsers,
@@ -179,5 +180,12 @@ export const useUpdateUserStatusMutation = () => {
     onError: (error) => {
       toast.error(error.message ?? "Some error occured");
     },
+  });
+};
+
+export const useOwnedStatisticQuery = () => {
+  return useQuery({
+    queryKey: ["owned-statistic"],
+    queryFn: getOwnedStatistic,
   });
 };

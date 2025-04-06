@@ -10,11 +10,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@highschool/ui/components/ui/carousel";
-import { IconUsersGroup } from "@tabler/icons-react";
+import { IconRefreshDot } from "@tabler/icons-react";
 
 import { StudySetCard } from "@/components/core/common/study-set-card";
 
-export const RelatedResoucrces = () => {
+export const RelatedResources = () => {
   const { data: relatedFlashcard } = useRelatedFlashcard();
 
   const [userIds, setUserIds] = useState<string[]>([]);
@@ -35,7 +35,7 @@ export const RelatedResoucrces = () => {
     }
   }, [relatedFlashcard]);
 
-  if (!relatedFlashcard) {
+  if (!relatedFlashcard || relatedFlashcard.length === 0) {
     return;
   }
 
@@ -45,7 +45,7 @@ export const RelatedResoucrces = () => {
         <h2 className="text-lg">
           <div className="flex flex-row items-center gap-3 text-2xl font-bold">
             <div className="flex flex-row items-center">
-              <IconUsersGroup size={28} />
+              <IconRefreshDot size={28} />
             </div>
             <p> Mọi người cũng đang học</p>
           </div>
@@ -56,7 +56,6 @@ export const RelatedResoucrces = () => {
           className="w-full px-4"
           opts={{
             dragFree: true,
-
             align: "start",
           }}
         >
