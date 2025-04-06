@@ -3,10 +3,14 @@ import {
   CareerGuidanceStatus,
   Pagination,
   ResponseModel,
+  TecherExperience,
   TypeExam,
   UserCreate,
+  UserGrowth,
+  UserOwnStatistics,
   UserPreview,
   UserProfile,
+  UserRetention,
   UserSession,
   UserStatistics,
 } from "@highschool/interfaces";
@@ -17,7 +21,10 @@ import {
 } from "@highschool/endpoints";
 import axios from "axios";
 
-import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+import axiosServices, {
+  axiosClientUpload,
+  createQueryString,
+} from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -362,7 +369,92 @@ export const updateStatusUser = async ({
   }
 };
 
-export const getOwnedStatistic = async (): Promise<UserStatistics> => {
+export const getStatisticUsers = async ({
+  userType,
+}: {
+  userType: string;
+}): Promise<UserStatistics> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getStatisticUser}?UserType=${userType}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting realted news", error);
+    throw error;
+  }
+};
+
+export const getTeacherExperience = async (): Promise<TecherExperience[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getTeacherExperience}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting realted news", error);
+    throw error;
+  }
+};
+
+export const getUserGrowth = async (param: {
+  userActivityType: string;
+  amount: number;
+  isCountFromNow: boolean;
+}): Promise<UserGrowth[]> => {
+  try {
+    const queryString = createQueryString(param);
+
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserGrowth}?${queryString}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user growth", error);
+    throw error;
+  }
+};
+
+export const getUserActivities = async (param: {
+  type: string;
+  amount: number;
+  isCount: boolean;
+}): Promise<UserGrowth[]> => {
+  try {
+    const queryString = createQueryString(param);
+
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserActivities}?${queryString}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user growth", error);
+    throw error;
+  }
+};
+
+export const getUserRetention = async ({
+  type,
+}: {
+  type: string;
+}): Promise<UserRetention[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${userEndpoints.getUserRetention}?type=${type}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user retention", error);
+    throw error;
+  }
+};
+
+export const getOwnStatistic = async (): Promise<UserOwnStatistics> => {
   try {
     const { data } = await axiosServices.get(
       userAnalyticEndpoints.ownedStatistic,
@@ -370,7 +462,7 @@ export const getOwnedStatistic = async (): Promise<UserStatistics> => {
 
     return data;
   } catch (error) {
-    console.error("Error while getting owned statistic", error);
+    console.log("error while getting own statistic", error);
     throw error;
   }
 };

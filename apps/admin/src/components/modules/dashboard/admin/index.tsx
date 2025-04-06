@@ -1,6 +1,10 @@
 "use client";
 
 import { IconNews, IconUser } from "@tabler/icons-react";
+import {
+    useStatisticNewsQuery,
+    useStatisticUsersQuery,
+} from "@highschool/react-query/queries";
 
 import AnalystCard from "@/components/ui/card-analyst";
 import { UserActivityChart } from "@/components/ui/charts/user-activity-chart";
@@ -10,6 +14,14 @@ import { UserRetentionChart } from "@/components/ui/charts/user-retention";
 import { UserGrowthChart } from "@/components/ui/charts/user-growth";
 
 function AdminDashboardModule() {
+    const { data: news } = useStatisticNewsQuery({
+        newType: "All",
+    });
+
+    const { data: users } = useStatisticUsersQuery({
+        userType: "All",
+    });
+
     return (
         <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
             <div>
@@ -21,13 +33,15 @@ function AdminDashboardModule() {
             </div>
             <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <AnalystCard
-                    data={12}
+                    data={users?.totalUser ?? 0}
+                    growth={users?.thisMonthUser ?? 0}
                     icon={{
                         element: (
                             <IconUser className="size-5 text-blue-600 dark:text-blue-400" />
                         ),
                         bgColor: "bg-blue-100 dark:bg-blue-900/30",
                     }}
+                    percentage={users?.increaseUserPercent ?? 0}
                     title="Total Users"
                 />
                 <AnalystCard
@@ -51,13 +65,15 @@ function AdminDashboardModule() {
                     title="Total Flashcards"
                 />
                 <AnalystCard
-                    data={12}
+                    data={news?.totalNews ?? 0}
+                    growth={news?.thisMonthNews ?? 0}
                     icon={{
                         element: (
                             <IconNews className="size-5 text-green-600 dark:text-green-400" />
                         ),
                         bgColor: "bg-green-100 p-2 dark:bg-green-900/30",
                     }}
+                    percentage={news?.increaseNewsPercent ?? 0}
                     title="Total News"
                 />
             </div>

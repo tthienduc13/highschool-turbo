@@ -193,6 +193,31 @@ export const userEndpoints = {
     API_VERSIONS.V1,
     "/users/status"
   ),
+  getStatisticUser: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/statistic",
+  ),
+  getTeacherExperience: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/teacherExperience",
+  ),
+  getUserGrowth: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/userGrowth",
+  ),
+  getUserActivities: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/userActivity",
+  ),
+  getUserRetention: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/userRetention",
+  ),
 } as const;
 
 // Media Endpoints
@@ -956,6 +981,11 @@ export const newsEndpoints = {
       API_VERSIONS.V1,
       `/new/slug/${slug}`
     ),
+  getStatistic: createEndpoint(
+    SERVICE_PREFIXES.MEDIA,
+    API_VERSIONS.V1,
+    "/statistic/news",
+  ),
 } as const;
 
 // Tag Endpoints

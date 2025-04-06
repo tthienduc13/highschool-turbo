@@ -9,9 +9,14 @@ import {
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
-  getOwnedStatistic,
+  getOwnStatistic,
+  getStatisticUsers,
+  getTeacherExperience,
+  getUserActivities,
+  getUserGrowth,
   getUserProfile,
   getUserProgressStage,
+  getUserRetention,
   getUsers,
   report,
   saveCachePersonality,
@@ -183,9 +188,52 @@ export const useUpdateUserStatusMutation = () => {
   });
 };
 
-export const useOwnedStatisticQuery = () => {
+export const useStatisticUsersQuery = ({ userType }: { userType: string }) => {
   return useQuery({
-    queryKey: ["owned-statistic"],
-    queryFn: getOwnedStatistic,
+    queryKey: ["statistic-users", userType],
+    queryFn: () => getStatisticUsers({ userType }),
+  });
+};
+
+export const useTeacherExperienceQuery = () => {
+  return useQuery({
+    queryKey: ["teacher-experience"],
+    queryFn: () => getTeacherExperience(),
+  });
+};
+
+export const useUserGrowthQuery = (param: {
+  userActivityType: string;
+  amount: number;
+  isCountFromNow: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["user-growth", param],
+    queryFn: () => getUserGrowth(param),
+  });
+};
+
+export const useUserActivityQuery = (param: {
+  type: string;
+  amount: number;
+  isCount: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["user-activities", param],
+    queryFn: () => getUserActivities(param),
+  });
+};
+
+export const useUserRetentionQuery = (type: string) => {
+  return useQuery({
+    queryKey: ["user-retention", type],
+    queryFn: () => getUserRetention({ type }),
+  });
+};
+
+export const useUserOwnStatisticQuery = () => {
+  return useQuery({
+    queryKey: ["user-own-statistic"],
+    queryFn: getOwnStatistic,
   });
 };

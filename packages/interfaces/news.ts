@@ -51,3 +51,11 @@ export type NewsCreate = {
   image: string;
   location: string;
 };
+
+export type NewsStatistic = {
+  totalNews: number;
+  thisMonthNews: number;
+  increaseNewsPercent: number;
+  totalHotNews: number;
+  totalDeletedNews: number;
+};

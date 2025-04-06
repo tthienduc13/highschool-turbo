@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { IconFlame, IconNews, IconTrashX } from "@tabler/icons-react";
+import { useStatisticNewsQuery } from "@highschool/react-query/queries";
 
 import { TopCourse } from "./top-course";
 
@@ -10,6 +12,10 @@ import { ContentCreationChart } from "@/components/ui/charts/content-creation-tr
 import { EngagementChart } from "@/components/ui/charts/engagement-chart";
 
 function ModeratorDashboardModule() {
+    const { data: news } = useStatisticNewsQuery({
+        newType: "All",
+    });
+
     return (
         <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
             <div>
@@ -25,13 +31,27 @@ function ModeratorDashboardModule() {
                         <CardContent
                             key={index}
                             color={content.bgColor}
-                            darkColor={content.darkColor}
+                            data={0}
                             icon={content.icon}
                             items={content.items}
                             title={content.title}
                         />
                     );
                 })}
+                <CardContent
+                    color={"bg-[#e2f3f7]"}
+                    data={news?.totalNews ?? 0}
+                    icon={<IconNews className="size-5 text-blue-500" />}
+                    items={[
+                        { title: "Hot", data: news?.totalHotNews ?? 0, icon: IconFlame },
+                        {
+                            title: "Deleted",
+                            data: news?.totalDeletedNews ?? 0,
+                            icon: IconTrashX,
+                        },
+                    ]}
+                    title={"News"}
+                />
             </div>
             <div className="space-y-5">
                 <ContentCreationChart />

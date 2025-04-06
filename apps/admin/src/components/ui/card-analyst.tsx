@@ -9,9 +9,17 @@ interface AnalystCardProps {
         element: React.ReactNode;
         bgColor: string;
     };
+    percentage?: number;
+    growth?: number;
 }
 
-export default function AnalystCard({ title, data, icon }: AnalystCardProps) {
+export default function AnalystCard({
+    title,
+    data,
+    icon,
+    percentage,
+    growth,
+}: AnalystCardProps) {
     return (
         <Card>
             <CardContent className="p-6">
@@ -26,12 +34,14 @@ export default function AnalystCard({ title, data, icon }: AnalystCardProps) {
                 </div>
                 <div className="mt-4">
                     <div className="flex items-center justify-between text-xs">
-                        <span className="text-muted-foreground">+12% from last month</span>
+                        <span className="text-muted-foreground">
+                            {percentage ?? 0}% from last month
+                        </span>
                         <Badge
                             className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                             variant="outline"
                         >
-                            +248
+                            +{growth ?? 0}
                         </Badge>
                     </div>
                 </div>

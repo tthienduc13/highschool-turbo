@@ -98,9 +98,38 @@ export type UserCreate = {
   profilePicture: string;
 };
 
-export interface UserStatistics {
+export interface UserOwnStatistics {
   currentStreak: number;
   longestStreak: number;
   totalFlashcard: number;
   totalFlashcardContent: number;
 }
+
+export type UserStatistics = {
+  totalUser: number;
+  thisMonthUser: number;
+  increaseUserPercent: number;
+  totalStudent: number;
+  totalTeacher: number;
+  totalActive: number;
+  totalBlocked: number;
+  totalDeleted: number;
+};
+
+export type TecherExperience = {
+  range: string;
+  count: number;
+};
+
+export type UserGrowth = {
+  date: Date;
+  students: number;
+  teachers: number;
+  moderators: number;
+};
+
+export type UserRetention = {
+  range: string;
+  count: number;
+  percent: number;
+};

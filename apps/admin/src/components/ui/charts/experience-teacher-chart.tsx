@@ -1,5 +1,7 @@
 "use client";
 
+import { TecherExperience } from "@highschool/interfaces";
+import { useTeacherExperienceQuery } from "@highschool/react-query/queries";
 import {
     Card,
     CardContent,
@@ -21,16 +23,11 @@ import {
     YAxis,
 } from "recharts";
 
-// This would typically come from an API or database query
-const data = [
-    { range: "0-2", count: 87 },
-    { range: "3-5", count: 124 },
-    { range: "6-10", count: 156 },
-    { range: "11-15", count: 42 },
-    { range: "16+", count: 18 },
-];
-
 export default function TeacherExperienceChart() {
+    const { data } = useTeacherExperienceQuery();
+
+    const users: TecherExperience[] = data ?? [];
+
     return (
         <Card>
             <CardHeader>
@@ -50,7 +47,7 @@ export default function TeacherExperienceChart() {
                     >
                         <BarChart
                             accessibilityLayer
-                            data={data}
+                            data={users}
                             margin={{
                                 top: 5,
                                 right: 30,

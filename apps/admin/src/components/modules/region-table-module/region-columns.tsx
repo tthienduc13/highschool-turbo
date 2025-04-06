@@ -4,7 +4,6 @@ import { City } from "@highschool/interfaces";
 import { DataTableColumnHeader } from "../../core/table/data-table-column-header";
 
 import LongText from "@/components/ui/long-text";
-import { DataTableRowActions } from "@/components/core/table/data-table-row-actions";
 
 export const columns: ColumnDef<City>[] = [
   {
@@ -26,7 +25,6 @@ export const columns: ColumnDef<City>[] = [
 
       return <LongText className="max-w-50 min-w-44">{provinceName}</LongText>;
     },
-    meta: { className: "w-36" },
   },
   {
     accessorKey: "Number School",
@@ -36,11 +34,11 @@ export const columns: ColumnDef<City>[] = [
     cell: ({ row }) => <div>{row.original.numberSchool}</div>,
     enableSorting: false,
   },
-  {
-    id: "actions",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Actions" />
-    ),
-    cell: DataTableRowActions,
-  },
+  // {
+  //   id: "actions",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Actions" />
+  //   ),
+  //   cell: DataTableRowActions,
+  // },
 ];

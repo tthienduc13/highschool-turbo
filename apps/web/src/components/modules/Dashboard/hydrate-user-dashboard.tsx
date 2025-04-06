@@ -3,11 +3,11 @@
 import { useSession } from "next-auth/react";
 import { createContext } from "react";
 import {
-  useOwnedStatisticQuery,
+  useUserOwnStatisticQuery,
   useUserProfileQuery,
 } from "@highschool/react-query/queries";
 import { HeatMapValue } from "@uiw/react-heat-map";
-import { UserStatistics } from "@highschool/interfaces";
+import { UserOwnStatistics } from "@highschool/interfaces";
 
 import { ProfileNotFound } from "../../core/common/404s/profile-404";
 
@@ -27,7 +27,7 @@ export interface UserDashboard {
     profilePicture: string;
     createdAt?: string;
   };
-  stats: UserStatistics;
+  stats: UserOwnStatistics;
   heatmap: {
     totalActivities: number;
     viewType: "flashcard" | "login" | "learnedLesson";
@@ -71,7 +71,7 @@ export const HydrateDashboardData = ({
   });
 
   const { data: statisticData, isLoading: statisticLoading } =
-    useOwnedStatisticQuery();
+    useUserOwnStatisticQuery();
 
   if (data?.status === 404 || isError) return <ProfileNotFound />;
   if (isLoading || !data?.data) {

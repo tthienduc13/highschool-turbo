@@ -14,7 +14,7 @@ interface CardContentProps {
     icon: React.ReactNode;
     items: ItemData[];
     color: string;
-    darkColor?: string;
+    data: number;
 }
 
 export default function CardContent({
@@ -22,19 +22,22 @@ export default function CardContent({
     icon,
     items,
     color,
-    darkColor,
+    data,
 }: CardContentProps) {
     return (
         <div
             className={`${color} dark:bg-background w-full max-w-xs rounded-xl p-4 shadow-sm`}
         >
-            <div className="mb-4 flex flex-col gap-4">
-                <div className="flex size-10 items-center justify-center rounded-full bg-white shadow-sm">
-                    {icon}
+            <div className="flex items-center justify-between">
+                <div className="mb-4 flex flex-col gap-4">
+                    <div className="flex size-10 items-center justify-center rounded-full bg-white shadow-sm">
+                        {icon}
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-800 dark:text-white">
+                        {title}
+                    </h3>
                 </div>
-                <h3 className="text-lg font-medium text-gray-800 dark:text-white">
-                    {title}
-                </h3>
+                <div className="mr-2 text-xl">{data}</div>
             </div>
 
             <div className="mt-4 flex rounded-xl bg-white p-2 dark:bg-[#09132b]">

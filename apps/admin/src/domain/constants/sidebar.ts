@@ -6,7 +6,6 @@ import {
   IconBriefcase2,
   IconNews,
   IconPaperclip,
-  IconMap2,
   IconUserCircle,
   IconSettings,
 } from "@tabler/icons-react";
@@ -108,22 +107,22 @@ export const navModerator = {
         },
       ],
     },
-    {
-      title: "Roadmap Managments",
-      url: "#",
-      isActive: true,
-      icon: IconMap2,
-      items: [
-        {
-          title: "Roadmap List",
-          url: "/roadmap-management/roadmaps",
-        },
-        {
-          title: "Unpublished Course",
-          url: "/course-management/unpublished-courses",
-        },
-      ],
-    },
+    // {
+    //   title: "Roadmap Managments",
+    //   url: "#",
+    //   isActive: true,
+    //   icon: IconMap2,
+    //   items: [
+    //     {
+    //       title: "Roadmap List",
+    //       url: "/roadmap-management/roadmaps",
+    //     },
+    //     {
+    //       title: "Unpublished Course",
+    //       url: "/course-management/unpublished-courses",
+    //     },
+    //   ],
+    // },
   ],
   navSecondary: [
     {
