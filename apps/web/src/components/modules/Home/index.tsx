@@ -1,6 +1,10 @@
 "use client";
 
-import { useRecommendedDataQuery } from "@highschool/react-query/queries";
+import {
+  useRecommendedDataQuery,
+  useRecentViewQuery,
+  useTopFlashcardQuery,
+} from "@highschool/react-query/queries";
 
 import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
@@ -13,21 +17,64 @@ import { TopFlashcard } from "./top-flashcard";
 import { useMe } from "@/hooks/use-me";
 import { Container } from "@/components/core/layouts/container";
 import { WithFooter } from "@/components/core/common/with-footer";
+import { GenericCard } from "@/components/core/common/generic-card";
 
 function HomeModule() {
   const me = useMe();
+  const isStudent = me?.roleName?.toLocaleLowerCase() === "student";
 
-  const { data, isLoading } = useRecommendedDataQuery(
-    me?.roleName?.toLocaleLowerCase() === "student",
-  );
+  const {
+    data: recommendedData,
+    isLoading: recommendedIsLoading,
+    isError: recommendedIsError,
+  } = useRecommendedDataQuery(isStudent);
 
-  if (isLoading || me?.roleName?.toLocaleLowerCase() === "teacher") {
+  const {
+    data: recentViewData,
+    isLoading: recentViewIsLoading,
+    isError: recentViewIsError,
+  } = useRecentViewQuery();
+
+  const {
+    data: topFlashcardData,
+    isLoading: topFlashcardIsLoading,
+    isError: topFlashcardIsError,
+  } = useTopFlashcardQuery();
+
+  const isLoading = recommendedIsLoading || !isStudent || recentViewIsLoading;
+
+  if (isLoading) {
+    return (
+      <Container maxWidth="7xl">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(256px,1fr))] items-stretch gap-4">
+          {Array.from({ length: 16 }).map((_, i) => (
+            <div key={i} className="h-[156px]">
+              <GenericCard.Skeleton />
+            </div>
+          ))}
+        </div>
+      </Container>
+    );
+  }
+
+  if (me?.roleName?.toLocaleLowerCase() === "teacher") {
     return (
       <WithFooter>
         <Container className="flex flex-col gap-12" maxWidth="7xl">
           <FinishProfile />
-          <RecentView />
-          <TopFlashcard />
+          {!recentViewIsError ? (
+            <RecentView data={recentViewData} isLoading={recentViewIsLoading} />
+          ) : (
+            <ErrorSection message="Không thể tải dữ liệu xem gần đây" />
+          )}
+          {!topFlashcardIsError ? (
+            <TopFlashcard
+              data={topFlashcardData}
+              isLoading={topFlashcardIsLoading}
+            />
+          ) : (
+            <ErrorSection message="Không thể tải flashcard hàng đầu" />
+          )}
           <Activities />
         </Container>
       </WithFooter>
@@ -38,14 +85,46 @@ function HomeModule() {
     <WithFooter>
       <Container className="flex flex-col gap-12" maxWidth="7xl">
         <FinishProfile />
-        <RecentView />
-        {data?.subjects && <RecommendCourse data={data?.subjects!} />}
-        {data?.flashcards && <RecommendFlashcard data={data?.flashcards!} />}
-        {data?.documents && <RecommendDocument data={data?.documents!} />}
+        {!recentViewIsError ? (
+          <RecentView data={recentViewData} isLoading={recentViewIsLoading} />
+        ) : (
+          <ErrorSection message="Không thể tải dữ liệu xem gần đây" />
+        )}
+
+        {!recommendedIsError && recommendedData?.flashcards && (
+          <RecommendFlashcard data={recommendedData.flashcards} />
+        )}
+
+        {!recommendedIsError && recommendedData?.subjects && (
+          <RecommendCourse data={recommendedData.subjects} />
+        )}
+
+        {!recommendedIsError && recommendedData?.documents && (
+          <RecommendDocument data={recommendedData.documents} />
+        )}
+
         <Activities />
-        <TopFlashcard />
+
+        {!topFlashcardIsError ? (
+          <TopFlashcard
+            data={topFlashcardData}
+            isLoading={topFlashcardIsLoading}
+          />
+        ) : (
+          <ErrorSection message="Không thể tải flashcard hàng đầu" />
+        )}
       </Container>
     </WithFooter>
   );
 }
+
+// Component hiển thị lỗi
+const ErrorSection = ({ message }: { message: string }) => {
+  return (
+    <div className="rounded-md bg-red-50 p-4">
+      <p className="text-red-500">{message}. Vui lòng thử lại sau.</p>
+    </div>
+  );
+};
+
 export default HomeModule;

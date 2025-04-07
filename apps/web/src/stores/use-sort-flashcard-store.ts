@@ -1,29 +1,24 @@
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 import React from "react";
-import { FlashcardContent, StudiableTerm } from "@highschool/interfaces";
+import { DueCard } from "@highschool/interfaces";
 
 export interface SortFlashcardsStoreProps {
-  studiableTerms: StudiableTerm[];
-  allTerms: FlashcardContent[];
-  termsThisRound: StudiableTerm[];
+  dueCards: DueCard[];
   index: number;
-  currentRound: number;
   progressView: boolean;
+  dueCardCount: number;
+  totalCardCount: number;
 }
 
 interface SortFlashcardsState extends SortFlashcardsStoreProps {
-  initialize: (
-    round: number,
-    studiableTerms: StudiableTerm[],
-    allTerms: FlashcardContent[],
-  ) => void;
+  initialize: (dueCards: DueCard[], totalCardCount: number) => void;
   markStillLearning: (termId: string) => void;
   markKnown: (termId: string) => void;
   goBack: (fromProgress?: boolean) => void;
   endSortCallback: () => void;
-  nextRound: (start?: boolean) => void;
-  evaluateTerms: (newStudiable: StudiableTerm[]) => void;
+  nextRound: () => void;
+  evaluateTerms: (newDueCards: DueCard[]) => void;
 }
 
 export type SortFlashcardsStore = ReturnType<typeof createSortFlashcardsStore>;
@@ -32,129 +27,88 @@ export const createSortFlashcardsStore = (
   initProps?: Partial<SortFlashcardsStoreProps>,
 ) => {
   const DEFAULT_PROPS: SortFlashcardsStoreProps = {
-    studiableTerms: [],
-    allTerms: [],
-    termsThisRound: [],
+    dueCards: [],
     index: 0,
-    currentRound: 0,
     progressView: false,
+    dueCardCount: 0,
+    totalCardCount: 0,
   };
 
   return createStore<SortFlashcardsState>()(
     subscribeWithSelector((set) => ({
       ...DEFAULT_PROPS,
       ...initProps,
-      initialize: (round, studiableTerms, allTerms) => {
+      initialize: (dueCards, totalCardCount) => {
         set({
-          studiableTerms,
-          allTerms,
-          currentRound: round,
-        });
-
-        set((state) => {
-          state.nextRound(true);
-
-          return {};
+          dueCards,
+          totalCardCount,
+          dueCardCount: dueCards.length,
+          index: 0,
+          progressView: false,
         });
       },
       markStillLearning: (termId) => {
         set((state) => {
-          const active = state.termsThisRound[state.index]!;
-
-          if (active.id != termId) throw new Error("Mismatched term id");
-          active.correctness = -1;
-          active.incorrectCount++;
-          active.appearedInRound = state.currentRound;
-
-          state.endSortCallback();
-
-          return {};
-        });
-      },
-      markKnown: (termId) => {
-        set((state) => {
-          const active = state.termsThisRound[state.index]!;
-
-          if (active.id != termId) throw new Error("Mismatched term id");
-          active.correctness = 1;
-          active.appearedInRound = state.currentRound;
-
-          state.endSortCallback();
-
-          return {};
-        });
-      },
-      goBack: (fromProgress = false) => {
-        set((state) => {
-          if (state.index == 0 && !fromProgress) return {};
+          const updatedDueCards = state.dueCards.map((card) =>
+            card.contentId === termId ? { ...card, isReview: false } : card,
+          );
 
           return {
-            progressView: false,
-            index: Math.min(
-              state.index - (!fromProgress ? 1 : 0),
-              state.termsThisRound.length - 1,
-            ),
-          };
-        });
-      },
-      endSortCallback: () => {
-        set((state) => {
-          if (state.index == state.termsThisRound.length - 1) {
-            return {
-              progressView: true,
-            };
-          }
-
-          return {
+            dueCards: updatedDueCards,
             index: state.index + 1,
           };
         });
       },
-      nextRound: (start = false) => {
+      markKnown: (termId) => {
         set((state) => {
-          const currentRound = state.currentRound + (!start ? 1 : 0);
-
-          // Terms that show up as previously answered are marked with set correctness and with the current round
-          const tailTerms = state.studiableTerms.filter(
-            (t) => t.correctness != 0 && t.appearedInRound == currentRound,
+          const updatedDueCards = state.dueCards.map((card) =>
+            card.contentId === termId ? { ...card, isReview: true } : card,
           );
-          // The rest are terms that are unknown, or incorrect but haven't been shown yet (appearedInRound is one less than currentRound)
-          const headTerms = state.studiableTerms.filter(
-            (t) =>
-              t.correctness == 0 ||
-              (t.correctness == -1 && t.appearedInRound == currentRound - 1),
-          );
-          const termsThisRound = [...tailTerms, ...headTerms];
-          // Start the index at the first head term
-          const index = tailTerms.length;
 
           return {
-            currentRound,
-            index,
-            termsThisRound,
-            progressView: index == termsThisRound.length,
+            dueCards: updatedDueCards,
+            index: state.index + 1,
           };
         });
       },
-      evaluateTerms: (newStudiable) => {
+      goBack: (fromProgress = false) => {
+        set((state) => ({
+          index: Math.max(0, state.index - 1),
+          progressView: fromProgress ? false : state.progressView,
+        }));
+      },
+      endSortCallback: () => {
+        set({ progressView: true });
+      },
+      nextRound: () => {
         set((state) => {
-          const tailTerms = newStudiable.filter(
-            (t) =>
-              t.correctness != 0 && t.appearedInRound == state.currentRound,
+          const stillLearningCards = state.dueCards.filter(
+            (card) => !card.isReview,
           );
-          const headTerms = newStudiable.filter(
-            (t) =>
-              t.correctness == 0 ||
-              (t.correctness == -1 &&
-                t.appearedInRound == state.currentRound - 1),
-          );
-          const termsThisRound = [...tailTerms, ...headTerms];
-          const index = tailTerms.length;
 
           return {
-            studiableTerms: newStudiable,
-            termsThisRound,
-            index,
+            dueCards: stillLearningCards,
+            dueCardCount: stillLearningCards.length,
+            index: 0,
+            progressView: stillLearningCards.length === 0,
+          };
+        });
+      },
+      evaluateTerms: (newDueCards) => {
+        set((state) => {
+          const updatedDueCards = newDueCards.map((newCard) => {
+            const existingCard = state.dueCards.find(
+              (card) => card.contentId === newCard.contentId,
+            );
+
+            return existingCard
+              ? { ...newCard, isReview: existingCard.isReview }
+              : newCard;
+          });
+
+          return {
+            dueCards: updatedDueCards,
+            dueCardCount: updatedDueCards.length,
           };
         });
       },
@@ -170,8 +124,11 @@ export const useSortFlashcardsContext = <T>(
 ): T => {
   const store = React.useContext(SortFlashcardsContext);
 
-  if (!store)
-    throw new Error("Missing SortFlashcardsContext.Provider in the tree");
+  if (!store) {
+    throw new Error(
+      "useSortFlashcardsContext must be used within a SortFlashcardsProvider",
+    );
+  }
 
   return useStore(store, selector);
 };

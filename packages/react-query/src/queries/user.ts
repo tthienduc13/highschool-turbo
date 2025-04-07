@@ -9,6 +9,7 @@ import {
   getAuthorById,
   getAuthorList,
   getCareerGuidanceBrief,
+  getOwnStatistic,
   getStatisticUsers,
   getTeacherExperience,
   getUserActivities,
@@ -227,5 +228,12 @@ export const useUserRetentionQuery = (type: string) => {
   return useQuery({
     queryKey: ["user-retention", type],
     queryFn: () => getUserRetention({ type }),
+  });
+};
+
+export const useUserOwnStatisticQuery = () => {
+  return useQuery({
+    queryKey: ["user-own-statistic"],
+    queryFn: getOwnStatistic,
   });
 };

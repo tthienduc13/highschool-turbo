@@ -1,17 +1,37 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  createFlashcardWithAI,
   deleteFlashcard,
   getDraftFlashcard,
   getFlashcardById,
   getFlashcardBySlug,
+  getFSRSById,
   getOwnerFlashcard,
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
   starTerm,
   updateContainer,
+  updateFSRSProgress,
 } from "../apis/flashcard.ts";
+
+export const useFSRSByIdQuery = ({flashcardId, isReview}: {flashcardId: string, isReview: boolean}) => {
+  return useQuery({
+    queryKey: ["fsrs-by-id", flashcardId, isReview],
+    queryFn: () => getFSRSById({flashcardId, isReview}),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    staleTime: 0,
+  })
+}
+
+export const useAIFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["ai-flashcard"],
+    mutationFn: createFlashcardWithAI
+  })
+}
 
 export const useUserFlashcardQuery = ({
   pageSize,
@@ -133,5 +153,12 @@ export const useUpdateContainerMutation = () => {
   return useMutation({
     mutationKey: ["update-container"],
     mutationFn: updateContainer,
+  });
+};
+
+export const useFSRSProgressMutation = () => {
+  return useMutation({
+    mutationKey: ["update-fsrs-progress"],
+    mutationFn: updateFSRSProgress,
   });
 };

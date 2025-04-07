@@ -16,62 +16,57 @@ import GlobalShortcutLayer from "@/components/core/common/global-shortcut-layer"
 import TopLoadingBar from "@/components/core/common/top-loading-bar";
 import { useAppStore } from "@/stores/use-app-store";
 
-const SignupModal = dynamic(
-  () =>
-    import("@/components/core/common/sign-up-modal").then(
-      (mod) => mod.SignUpModal,
-    ),
-  {
-    ssr: false,
-  },
-);
-
-const ConfettiLayer = dynamic(
-  () =>
-    import("@/components/core/common/confetti-layer").then(
-      (mod) => mod.ConfettiLayer,
-    ),
-  { ssr: false },
-);
-
-const CareerGuidanceModal = dynamic(
-  () =>
-    import("@/components/core/common/career-guidance-modal").then(
-      (mod) => mod.CareerGuidanceModal,
-    ),
-  { ssr: false },
-);
-
-const AccountInformationModal = dynamic(
-  () =>
-    import("@/components/core/common/account-information-modal").then(
-      (mod) => mod.AccountInformationModal,
-    ),
-  { ssr: false },
-);
-
-const TeacherInformationModal = dynamic(
-  () =>
-    import("@/components/core/common/teacher-information-modal").then(
-      (mod) => mod.TeacherInformationModal,
-    ),
-  { ssr: false },
-);
-const ReportModal = dynamic(
-  () =>
-    import("@/components/core/common/report-modal").then(
-      (mod) => mod.ReportModal,
-    ),
-  { ssr: false },
-);
-
-const NetworkStatusNotifier = dynamic(
-  () =>
-    import("@/components/core/common/network-notifier").then(
-      (mod) => mod.NetworkStatusNotifier,
-    ),
-  { ssr: false },
-);
+const DynamicComponents = {
+  SignupModal: dynamic(
+    () =>
+      import("@/components/core/common/sign-up-modal").then(
+        (mod) => mod.SignUpModal,
+      ),
+    { ssr: false },
+  ),
+  ConfettiLayer: dynamic(
+    () =>
+      import("@/components/core/common/confetti-layer").then(
+        (mod) => mod.ConfettiLayer,
+      ),
+    { ssr: false },
+  ),
+  CareerGuidanceModal: dynamic(
+    () =>
+      import("@/components/core/common/career-guidance-modal").then(
+        (mod) => mod.CareerGuidanceModal,
+      ),
+    { ssr: false },
+  ),
+  AccountInformationModal: dynamic(
+    () =>
+      import("@/components/core/common/account-information-modal").then(
+        (mod) => mod.AccountInformationModal,
+      ),
+    { ssr: false },
+  ),
+  TeacherInformationModal: dynamic(
+    () =>
+      import("@/components/core/common/teacher-information-modal").then(
+        (mod) => mod.TeacherInformationModal,
+      ),
+    { ssr: false },
+  ),
+  ReportModal: dynamic(
+    () =>
+      import("@/components/core/common/report-modal").then(
+        (mod) => mod.ReportModal,
+      ),
+    { ssr: false },
+  ),
+  NetworkStatusNotifier: dynamic(
+    () =>
+      import("@/components/core/common/network-notifier").then(
+        (mod) => mod.NetworkStatusNotifier,
+      ),
+    { ssr: false },
+  ),
+};
 
 function PlatformLayout({
   children,
@@ -80,9 +75,32 @@ function PlatformLayout({
 }>) {
   const pathName = usePathname();
   const { isOpenSidebar, isOpenMobileSidebar } = useAppStore();
-  const hideHeaders = ["/roadmap"];
 
-  const isHideHeader = hideHeaders.includes(pathName);
+  const shouldHideHeader = () => {
+    const hideHeaders = ["/roadmap"];
+
+    return hideHeaders.includes(pathName);
+  };
+
+  const shouldHideSidebar = () => {
+    if (pathName.endsWith("/flashcards")) return true;
+
+    if (pathName.includes("/chapters/")) return true;
+
+    return false;
+  };
+
+  const shouldHideFooter = () => {
+    if (pathName.endsWith("/flashcards")) return true;
+
+    if (pathName.includes("/chapters/")) return true;
+
+    return false;
+  };
+
+  const isHideHeader = shouldHideHeader();
+  const hideSidebar = shouldHideSidebar();
+  const hideFooter = shouldHideFooter();
 
   return (
     <>
@@ -103,30 +121,42 @@ function PlatformLayout({
             useAppStore.setState({ isOpenMobileSidebar: open })
           }
         >
-          <div
-            className="flex flex-row"
-            style={{
-              minHeight: "calc(100vh - 80px - 32px)",
-              marginTop: "40px",
-              paddingBottom: "112px",
-            }}
-          >
-            <AppSidebar />
-            <SidebarInset className="relative flex-1 bg-transparent">
-              {children}
-            </SidebarInset>
-          </div>
-          <Footer />
+          {!hideFooter ? (
+            <>
+              <div
+                className="flex flex-row"
+                style={{
+                  minHeight: "calc(100vh - 88px )",
+                  marginTop: "20px",
+                  paddingBottom: "112px",
+                }}
+              >
+                {!hideSidebar && <AppSidebar />}
+                <SidebarInset className="relative flex-1 bg-transparent">
+                  {children}
+                </SidebarInset>
+              </div>
+              <Footer />
+            </>
+          ) : (
+            <div className="flex h-[calc(100vh-88px)] flex-row">
+              {!hideSidebar && <AppSidebar />}
+              <SidebarInset className="relative flex-1 bg-transparent">
+                {children}
+              </SidebarInset>
+            </div>
+          )}
         </SidebarProvider>
         <Toaster richColors position="top-center" />
-        <NetworkStatusNotifier />
-        <SignupModal />
-        <ConfettiLayer />
-        <CareerGuidanceModal />
+        {/* Render các dynamic components từ object */}
+        <DynamicComponents.NetworkStatusNotifier />
+        <DynamicComponents.SignupModal />
+        <DynamicComponents.ConfettiLayer />
+        <DynamicComponents.CareerGuidanceModal />
+        <DynamicComponents.AccountInformationModal />
+        <DynamicComponents.TeacherInformationModal />
+        <DynamicComponents.ReportModal />
         <GlobalShortcutLayer />
-        <AccountInformationModal />
-        <TeacherInformationModal />
-        <ReportModal />
       </div>
     </>
   );

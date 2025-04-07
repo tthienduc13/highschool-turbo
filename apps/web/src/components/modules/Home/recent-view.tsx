@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { DocumentType } from "@highschool/interfaces";
-import { useRecentViewQuery } from "@highschool/react-query/queries";
+import { DocumentType, RecentView as type } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { IconBooks, IconCards, IconFileTypePdf } from "@tabler/icons-react";
@@ -12,9 +11,12 @@ import { Wrapper } from "./wrapper";
 
 import { getRelativeTime } from "@/utils/time";
 
-export const RecentView = () => {
-  const { data, isLoading } = useRecentViewQuery();
+interface RecentViewProps {
+  data?: type;
+  isLoading: boolean;
+}
 
+export const RecentView = ({ isLoading, data }: RecentViewProps) => {
   if (isLoading) {
     return (
       <Wrapper title="Xem gần đây">
@@ -35,14 +37,14 @@ export const RecentView = () => {
     );
   }
 
-  if (!data?.items.length) {
+  if (!data || !data?.items.length) {
     return <EmptyRecent />;
   }
 
   return (
     <Wrapper title={"Xem gần đây"}>
       <div className="grid grid-cols-1 md:grid-cols-2">
-        {data?.items.slice(0, 4).map((item) => (
+        {data?.items.slice(0, 3).map((item) => (
           <Link
             key={item.idDocument}
             passHref
@@ -60,14 +62,14 @@ export const RecentView = () => {
               variant={"ghost"}
             >
               <div className="flex w-full flex-row gap-4">
-                <div className="rounded-md bg-primary/20 p-2 text-primary">
+                <div className="bg-primary/20 text-primary rounded-md p-2">
                   {IconRenderer(item.typeDocument)}
                 </div>
                 <div className="flex flex-col justify-start">
                   <p className="line-clamp-1 w-full text-start text-sm font-medium">
                     {item.documentName}
                   </p>
-                  <p className="text-start text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-start text-sm">
                     {LabelRenderer(item.typeDocument)} •{" "}
                     {getRelativeTime(new Date(item.time))}
                   </p>
@@ -85,15 +87,15 @@ const IconRenderer = (type: DocumentType) => {
   switch (type) {
     case DocumentType.Flashcard:
       return (
-        <IconCards className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
+        <IconCards className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
       );
     case DocumentType.Document:
       return (
-        <IconFileTypePdf className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
+        <IconFileTypePdf className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
       );
     case DocumentType.Subject:
       return (
-        <IconBooks className="!size-6 transition-all duration-100 ease-cubic-ease group-hover:-rotate-3 group-hover:scale-110" />
+        <IconBooks className="ease-cubic-ease !size-6 transition-all duration-100 group-hover:-rotate-3 group-hover:scale-110" />
       );
     default:
       break;

@@ -134,7 +134,7 @@ const DEFAULT_PROPS: SetEditorProps = {
   description: "",
   slug: "",
   tags: [],
-  flashcardType: FlashcardAttachToType.Subject,
+  flashcardType: FlashcardAttachToType.Lesson,
   entityId: "",
   visibility: StudySetVisibility.Public,
   termLanguage: "en",

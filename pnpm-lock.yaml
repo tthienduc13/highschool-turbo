@@ -356,6 +356,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^3.9.1
         version: 3.10.0(react-hook-form@7.54.1(react@19.0.0))
+      '@lottiefiles/dotlottie-react':
+        specifier: ^0.13.3
+        version: 0.13.3(react@19.0.0)
       '@novu/nextjs':
         specifier: ^2.6.6
         version: 2.6.6(next@15.1.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -957,7 +960,7 @@ importers:
         specifier: ^2.1.1
         version: 2.1.2(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-popover':
-        specifier: ^1.1.4
+        specifier: ^1.1.6
         version: 1.1.6(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-progress':
         specifier: ^1.1.1
@@ -966,7 +969,7 @@ importers:
         specifier: ^1.2.2
         version: 1.2.3(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-scroll-area':
-        specifier: ^1.2.2
+        specifier: ^1.2.3
         version: 1.2.3(@types/react-dom@19.0.4(@types/react@19.0.12))(@types/react@19.0.12)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@radix-ui/react-select':
         specifier: ^2.1.4
@@ -1010,6 +1013,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      downshift:
+        specifier: ^9.0.9
+        version: 9.0.9(react@19.0.0)
       embla-carousel-react:
         specifier: ^8.5.1
         version: 8.5.2(react@19.0.0)
@@ -1429,6 +1435,14 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
+
+  '@lottiefiles/dotlottie-react@0.13.3':
+    resolution: {integrity: sha512-V4FfdYlqzjBUX7f0KV6vfQOOI0Cp+3XeG/ZqSDFSEVg5P7fpROpDv5/I9aTM8sOCESK1SWT96Fem+QVUnBV1wQ==}
+    peerDependencies:
+      react: ^17 || ^18 || ^19
+
+  '@lottiefiles/dotlottie-web@0.42.0':
+    resolution: {integrity: sha512-Zr2LCaOAoPCsdAQgeLyCSiQ1+xrAJtRCyuEYDj0qR5heUwpc+Pxbb88JyTVumcXFfKOBMOMmrlsTScLz2mrvQQ==}
 
   '@motionone/animation@10.18.0':
     resolution: {integrity: sha512-9z2p5GFGCm0gBsZbi8rVMOAJCtw1WqBTIPw3ozk06gDvZInBPIsQcHgYogEJ4yuHJ+akuW8g1SEIOpTOvYs8hw==}
@@ -3326,6 +3340,9 @@ packages:
   compressorjs@1.2.1:
     resolution: {integrity: sha512-+geIjeRnPhQ+LLvvA7wxBQE5ddeLU7pJ3FsKFWirDw6veY3s9iLxAQEw7lXGHnhCJvBujEQWuNnGzZcvCvdkLQ==}
 
+  compute-scroll-into-view@3.1.1:
+    resolution: {integrity: sha512-VRhuHOLoKYOy4UbilLbUzbYg93XLjv2PncJC50EuTWPA3gaja1UjBsUP/D/9/juV3vQFr6XBEzn9KCAHdUvOHw==}
+
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -3597,6 +3614,11 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
+
+  downshift@9.0.9:
+    resolution: {integrity: sha512-ygOT8blgiz5liDuEFAIaPeU4dDEa+w9p6PHVUisPIjrkF5wfR59a52HpGWAVVMoWnoFO8po2mZSScKZueihS7g==}
+    peerDependencies:
+      react: '>=16.12.0'
 
   duck@0.1.12:
     resolution: {integrity: sha512-wkctla1O6VfP89gQ+J/yDesM0S7B7XLXjKGzXxMDVFg7uEn706niAtyYovKbyq1oT9YwDcly721/iUWoc8MVRg==}
@@ -5217,6 +5239,9 @@ packages:
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
+  react-is@18.2.0:
+    resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
+
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
@@ -6472,6 +6497,13 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@lottiefiles/dotlottie-react@0.13.3(react@19.0.0)':
+    dependencies:
+      '@lottiefiles/dotlottie-web': 0.42.0
+      react: 19.0.0
+
+  '@lottiefiles/dotlottie-web@0.42.0': {}
 
   '@motionone/animation@10.18.0':
     dependencies:
@@ -8546,6 +8578,8 @@ snapshots:
       blueimp-canvas-to-blob: 3.29.0
       is-blob: 2.1.0
 
+  compute-scroll-into-view@3.1.1: {}
+
   concat-map@0.0.1: {}
 
   constant-case@2.0.0:
@@ -8790,6 +8824,15 @@ snapshots:
 
   dotenv@16.4.7: {}
 
+  downshift@9.0.9(react@19.0.0):
+    dependencies:
+      '@babel/runtime': 7.26.10
+      compute-scroll-into-view: 3.1.1
+      prop-types: 15.8.1
+      react: 19.0.0
+      react-is: 18.2.0
+      tslib: 2.8.1
+
   duck@0.1.12:
     dependencies:
       underscore: 1.13.7
@@ -8961,7 +9004,7 @@ snapshots:
       '@typescript-eslint/parser': 8.27.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0)(eslint@8.57.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.9.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.0)
       eslint-plugin-react: 7.37.4(eslint@8.57.0)
@@ -8981,7 +9024,7 @@ snapshots:
       '@typescript-eslint/parser': 8.27.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0)(eslint@8.57.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-typescript@3.9.1)(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@8.57.0)
       eslint-plugin-react: 7.37.4(eslint@8.57.0)
@@ -9009,7 +9052,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0)(eslint@8.57.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -9024,14 +9067,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1)(eslint@8.57.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.27.0(eslint@8.57.0)(typescript@5.5.4)
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-import-resolver-typescript: 3.9.1(eslint-plugin-import@2.31.0)(eslint@8.57.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -9046,7 +9089,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.27.0(eslint@8.57.0)(typescript@5.5.4))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1)(eslint@8.57.0)
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -10673,6 +10716,8 @@ snapshots:
       react: 19.0.0
 
   react-is@16.13.1: {}
+
+  react-is@18.2.0: {}
 
   react-is@18.3.1: {}
 

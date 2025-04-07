@@ -1,20 +1,38 @@
 import { Switch } from "@highschool/ui/components/ui/switch";
 import { useUpdateContainerMutation } from "@highschool/react-query/queries";
+import { useEffect } from "react";
 
 import { useContainerContext } from "@/stores/use-container-store";
-import { useSetPropertiesStore } from "@/stores/use-set-properties";
 import { useSet } from "@/hooks/use-set";
+import { mutationEventChannel } from "@/events/mutation";
 
 export const StudyStarredSection = () => {
   const { flashcard } = useSet();
-  const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const cardsStudyStarred = useContainerContext((s) => s.cardsStudyStarred);
+  const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
   const setCardsStudyStarred = useContainerContext(
     (s) => s.setCardsStudyStarred,
   );
 
   const apiSetCardsStudyStarred = useUpdateContainerMutation();
+
+  useEffect(() => {
+    const mutate = async (check: boolean) => {
+      apiSetCardsStudyStarred.mutate({
+        flashcardId: flashcard.id,
+        values: {
+          cardsStudyStarred: check,
+        },
+      });
+    };
+
+    mutationEventChannel.on("toggleStudyStarred", mutate);
+
+    return () => {
+      mutationEventChannel.off("toggleStudyStarred", mutate);
+    };
+  }, [enableCardsSorting]);
 
   return (
     <div className="flex flex-row items-center gap-9">
@@ -24,19 +42,10 @@ export const StudyStarredSection = () => {
       <Switch
         checked={cardsStudyStarred}
         className="data-[state=checked]:bg-primary"
-        disabled={starredTerms.length == 0}
-        onCheckedChange={(checked) => {
-          setIsDirty(true);
-          setCardsStudyStarred(checked);
-          apiSetCardsStudyStarred.mutate(
-            {
-              flashcardId: flashcard.id,
-              values: {
-                cardsStudyStarred: checked,
-              },
-            },
-            { onSuccess: () => setIsDirty(false) },
-          );
+        disabled={starredTerms.length == 0 || enableCardsSorting}
+        onCheckedChange={(check) => {
+          setCardsStudyStarred(check);
+          mutationEventChannel.emit("toggleStudyStarred", check);
         }}
       />
     </div>

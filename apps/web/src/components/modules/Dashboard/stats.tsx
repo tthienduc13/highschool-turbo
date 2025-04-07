@@ -2,21 +2,18 @@
 
 import {
   IconAward,
-  IconCalendar,
+  IconCards,
   IconFlame,
   IconMenu3,
   IconTarget,
 } from "@tabler/icons-react";
 import React from "react";
+import { NumberTicker } from "@highschool/components";
 
 import { useDashboard } from "@/hooks/use-user-dashboard";
 
 export const Stats = () => {
   const { stats } = useDashboard();
-  const progress = Math.min(
-    (stats.totalContributions / stats.contributionGoal) * 100,
-    100,
-  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -31,7 +28,14 @@ export const Stats = () => {
           </div>
           <div>
             <p className="text-sm text-gray-600">Chuỗi Hiện Tại</p>
-            <p className="text-2xl font-bold">{stats.currentStreak} ngày</p>
+            <p className="text-2xl font-bold">
+              <NumberTicker
+                className="text-2xl font-bold"
+                value={stats.currentStreak}
+              />{" "}
+              {""}
+              ngày
+            </p>
           </div>
         </div>
 
@@ -41,17 +45,28 @@ export const Stats = () => {
           </div>
           <div>
             <p className="text-sm text-gray-600">Chuỗi Dài Nhất</p>
-            <p className="text-2xl font-bold">{stats.longestStreak} ngày</p>
+            <p className="text-2xl font-bold">
+              <NumberTicker
+                className="text-2xl font-bold"
+                value={stats.longestStreak}
+              />{" "}
+              ngày
+            </p>
           </div>
         </div>
 
         <div className="flex items-center rounded-lg bg-white p-6 shadow">
           <div className="mr-4 rounded-full bg-blue-100 p-3">
-            <IconCalendar className="size-6 text-blue-500" />
+            <IconCards className="size-6 text-blue-500" />
           </div>
           <div>
-            <p className="text-sm text-gray-600">Tổng Bài Học</p>
-            <p className="text-2xl font-bold">{stats.totalContributions}</p>
+            <p className="text-sm text-gray-600">Tổng bộ thẻ</p>
+            <p className="text-2xl font-bold">
+              <NumberTicker
+                className="text-2xl font-bold"
+                value={stats.totalFlashcard}
+              />
+            </p>
           </div>
         </div>
 
@@ -61,15 +76,14 @@ export const Stats = () => {
               <IconTarget className="size-6 text-green-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Tiến Độ Mục Tiêu</p>
-              <p className="text-2xl font-bold">{Math.round(progress)}%</p>
+              <p className="text-sm text-gray-600">Tổng thẻ ghi nhớ</p>
+              <p className="text-2xl font-bold">
+                <NumberTicker
+                  className="text-2xl font-bold"
+                  value={stats.totalFlashcard}
+                />
+              </p>
             </div>
-          </div>
-          <div className="h-2.5 w-full rounded-full bg-gray-200">
-            <div
-              className="h-2.5 rounded-full bg-green-500 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
           </div>
         </div>
       </div>

@@ -5,8 +5,13 @@ import throttle from "lodash.throttle";
 import { useCallback, useContext, useEffect, useState } from "react";
 import {
   LimitedStudySetAnswerMode,
-  StudiableTerm,
+  DueCard,
+  FlashcardContent,
 } from "@highschool/interfaces";
+import {
+  useFSRSByIdQuery,
+  useFSRSProgressMutation,
+} from "@highschool/react-query/queries";
 
 import { Flashcard } from "./flashcard";
 import { RootFlashcardContext } from "./root-flashcard-wrapper";
@@ -16,6 +21,7 @@ import { SortableShortcutLayer } from "./sortable-shorcut-layer";
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
 import { useSortFlashcardsContext } from "@/stores/use-sort-flashcard-store";
+import { useSet } from "@/hooks/use-set";
 
 export const SortFlashcardWrapper = () => {
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
@@ -26,30 +32,52 @@ export const SortFlashcardWrapper = () => {
   const cardsAnswerWith = useContainerContext((s) => s.cardsAnswerWith);
   const shouldFlip = cardsAnswerWith == LimitedStudySetAnswerMode.Term;
 
-  const termsThisRound = useSortFlashcardsContext((s) => s.termsThisRound);
+  const dueCards = useSortFlashcardsContext((s) => s.dueCards);
   const index = useSortFlashcardsContext((s) => s.index);
-  const currentRound = useSortFlashcardsContext((s) => s.currentRound);
   const progressView = useSortFlashcardsContext((s) => s.progressView);
-  const stateMarkStillLearning = useSortFlashcardsContext(
+  const markStillLearning = useSortFlashcardsContext(
     (s) => s.markStillLearning,
   );
+  const markKnown = useSortFlashcardsContext((s) => s.markKnown);
+  const nextRound = useSortFlashcardsContext((s) => s.nextRound);
+  const goBack = useSortFlashcardsContext((s) => s.goBack);
 
-  const stateMarkKnown = useSortFlashcardsContext((s) => s.markKnown);
-  const stateNextRound = useSortFlashcardsContext((s) => s.nextRound);
-  const stateGoBack = useSortFlashcardsContext((s) => s.goBack);
+  const apiMarkFlashcard = useFSRSProgressMutation();
 
-  const term = !progressView ? termsThisRound[index] : undefined;
+  const evaluateTerms = useSortFlashcardsContext((s) => s.evaluateTerms);
 
-  const setDirtyProps = {
-    onSuccess: () => {
-      setIsDirty(true);
-    },
+  const { flashcard } = useSet();
+  const [isReview, setIsReview] = useState(false);
+  const { data: fsrsData, refetch } = useFSRSByIdQuery({
+    flashcardId: flashcard.id,
+    isReview,
+  });
+
+  // Define a type that combines DueCard with the additional properties needed for the UI
+  type FlashcardWithUI = DueCard & { isFlipped: boolean; index: number };
+
+  // Convert DueCard to FlashcardContent
+  const convertToFlashcardContent = (dueCard: DueCard): FlashcardContent => {
+    return {
+      id: dueCard.contentId,
+      flashcardId: dueCard.contentId, // Using contentId as flashcardId
+      flashcardContentTerm: dueCard.term,
+      flashcardContentDefinition: dueCard.definition,
+      image: null,
+      flashcardContentTermRichText: "",
+      flashcardContentDefinitionRichText: "",
+      rank: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      createdBy: "",
+      updatedBy: "",
+    };
   };
 
-  type Flashcard = StudiableTerm & { isFlipped: boolean; index: number };
-
-  const [visibleFlashcards, setVisibleFlashcards] = useState<Flashcard[]>(
-    !progressView ? [{ ...term!, isFlipped: shouldFlip, index }] : [],
+  const [visibleFlashcards, setVisibleFlashcards] = useState<FlashcardWithUI[]>(
+    !progressView && dueCards[index]
+      ? [{ ...dueCards[index], isFlipped: shouldFlip, index }]
+      : [],
   );
 
   const [hasUserEngaged, setHasUserEngaged] = useState(false);
@@ -63,7 +91,7 @@ export const SortFlashcardWrapper = () => {
   }, []);
 
   const flipCard = async (id: string) => {
-    if (!visibleFlashcards.find((f) => f.id == id)) return;
+    if (!visibleFlashcards.find((f) => f.contentId == id)) return;
 
     await controls.start({
       rotateX: 90,
@@ -86,58 +114,49 @@ export const SortFlashcardWrapper = () => {
     });
   };
 
-  const markCard = (term: StudiableTerm, know: boolean) => {
+  const markCard = (term: DueCard, know: boolean) => {
     allowAnimation();
     setState(know ? "known" : "stillLearning");
     controls.set({ zIndex: 105 });
 
-    if (know) stateMarkKnown(term.id);
-    else stateMarkStillLearning(term.id);
+    if (know) markKnown(term.contentId);
+    else markStillLearning(term.contentId);
 
-    // void (async () => {
-    //   await put.mutateAsync({
-    //     id: term.id,
-    //     containerId: container.id,
-    //     mode: "Flashcards",
-    //     correctness: know ? 1 : -1,
-    //     appearedInRound: currentRound,
-    //     incorrectCount: know
-    //       ? term.incorrectCount || 0
-    //       : term.incorrectCount + 1,
-    //   });
-    // })();
+    apiMarkFlashcard.mutate({
+      flashcardContentId: term.contentId,
+      rating: know ? 3 : 1,
+      timeSpent: 0,
+    });
+
+    if (index === dueCards.length - 1) {
+      nextRound();
+    }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const markCardCallback = useCallback(
     throttle(markCard, 200, { trailing: false }),
-    [currentRound],
+    [index, dueCards.length],
   );
 
-  const goBack = () => {
+  const handleGoBack = () => {
     const newIndex = index - 1;
-    const studiableTerm = termsThisRound[newIndex];
+    const card = dueCards[newIndex];
 
-    if (!studiableTerm) return;
-    setState(studiableTerm.correctness == 1 ? "known" : "stillLearning");
-
-    // void (async () => {
-    //   await apiDelete.mutateAsync({
-    //     id: studiableTerm.id,
-    //     containerId: container.id,
-    //     mode: "Flashcards",
-    //   });
-    // })();
+    if (!card) return;
+    setState(card.isReview ? "known" : "stillLearning");
 
     allowAnimation();
-    stateGoBack();
+    goBack();
   };
 
   useEffect(() => {
-    if (!progressView)
-      setVisibleFlashcards([{ ...term!, isFlipped: shouldFlip, index }]);
+    if (!progressView && dueCards[index])
+      setVisibleFlashcards([
+        { ...dueCards[index], isFlipped: shouldFlip, index },
+      ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [term]);
+  }, [index, dueCards]);
 
   useEffect(() => {
     if (progressView) {
@@ -146,24 +165,19 @@ export const SortFlashcardWrapper = () => {
     }
   }, [progressView]);
 
-  const onNextRound = () => {
-    stateNextRound();
+  // Update due cards when FSRS data changes
+  useEffect(() => {
+    if (fsrsData) {
+      evaluateTerms(fsrsData.dueCards);
+    }
+  }, [fsrsData, evaluateTerms]);
 
-    // void (async () => {
-    //   await apiCompleteCardsRound.mutateAsync({
-    //     entityId: id,
-    //     type: entityType == "set" ? "StudySet" : "Folder",
-    //   });
-    // })();
+  const onNextRound = () => {
+    nextRound();
   };
 
   const onResetProgress = () => {
-    // void (async () => {
-    //   await apiResetCardsProgress.mutateAsync({
-    //     entityId: id,
-    //     type: entityType == "set" ? "StudySet" : "Folder",
-    //   });
-    // })();
+    // Reset progress functionality can be implemented here
   };
 
   return (
@@ -175,7 +189,6 @@ export const SortFlashcardWrapper = () => {
     >
       {progressView ? (
         <SortFlashcardProgress
-          h={h}
           onNextRound={onNextRound}
           onResetProgress={onResetProgress}
         />
@@ -183,16 +196,20 @@ export const SortFlashcardWrapper = () => {
         <SortableShortcutLayer
           triggerFlip={async () => {
             if (visibleFlashcards.length)
-              await flipCard(visibleFlashcards[0]!.id);
+              await flipCard(visibleFlashcards[0]!.contentId);
           }}
-          triggerKnow={() => markCardCallback(term!, true)}
-          triggerStillLearning={() => markCardCallback(term!, false)}
+          triggerKnow={() =>
+            dueCards[index] && markCardCallback(dueCards[index], true)
+          }
+          triggerStillLearning={() =>
+            dueCards[index] && markCardCallback(dueCards[index], false)
+          }
         />
       )}
       <AnimatePresence>
         {visibleFlashcards.map((t, i) => (
           <motion.div
-            key={`flashcard-${t.id}-${i}`}
+            key={`flashcard-${t.contentId}-${i}`}
             animate={controls}
             exit={
               hasUserEngaged
@@ -232,21 +249,27 @@ export const SortFlashcardWrapper = () => {
               transformOrigin: "center",
               scale: 1,
             }}
-            onClick={() => flipCard(t.id)}
+            onClick={() => flipCard(t.contentId)}
           >
             <Flashcard
               h={h}
               index={t.index}
               isFlipped={t.isFlipped}
-              numTerms={termsThisRound.length}
-              starred={starredTerms.includes(t.id)}
-              term={t}
+              numTerms={dueCards.length}
+              starred={starredTerms.includes(t.contentId)}
+              term={convertToFlashcardContent(t)}
               variant="sortable"
-              onBackAction={goBack}
-              onLeftAction={() => markCardCallback(term!, false)}
-              onRequestEdit={() => editTerm(t, t.isFlipped)}
-              onRequestStar={() => starTerm(t)}
-              onRightAction={() => markCardCallback(term!, true)}
+              onBackAction={handleGoBack}
+              onLeftAction={() =>
+                dueCards[index] && markCardCallback(dueCards[index], false)
+              }
+              onRequestEdit={() =>
+                editTerm(convertToFlashcardContent(t), t.isFlipped)
+              }
+              onRequestStar={() => starTerm(convertToFlashcardContent(t))}
+              onRightAction={() =>
+                dueCards[index] && markCardCallback(dueCards[index], true)
+              }
             />
           </motion.div>
         ))}

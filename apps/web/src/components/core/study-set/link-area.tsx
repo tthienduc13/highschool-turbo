@@ -2,15 +2,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@highschool/ui/lib/utils";
-import {
-  IconBrain,
-  IconCards,
-  IconGridDots,
-  IconLayersSubtract,
-  IconLock,
-  IconMeteor,
-  IconReport,
-} from "@tabler/icons-react";
+import { IconCards, IconGridDots, IconLayersSubtract, IconLock, IconMeteor, IconReport } from "@tabler/icons-react";
 
 import { Hint } from "../common/hint";
 
@@ -22,12 +14,12 @@ export const LinkArea = () => {
 
   return (
     <div className="grid h-fit w-full grid-cols-2 gap-4 md:grid-cols-3 lg:w-[160px] lg:grid-cols-1">
-      <Linkable
+      {/* <Linkable
         requireAuth
         href={`/study-set/${flashcard.slug}/learn`}
         icon={<IconBrain />}
         name="Học"
-      />
+      /> */}
       <Linkable
         href={`/study-set/${flashcard.slug}/flashcards`}
         icon={<IconCards />}
@@ -118,7 +110,7 @@ export const Linkable: React.FC<LinkableProps> = ({
                         >
                             {icon}
                         </div> */}
-            <div className="ease-in-out relative text-primary transition-all duration-200 group-focus-within:-translate-y-[2px] group-hover:-translate-y-[2px]">
+            <div className="text-primary relative transition-all duration-200 ease-in-out group-focus-within:-translate-y-[2px] group-hover:-translate-y-[2px]">
               {icon}
             </div>
           </div>

@@ -7,7 +7,7 @@ import {
 } from "@highschool/interfaces";
 import { documentEndpoints, mediaEndpoints } from "@highschool/endpoints";
 
-import { axiosClientWithoutAuth } from "../lib/axios.ts";
+import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
 
 import { fetchUnauthedPaginatedData } from "./common.ts";
 
@@ -48,7 +48,7 @@ export const getDocumentBySlug = async ({
   documentSlug: string;
 }): Promise<Document> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
+    const { data } = await axiosServices.get(
       `${documentEndpoints.getDocumentBySlug(documentSlug)}`,
     );
 
@@ -64,7 +64,7 @@ export const getDocumentMedia = async ({
   documentId: string;
 }): Promise<ResponseModel<DocumentMedia>> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
+    const { data } = await axiosServices.get(
       `${mediaEndpoints.getDocument(documentId)}`,
     );
 
@@ -83,7 +83,7 @@ export const getDownloadDocument = async ({
 }: {
   documentId: string;
 }) => {
-  const response = await axiosClientWithoutAuth.get(
+  const response = await axiosServices.get(
     `${mediaEndpoints.downloadDocument(documentId)}`,
     {
       responseType: "blob",

@@ -25,7 +25,7 @@ function CreateStudySetWithAIModule() {
           </h1>
           <FlashcardAiGenerator />
         </Container>
-      </EnterWrapper>{" "}
+      </EnterWrapper>
     </WithFooter>
   );
 }

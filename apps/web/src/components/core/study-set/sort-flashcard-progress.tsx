@@ -3,15 +3,12 @@ import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { useState } from "react";
 import Link from "next/link";
 import {
-  IconArrowLeft,
-  IconArrowRight,
   IconBrain,
   IconCards,
   IconChevronRight,
-  IconRotateClockwise,
+  IconRefresh,
   TablerIcon,
 } from "@tabler/icons-react";
-import { Button } from "@highschool/ui/components/ui/button";
 
 import { AnyKeyPressLayer } from "../study-set-learn/any-key-press-layer";
 
@@ -34,30 +31,22 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
   const { flashcard } = useSet();
   const router = useRouter();
 
-  //   const apiDelete = api.studiableTerms.delete.useMutation();
-
-  const termsThisRound = useSortFlashcardsContext((s) => s.termsThisRound);
+  const dueCards = useSortFlashcardsContext((s) => s.dueCards);
   const index = useSortFlashcardsContext((s) => s.index);
-  const studiableTerms = useSortFlashcardsContext((s) => s.studiableTerms);
+  const dueCardCount = useSortFlashcardsContext((s) => s.dueCardCount);
+  const totalCardCount = useSortFlashcardsContext((s) => s.totalCardCount);
 
   const stateGoBack = useSortFlashcardsContext((s) => s.goBack);
-  const known = studiableTerms.filter((t) => t.correctness === 1).length;
-  const stillLearning = studiableTerms.length - known;
+
+  // Count known and still learning cards
+  const known = dueCards.filter((t) => t.isReview).length;
+  const stillLearning = dueCards.filter((t) => !t.isReview).length;
+
+  // If there are no due cards, show 100% progress
+  const isComplete = dueCardCount === 0 || known + stillLearning === 0;
 
   const goBack = () => {
     stateGoBack(true);
-
-    void (async () => {
-      const current = termsThisRound[index];
-
-      if (!current) return;
-
-      //   await apiDelete.mutateAsync({
-      //     id: current.id,
-      //     containerId: container.id,
-      //     mode: "Flashcards",
-      //   });
-    })();
   };
 
   return (
@@ -66,7 +55,9 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
       style={{ height: h }}
     >
       <CardContent className=" flex h-full flex-col gap-0 bg-transparent p-0 ">
-        {!!stillLearning && <AnyKeyPressLayer onSubmit={onNextRound} />}
+        {!!stillLearning && !isComplete && (
+          <AnyKeyPressLayer onSubmit={onNextRound} />
+        )}
         <div className="flex  flex-1 flex-col justify-between">
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
             <div className="flex h-full flex-col gap-6">
@@ -74,8 +65,8 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
               <Card className="h-full rounded-2xl bg-white shadow-lg dark:bg-gray-800/50">
                 <CardContent className="flex size-full items-center justify-center p-4">
                   <CircularTermMastery
-                    known={known}
-                    stillLearning={stillLearning}
+                    known={isComplete ? totalCardCount : known}
+                    stillLearning={isComplete ? 0 : stillLearning}
                   />
                 </CardContent>
               </Card>
@@ -83,13 +74,30 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
 
             <div className="flex flex-col gap-6">
               <h2 className="text-xl font-bold">
-                {!stillLearning
-                  ? "Bạn đã xem hết thẻ ghi nhớ"
-                  : "Bước tiếp theo"}
+                {isComplete
+                  ? "Bạn đã hoàn thành tất cả thẻ ghi nhớ"
+                  : !stillLearning
+                    ? "Bạn đã xem hết thẻ ghi nhớ"
+                    : "Bước tiếp theo"}
               </h2>
 
               <div className="flex flex-col gap-4">
-                {!!stillLearning ? (
+                {isComplete && (
+                  <Actionable
+                    description="Ôn tập lại toàn bộ thẻ ngày hôm nay để bạn chắc chắn hơn về kiến thức của mình"
+                    href={`/flashcard/${flashcard.id}`}
+                    icon={IconRefresh}
+                    name="Ôn lại các thẻ"
+                  />
+                )}
+                {isComplete ? (
+                  <Actionable
+                    description="Bạn đã hoàn thành tất cả các thẻ ghi nhớ. Bạn có thể xem lại hoặc tiếp tục học những nội dung mới"
+                    href={`/flashcard/${flashcard.id}`}
+                    icon={IconBrain}
+                    name="Tiếp tục học"
+                  />
+                ) : !!stillLearning ? (
                   <Actionable
                     description={`Tiếp tục ôn tập flashcard với ${stillLearning} thuật ngữ bạn vẫn đang học.`}
                     icon={IconCards}
@@ -98,44 +106,36 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
                   />
                 ) : (
                   <Actionable
-                    description="Tiếp tục học với các câu hỏi trắc nghiệm và tự luận."
-                    href={`/study-set/${flashcard.slug}/learn`}
+                    description="Bạn đã hoàn thành tất cả các thẻ ghi nhớ. Bạn có thể xem lại hoặc tiếp tục học những nội dung mới"
+                    href={`/flashcard/${flashcard.id}`}
                     icon={IconBrain}
-                    name="Tiếp tục với Học"
+                    name="Quay lại trang chính"
                   />
                 )}
-                <Actionable
-                  description={`Đặt lại tiến trình của bạn và học lại tất cả ${studiableTerms.length} thẻ ghi nhớ lại từ đầu`}
-                  icon={IconRotateClockwise}
-                  name="Khởi động lại flashcards"
-                  onClick={onResetProgress}
-                />
               </div>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col justify-between pt-6 md:flex-row">
-          <Button
-            className="text-blue-700 hover:text-blue-700"
-            size={"default"}
-            variant={"ghost"}
-            onClick={goBack}
-          >
-            <IconArrowLeft className="!size-[18px]" size={18} />
-            Quay lại thẻ cuối cùng
-          </Button>
 
-          {!!stillLearning && (
-            <Button
-              className="text-blue-700 hover:text-blue-700"
-              size={"default"}
-              variant="ghost"
-              onClick={onNextRound}
-            >
-              Bấm nút bất kì để tiếp tục
-              <IconArrowRight size={18} />
-            </Button>
-          )}
+          {/* <div className="mt-8 flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={goBack}
+              >
+                <IconChevronRight className="h-4 w-4 rotate-180" />
+                Quay lại
+              </Button>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={onResetProgress}
+              >
+                <IconRotateClockwise className="h-4 w-4" />
+                Làm lại
+              </Button>
+            </div>
+          </div> */}
         </div>
       </CardContent>
     </Card>
@@ -175,7 +175,7 @@ export function Actionable({
   return (
     <CardWrapper>
       <Card
-        className={`ease-in-out h-full cursor-pointer border-b-[3px] px-6 py-5 shadow-md transition-all duration-150 ${
+        className={`h-full cursor-pointer border-b-[3px] px-6 py-5 shadow-md transition-all duration-150 ease-in-out ${
           isHovered
             ? "translate-y-[-2px] border-blue-500"
             : "border-gray-200 dark:border-gray-700"

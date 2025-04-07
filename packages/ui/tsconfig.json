@@ -1,11 +1,20 @@
 {
-  "extends": "@highschool/typescript-config/react-library.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@highschool/ui/*": ["./src/*"]
-    }
-  },
-  "include": ["src", "../lib/display.tsx"],
-  "exclude": ["node_modules"]
+    "extends": "@highschool/typescript-config/react-library.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "module": "ESNext", // hoặc một giá trị khác tương thích với "node"
+        "moduleResolution": "node",
+        "paths": {
+            "@highschool/ui/*": [
+                "./src/*"
+            ]
+        }
+    },
+    "include": [
+        "src",
+        "../lib/display.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

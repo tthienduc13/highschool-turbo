@@ -28,6 +28,7 @@
         "@highschool/react-query": "workspace:*",
         "@highschool/ui": "workspace:*",
         "@hookform/resolvers": "^3.9.1",
+        "@lottiefiles/dotlottie-react": "^0.13.3",
         "@novu/nextjs": "^2.6.6",
         "@radix-ui/react-slider": "^1.2.1",
         "@radix-ui/react-visually-hidden": "^1.1.0",
