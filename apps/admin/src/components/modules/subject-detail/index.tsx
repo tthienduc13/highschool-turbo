@@ -6,13 +6,21 @@ import Image from "next/image";
 import {
   IconLayoutDashboard,
   IconListCheck,
+  IconLoader2,
+  IconLock,
+  IconLockOpen2,
   IconSettings,
 } from "@tabler/icons-react";
 import {
+  useActivateCourseMutation,
   useChapterListByIdQuery,
+  useCheckCoursePublishQuery,
   useCourseByIdQuery,
+  useDeactivateCourseMutation,
 } from "@highschool/react-query/queries";
 import { useParams } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import {
   CurriculumData,
@@ -28,9 +36,13 @@ import { IconBadge } from "@/components/core/common/icon-bade";
 import { Loading } from "@/components/core/common/loading";
 
 function SubjectDetailModule() {
+  const queryClient = useQueryClient();
   const { id } = useParams();
   const [selectOpen, setSelectOpen] = useState<boolean>(false);
   const [selectedCurriculumId, setSelectedCurriculumId] = useState<string>();
+
+  const apiActivateCourse = useActivateCourseMutation();
+  const apiDeactivateCourse = useDeactivateCourseMutation();
 
   const { data, isLoading } = useCourseByIdQuery({ id: id as string });
 
@@ -42,9 +54,60 @@ function SubjectDetailModule() {
       pageSize: 100,
     });
 
+  const { data: isPublished, isLoading: checkingLoading } =
+    useCheckCoursePublishQuery({
+      subjectId: id as string,
+      curriculumId: selectedCurriculumId!,
+    });
+
   const currentCurriculum = CurriculumData.find((curriculum) => {
     return curriculum.id === selectedCurriculumId;
   });
+
+  const handleActivateCourse = () => {
+    apiActivateCourse.mutate(
+      {
+        subjectId: id as string,
+        curriculumId: selectedCurriculumId!,
+      },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "check-course-publish",
+              { subjectId: id, curriculumId: selectedCurriculumId },
+            ],
+          });
+          toast.success(data.message);
+        },
+      },
+    );
+  };
+
+  const handleDeactivateCourse = () => {
+    apiDeactivateCourse.mutate(
+      {
+        subjectId: id as string,
+        curriculumId: selectedCurriculumId!,
+      },
+      {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({
+            queryKey: [
+              "check-course-publish",
+              { subjectId: id, curriculumId: selectedCurriculumId },
+            ],
+          });
+          toast.success(data.message);
+        },
+      },
+    );
+  };
+
+  const isPublish = isPublished?.data === true;
+
+  const isPendingActivate =
+    apiActivateCourse.isPending || apiDeactivateCourse.isPending;
 
   if (isLoading) {
     return <Loading />;
@@ -77,8 +140,25 @@ function SubjectDetailModule() {
               )}
               {selectedCurriculumId
                 ? currentCurriculum?.curriculumName
-                : "Choose currciculum"}
+                : "Choose curriculum"}
             </Button>
+            {selectedCurriculumId && !checkingLoading && (
+              <Button
+                variant={isPublished?.data ? "destructive" : "default"}
+                onClick={
+                  isPublish ? handleDeactivateCourse : handleActivateCourse
+                }
+              >
+                {isPendingActivate ? (
+                  <IconLoader2 className="animate-spin" />
+                ) : (
+                  <>
+                    {isPublish ? <IconLock /> : <IconLockOpen2 />}
+                    {isPublish ? "Unpublish chapters" : "Publish chapters"}
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
         <div className="gird-cols-1 mt-10 grid gap-6 md:grid-cols-2">
@@ -91,7 +171,6 @@ function SubjectDetailModule() {
               course={data!}
               initialData={{ title: data?.subjectName! }}
             />
-
             <div className="mt-6 rounded-md bg-gray-100 p-4 dark:bg-gray-800">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-row items-center gap-2">

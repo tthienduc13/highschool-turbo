@@ -1,8 +1,8 @@
-import { Theory } from "@highschool/interfaces";
+import { TheoryListItem } from "@highschool/interfaces";
 import { Separator } from "@highschool/ui/components/ui/separator";
 
 interface TheoryListProps {
-  theories: Theory[];
+  theories: TheoryListItem[];
 }
 
 export const TheoryList = ({ theories }: TheoryListProps) => {
@@ -29,7 +29,7 @@ export const TheoryList = ({ theories }: TheoryListProps) => {
 };
 
 interface TheoryItemProps {
-  theory: Theory;
+  theory: TheoryListItem;
 }
 
 const TheoryItem = ({ theory }: TheoryItemProps) => {

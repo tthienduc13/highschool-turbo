@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   FlashcardContent,
   StudiableTerm,
@@ -6,8 +6,6 @@ import {
   FlashcardLearnState,
 } from "@highschool/interfaces";
 import { useFSRSByIdQuery } from "@highschool/react-query/queries";
-
-import { RootFlashcardContext } from "./root-flashcard-wrapper";
 
 import { useSet } from "@/hooks/use-set";
 import { useContainerContext } from "@/stores/use-container-store";
@@ -20,7 +18,7 @@ import {
 export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
   children,
 }) => {
-  const { terms, flashcard } = useSet();
+  const { flashcard } = useSet();
   const [isReview, setIsReview] = useState(false);
   const {
     data: fsrsData,
@@ -30,7 +28,6 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     flashcardId: flashcard.id,
     isReview,
   });
-  const { termOrder } = useContext(RootFlashcardContext);
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const storeRef = useRef<SortFlashcardsStore>(null);
 
@@ -54,8 +51,16 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
 
   // Handle round completion
   const handleRoundComplete = async () => {
-    // Revalidate FSRS data to get the next batch of cards
-    await refetch();
+    // Check if all cards were rated as known (3)
+    const allCardsKnown =
+      storeRef.current?.getState().checkAllCardsKnown() || false;
+
+    // If all cards were rated as known (3), set isReview to false to get new cards
+    // Otherwise, keep reviewing the same cards
+    setIsReview(!allCardsKnown);
+
+    // We don't automatically revalidate here anymore
+    // The user will need to manually revalidate by clicking a button
   };
 
   // Listen for round completion events
@@ -74,15 +79,28 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     }
   }, []);
 
-  // Listen for dueCardCount changes to handle empty sets
+  // Listen for manual revalidation flag
+  useEffect(() => {
+    if (storeRef.current) {
+      const unsubscribe = storeRef.current.subscribe(
+        (state) => state.manualRevalidate,
+        (manualRevalidate) => {
+          // We don't automatically revalidate here
+          // The user will need to manually revalidate by clicking a button
+        },
+      );
+
+      return () => unsubscribe();
+    }
+  }, []);
+
   useEffect(() => {
     if (storeRef.current) {
       const unsubscribe = storeRef.current.subscribe(
         (state) => state.dueCardCount,
         (dueCardCount) => {
           if (dueCardCount === 0) {
-            // If there are no due cards, show 100% progress
-            storeRef.current?.getState().nextRound();
+            storeRef.current?.getState().nextRound(isReview);
           }
         },
       );
@@ -100,7 +118,6 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     termOrder: string[],
     studyStarred: boolean,
   ) => {
-    // Convert StudiableTerm to DueCard format
     const dueCards: DueCard[] = termOrder.map((id) => {
       const term = terms.find((t) => t.id === id)!;
       const studiableTerm = studiableTerms.find((s) => s.id === term.id);

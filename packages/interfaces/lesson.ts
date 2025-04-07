@@ -22,13 +22,13 @@ export interface LessonDetail {
   chapterId: string;
   theoryCount: number;
   createdAt: Date;
-  theories: Theory[];
+  theories: TheoryListItem[];
   nextLessonId: string;
   nextChapterId: string;
   displayOrder: number;
 }
 
-export interface Theory {
+export interface TheoryListItem {
   id: string;
   theoryTitle: string;
   theoryDescription: string;

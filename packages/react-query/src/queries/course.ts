@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  checkSubjectCurriculumPublished,
   createCourse,
   createCourseWithAutomation,
   createMasterCourse,
@@ -13,8 +14,38 @@ import {
   getCourseBySlug,
   getCourses,
   getMasterCourses,
+  publishCourse,
   unEnrollCourse,
+  unpublishCourse,
 } from "../apis/course.ts";
+
+export const useActivateCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["activate-course"],
+    mutationFn: publishCourse,
+  });
+};
+
+export const useDeactivateCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["deactivate-course"],
+    mutationFn: unpublishCourse,
+  });
+};
+
+export const useCheckCoursePublishQuery = ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}) => {
+  return useQuery({
+    queryKey: ["check-course-publish", { subjectId, curriculumId }],
+    queryFn: () => checkSubjectCurriculumPublished({ subjectId, curriculumId }),
+    enabled: !!subjectId && !!curriculumId,
+  });
+};
 
 export const useMasterCourseMutation = () => {
   return useMutation({
