@@ -110,3 +110,25 @@ enum LearnMode {
   Learn = "Learn",
   Review = "Review",
 }
+
+export type FlashcardPreview = {
+  id: string;
+  userId: string;
+  entityId: string;
+  entityName: string;
+  entitySlug: string;
+  flashcardType: "Lesson" | "Topic" | "Subject" | string;
+  grade: number | null;
+  flashcardName: string;
+  slug: string;
+  flashcardDescription: string;
+  created: boolean;
+  status: "Open" | "Closed" | string; // Add other statuses as needed
+  star: number;
+  createdBy: string;
+  createdAt: string; // Consider converting to `Date` if you're parsing it
+  updatedAt: string; // Same as above
+  updatedBy: string;
+  numberOfFlashcardContent: number;
+  tags: string[]; // Empty array or array of strings
+};

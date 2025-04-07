@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 
 import { Badge } from "@highschool/ui/components/ui/badge";
@@ -23,9 +24,14 @@ import {
     IconRestore,
 } from "@tabler/icons-react";
 import { useState } from "react";
-import { FSRSCategory, FSRSPreset } from "@highschool/interfaces";
+import { FSRSCategory, FSRSParameter } from "@highschool/interfaces";
 import { Switch } from "@highschool/ui/components/ui/switch";
 import { toast } from "sonner";
+import {
+    useCreateFsrsMutation,
+    useUpdateFsrsMutation,
+} from "@highschool/react-query/queries";
+import { useRouter } from "next/navigation";
 
 import CardParam from "./card-param";
 import { RetrievabilityGraph } from "./graph-overview";
@@ -34,23 +40,50 @@ import {
     categoryConfig,
     defaultParameters,
 } from "@/domain/constants/fsrs-constant";
+import { useFsrsPresetStore } from "@/stores/use-fsrs-preset";
 
-function CreatePresetModule() {
+interface CreatePresetModuleProps {
+    id?: string;
+}
+
+function CreatePresetModule({ id }: CreatePresetModuleProps) {
+    const router = useRouter();
+
     const [activeFilter, setActiveFilter] = useState<"all" | FSRSCategory>("all");
     const [activeSort, setActiveSort] = useState<"name" | "value" | "impact">(
         "name",
     );
-    const [isPublic, setIsPublic] = useState<boolean>(false);
+    const editPreset = useFsrsPresetStore((state) => state.editFsrsPreset);
+    const isEdit = useFsrsPresetStore((state) => state.isOpenEdit);
+    const typeAction = isEdit ? "Update" : "Create";
 
-    const [activePreset, setActivePreset] = useState<FSRSPreset>({
-        title: "New Preset",
-        fsrsParameters: [...defaultParameters],
-        retrievability: 0,
-        isPublicPreset: true,
-    });
+    if (id != null && !isEdit) {
+        router.push("/fsrs-management/presets");
+
+        return;
+    }
+    const [isPublic, setIsPublic] = useState<boolean>(
+        editPreset?.isPublicPreset ?? false,
+    );
+    const [title, setTitle] = useState<string>(editPreset?.title ?? "New Preset");
+    const [retrievability, setRetrievability] = useState<number>(
+        editPreset?.retrievability ?? 0,
+    );
+    const [params, setParams] = useState<FSRSParameter[]>(
+        editPreset?.fsrsParameters.map((value, index) => {
+            return {
+                ...defaultParameters[index],
+                value: value,
+            };
+        }) ?? defaultParameters,
+    );
+    const { mutateAsync: createPreset, isPending: isCreating } =
+        useCreateFsrsMutation();
+    const { mutateAsync: updatePreset, isPending: isUpdating } =
+        useUpdateFsrsMutation();
 
     // Filter parameters based on active filter
-    const filteredParameters = activePreset.fsrsParameters.filter(
+    const filteredParameters = params.filter(
         (param) => activeFilter === "all" || param.category === activeFilter,
     );
 
@@ -68,10 +101,6 @@ function CreatePresetModule() {
 
     const handlePublicChange = (value: boolean) => {
         setIsPublic(value);
-        setActivePreset({
-            ...activePreset,
-            isPublicPreset: value,
-        });
 
         toast.success(
             value
@@ -80,23 +109,91 @@ function CreatePresetModule() {
         );
     };
 
+    const validationFields = () => {
+        if (title.trim() === "") {
+            toast.error("Title cannot be empty.");
+
+            return false;
+        }
+
+        if (retrievability <= 0 || retrievability > 1) {
+            toast.error("Retrievability must be between 0 and 1.");
+
+            return false;
+        }
+
+        if (params.some((param) => param.value <= 0)) {
+            toast.error("Parameter value cannot less or equal 0.");
+
+            return false;
+        }
+
+        return true;
+    };
+
+    // Handle reset action
+    const resetData = () => {
+        setActiveFilter("all");
+        setActiveSort("name");
+        setIsPublic(false);
+        setTitle("New Preset");
+        setRetrievability(0);
+        setParams(defaultParameters);
+
+        toast.info("Preset has been reset to default values.");
+    };
+
+    const handleSavePreset = async () => {
+        if (!validationFields()) {
+            return;
+        }
+
+        try {
+            if (isEdit) {
+                await updatePreset({
+                    id: editPreset?.id!,
+                    fsrsParameters: params.map((param) => param.value),
+                    isPublicPreset: isPublic,
+                    retrievability: retrievability,
+                    title: title,
+                });
+            } else {
+                await createPreset({
+                    fsrsParameters: params.map((param) => param.value),
+                    isPublicPreset: isPublic,
+                    retrievability: retrievability,
+                    title: title,
+                });
+            }
+
+            toast.success("Preset has been saved successfully.");
+
+            router.push("/fsrs-management/presets");
+        } catch (error) {
+            toast.error("Failed to save preset. Please try again.");
+        }
+    };
+
     return (
         <div className="mt-4 flex flex-col gap-6">
             <div className="flex items-center justify-between">
                 <div>
                     <div className="text-primary text-3xl font-bold">
-                        Create Preset for FSRS Algorithms
+                        {typeAction} Preset for FSRS Algorithms
                     </div>
                     <div className="text-lg text-gray-400">
                         Customize your FSRS preset with parameters that suit your needs.
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <Button>
+                    <Button onClick={resetData}>
                         <IconRestore />
                         Reset
                     </Button>
-                    <Button>
+                    <Button
+                        disabled={isCreating || isUpdating}
+                        onClick={handleSavePreset}
+                    >
                         <IconDeviceFloppy />
                         Save
                     </Button>
@@ -114,7 +211,12 @@ function CreatePresetModule() {
                         <div className="space-y-4">
                             <div className="space-y-2">
                                 <Label>Input Your Title Preset</Label>
-                                <Input placeholder="Input your title preset" type="text" />
+                                <Input
+                                    placeholder="Input your title preset"
+                                    type="text"
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
                             </div>
                             <div className="space-y-2">
                                 <div className="flex justify-between">
@@ -124,19 +226,17 @@ function CreatePresetModule() {
                                 <div className="flex items-center space-x-4">
                                     <div className="flex size-12 items-center justify-center rounded-full border-2 border-gray-200">
                                         <span className="overflow-hidden text-lg font-bold">
-                                            {activePreset.retrievability}
+                                            {retrievability}
                                         </span>
                                     </div>
                                     <div className="space-y-2">
                                         <Input
+                                            placeholder="0"
                                             type="number"
-                                            value={activePreset.retrievability}
-                                            onChange={(e) => {
-                                                setActivePreset({
-                                                    ...activePreset,
-                                                    retrievability: parseFloat(e.target.value),
-                                                });
-                                            }}
+                                            value={retrievability}
+                                            onChange={(e) =>
+                                                setRetrievability(Number(e.target.value))
+                                            }
                                         />
                                         <div />
                                         <p className="text-muted-foreground text-xs">
@@ -153,7 +253,7 @@ function CreatePresetModule() {
                                 />
                             </div>
                         </div>
-                        <RetrievabilityGraph parameters={activePreset.fsrsParameters} />
+                        <RetrievabilityGraph parameters={params} />
                     </div>
                 </CardContent>
             </Card>
@@ -212,10 +312,10 @@ function CreatePresetModule() {
                 {sortedParameters.map((param, index) => (
                     <CardParam
                         key={index}
-                        activePreset={activePreset}
                         index={index}
                         param={param}
-                        setActivePreset={setActivePreset}
+                        params={params}
+                        setParams={setParams}
                     />
                 ))}
             </div>

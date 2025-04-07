@@ -17,12 +17,11 @@ import {
     DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { useState } from "react";
-import { FSRSPreset } from "@highschool/interfaces";
 import { useRouter } from "next/navigation";
+import { useGetFsrsQuery } from "@highschool/react-query/queries";
+import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 
 import { CardPreset } from "./card-preset";
-
-import { defaultParameters } from "@/domain/constants/fsrs-constant";
 
 function PresetManagementModule() {
     const router = useRouter();
@@ -32,34 +31,13 @@ function PresetManagementModule() {
         "desc",
     );
 
-    const [presets, setPresets] = useState<FSRSPreset[]>([
-        {
-            title: "Default FSRS Preset",
-            fsrsParameters: [...defaultParameters],
-            retrievability: 0.9,
-            isPublicPreset: true,
-            createdAt: new Date(2023, 0, 1),
-            updatedAt: new Date(2023, 0, 1),
-        },
-        {
-            title: "Aggressive Spacing",
-            fsrsParameters: defaultParameters,
-            retrievability: 0.8,
-            isPublicPreset: true,
-            createdAt: new Date(2023, 2, 15),
-            updatedAt: new Date(2023, 2, 15),
-        },
-        {
-            title: "Conservative Spacing",
-            fsrsParameters: defaultParameters,
-            retrievability: 0.95,
-            isPublicPreset: true,
-            createdAt: new Date(2023, 3, 10),
-            updatedAt: new Date(2023, 3, 10),
-        },
-    ]);
+    const { data, isPending } = useGetFsrsQuery({
+        pageNumber: 1,
+        pageSize: 999,
+        search: "",
+    });
 
-    const filteredAndSortedPresets = presets
+    const filteredAndSortedPresets = data?.data
         .filter((preset) => {
             const matchesSearch = preset.title
                 .toLowerCase()
@@ -76,8 +54,8 @@ function PresetManagementModule() {
 
             if (presetSortBy === "date") {
                 return presetSortOrder === "asc"
-                    ? a.updatedAt!.getTime() - b.updatedAt!.getTime()
-                    : b.updatedAt!.getTime() - a.updatedAt!.getTime();
+                    ? new Date(a.updatedAt!).getTime() - new Date(b.updatedAt!).getTime()
+                    : new Date(b.updatedAt!).getTime() - new Date(a.updatedAt!).getTime();
             }
 
             return 0;
@@ -151,11 +129,22 @@ function PresetManagementModule() {
                 </CardHeader>
                 <CardContent>
                     <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                        <CardPreset
-                            filteredAndSortedPresets={filteredAndSortedPresets}
-                            presets={presets}
-                            setPresets={setPresets}
-                        />
+                        {isPending ? (
+                            <div className="mb-8 grid w-full grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                {Array.from({ length: 6 }).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        className="border-border group overflow-hidden rounded-lg border bg-white transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+                                    >
+                                        <Skeleton className="h-[30vh] w-full" />
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <CardPreset
+                                filteredAndSortedPresets={filteredAndSortedPresets ?? []}
+                            />
+                        )}
                     </div>
                 </CardContent>
             </Card>

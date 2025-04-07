@@ -8,20 +8,27 @@ import {
 } from "@highschool/ui/components/ui/dialog";
 import { IconDownload, IconEdit } from "@tabler/icons-react";
 import React from "react";
+import { FSRSPreset } from "@highschool/interfaces";
 
 import { ParamDetail } from "./param-detail";
 
 import LongText from "@/components/ui/long-text";
+import { formatDate } from "@/lib/utils";
 
 interface PresetModalProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    preset?: FSRSPreset;
 }
 
-export default function PresetModal({ open, setOpen }: PresetModalProps) {
+export default function PresetModal({
+    open,
+    setOpen,
+    preset,
+}: PresetModalProps) {
     return (
         <div className="flex flex-col items-center justify-center ">
-            <Dialog open={open} onOpenChange={setOpen}>
+            <Dialog open={open && preset != undefined} onOpenChange={setOpen}>
                 <DialogContent className="h-[90vh]">
                     <div className="flex items-center justify-between">
                         <div>
@@ -29,7 +36,7 @@ export default function PresetModal({ open, setOpen }: PresetModalProps) {
                                 Custom Preset
                             </DialogTitle>
                             <p className="text-muted-foreground text-sm">
-                                Preset ID: 0195d7ec-d6b6-74c2-4537-00d6a2e299fe
+                                Preset ID: {preset?.id}
                             </p>
                         </div>
                         <div className="flex gap-2">
@@ -49,25 +56,23 @@ export default function PresetModal({ open, setOpen }: PresetModalProps) {
 
                         <div className="mb-4">
                             <p className="text-muted-foreground text-sm">Title</p>
-                            <LongText className="w-full">
-                                Custom preset with lower retrievability
-                            </LongText>
+                            <LongText className="w-full">{preset?.title}</LongText>
                         </div>
 
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                             <div>
                                 <p className="text-muted-foreground text-sm">Retrievability</p>
-                                <p>44%</p>
+                                <p>{preset?.retrievability}</p>
                             </div>
 
                             <div>
                                 <p className="text-muted-foreground text-sm">Created</p>
-                                <p>Mar 15, 2023</p>
+                                <p>{formatDate(preset?.createdAt?.toString())}</p>
                             </div>
 
                             <div>
                                 <p className="text-muted-foreground text-sm">Last Modified</p>
-                                <p>Apr 10, 2023</p>
+                                <p>{formatDate(preset?.updatedAt!.toString())}</p>
                             </div>
                         </div>
                     </div>
@@ -75,13 +80,7 @@ export default function PresetModal({ open, setOpen }: PresetModalProps) {
                     <div>
                         <h3 className="mb-4 text-lg font-semibold">Parameters</h3>
 
-                        <ParamDetail
-                            params={[
-                                0.40255, 1.18385, 3.173, 15.69105, 7.1949, 0.5345, 1.4604,
-                                0.0046, 1.54575, 0.1192, 1.01925, 1.9395, 0.11, 0.29605, 2.2698,
-                                0.2315, 2.9898, 0.51655, 0.6621,
-                            ]}
-                        />
+                        <ParamDetail params={preset?.fsrsParameters ?? []} />
                     </div>
                 </DialogContent>
             </Dialog>

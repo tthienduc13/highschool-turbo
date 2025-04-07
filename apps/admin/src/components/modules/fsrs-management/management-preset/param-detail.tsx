@@ -21,7 +21,7 @@ interface ParameterDetailProps {
 
 export const ParamDetail = ({ params }: ParameterDetailProps) => {
     return (
-        <ScrollArea className="h-56 rounded-md border">
+        <ScrollArea className="h-[35vh] rounded-md border">
             <Table>
                 <TableHeader>
                     <TableRow>

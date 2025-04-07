@@ -24,14 +24,17 @@ import {
     IconTrash,
 } from "@tabler/icons-react";
 import { useState } from "react";
+import { Badge } from "@highschool/ui/components/ui/badge";
+import { useRouter } from "next/navigation";
+import { useDeleteFsrsMutation } from "@highschool/react-query/queries";
+import { toast } from "sonner";
 
 import PresetModal from "./preset-model";
 
 import { formatDate } from "@/lib/utils";
+import { useFsrsPresetStore } from "@/stores/use-fsrs-preset";
 
 interface CardPresetProps {
-    presets: FSRSPreset[];
-    setPresets: React.Dispatch<React.SetStateAction<FSRSPreset[]>>;
     filteredAndSortedPresets: FSRSPreset[];
 }
 
@@ -52,12 +55,26 @@ export const CardPreset = ({ filteredAndSortedPresets }: CardPresetProps) => {
     //     toast.success(`Created a copy of "${preset.title}"`);
     // };
 
+    const router = useRouter();
     const [open, setOpen] = useState(false);
+    const [activePreset, setActivePreset] = useState<FSRSPreset>();
+    const setPreset = useFsrsPresetStore((state) => state.openEdit);
+    const { mutateAsync: deletePreset } = useDeleteFsrsMutation();
+
+    const handleDeletePreset = async (id: string) => {
+        try {
+            await deletePreset({ id });
+
+            toast.success("Preset deleted successfully.");
+        } catch {
+            toast.error("Failed to delete preset.");
+        }
+    };
 
     return (
         <>
             {filteredAndSortedPresets.map((preset) => (
-                <Card key={preset.title} className="overflow-hidden">
+                <Card key={preset.id} className="overflow-hidden">
                     <CardHeader className="pb-2">
                         <div className="flex items-start justify-between">
                             <div className="space-y-1">
@@ -65,8 +82,13 @@ export const CardPreset = ({ filteredAndSortedPresets }: CardPresetProps) => {
                                     {preset.title}
                                 </CardTitle>
                                 <CardDescription>
-                                    {preset.fsrsParameters.length} parameters •{" "}
-                                    {preset.isPublicPreset ? "Public" : "Private"}
+                                    {preset.fsrsParameters.length} parameters{" "}
+                                    <Badge
+                                        className={`ml-4 ${preset.isPublicPreset ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                                        variant="outline"
+                                    >
+                                        {preset.isPublicPreset ? "Public" : "Private"}
+                                    </Badge>
                                 </CardDescription>
                             </div>
                             <DropdownMenu>
@@ -76,7 +98,12 @@ export const CardPreset = ({ filteredAndSortedPresets }: CardPresetProps) => {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        onClick={() => {
+                                            setPreset(preset);
+                                            router.push("create-preset/" + preset.id);
+                                        }}
+                                    >
                                         <IconSettings className="mr-2 size-4" />
                                         <span>Edit Preset</span>
                                     </DropdownMenuItem>
@@ -86,7 +113,10 @@ export const CardPreset = ({ filteredAndSortedPresets }: CardPresetProps) => {
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuItem className="text-destructive focus:text-destructive">
+                                    <DropdownMenuItem
+                                        className="text-destructive focus:text-destructive"
+                                        onClick={() => handleDeletePreset(preset.id!)}
+                                    >
                                         <IconTrash className="mr-2 size-4" />
                                         <span>Delete Preset</span>
                                     </DropdownMenuItem>
@@ -97,20 +127,27 @@ export const CardPreset = ({ filteredAndSortedPresets }: CardPresetProps) => {
                     <CardFooter className="text-muted-foreground flex justify-between pt-0 text-xs">
                         <div className="flex items-center">
                             <IconCalendar className="mr-1 size-3" />
-                            {formatDate((preset.updatedAt ?? new Date()).getTime())}
+                            {formatDate(
+                                preset?.updatedAt
+                                    ? new Date(preset.updatedAt).getTime()
+                                    : Date.now(),
+                            )}
                         </div>
                         <Button
                             className="h-7 text-xs"
                             size="sm"
                             variant="ghost"
-                            onClick={() => setOpen(true)}
+                            onClick={() => {
+                                setOpen(true);
+                                setActivePreset(preset);
+                            }}
                         >
                             Detail Params
                         </Button>
                     </CardFooter>
                 </Card>
             ))}
-            <PresetModal open={open} setOpen={setOpen} />
+            <PresetModal open={open} preset={activePreset} setOpen={setOpen} />
         </>
     );
 };

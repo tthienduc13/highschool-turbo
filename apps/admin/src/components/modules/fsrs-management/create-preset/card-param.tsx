@@ -9,7 +9,7 @@ import {
 } from "@highschool/ui/components/ui/card";
 import { Input } from "@highschool/ui/components/ui/input";
 import { IconInfoCircle, IconLock, IconLockOpen } from "@tabler/icons-react";
-import { FSRSParameter, FSRSPreset } from "@highschool/interfaces";
+import { FSRSParameter } from "@highschool/interfaces";
 import { toast } from "sonner";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import {
@@ -24,49 +24,42 @@ import { Hint } from "@/components/ui/hint";
 interface CardParamProps {
     param: FSRSParameter;
     index: number;
-    activePreset: FSRSPreset;
-    setActivePreset: React.Dispatch<React.SetStateAction<FSRSPreset>>;
+    params: FSRSParameter[];
+    setParams: React.Dispatch<React.SetStateAction<FSRSParameter[]>>;
 }
 
 export default function CardParam({
     param,
     index,
-    activePreset,
-    setActivePreset,
+    params,
+    setParams,
 }: CardParamProps) {
     const handleParameterChange = (index: number, value: number) => {
-        const updatedParameters = [...activePreset.fsrsParameters];
+        const newParams = [...params];
 
-        updatedParameters[index] = {
-            ...updatedParameters[index],
-            value,
-        };
-        setActivePreset({
-            ...activePreset,
-            fsrsParameters: updatedParameters,
-        });
+        newParams[index] = { ...newParams[index], value };
+
+        setParams(newParams);
     };
 
     const handleLockParameter = (index: number) => {
-        const updatedParameters = [...activePreset.fsrsParameters];
+        const newParams = [...params];
 
-        updatedParameters[index] = {
-            ...updatedParameters[index],
-            isLocked: !updatedParameters[index].isLocked,
+        newParams[index] = {
+            ...newParams[index],
+            isLocked: !newParams[index].isLocked,
         };
-        setActivePreset({
-            ...activePreset,
-            fsrsParameters: updatedParameters,
-        });
+
+        setParams(newParams);
 
         toast.info(
-            updatedParameters[index].isLocked
+            newParams[index].isLocked
                 ? "The parameter has been locked from your preset! You should unlock before update."
                 : "The parameter has been unlocked from your preset!",
         );
     };
 
-    const paramIndex = activePreset.fsrsParameters.findIndex((p) => p === param);
+    const paramIndex = params.findIndex((p) => p === param);
 
     const category =
         categoryConfig[param.category as keyof typeof categoryConfig];
@@ -125,7 +118,7 @@ export default function CardParam({
                     <div className="flex items-center justify-between">
                         <div className="flex size-12 items-center justify-center rounded-full border-2 border-gray-200">
                             <span className="overflow-hidden text-lg font-bold">
-                                {activePreset.fsrsParameters[paramIndex].value}
+                                {params[paramIndex].value}
                             </span>
                         </div>
                         <div className="ml-4 flex-1">

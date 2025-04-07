@@ -8,6 +8,7 @@ import {
   IconPaperclip,
   IconUserCircle,
   IconSettings,
+  IconPlayCardStar,
 } from "@tabler/icons-react";
 
 export const navModerator = {
@@ -57,6 +58,26 @@ export const navModerator = {
         {
           title: "Create Preset",
           url: "/fsrs-management/create-preset",
+        },
+      ],
+    },
+    {
+      title: "Flashcard Managments",
+      url: "#",
+      isActive: true,
+      icon: IconPlayCardStar,
+      items: [
+        {
+          title: "Flashcard List",
+          url: "/flashcard-management/flashcards",
+        },
+        {
+          title: "Create Flashcard",
+          url: "/flashcard-management/create-flashcard",
+        },
+        {
+          title: "Flashcard Template",
+          url: "/flashcard-management/template",
         },
       ],
     },

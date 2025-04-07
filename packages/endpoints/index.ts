@@ -950,4 +950,21 @@ export const reportEndpoint = {
     API_VERSIONS.V1,
     "/reports",
   ),
-};
+} as const;
+
+export const fsrsEndpoints = {
+  get: createEndpoint(SERVICE_PREFIXES.DOCUMENT, API_VERSIONS.V1, "/preset"),
+  create: createEndpoint(SERVICE_PREFIXES.DOCUMENT, API_VERSIONS.V1, "/preset"),
+  update: (presetId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/preset/${presetId}`,
+    ),
+  delete: (presetId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/preset/${presetId}`,
+    ),
+} as const;

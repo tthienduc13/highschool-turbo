@@ -12,11 +12,16 @@ export enum FSRSCategory {
 export interface FSRSPreset {
   id?: string;
   title: string;
-  fsrsParameters: FSRSParameter[];
+  fsrsParameters: number[];
   retrievability: number;
-  isPublicPreset: boolean;
+  isPublicPreset?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  author?: {
+    authorId: string;
+    authorName: string;
+    authorImage: string;
+  };
 }
 
 export interface FSRSParameter {

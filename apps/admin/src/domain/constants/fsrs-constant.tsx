@@ -193,7 +193,7 @@ export const impactConfig = {
 
 export const defaultParameters: FSRSParameter[] = [
     {
-        value: 0,
+        value: 0.40255,
         name: "Request Retention",
         description:
             "Target retention rate for scheduling reviews. Higher values lead to more frequent reviews to ensure better memory retention.",
@@ -202,7 +202,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 1.18385,
         name: "Maximum Interval",
         description:
             "Maximum interval between reviews in days. Limits how far apart reviews can be scheduled.",
@@ -211,7 +211,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 3.173,
         name: "Difficulty Weight",
         description:
             "Weight of card difficulty in spacing algorithm. Higher values make difficult cards appear more frequently.",
@@ -220,7 +220,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 15.69105,
         name: "Stability After Success",
         description:
             "How much stability increases after a successful review. Higher values increase intervals more aggressively.",
@@ -229,7 +229,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 7.1949,
         name: "Stability After Failure",
         description:
             "How much stability decreases after a failed review. Lower values decrease intervals more aggressively.",
@@ -238,7 +238,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.5345,
         name: "Spacing Multiplier",
         description:
             "Multiplier for interval spacing. Higher values increase all intervals proportionally.",
@@ -247,7 +247,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 1.4604,
         name: "Easy Bonus",
         description:
             "Bonus multiplier for 'Easy' responses. Higher values increase intervals more for easy cards.",
@@ -256,7 +256,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.0046,
         name: "Hard Penalty",
         description:
             "Penalty multiplier for 'Hard' responses. Lower values decrease intervals more for hard cards.",
@@ -265,7 +265,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 1.54575,
         name: "New Card Stability",
         description:
             "Initial stability for new cards. Higher values start new cards with longer intervals.",
@@ -274,7 +274,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.1192,
         name: "New Card Ease",
         description:
             "Initial ease factor for new cards. Higher values make new cards start with easier scheduling.",
@@ -283,7 +283,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 1.01925,
         name: "Learning Threshold",
         description:
             "Stability threshold for considering a card 'learned'. Higher values require more reviews before graduation.",
@@ -292,7 +292,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 1.9395,
         name: "Lapse Stability Reduction",
         description:
             "How much stability is reduced after a lapse. Higher values make forgotten cards reappear sooner.",
@@ -301,7 +301,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.11,
         name: "Review Ease Factor",
         description:
             "Base ease factor for review cards. Higher values increase intervals more aggressively for all reviews.",
@@ -310,7 +310,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.29605,
         name: "Minimum Ease",
         description:
             "Minimum allowed ease factor. Prevents cards from becoming too difficult with repeated failures.",
@@ -319,7 +319,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 2.2698,
         name: "Ease Bonus",
         description:
             "Bonus applied to ease after correct answers. Higher values increase ease more after successful reviews.",
@@ -328,7 +328,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.2315,
         name: "Interval Modifier",
         description:
             "Global modifier for all intervals. Higher values increase all intervals proportionally.",
@@ -337,7 +337,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 2.9898,
         name: "Fuzz Factor",
         description:
             "Random variation applied to intervals. Higher values add more randomness to scheduled reviews.",
@@ -346,7 +346,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.51655,
         name: "Forgetting Curve Decay",
         description:
             "Rate of memory decay in the forgetting curve. Higher values model faster forgetting.",
@@ -355,7 +355,7 @@ export const defaultParameters: FSRSParameter[] = [
         isLocked: false,
     },
     {
-        value: 0,
+        value: 0.6621,
         name: "Forgetting okokkok Decay",
         description:
             "Rate of memory decay in the forgetting curve. Higher values model faster forgetting.",
