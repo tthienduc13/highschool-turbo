@@ -19,16 +19,13 @@ import { SortFlashcardProgress } from "./sort-flashcard-progress";
 import { SortableShortcutLayer } from "./sortable-shorcut-layer";
 
 import { useContainerContext } from "@/stores/use-container-store";
-import { useSetPropertiesStore } from "@/stores/use-set-properties";
 import { useSortFlashcardsContext } from "@/stores/use-sort-flashcard-store";
 import { useSet } from "@/hooks/use-set";
 
 export const SortFlashcardWrapper = () => {
-  const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
   const { h, editTerm, starTerm } = useContext(RootFlashcardContext);
   const controls = useAnimationControls();
 
-  const starredTerms = useContainerContext((s) => s.starredTerms);
   const cardsAnswerWith = useContainerContext((s) => s.cardsAnswerWith);
   const shouldFlip = cardsAnswerWith == LimitedStudySetAnswerMode.Term;
 
@@ -41,6 +38,18 @@ export const SortFlashcardWrapper = () => {
   const markKnown = useSortFlashcardsContext((s) => s.markKnown);
   const nextRound = useSortFlashcardsContext((s) => s.nextRound);
   const goBack = useSortFlashcardsContext((s) => s.goBack);
+  const getTimeSpent = useSortFlashcardsContext((s) => s.getTimeSpent);
+  const startCardTimer = useSortFlashcardsContext((s) => s.startCardTimer);
+  const checkAllCardsRated = useSortFlashcardsContext(
+    (s) => s.checkAllCardsRated,
+  );
+  const checkAllCardsKnown = useSortFlashcardsContext(
+    (s) => s.checkAllCardsKnown,
+  );
+  const manualRevalidate = useSortFlashcardsContext((s) => s.manualRevalidate);
+  const setManualRevalidate = useSortFlashcardsContext(
+    (s) => s.setManualRevalidate,
+  );
 
   const apiMarkFlashcard = useFSRSProgressMutation();
 
@@ -53,14 +62,12 @@ export const SortFlashcardWrapper = () => {
     isReview,
   });
 
-  // Define a type that combines DueCard with the additional properties needed for the UI
   type FlashcardWithUI = DueCard & { isFlipped: boolean; index: number };
 
-  // Convert DueCard to FlashcardContent
   const convertToFlashcardContent = (dueCard: DueCard): FlashcardContent => {
     return {
       id: dueCard.contentId,
-      flashcardId: dueCard.contentId, // Using contentId as flashcardId
+      flashcardId: dueCard.contentId,
       flashcardContentTerm: dueCard.term,
       flashcardContentDefinition: dueCard.definition,
       image: null,
@@ -119,17 +126,26 @@ export const SortFlashcardWrapper = () => {
     setState(know ? "known" : "stillLearning");
     controls.set({ zIndex: 105 });
 
-    if (know) markKnown(term.contentId);
-    else markStillLearning(term.contentId);
+    const timeSpent = getTimeSpent(term.contentId);
+
+    if (know) markKnown(term.contentId, timeSpent);
+    else markStillLearning(term.contentId, timeSpent);
 
     apiMarkFlashcard.mutate({
       flashcardContentId: term.contentId,
       rating: know ? 3 : 1,
-      timeSpent: 0,
+      timeSpent: timeSpent,
     });
 
     if (index === dueCards.length - 1) {
-      nextRound();
+      const allRated = checkAllCardsRated();
+      const allKnown = checkAllCardsKnown();
+
+      if (allRated) {
+        nextRound(isReview);
+      } else {
+        nextRound(isReview);
+      }
     }
   };
 
@@ -151,10 +167,14 @@ export const SortFlashcardWrapper = () => {
   };
 
   useEffect(() => {
-    if (!progressView && dueCards[index])
+    if (!progressView && dueCards[index]) {
+      // Start timer for the current card
+      startCardTimer(dueCards[index].contentId);
+
       setVisibleFlashcards([
         { ...dueCards[index], isFlipped: shouldFlip, index },
       ]);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [index, dueCards]);
 
@@ -172,8 +192,21 @@ export const SortFlashcardWrapper = () => {
     }
   }, [fsrsData, evaluateTerms]);
 
-  const onNextRound = () => {
-    nextRound();
+  const onNextRound = async () => {
+    // If all cards were rated as known (3), set isReview to false to get new cards
+    // Otherwise, keep reviewing the same cards
+    const allKnown = checkAllCardsKnown();
+
+    setIsReview(!allKnown);
+
+    // Reset the manual revalidate flag
+    setManualRevalidate(false);
+
+    // Revalidate the data
+    await refetch();
+
+    // Move to the next round
+    nextRound(!allKnown);
   };
 
   const onResetProgress = () => {
@@ -189,6 +222,7 @@ export const SortFlashcardWrapper = () => {
     >
       {progressView ? (
         <SortFlashcardProgress
+          manualRevalidate={manualRevalidate}
           onNextRound={onNextRound}
           onResetProgress={onResetProgress}
         />
@@ -256,7 +290,7 @@ export const SortFlashcardWrapper = () => {
               index={t.index}
               isFlipped={t.isFlipped}
               numTerms={dueCards.length}
-              starred={starredTerms.includes(t.contentId)}
+              starred={false}
               term={convertToFlashcardContent(t)}
               variant="sortable"
               onBackAction={handleGoBack}

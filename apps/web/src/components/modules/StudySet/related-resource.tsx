@@ -24,11 +24,7 @@ export const RelatedResources = () => {
   useEffect(() => {
     if (relatedFlashcard) {
       const uniqueUserIds = Array.from(
-        new Set(
-          relatedFlashcard.map(
-            (flashcard: { userId: string }) => flashcard.userId,
-          ),
-        ),
+        new Set(relatedFlashcard.map((flashcard) => flashcard.userId)),
       );
 
       setUserIds(uniqueUserIds);

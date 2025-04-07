@@ -1,6 +1,5 @@
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
-import { useState } from "react";
 import Link from "next/link";
 import {
   IconBrain,
@@ -21,12 +20,14 @@ export interface SortFlashcardProgressProps {
   h?: string;
   onNextRound: () => void;
   onResetProgress: () => void;
+  manualRevalidate?: boolean;
 }
 
 export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
   h = "500px",
   onNextRound,
   onResetProgress,
+  manualRevalidate = false,
 }) => {
   const { flashcard } = useSet();
   const router = useRouter();
@@ -35,6 +36,8 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
   const index = useSortFlashcardsContext((s) => s.index);
   const dueCardCount = useSortFlashcardsContext((s) => s.dueCardCount);
   const totalCardCount = useSortFlashcardsContext((s) => s.totalCardCount);
+  const allCardsRated = useSortFlashcardsContext((s) => s.allCardsRated);
+  const allCardsKnown = useSortFlashcardsContext((s) => s.allCardsKnown);
 
   const stateGoBack = useSortFlashcardsContext((s) => s.goBack);
 
@@ -44,6 +47,13 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
 
   // If there are no due cards, show 100% progress
   const isComplete = dueCardCount === 0 || known + stillLearning === 0;
+
+  // Calculate progress percentage
+  const progressPercentage = isComplete
+    ? 100
+    : allCardsRated
+      ? Math.round((known / (known + stillLearning)) * 100)
+      : Math.round((index / dueCards.length) * 100);
 
   const goBack = () => {
     stateGoBack(true);
@@ -66,6 +76,7 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
                 <CardContent className="flex size-full items-center justify-center p-4">
                   <CircularTermMastery
                     known={isComplete ? totalCardCount : known}
+                    progressPercentage={progressPercentage}
                     stillLearning={isComplete ? 0 : stillLearning}
                   />
                 </CardContent>
@@ -82,60 +93,50 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
               </h2>
 
               <div className="flex flex-col gap-4">
-                {isComplete && (
+                {manualRevalidate ? (
+                  // Show revalidate button if manual revalidation is needed
                   <Actionable
-                    description="Ôn tập lại toàn bộ thẻ ngày hôm nay để bạn chắc chắn hơn về kiến thức của mình"
-                    href={`/flashcard/${flashcard.id}`}
+                    description="Bạn cần cập nhật dữ liệu để tiếp tục học"
                     icon={IconRefresh}
-                    name="Ôn lại các thẻ"
+                    name="Cập nhật dữ liệu"
+                    onClick={onNextRound}
                   />
-                )}
-                {isComplete ? (
+                ) : allCardsKnown ? (
+                  // If all cards were rated as known (3), show options to review or learn new
+                  <>
+                    <Actionable
+                      description="Ôn tập lại toàn bộ thẻ ngày hôm nay để bạn chắc chắn hơn về kiến thức của mình"
+                      icon={IconRefresh}
+                      name="Ôn lại các thẻ"
+                      onClick={onNextRound}
+                    />
+                    <Actionable
+                      description="Bạn đã hoàn thành tất cả các thẻ ghi nhớ. Bạn có thể tiếp tục học những nội dung mới"
+                      href={`/flashcard/${flashcard.id}`}
+                      icon={IconBrain}
+                      name="Tiếp tục học"
+                    />
+                  </>
+                ) : allCardsRated ? (
+                  // If all cards were rated but not all as known, show option to keep reviewing
                   <Actionable
-                    description="Bạn đã hoàn thành tất cả các thẻ ghi nhớ. Bạn có thể xem lại hoặc tiếp tục học những nội dung mới"
-                    href={`/flashcard/${flashcard.id}`}
-                    icon={IconBrain}
-                    name="Tiếp tục học"
-                  />
-                ) : !!stillLearning ? (
-                  <Actionable
-                    description={`Tiếp tục ôn tập flashcard với ${stillLearning} thuật ngữ bạn vẫn đang học.`}
-                    icon={IconCards}
+                    description="Tiếp tục ôn tập các thẻ bạn chưa nắm vững"
+                    icon={IconRefresh}
                     name="Tiếp tục ôn tập"
                     onClick={onNextRound}
                   />
                 ) : (
+                  // If not all cards were rated, show option to continue rating
                   <Actionable
-                    description="Bạn đã hoàn thành tất cả các thẻ ghi nhớ. Bạn có thể xem lại hoặc tiếp tục học những nội dung mới"
-                    href={`/flashcard/${flashcard.id}`}
-                    icon={IconBrain}
-                    name="Quay lại trang chính"
+                    description="Bạn chưa đánh giá tất cả các thẻ. Tiếp tục để hoàn thành"
+                    icon={IconCards}
+                    name="Tiếp tục đánh giá"
+                    onClick={onNextRound}
                   />
                 )}
               </div>
             </div>
           </div>
-
-          {/* <div className="mt-8 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={goBack}
-              >
-                <IconChevronRight className="h-4 w-4 rotate-180" />
-                Quay lại
-              </Button>
-              <Button
-                variant="outline"
-                className="flex items-center gap-2"
-                onClick={onResetProgress}
-              >
-                <IconRotateClockwise className="h-4 w-4" />
-                Làm lại
-              </Button>
-            </div>
-          </div> */}
         </div>
       </CardContent>
     </Card>
@@ -157,55 +158,35 @@ export function Actionable({
   onClick,
   href,
 }: ActionableProps) {
-  const [isHovered, setIsHovered] = useState(false);
-
   const CardWrapper = ({ children }: { children: React.ReactNode }) => {
     if (href) {
       return (
-        <Link className="block h-full" href={href}>
+        <Link className="block" href={href}>
           {children}
         </Link>
       );
     }
 
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
-    return <div onClick={onClick}>{children}</div>;
+    return <button onClick={onClick}>{children}</button>;
   };
 
   return (
     <CardWrapper>
-      <Card
-        className={`h-full cursor-pointer border-b-[3px] px-6 py-5 shadow-md transition-all duration-150 ease-in-out ${
-          isHovered
-            ? "translate-y-[-2px] border-blue-500"
-            : "border-gray-200 dark:border-gray-700"
-        }`}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center">
-            <div className="mr-3 hidden text-blue-400 sm:block">
-              <Icon size={32} />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-3">
-                <div className="block text-blue-300 sm:hidden">
-                  <Icon size={20} />
-                </div>
-                <h3 className="text-lg font-semibold">{name}</h3>
-              </div>
-              {description && (
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {description}
-                </p>
-              )}
-            </div>
+      <Card className="hover:border-primary dark:hover:border-primary cursor-pointer rounded-xl border-2 border-gray-200 bg-white p-4 transition-all hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-800/50 dark:hover:bg-gray-800">
+        <CardContent className="flex items-center gap-4 p-0">
+          <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-full">
+            <Icon size={24} />
           </div>
-          <div className="hidden sm:block">
-            <IconChevronRight className="size-5 text-gray-400" />
+          <div className="flex flex-col gap-1">
+            <h3 className="text-lg font-semibold">{name}</h3>
+            {description && (
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {description}
+              </p>
+            )}
           </div>
-        </div>
+          <IconChevronRight className="ml-auto size-6 text-gray-400" />
+        </CardContent>
       </Card>
     </CardWrapper>
   );

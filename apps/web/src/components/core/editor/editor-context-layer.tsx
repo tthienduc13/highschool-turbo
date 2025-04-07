@@ -219,7 +219,6 @@ export const EditorContextLayer = ({
     return <EditorLoading />;
   }
 
-
   if (!storeRef.current) {
     storeRef.current = createSetEditorStore(
       {
@@ -347,7 +346,7 @@ export const EditorContextLayer = ({
           void (async () => {
             const state = storeRef.current!.getState();
 
-            console.log(state.flashcardType)
+            console.log(state.flashcardType);
 
             await apiEditSet.mutateAsync({
               flashcardId: data?.id!,

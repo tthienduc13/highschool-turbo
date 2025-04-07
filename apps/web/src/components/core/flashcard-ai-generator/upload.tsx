@@ -3,11 +3,16 @@
 import { CardContent } from "@highschool/ui/components/ui/card";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 import { cn } from "@highschool/ui/lib/utils";
-import { IconAlignLeft, IconBrandSupabase, IconFileText, IconTrash } from "@tabler/icons-react";
+import {
+  IconAlignLeft,
+  IconBrandSupabase,
+  IconFileText,
+  IconTrash,
+} from "@tabler/icons-react";
+import { Button } from "@highschool/ui/components/ui/button";
 
 import FileUploadZone from "@/components/ui/file-upload";
 import { useFlashcardStore } from "@/stores/use-ai-flashcard-store";
-import { Button } from "@highschool/ui/components/ui/button";
 
 const CREATE_OPTIONS = [
   {
@@ -27,7 +32,15 @@ const CREATE_OPTIONS = [
 const MAX_CHARACTERS = 10000;
 
 export const UploadStep = () => {
-  const { text, setText, setFiles, activeTab, setActiveTab, files, removeFile } = useFlashcardStore();
+  const {
+    text,
+    setText,
+    setFiles,
+    activeTab,
+    setActiveTab,
+    files,
+    removeFile,
+  } = useFlashcardStore();
 
   const handleFilesUploaded = (uploadedFiles: File[]) => {
     setFiles(uploadedFiles);
@@ -35,14 +48,17 @@ export const UploadStep = () => {
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const inputText = e.target.value;
+
     if (inputText.length <= MAX_CHARACTERS) {
       setText(inputText);
     }
   };
 
   const handleTabChange = (tab: "file" | "text") => {
-    if ((activeTab === "file" && files.length > 0) || 
-        (activeTab === "text" && text.length > 0)) {
+    if (
+      (activeTab === "file" && files.length > 0) ||
+      (activeTab === "text" && text.length > 0)
+    ) {
       if (window.confirm("Thay đổi tab sẽ xóa dữ liệu hiện tại. Tiếp tục?")) {
         setActiveTab(tab);
       }
@@ -98,8 +114,8 @@ export const UploadStep = () => {
               {text.length < 150
                 ? `Cần thêm ${150 - text.length} ký tự`
                 : text.length > MAX_CHARACTERS
-                ? `Vượt quá ${text.length - MAX_CHARACTERS} ký tự`
-                : "Độ dài văn bản hợp lệ"}
+                  ? `Vượt quá ${text.length - MAX_CHARACTERS} ký tự`
+                  : "Độ dài văn bản hợp lệ"}
             </span>
             <span>{charactersRemaining} ký tự còn lại</span>
           </div>
@@ -116,10 +132,10 @@ export const UploadStep = () => {
                   <span className="text-sm font-medium">{files[0].name}</span>
                 </div>
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeFile(0)}
                   className="text-red-500 hover:text-red-600"
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => removeFile(0)}
                 >
                   <IconTrash className="size-4" />
                 </Button>
@@ -127,14 +143,14 @@ export const UploadStep = () => {
             </div>
           ) : (
             <FileUploadZone
-              onFilesUploaded={handleFilesUploaded}
               acceptedFileTypes={[
                 "application/pdf",
                 "image/png",
                 "image/jpeg",
-                "video/mp4"
+                "video/mp4",
               ]}
               maxFileSizeMB={10}
+              onFilesUploaded={handleFilesUploaded}
             />
           )}
         </div>

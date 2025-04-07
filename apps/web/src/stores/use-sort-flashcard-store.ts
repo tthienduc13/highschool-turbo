@@ -9,16 +9,25 @@ export interface SortFlashcardsStoreProps {
   progressView: boolean;
   dueCardCount: number;
   totalCardCount: number;
+  cardStartTimes: Record<string, number>; // Track when each card was started
+  allCardsRated: boolean; // Track if all cards have been rated
+  allCardsKnown: boolean; // Track if all cards were rated as known (3)
+  manualRevalidate: boolean; // Flag to indicate if data should be manually revalidated
 }
 
 interface SortFlashcardsState extends SortFlashcardsStoreProps {
   initialize: (dueCards: DueCard[], totalCardCount: number) => void;
-  markStillLearning: (termId: string) => void;
-  markKnown: (termId: string) => void;
+  markStillLearning: (termId: string, timeSpent: number) => void;
+  markKnown: (termId: string, timeSpent: number) => void;
   goBack: (fromProgress?: boolean) => void;
   endSortCallback: () => void;
-  nextRound: () => void;
+  nextRound: (isReview: boolean) => void;
   evaluateTerms: (newDueCards: DueCard[]) => void;
+  startCardTimer: (termId: string) => void;
+  getTimeSpent: (termId: string) => number;
+  checkAllCardsRated: () => boolean;
+  checkAllCardsKnown: () => boolean;
+  setManualRevalidate: (value: boolean) => void;
 }
 
 export type SortFlashcardsStore = ReturnType<typeof createSortFlashcardsStore>;
@@ -32,22 +41,36 @@ export const createSortFlashcardsStore = (
     progressView: false,
     dueCardCount: 0,
     totalCardCount: 0,
+    cardStartTimes: {},
+    allCardsRated: false,
+    allCardsKnown: false,
+    manualRevalidate: false,
   };
 
   return createStore<SortFlashcardsState>()(
-    subscribeWithSelector((set) => ({
+    subscribeWithSelector((set, get) => ({
       ...DEFAULT_PROPS,
       ...initProps,
       initialize: (dueCards, totalCardCount) => {
+        // Initialize start times for all cards
+        const cardStartTimes: Record<string, number> = {};
+        dueCards.forEach(card => {
+          cardStartTimes[card.contentId] = Date.now();
+        });
+
         set({
           dueCards,
           totalCardCount,
           dueCardCount: dueCards.length,
           index: 0,
           progressView: false,
+          cardStartTimes,
+          allCardsRated: false,
+          allCardsKnown: false,
+          manualRevalidate: false,
         });
       },
-      markStillLearning: (termId) => {
+      markStillLearning: (termId, timeSpent) => {
         set((state) => {
           const updatedDueCards = state.dueCards.map((card) =>
             card.contentId === termId ? { ...card, isReview: false } : card,
@@ -59,7 +82,7 @@ export const createSortFlashcardsStore = (
           };
         });
       },
-      markKnown: (termId) => {
+      markKnown: (termId, timeSpent) => {
         set((state) => {
           const updatedDueCards = state.dueCards.map((card) =>
             card.contentId === termId ? { ...card, isReview: true } : card,
@@ -80,17 +103,26 @@ export const createSortFlashcardsStore = (
       endSortCallback: () => {
         set({ progressView: true });
       },
-      nextRound: () => {
+      nextRound: (isReview) => {
         set((state) => {
           const stillLearningCards = state.dueCards.filter(
             (card) => !card.isReview,
           );
 
+          // Check if all cards have been rated
+          const allRated = state.index >= state.dueCards.length;
+          
+          // Check if all cards were rated as known (3)
+          const allKnown = state.dueCards.every(card => card.isReview);
+
           return {
             dueCards: stillLearningCards,
             dueCardCount: stillLearningCards.length,
             index: 0,
-            progressView: stillLearningCards.length === 0,
+            progressView: stillLearningCards.length === 0 || allRated,
+            allCardsRated: allRated,
+            allCardsKnown: allKnown,
+            manualRevalidate: true, // Set to true to indicate manual revalidation is needed
           };
         });
       },
@@ -106,11 +138,45 @@ export const createSortFlashcardsStore = (
               : newCard;
           });
 
+          // Initialize start times for new cards
+          const updatedCardStartTimes = { ...state.cardStartTimes };
+          updatedDueCards.forEach(card => {
+            if (!updatedCardStartTimes[card.contentId]) {
+              updatedCardStartTimes[card.contentId] = Date.now();
+            }
+          });
+
           return {
             dueCards: updatedDueCards,
             dueCardCount: updatedDueCards.length,
+            cardStartTimes: updatedCardStartTimes,
+            manualRevalidate: false, // Reset to false after data is revalidated
           };
         });
+      },
+      startCardTimer: (termId) => {
+        set((state) => ({
+          cardStartTimes: {
+            ...state.cardStartTimes,
+            [termId]: Date.now(),
+          },
+        }));
+      },
+      getTimeSpent: (termId) => {
+        const state = get();
+        const startTime = state.cardStartTimes[termId] || Date.now();
+        return Math.floor((Date.now() - startTime) / 1000); // Return time in seconds
+      },
+      checkAllCardsRated: () => {
+        const state = get();
+        return state.index >= state.dueCards.length;
+      },
+      checkAllCardsKnown: () => {
+        const state = get();
+        return state.dueCards.every(card => card.isReview);
+      },
+      setManualRevalidate: (value) => {
+        set({ manualRevalidate: value });
       },
     })),
   );

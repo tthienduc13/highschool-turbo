@@ -10,6 +10,7 @@ import {
   categoryEndpoints,
   courseEndpoints,
   masterCourseEndpoints,
+  subjectCurriculumEndpoints,
 } from "@highschool/endpoints";
 
 import axiosServices, {
@@ -33,6 +34,63 @@ export interface PatchCoursePayload extends CreateCoursePayload {
   id: string;
   image: string;
 }
+
+export const publishCourse = async ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      subjectCurriculumEndpoints.publishCourse({ subjectId, curriculumId }),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while publishing subject curriculum", error);
+    throw error;
+  }
+};
+
+export const unpublishCourse = async ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      subjectCurriculumEndpoints.unpublishCourse({ subjectId, curriculumId }),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while publishing subject curriculum", error);
+    throw error;
+  }
+};
+
+export const checkSubjectCurriculumPublished = async ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}): Promise<ResponseModel<boolean>> => {
+  try {
+    const { data } = await axiosServices.get(
+      subjectCurriculumEndpoints.checkIsPublished({ subjectId, curriculumId }),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while checking subject curriculum published", error);
+    throw error;
+  }
+};
 
 export const getMasterCourses = async ({
   pageNumber,
