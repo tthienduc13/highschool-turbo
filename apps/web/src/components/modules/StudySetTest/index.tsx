@@ -23,6 +23,7 @@ import { TestView } from "@/components/core/study-set-test/test-view";
 import { TestContext, useTestContext } from "@/stores/use-study-set-test-store";
 import { EvaluationResult, evaluate } from "@/utils/evaluator";
 import { bulkGradeAnswers } from "@/utils/grader";
+import { Container } from "@/components/core/layouts/container";
 
 function StudySetTestModule() {
   const { slug } = useParams();
@@ -195,7 +196,7 @@ const TestContainer = () => {
       {loading ? (
         <LoadingView />
       ) : (
-        <div className="mx-auto mt-0 max-w-4xl md:mt-10">
+        <Container className="mt-10" maxWidth="4xl">
           {result ? (
             <ResultView />
           ) : (
@@ -205,7 +206,7 @@ const TestContainer = () => {
               }}
             />
           )}
-        </div>
+        </Container>
       )}
     </>
   );

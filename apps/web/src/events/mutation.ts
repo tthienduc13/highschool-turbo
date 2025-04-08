@@ -5,4 +5,8 @@ export const mutationEventChannel = eventBus<{
   submitProvince: () => void;
   submitStudentInfo: () => void;
   submitTeacherInfo: () => void;
+
+  //   Flashcard
+  toggleCardSorting: (check: boolean) => void;
+  toggleStudyStarred: (check: boolean) => void;
 }>();

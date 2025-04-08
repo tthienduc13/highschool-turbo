@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import { Separator } from "@highschool/ui/components/ui/separator";
 
 import { StudyStarredSection } from "./settings/study-starred";
-import { CardsSortingSection } from "./settings/card-sorting";
 import { CardsAnswerModeSection } from "./settings/answer-mode";
+import { CardsSortingSection } from "./settings/card-sorting";
 
 import { useSet } from "@/hooks/use-set";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";

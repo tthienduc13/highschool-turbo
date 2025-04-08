@@ -7,13 +7,18 @@ import {
   TypeExam,
   UserCreate,
   UserGrowth,
+  UserOwnStatistics,
   UserPreview,
   UserProfile,
   UserRetention,
   UserSession,
   UserStatistics,
 } from "@highschool/interfaces";
-import { careerGuidanceEndpoints, userEndpoints } from "@highschool/endpoints";
+import {
+  careerGuidanceEndpoints,
+  userAnalyticEndpoints,
+  userEndpoints,
+} from "@highschool/endpoints";
 import axios from "axios";
 
 import axiosServices, {
@@ -445,6 +450,19 @@ export const getUserRetention = async ({
     return data;
   } catch (error) {
     console.log("error while getting user retention", error);
+    throw error;
+  }
+};
+
+export const getOwnStatistic = async (): Promise<UserOwnStatistics> => {
+  try {
+    const { data } = await axiosServices.get(
+      userAnalyticEndpoints.ownedStatistic,
+    );
+
+    return data;
+  } catch (error) {
+    console.log("error while getting own statistic", error);
     throw error;
   }
 };

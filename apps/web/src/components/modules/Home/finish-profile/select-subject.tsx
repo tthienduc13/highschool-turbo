@@ -1,8 +1,8 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
-  useCoursesQuery,
-  useCurriculumQuery,
+  useCurriculaQuery,
+  useMasterCoursesQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -50,18 +50,17 @@ export const SelectSubject = () => {
     selectedDob,
   } = useAccountInformationStore();
 
-  const { data, isLoading } = useCoursesQuery({
-    grade: selectedClass!,
+  const { data, isLoading } = useMasterCoursesQuery({
     pageNumber: 1,
     pageSize: 100,
   });
 
   const { data: curriculumData, isLoading: curriculumLoading } =
-    useCurriculumQuery();
+    useCurriculaQuery({ pageNumber: 1, pageSize: 100 });
 
   const transformData =
     data?.data.map((course) => ({
-      label: course.subjectName,
+      label: course.masterSubjectName,
       value: course.id,
     })) ?? [];
 
@@ -90,7 +89,11 @@ export const SelectSubject = () => {
             },
           });
           queryClient.invalidateQueries({ queryKey: ["progress-stage"] });
-          toast.success(data.message);
+          if (data.status === 200) {
+            toast.success(data.message);
+          } else {
+            toast.error(data.message);
+          }
           setOpen(false);
         },
         onError: (error) => {
@@ -107,7 +110,7 @@ export const SelectSubject = () => {
       steps={6}
       title="Chọn các môn học "
     >
-      <div className="flex flex-col gap-6 pt-4">
+      <div className="flex flex-col gap-4 pt-4">
         <Select
           disabled={curriculumLoading}
           value={selectedCurriculum ?? ""}
@@ -125,7 +128,7 @@ export const SelectSubject = () => {
             className="placeholder:text-muted-foreground"
             onCloseAutoFocus={(e) => e.preventDefault()}
           >
-            {curriculumData?.map((curriculum) => (
+            {curriculumData?.data.map((curriculum) => (
               <SelectItem key={curriculum.id} value={curriculum.id}>
                 {curriculum.curriculumName}
               </SelectItem>

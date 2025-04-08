@@ -5,15 +5,21 @@ import { useEffect, useState } from "react";
 interface CircularTermMasteryProps {
   known: number;
   stillLearning: number;
+  progressPercentage?: number;
 }
 
 export function CircularTermMastery({
   known,
   stillLearning,
+  progressPercentage,
 }: CircularTermMasteryProps) {
   const [perc, setPerc] = useState(0);
   const total = known + stillLearning;
-  const percentage = Math.round((known / total) * 100);
+  const calculatedPercentage = Math.round((known / total) * 100);
+  const percentage =
+    progressPercentage !== undefined
+      ? progressPercentage
+      : calculatedPercentage;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -46,7 +52,7 @@ export function CircularTermMastery({
             strokeWidth={strokeWidth}
           />
           <circle
-            className="ease-in-out text-blue-500 transition-all duration-500"
+            className="text-blue-500 transition-all duration-500 ease-in-out"
             cx={size / 2}
             cy={size / 2}
             fill="transparent"

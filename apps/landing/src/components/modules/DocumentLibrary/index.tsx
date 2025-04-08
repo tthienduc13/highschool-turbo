@@ -4,7 +4,7 @@ import { useDebounceValue } from "@highschool/hooks";
 import {
   useAuthorsQuery,
   useCategoriesQuery,
-  useCurriculumQuery,
+  useCurriculaQuery,
   useDocumentsQuery,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -52,7 +52,7 @@ function DocumentLibraryModule() {
   const { data: categoryData, isLoading: categoryLoading } =
     useCategoriesQuery();
   const { data: curriculumData, isLoading: curriculumLoading } =
-    useCurriculumQuery();
+    useCurriculaQuery({ pageNumber: 1, pageSize: 100 });
   const debounceSearch = useDebounceValue(searchQuery, 300);
 
   // Filter data
@@ -155,7 +155,7 @@ function DocumentLibraryModule() {
                   .map((_, idx) => (
                     <Skeleton key={idx} className="h-8 w-28 rounded-lg" />
                   ))
-              : curriculumData?.map((curriculum) => (
+              : curriculumData?.data?.map((curriculum) => (
                   <Button
                     key={curriculum.id}
                     size="sm"

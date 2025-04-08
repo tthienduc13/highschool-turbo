@@ -3,6 +3,7 @@
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { cn } from "@highschool/ui/lib/utils";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 import { useDashboard } from "@/hooks/use-user-dashboard";
 
@@ -11,9 +12,17 @@ export const ProfileArea = () => {
 
   return (
     <div className="flex flex-row items-center gap-4 md:gap-6">
-      <Avatar className="size-16">
-        <AvatarImage alt={user.fullName} src={user.profilePicture} />
-      </Avatar>
+      <div className="relative">
+        <Avatar className="size-16 ">
+          <AvatarImage alt={user.fullName} src={user.profilePicture} />
+        </Avatar>
+        <DotLottieReact
+          autoplay
+          loop
+          className="absolute -bottom-5 left-1/2 -z-10 size-48 -translate-x-1/2 "
+          src="/animation/flame.lottie"
+        />
+      </div>
       <div
         className={cn(
           "flex h-16 flex-col",

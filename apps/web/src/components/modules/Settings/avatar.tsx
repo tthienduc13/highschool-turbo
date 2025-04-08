@@ -56,13 +56,13 @@ export const AvatarSetting = () => {
           </Avatar>
           <div className="flex flex-row flex-wrap gap-2">
             {Avatars.filter(
-              (avatar) => avatar.rarity.toLowerCase() === "common",
+              (avatar) => avatar.rarity.toLowerCase() === "legendary",
             )
               .slice(0, 24)
               .map((avatar) => (
                 <Avatar
                   key={avatar.image}
-                  className="size-12 cursor-pointer bg-primary/50 hover:opacity-80"
+                  className="bg-primary/50 size-12 cursor-pointer hover:opacity-80"
                   onClick={() => updateUser(avatar.image)}
                 >
                   <AvatarImage alt={avatar.name} src={avatar.image} />

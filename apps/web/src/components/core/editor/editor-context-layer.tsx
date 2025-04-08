@@ -231,7 +231,8 @@ export const EditorContextLayer = ({
         serverTerms: data?.flashcardContents.map((x: FlashcardContent) => x.id),
         title: data.flashcardName,
         description: data.flashcardDescription,
-        entityId: data.subjectId,
+        flashcardType: data.flashcardType,
+        entityId: data.entityId,
         visibility: data.status as StudySetVisibility,
       },
       {
@@ -344,6 +345,8 @@ export const EditorContextLayer = ({
         onSubscribeDelegate: () => {
           void (async () => {
             const state = storeRef.current!.getState();
+
+            console.log(state.flashcardType);
 
             await apiEditSet.mutateAsync({
               flashcardId: data?.id!,

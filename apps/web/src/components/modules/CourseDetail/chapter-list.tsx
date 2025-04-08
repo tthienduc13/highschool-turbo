@@ -95,7 +95,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
     return (
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold md:text-2xl">
-          Chương trong khoá học ({chapters.length})
+          Nội dung khoá học ({chapters.length} chương)
         </h2>
         <Button variant="outline" onClick={() => setSelectOpen(true)}>
           <IconSettings />
@@ -109,7 +109,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
     <div className="flex flex-col gap-8">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold md:text-2xl">
-          Chương trong khoá học ({chapters.length})
+          Nội dung khoá học ({chapters.length} chương)
         </h2>
         <div className="flex flex-row items-center gap-2">
           {chapters.length > 0 && (
@@ -152,7 +152,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
                 gaugeSecondaryColor="#f3f4f6"
                 max={100}
                 min={0}
-                value={enrollmentProgress.subjectProgressPercent}
+                value={Math.round(enrollmentProgress.subjectProgressPercent)}
               />
             </div>
           )}

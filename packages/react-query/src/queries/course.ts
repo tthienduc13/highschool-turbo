@@ -1,16 +1,51 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  checkSubjectCurriculumPublished,
+  createCourse,
+  createCourseWithAutomation,
   createMasterCourse,
   deleteMasterCourse,
+  editCourses,
   editMasterCourse,
   enrollCourse,
   getCategories,
+  getCourseById,
   getCourseBySlug,
   getCourses,
   getMasterCourses,
+  publishCourse,
   unEnrollCourse,
+  unpublishCourse,
 } from "../apis/course.ts";
+
+export const useActivateCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["activate-course"],
+    mutationFn: publishCourse,
+  });
+};
+
+export const useDeactivateCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["deactivate-course"],
+    mutationFn: unpublishCourse,
+  });
+};
+
+export const useCheckCoursePublishQuery = ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}) => {
+  return useQuery({
+    queryKey: ["check-course-publish", { subjectId, curriculumId }],
+    queryFn: () => checkSubjectCurriculumPublished({ subjectId, curriculumId }),
+    enabled: !!subjectId && !!curriculumId,
+  });
+};
 
 export const useMasterCourseMutation = () => {
   return useMutation({
@@ -58,7 +93,7 @@ export const useCoursesQuery = ({
   pageSize: number;
 }>) => {
   return useQuery({
-    queryKey: ["courses", search, grade, pageNumber, pageSize],
+    queryKey: ["courses", { search, grade, pageNumber, pageSize }],
     queryFn: () =>
       getCourses({
         search: search,
@@ -73,6 +108,13 @@ export const useCourseBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["course", slug],
     queryFn: () => getCourseBySlug({ slug }),
+  });
+};
+
+export const useCourseByIdQuery = ({ id }: { id: string }) => {
+  return useQuery({
+    queryKey: ["course", id],
+    queryFn: () => getCourseById({ id }),
   });
 };
 
@@ -94,5 +136,26 @@ export const useCategoriesQuery = () => {
   return useQuery({
     queryKey: ["categories"],
     queryFn: getCategories,
+  });
+};
+
+export const useCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["create-course"],
+    mutationFn: createCourse,
+  });
+};
+
+export const useCourseWithAutoMutation = () => {
+  return useMutation({
+    mutationKey: ["create-course-with-auto"],
+    mutationFn: createCourseWithAutomation,
+  });
+};
+
+export const useEditCourseMutation = () => {
+  return useMutation({
+    mutationKey: ["edit-course"],
+    mutationFn: editCourses,
   });
 };

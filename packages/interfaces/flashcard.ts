@@ -6,11 +6,51 @@ import {
   StudySetAnswerMode,
 } from "./study-mode";
 
+export enum FlashcardDifficulty {
+  Easy = "easy",
+  Normal = "normal",
+  Hard = "hard",
+}
+
+export type FlashcardTextLength = "short" | "medium" | "long";
+
+
+export interface FlashcardGeneratePayload {
+  fileRaw?: File;
+  textRaw? : string;
+  note?: string;
+  numberFlashcardContent: number;
+  levelHard: FlashcardDifficulty;
+  frontTextLong:FlashcardTextLength
+  backTextLong:FlashcardTextLength
+}
+
 export enum FlashcardAttachToType {
   Lesson = "Lesson",
   Chapter = "Chapter",
   Subject = "Subject",
   SubjectCurriculum = "SubjectCurriculum",
+}
+
+export interface FlashcardEntitySearch {
+  name: string;
+  type: FlashcardAttachToType;
+  subject: {
+    id: string;
+    name: string;
+  };
+  lesson: {
+    id: string;
+    name: string;
+  };
+  subjectCurriculum: {
+    id: string;
+    name: string;
+  };
+  chapter: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface Flashcard {
@@ -65,7 +105,8 @@ export interface StudiableTerm extends FlashcardContent {
 export interface DraftData {
   id: string;
   userId: string;
-  subjectId: string;
+  flashcardType: FlashcardAttachToType;
+  entityId: string;
   flashcardName: string;
   slug: string;
   flashcardDescription: string;
@@ -138,3 +179,44 @@ export type TagFlashcard = {
   name: string;
   usageCount: number;
 };
+export enum FlashcardLearnState
+{
+    New,
+    Learning,
+    Review,
+    Relearning
+}
+
+
+export interface FlashcardLearn {
+  flashcardId: string;
+  flashcardName: string;
+  flashcardDescription: string;
+  dueCardCount: number;
+  totalCardCount: number;
+  progressPercentage: number;
+  isReview: boolean;
+  dueCards: DueCard[];
+}
+
+export interface DueCard {
+  contentId: string;
+  term: string;
+  definition: string;
+  state: FlashcardLearnState;
+  dueDate: string | null;
+  difficulty: number;
+  stability: number;
+  retrievability: number;
+  isOverdue: boolean;
+  isNew: boolean;
+  isReview: boolean;
+  isDueToday: boolean;
+  isEarlyReview: boolean;
+  isLowRating: boolean;
+  rating: number;
+  priority: number;
+  correctness: number;
+  incorrectCount: number;
+  appearedInRound: number;
+}

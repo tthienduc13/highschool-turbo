@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
 import { HydrateSetData } from "./hydrate-set-data";
-import { RelatedResoucrces } from "./related-resource";
+import { RelatedResources } from "./related-resource";
 
 import { EditorGlobalStyles } from "@/components/core/common/editor-global-style";
 import { WithFooter } from "@/components/core/common/with-footer";
@@ -60,7 +60,7 @@ function StudySetModule({ slug }: { slug: string }) {
             </div>
             <div className="w-full">
               <div className="flex flex-col gap-12">
-                <RelatedResoucrces />
+                <RelatedResources />
                 <TermOverView />
               </div>
             </div>

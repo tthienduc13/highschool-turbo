@@ -98,6 +98,13 @@ export type UserCreate = {
   profilePicture: string;
 };
 
+export interface UserOwnStatistics {
+  currentStreak: number;
+  longestStreak: number;
+  totalFlashcard: number;
+  totalFlashcardContent: number;
+}
+
 export type UserStatistics = {
   totalUser: number;
   thisMonthUser: number;

@@ -16,7 +16,6 @@ function SettingsModule() {
 
   return (
     <WithFooter>
-      {" "}
       <Container maxWidth="4xl">
         <div className="flex w-full flex-col gap-12">
           <div className="flex items-center gap-3">

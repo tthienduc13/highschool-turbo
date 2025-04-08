@@ -12,36 +12,10 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
-import { useFlashcardStore } from "@/stores/use-ai-flashcard-store";
+import { DIFFICULTY_TRANSLATIONS, useFlashcardStore } from "@/stores/use-ai-flashcard-store";
+import { FlashcardDifficulty } from "@highschool/interfaces";
 
-enum FlashcardDifficulty {
-  Easy = "easy",
-  Medium = "medium",
-  Hard = "hard",
-}
 
-// Map for Vietnamese translations of difficulty levels
-const DIFFICULTY_TRANSLATIONS = {
-  [FlashcardDifficulty.Easy]: "Dễ",
-  [FlashcardDifficulty.Medium]: "Trung bình",
-  [FlashcardDifficulty.Hard]: "Khó",
-};
-
-// Example text content based on length
-const EXAMPLE_TEXT = {
-  front: {
-    short: "Từ vựng cơ bản",
-    medium: "Cấu trúc câu đơn giản và từ vựng cơ bản",
-    long: "Cấu trúc câu phức tạp, từ vựng và ngữ pháp nâng cao cho các chủ đề học thuật",
-  },
-  back: {
-    short:
-      "Định nghĩa và ví dụ ngắn gọn. Giải thích thêm về cách sử dụng từ vựng này trong câu.",
-    medium:
-      "Định nghĩa chi tiết, ví dụ và một số cách sử dụng phổ biến. Bao gồm phân tích ngữ pháp và các từ đồng nghĩa, trái nghĩa. Thêm các ví dụ câu để minh họa cách sử dụng từ một cách chính xác.",
-    long: "Định nghĩa đầy đủ, nhiều ví dụ, ngữ cảnh sử dụng, và thông tin ngữ pháp chi tiết. Phân tích cách từ này được sử dụng trong các tình huống khác nhau, các biến thể của từ và cách phát âm chuẩn. Bao gồm các thành ngữ, cụm từ phổ biến liên quan, và các lỗi thường gặp khi sử dụng từ này. Thêm nhiều ví dụ câu trong các ngữ cảnh khác nhau.",
-  },
-};
 
 export const FlashcardSettings = () => {
   const { options, updateOption, getExampleText } = useFlashcardStore();
@@ -102,8 +76,8 @@ export const FlashcardSettings = () => {
               <SelectItem value={FlashcardDifficulty.Easy}>
                 {DIFFICULTY_TRANSLATIONS[FlashcardDifficulty.Easy]}
               </SelectItem>
-              <SelectItem value={FlashcardDifficulty.Medium}>
-                {DIFFICULTY_TRANSLATIONS[FlashcardDifficulty.Medium]}
+              <SelectItem value={FlashcardDifficulty.Normal}>
+                {DIFFICULTY_TRANSLATIONS[FlashcardDifficulty.Normal]}
               </SelectItem>
               <SelectItem value={FlashcardDifficulty.Hard}>
                 {DIFFICULTY_TRANSLATIONS[FlashcardDifficulty.Hard]}

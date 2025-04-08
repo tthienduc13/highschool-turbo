@@ -1,3 +1,14 @@
+export interface CreateChapterPayload {
+  chapterName: string;
+  chapterLevel: number;
+  description: string;
+  semester: 1 | 2;
+}
+
+export interface EditchapterPayload extends CreateChapterPayload {
+  id: string;
+}
+
 export interface Chapter {
   id: string;
   chapterName: string;

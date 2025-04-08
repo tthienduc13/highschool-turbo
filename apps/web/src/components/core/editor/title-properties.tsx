@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useCoursesQuery } from "@highschool/react-query/queries";
+import { useState, useEffect } from "react";
+import { useFlashcardEntitySearch } from "@highschool/react-query/queries";
 import { Input } from "@highschool/ui/components/ui/input";
 import {
   Select,
@@ -11,12 +11,21 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
+import { Combobox } from "@highschool/ui/components/ui/combobox/combobox";
+import { ComboboxItem } from "@highschool/ui/components/ui/combobox/combobox-item";
+import { ComboboxEmpty } from "@highschool/ui/components/ui/combobox/combobox-empty";
+import { ComboboxInput } from "@highschool/ui/components/ui/combobox/combobox-input";
+import { ComboboxContent } from "@highschool/ui/components/ui/combobox/combobox-content";
 import { cn } from "@highschool/ui/lib/utils";
-import { FlashcardAttachToType } from "@highschool/interfaces";
+import {
+  FlashcardAttachToType,
+  FlashcardEntitySearch,
+} from "@highschool/interfaces";
 import {
   IconBook,
   IconBook2,
   IconBuildingSkyscraper,
+  IconLoader2,
   IconSchool,
 } from "@tabler/icons-react";
 
@@ -29,46 +38,129 @@ export const flashcardAttachToTypeLabels: Record<
 > = {
   [FlashcardAttachToType.Lesson]: {
     icon: <IconBook2 size={18} />,
-    label: "Khóa học",
+    label: "Bài học",
   },
   [FlashcardAttachToType.Chapter]: {
     icon: <IconBook size={18} />,
     label: "Chương",
   },
-  [FlashcardAttachToType.Subject]: {
-    icon: <IconSchool size={18} />,
-    label: "Môn học",
-  },
   [FlashcardAttachToType.SubjectCurriculum]: {
     icon: <IconBuildingSkyscraper size={18} />,
     label: "Chương trình môn học",
   },
+  [FlashcardAttachToType.Subject]: {
+    icon: <IconSchool size={18} />,
+    label: "Môn học",
+  },
 };
 
 export const TitleProperties = () => {
-  const { data, isLoading } = useCoursesQuery({
-    pageNumber: 1,
-    pageSize: 100,
-  });
+  // State cho việc kiểm soát input và item đã chọn
+  const [searchInput, setSearchInput] = useState("");
 
+  // Lấy dữ liệu từ context
   const _title = useSetEditorContext((s) => s.title);
   const _description = useSetEditorContext((s) => s.description);
-  const _courseId = useSetEditorContext((s) => s.entityId);
+  const _entityId = useSetEditorContext((s) => s.entityId);
   const numTerms = useSetEditorContext((s) => s.terms.length);
   const saveError = useSetEditorContext((s) => s.saveError);
   const setSaveError = useSetEditorContext((s) => s.setSaveError);
   const apiSetTitle = useSetEditorContext((s) => s.setTitle);
   const apiSetDescription = useSetEditorContext((s) => s.setDescription);
-  const apiSetCourseId = useSetEditorContext((s) => s.setEntityId);
+  const apiSetEntityId = useSetEditorContext((s) => s.setEntityId);
+  const apiSetFlashcardType = useSetEditorContext((s) => s.setFlashcardType);
 
+  // State cho form
   const [title, setTitle] = useState(_title);
   const [description, setDescription] = useState(_description);
-  const [courseId, setCourseId] = useState(_courseId);
-  const [flashcardType, setFlashcardType] = useState(
-    FlashcardAttachToType.Subject,
+  const [entityId, setEntityId] = useState<string | null>(_entityId || null);
+  const [flashcardType, setFlashcardType] = useState<FlashcardAttachToType>(
+    FlashcardAttachToType.Lesson,
   );
 
   const titleError = saveError == "Tên bộ thẻ không được để trống";
+
+  const generateDescription = (
+    item: FlashcardEntitySearch,
+    type: FlashcardAttachToType,
+  ): string => {
+    switch (type) {
+      case FlashcardAttachToType.Lesson:
+        return `Thuộc ${item.subject?.name || ""} / ${item.chapter?.name || ""} / ${item.subjectCurriculum?.name || ""}`;
+
+      case FlashcardAttachToType.Chapter:
+        return `Thuộc ${item.subject?.name || ""} / ${item.subjectCurriculum?.name || ""}`;
+
+      case FlashcardAttachToType.SubjectCurriculum:
+        return `Thuộc ${item.subject?.name || ""}`;
+
+      case FlashcardAttachToType.Subject:
+        return ""; // Môn học không cần hiển thị mối quan hệ
+
+      default:
+        return "";
+    }
+  };
+
+  const { data: searchResult, isLoading } = useFlashcardEntitySearch({
+    type: flashcardType,
+    value: searchInput,
+    limit: 6,
+  });
+
+
+
+  // Cập nhật searchInput khi component mount và có entityId
+  useEffect(() => {
+    if (_entityId && searchResult && searchResult.length > 0) {
+      // Tìm item có id trùng với entityId từ context
+      const selectedItem = searchResult.find((item) => {
+        const itemId = getItemId(item, flashcardType);
+
+        return itemId === _entityId;
+      });
+
+      if (selectedItem) {
+        // setSelectedItemName(selectedItem.name);
+        setSearchInput(selectedItem.name);
+      }
+    }
+  }, [_entityId, searchResult, flashcardType]);
+
+  // Hàm helper để lấy ID dựa trên loại flashcard
+  const getItemId = (item: any, type: FlashcardAttachToType): string => {
+    switch (type) {
+      case FlashcardAttachToType.Lesson:
+        return item.lesson?.id || "";
+      case FlashcardAttachToType.Chapter:
+        return item.chapter?.id || "";
+      case FlashcardAttachToType.SubjectCurriculum:
+        return item.subjectCurriculum?.id || "";
+      case FlashcardAttachToType.Subject:
+        return item.subject?.id || "";
+      default:
+        return "";
+    }
+  };
+
+  const handleValueChange = (value: string | null) => {
+    setEntityId(value);
+    apiSetEntityId(value || "");
+    if (value && searchResult) {
+      const selectedItem = searchResult.find((item) => {
+        const itemId = getItemId(item, flashcardType);
+
+        return itemId === value;
+      });
+
+      if (selectedItem) {
+        // setSelectedItemName(selectedItem.name);
+        setSearchInput(selectedItem.name);
+      }
+    } else {
+      // setSelectedItemName("");
+    }
+  };
 
   return (
     <div className="flex flex-col gap-6">
@@ -99,6 +191,7 @@ export const TitleProperties = () => {
         </div>
         <p className="text-sm text-gray-400">{numTerms} thuật ngữ</p>
       </div>
+
       <div className="flex flex-col gap-8 md:flex-row">
         <AutosizeTextarea
           className="text-muted-foreground focus-within:border-primary focus-visible:bg-background w-full rounded-lg border border-gray-50 bg-gray-100 px-4 py-2 text-base shadow-sm transition-all duration-200 focus-within:border-2 focus-visible:ring-0 dark:border-gray-700 dark:bg-gray-800"
@@ -115,18 +208,20 @@ export const TitleProperties = () => {
           }}
           onChange={(e) => setDescription(e.target.value)}
         />
+
         <div className="md:max-w-1/2 flex w-full max-w-full flex-col gap-4">
           <div className="flex w-full flex-row items-center gap-4">
-            <h2 className="inline-block whitespace-nowrap text-lg font-bold md:text-xl">
+            <h2 className="inline-block whitespace-nowrap text-lg font-bold">
               Phân loại:
             </h2>
             <Select
               value={flashcardType}
-              //   onValueChange={(val) =>
-              //     onValueChange(val as FlashcardAttachToType)
-              //   }
+              onValueChange={(value) => {
+                setFlashcardType(value as FlashcardAttachToType);
+                apiSetFlashcardType(value as FlashcardAttachToType);
+              }}
             >
-              <SelectTrigger className="h-10 border-gray-50 bg-white px-4 py-2 text-lg dark:border-gray-700 dark:bg-gray-800">
+              <SelectTrigger className="h-10 border-gray-50 bg-white px-4 py-2 text-lg shadow-lg outline-none focus-within:ring-0 focus-visible:ring-0 dark:border-gray-700 dark:bg-gray-800">
                 <SelectValue placeholder="Chọn loại gắn kết">
                   {
                     flashcardAttachToTypeLabels[
@@ -144,7 +239,6 @@ export const TitleProperties = () => {
                   >
                     <div className="flex flex-row items-center gap-4">
                       {flashcardAttachToTypeLabels[typeValue].icon}
-
                       {flashcardAttachToTypeLabels[typeValue].label}
                     </div>
                   </SelectItem>
@@ -152,34 +246,64 @@ export const TitleProperties = () => {
               </SelectContent>
             </Select>
           </div>
+
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-bold md:text-xl">Môn học liên quan</h2>
-            <Select
-              disabled={isLoading}
-              value={courseId}
-              onValueChange={(value) => {
-                setCourseId(value);
-                apiSetCourseId(value);
-              }}
+            <h2 className="text-lg font-bold">
+              {flashcardType === FlashcardAttachToType.Subject
+                ? "Môn học liên quan"
+                : flashcardType === FlashcardAttachToType.SubjectCurriculum
+                  ? "Chương trình môn học liên quan"
+                  : flashcardType === FlashcardAttachToType.Chapter
+                    ? "Chương liên quan"
+                    : "Bài học liên quan"}
+            </h2>
+            <Combobox
+              value={entityId || null}
+              onValueChange={handleValueChange}
             >
-              <SelectTrigger className="h-10  border-gray-50 bg-white px-4 py-2 text-lg dark:border-gray-700 dark:bg-gray-800">
-                <SelectValue placeholder="Chọn môn học gắn với bộ thẻ">
-                  {data?.data.find((subject) => subject.id === courseId)
-                    ?.subjectName ?? "Chọn môn học gắn với bộ thẻ"}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                {data?.data.map((course) => (
-                  <SelectItem key={course.id} value={course.id}>
-                    {course.subjectName}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <ComboboxInput
+                className="h-10 border-gray-50 bg-white px-4 py-2 !text-lg shadow-lg outline-none focus-within:ring-0 focus-visible:ring-0 dark:border-gray-700 dark:bg-gray-800"
+                controlledValue={searchInput}
+                placeholder={`Chọn ${flashcardAttachToTypeLabels[flashcardType].label.toLowerCase()}`}
+                onControlledChange={setSearchInput}
+              />
+              <ComboboxContent>
+                {isLoading ? (
+                  <div className="flex h-8 w-full items-center justify-center">
+                    <IconLoader2 className="animate-spin" />
+                  </div>
+                ) : (
+                  searchResult?.map((item, index) => {
+                    const itemId = getItemId(item, flashcardType);
+
+                    if (!itemId) return null;
+                    const itemDescription = generateDescription(
+                      item,
+                      flashcardType,
+                    );
+
+                    return (
+                      <ComboboxItem
+                        key={index}
+                        description={itemDescription}
+                        label={item.name}
+                        value={itemId}
+                      />
+                    );
+                  })
+                )}
+                {(!searchResult?.length ||
+                  searchResult?.every(
+                    (item) => !getItemId(item, flashcardType),
+                  )) &&
+                  !isLoading && (
+                    <ComboboxEmpty>Không tìm thấy kết quả.</ComboboxEmpty>
+                  )}
+              </ComboboxContent>
+            </Combobox>
           </div>
         </div>
       </div>
-      <div className="">adfasf</div>
     </div>
   );
 };

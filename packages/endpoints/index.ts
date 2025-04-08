@@ -21,6 +21,14 @@ const createEndpoint = (
   path: string,
 ): string => `${service}${version}${path}`;
 
+export const aIFlashcardEndpoint = {
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/beta/ai-flashcard",
+  ),
+} as const;
+
 // Authentication Endpoints
 export const authEndpoints = {
   google: createEndpoint(
@@ -307,11 +315,6 @@ export const documentEndpoints = {
     API_VERSIONS.V1,
     "/categories",
   ),
-  getCurriculum: createEndpoint(
-    SERVICE_PREFIXES.DOCUMENT,
-    API_VERSIONS.V1,
-    "/curriculum",
-  ),
 } as const;
 
 // Folder Endpoints
@@ -501,6 +504,65 @@ export const flashcardContentEndpoints = {
     ),
 } as const;
 
+export const flashcardStudyEndpoints = {
+  getFSRSById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${id}/learn`,
+    ),
+  getFSRSBySlug: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${slug}/learn-slug`,
+    ),
+  updateProgress: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/feature/flashcard/progress",
+  ),
+};
+
+export const subjectCurriculumEndpoints = {
+  checkIsPublished: ({
+    subjectId,
+    curriculumId,
+  }: {
+    subjectId: string;
+    curriculumId: string;
+  }) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/check/subject/${subjectId}/curriculum/${curriculumId}`,
+    ),
+  publishCourse: ({
+    subjectId,
+    curriculumId,
+  }: {
+    subjectId: string;
+    curriculumId: string;
+  }) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V2,
+      `/subject/${subjectId}/curriculum/${curriculumId}/publish`,
+    ),
+  unpublishCourse: ({
+    subjectId,
+    curriculumId,
+  }: {
+    subjectId: string;
+    curriculumId: string;
+  }) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V2,
+      `/subject/${subjectId}/curriculum/${curriculumId}/unpublish`,
+    ),
+};
+
 export const masterCourseEndpoints = {
   getMasterCourse: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
@@ -528,6 +590,17 @@ export const masterCourseEndpoints = {
 
 // Course Endpoints
 export const courseEndpoints = {
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/subject",
+  ),
+  createWithAuto: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V2,
+    "/subject",
+  ),
+  edit: createEndpoint(SERVICE_PREFIXES.DOCUMENT, API_VERSIONS.V1, "/subject"),
   getCourses: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
@@ -538,6 +611,12 @@ export const courseEndpoints = {
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
       `/subject/slug/${slug}`,
+    ),
+  getById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/subject/${id}`,
     ),
   enroll: ({
     subjectId,
@@ -629,10 +708,49 @@ export const chapterEndpoints = {
       API_VERSIONS.V1,
       `/chapter/subject/slug/${courseSlug}/curriculum/${curriculumId}`,
     ),
+  getListById: (courseId: string, curriculumId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/subject/${courseId}/curriculum/${curriculumId}`,
+    ),
+  createChapter: (courseId: string, curriculumId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V2,
+      `/chapter/subject/${courseId}/curriculum/${curriculumId}`,
+    ),
+  editChapter: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/chapter`,
+  ),
+  deleteChapter: (chapterId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/${chapterId}`,
+    ),
 } as const;
 
 // Lesson Endpoints
 export const lessonEndpoints = {
+  createLesson: (chapterId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/chapter/${chapterId}/lesson`,
+    ),
+  editLesson: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/lesson`,
+  ),
+  deleteLessons: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/lessons`,
+  ),
   getLessons: (chapterId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
@@ -695,7 +813,20 @@ export const roadmapEndpoints = {
 // Search Endpoints
 export const searchEndpoints = {
   search: createEndpoint(SERVICE_PREFIXES.ANALYSE, API_VERSIONS.V1, "/search"),
+  searchEntity: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/search/courses",
+  ),
 } as const;
+
+export const userAnalyticEndpoints = {
+  ownedStatistic: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/ownedStatistic",
+  ),
+};
 
 // Quiz Endpoints
 export const quizEndpoints = {
@@ -940,13 +1071,18 @@ export const categoryEndpoints = {
   ),
 } as const;
 
-const endpointKet = {
-  GET_KETS: `/kets`,
-  GET_KETS_CATEGORY: `/kets/categories`,
-};
-
 export const curriculumEndpoints = {
   get: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/curriculum",
+  ),
+  create: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/curriculum",
+  ),
+  delete: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
     "/curriculum",
@@ -978,3 +1114,36 @@ export const fsrsEndpoints = {
       `/preset/${presetId}`,
     ),
 } as const;
+
+export const theoryEndpoint = {
+  create: (lessonId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/theory/lesson/${lessonId}`,
+    ),
+  update: (theoryId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/theory/${theoryId}`,
+    ),
+  delete: (theoryId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/theory/${theoryId}`,
+    ),
+  getLessonTheories: (lessonId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/theory/lesson/${lessonId}`,
+    ),
+  getById: (theoryId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/theory/${theoryId}`,
+    ),
+};

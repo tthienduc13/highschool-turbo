@@ -83,19 +83,10 @@ export const navModerator = {
     },
     {
       title: "Subject Managments",
-      url: "#",
+      url: "/subjects",
       isActive: true,
       icon: IconBook,
-      items: [
-        {
-          title: "Published Course",
-          url: "/course-management/courses",
-        },
-        {
-          title: "Unpublished Course",
-          url: "/course-management/unpublished-courses",
-        },
-      ],
+      items: [],
     },
     {
       title: "Document Managments",

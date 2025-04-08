@@ -1,21 +1,41 @@
 import { useSession } from "next-auth/react";
 import { Switch } from "@highschool/ui/components/ui/switch";
 import { useUpdateContainerMutation } from "@highschool/react-query/queries";
+import { useEffect } from "react";
 
 import { useContainerContext } from "@/stores/use-container-store";
 import { menuEventChannel } from "@/events/menu";
 import { useSet } from "@/hooks/use-set";
+import { mutationEventChannel } from "@/events/mutation";
 
 export const CardsSortingSection = () => {
   const { flashcard } = useSet();
   const authed = useSession().status == "authenticated";
 
   const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
+  const cardsStudyStarred = useContainerContext((s) => s.cardsStudyStarred);
   const setEnableCardsSorting = useContainerContext(
     (s) => s.setEnableCardsSorting,
   );
 
   const apiEnableCardsSorting = useUpdateContainerMutation();
+
+  useEffect(() => {
+    const mutate = async (check: boolean) => {
+      apiEnableCardsSorting.mutate({
+        flashcardId: flashcard.id,
+        values: {
+          enableCardsSorting: check,
+        },
+      });
+    };
+
+    mutationEventChannel.on("toggleCardSorting", mutate);
+
+    return () => {
+      mutationEventChannel.off("toggleCardSorting", mutate);
+    };
+  }, [enableCardsSorting]);
 
   return (
     <div className="flex flex-row items-center gap-8">
@@ -29,6 +49,8 @@ export const CardsSortingSection = () => {
       </div>
       <Switch
         checked={enableCardsSorting}
+        className="data-[state=checked]:bg-primary"
+        disabled={cardsStudyStarred}
         onCheckedChange={(check) => {
           if (!authed) {
             menuEventChannel.emit("openSignup", {
@@ -40,12 +62,7 @@ export const CardsSortingSection = () => {
           }
 
           setEnableCardsSorting(check);
-          apiEnableCardsSorting.mutate({
-            flashcardId: flashcard.id,
-            values: {
-              enableCardsSorting: check,
-            },
-          });
+          mutationEventChannel.emit("toggleCardSorting", check);
         }}
       />
     </div>

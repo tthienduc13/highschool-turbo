@@ -19,14 +19,17 @@ export const Interactor = () => {
 
   return (
     <div>
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2">
+      <div
+        className="fixed bottom-8 left-1/2 -translate-x-1/2"
+        style={{ zIndex: 100 }}
+      >
         <motion.div
           animate={{ opacity: 1, y: 0 }}
           className="flex w-fit flex-row gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl dark:border-gray-800/50 dark:bg-gray-800"
           exit={{ opacity: 0, y: 100 }}
           initial={{ opacity: 0, y: 100 }}
         >
-          <div className="flex flex-row items-center overflow-hidden rounded-xl border border-input">
+          <div className="border-input flex flex-row items-center overflow-hidden rounded-xl border">
             <Button
               className={cn("rounded-none", !isMobile && "!text-base")}
               size={isMobile ? "sm" : "lg"}
