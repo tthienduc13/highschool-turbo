@@ -2,7 +2,15 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@highschool/ui/lib/utils";
-import { IconCards, IconGridDots, IconLayersSubtract, IconLock, IconMeteor, IconReport } from "@tabler/icons-react";
+import {
+  IconBrain,
+  IconCards,
+  IconGridDots,
+  IconLayersSubtract,
+  IconLock,
+  IconPokeball,
+  IconReport,
+} from "@tabler/icons-react";
 
 import { Hint } from "../common/hint";
 
@@ -14,12 +22,18 @@ export const LinkArea = () => {
 
   return (
     <div className="grid h-fit w-full grid-cols-2 gap-4 md:grid-cols-3 lg:w-[160px] lg:grid-cols-1">
-      {/* <Linkable
+      <Linkable
         requireAuth
         href={`/study-set/${flashcard.slug}/learn`}
         icon={<IconBrain />}
-        name="Học"
-      /> */}
+        name="Hoc"
+      />
+      <Linkable
+        requireAuth
+        href={`/study-set/${flashcard.slug}/cram`}
+        icon={<IconPokeball />}
+        name="Cram"
+      />
       <Linkable
         href={`/study-set/${flashcard.slug}/flashcards`}
         icon={<IconCards />}
@@ -39,7 +53,7 @@ export const LinkArea = () => {
         // href={`/study-set/${flashcard.slug}/match?intro=true`}
       />
       <Linkable comingSoon icon={<IconGridDots />} name="Ô chữ" />
-      <Linkable comingSoon icon={<IconMeteor />} name="Gravity" />
+      {/* <Linkable comingSoon icon={<IconMeteor />} name="Gravity" /> */}
     </div>
   );
 };

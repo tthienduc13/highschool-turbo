@@ -45,7 +45,7 @@ export const InteractionCard = () => {
         marginBottom: 100,
       }}
     >
-      <Card className="relative rounded-2xl border-2 border-gray-50 bg-background shadow-xl dark:border-gray-700">
+      <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
         {status !== undefined && (
           <motion.div
             animate={{ opacity: isVisible ? 0.2 : 0 }}
