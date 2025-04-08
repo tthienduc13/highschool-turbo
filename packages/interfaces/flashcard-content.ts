@@ -1,5 +1,15 @@
 import { Distractor } from "./distractors";
 
+export interface FlashcardContentModify {
+  flashcardContentTerm: string;
+  flashcardContentDefinition: string;
+  image?: string | null;
+  flashcardContentTermRichText: string;
+  flashcardContentDefinitionRichText: string;
+  rank?: number;
+  id?: string;
+}
+
 export interface FlashcardContent {
   id: string;
   flashcardId: string;

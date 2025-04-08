@@ -57,6 +57,7 @@ const formSchema = z.object({
     message: "Subject description is required",
   }),
   information: z.string(),
+  isExternal: z.boolean(),
 });
 
 function SubjectCreateModule() {
@@ -64,6 +65,7 @@ function SubjectCreateModule() {
   const [isChecked, setIsChecked] = useState(true);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isExternal, setIsExternal] = useState(false);
 
   const { data } = useMasterCoursesQuery({ pageNumber: 1, pageSize: 20 });
 
@@ -82,6 +84,7 @@ function SubjectCreateModule() {
       category: undefined,
       subjectDescription: "",
       information: "",
+      isExternal: false,
     },
   });
 
@@ -113,6 +116,7 @@ function SubjectCreateModule() {
         subjectDescription: values.subjectDescription,
         subjectCode: values.subjectCode,
         information: values.information,
+        isExternal: isExternal,
       };
 
       if (isChecked) {
@@ -348,6 +352,26 @@ function SubjectCreateModule() {
                   </label>
                   <p className="text-muted-foreground text-sm">
                     Enable to automatically create subject with curriculum
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 py-4">
+                <Switch
+                  checked={isExternal}
+                  disabled={isSubmitting}
+                  id="is-external"
+                  onCheckedChange={setIsExternal}
+                />
+                <div className="grid gap-2 leading-none">
+                  <label
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    htmlFor="is-external"
+                  >
+                    Is this external subject?
+                  </label>
+                  <p className="text-muted-foreground text-sm">
+                    Enable to mark this subject as external curriculum
                   </p>
                 </div>
               </div>

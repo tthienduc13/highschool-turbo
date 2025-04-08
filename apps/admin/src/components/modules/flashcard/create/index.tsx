@@ -14,77 +14,76 @@ import {
     IconDotsVertical,
     IconEdit,
     IconGlobe,
-    IconGrid3x3,
-    IconPlus,
-    IconTrash,
+    IconLink,
+    IconLock,
+    IconShield,
     IconUpload,
 } from "@tabler/icons-react";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 import { cn } from "@highschool/ui/lib/utils";
+import {
+    FlashcardAttachToType,
+    FlashcardContentModify,
+    StudySetVisibility,
+} from "@highschool/interfaces";
+import { Badge } from "@highschool/ui/components/ui/badge";
 
-interface Flashcard {
-    id: number;
-    term: string;
-    definition: string;
-}
+import { ComboboxTag } from "../combo-tag";
+import { FLashcardContent } from "../flashcard-content";
+import { flashcardDefaults } from "../flashcard";
+
+import { ComboCourses } from "./combo-courses";
+import { ImportTermModal } from "./import-term-modal";
+import { ImportFlashcardContentButtonExcel } from "./button-import-excel";
 
 function CreateFLashcardModule() {
     const [title, setTitle] = useState("Set Title");
+    const [importOpen, setImportOpen] = useState(false);
     const [description, setDescription] = useState("");
-    const [tags, setTags] = useState("");
+    const [tags, setTags] = useState<string[]>([]);
+    const [entityId, setEntityId] = useState("");
+    const [flashcardType, setFlashcardType] = useState<FlashcardAttachToType>(
+        FlashcardAttachToType.Lesson,
+    );
+    const [flashcardContents, setFlashcardContents] =
+        useState<FlashcardContentModify[]>(flashcardDefaults);
     const [isEditingTitle, setIsEditingTitle] = useState(false);
-    const [flashcards, setFlashcards] = useState<Flashcard[]>([
-        { id: 1, term: "", definition: "" },
-        { id: 2, term: "", definition: "" },
-        { id: 3, term: "", definition: "" },
-    ]);
-
-    const addFlashcard = (index: number) => {
-        const newId = Math.max(...flashcards.map((card) => card.id), 0) + 1;
-        const newFlashcards = [...flashcards];
-
-        newFlashcards.splice(index + 1, 0, { id: newId, term: "", definition: "" });
-        setFlashcards(newFlashcards);
+    const handleSave = () => {
+        console.log("entityId: ", entityId);
+        console.log("flashcardType: ", flashcardType);
+        console.log("flashcards: ", flashcardContents);
     };
 
-    const updateFlashcard = (
-        id: number,
-        field: keyof Flashcard,
-        value: string,
-    ) => {
-        setFlashcards(
-            flashcards.map((card) =>
-                card.id === id ? { ...card, [field]: value } : card,
-            ),
-        );
+    const handleAddTerms = (terms: { term: string; definition: string }[]) => {
+        setFlashcardContents((prev) => [
+            ...prev,
+            ...terms.map((term, index) => ({
+                flashcardContentTerm: term.term,
+                flashcardContentDefinition: term.definition,
+                flashcardContentTermRichText: "",
+                flashcardContentDefinitionRichText: "",
+                rank: prev.length + index + 1,
+            })),
+        ]);
     };
-
-    const deleteFlashcard = (id: number) => {
-        if (flashcards.length > 1) {
-            setFlashcards(flashcards.filter((card) => card.id !== id));
-        }
-    };
-
-    const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-    const [hoverPosition, setHoverPosition] = useState<{
-        top: number;
-        left: number;
-    } | null>(null);
 
     return (
         <div className="py-8">
-            <Card className="mb-6 flex items-center justify-between p-4 shadow-sm">
+            <Card className="fixed z-10 mb-6 flex w-[77vw] items-center justify-between p-4 shadow-lg">
                 <div className="flex items-center gap-3">
                     <IconEdit className="size-5 text-slate-600" />
                     <div>
                         <h2 className="text-lg font-bold">Create a new set</h2>
-                        <p className="text-sm text-slate-500">
-                            {flashcards.length} terms saved just now
-                        </p>
+                        <p className="text-sm text-slate-500">8 terms saved just now</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Button className="bg-blue-600 hover:bg-blue-700">Create</Button>
+                    <Button
+                        className="bg-blue-600 hover:bg-blue-700"
+                        onClick={handleSave}
+                    >
+                        Create
+                    </Button>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button size="icon" variant="ghost">
@@ -102,7 +101,7 @@ function CreateFLashcardModule() {
                 </div>
             </Card>
 
-            <div className="mb-6">
+            <div className="mb-6 mt-24">
                 <Input
                     className={cn(
                         "mb-2 h-full border-none md:text-[3rem] font-bold focus:border-transparent focus-visible:ring-0",
@@ -115,18 +114,31 @@ function CreateFLashcardModule() {
                 />
                 <div className="flex gap-5">
                     <Textarea
-                        className="min-h-[150px] w-[40vw] resize-none border-0 bg-slate-100"
+                        className="min-h-[150px] w-[30vw] resize-none border-0 bg-slate-100"
                         placeholder="Add a description..."
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
+                    <div className="w-[20vw]">
+                        <span className="font-bold">Tags: </span>
+                        <ComboboxTag setTags={setTags} />
+                        <div className="flex flex-wrap gap-2">
+                            {tags.length > 0 &&
+                                tags.map((tag) => (
+                                    <Badge
+                                        key={tag}
+                                        className="mt-2 rounded-sm px-1 font-normal"
+                                        variant="secondary"
+                                    >
+                                        {tag}
+                                    </Badge>
+                                ))}
+                        </div>
+                    </div>
                     <div>
-                        <h2 className="mb-4 text-2xl font-bold text-slate-800">Tags</h2>
-                        <Input
-                            className="border-0 bg-slate-100"
-                            placeholder="e.g. Science, Chemistry, Organic Chemistry"
-                            value={tags}
-                            onChange={(e) => setTags(e.target.value)}
+                        <ComboCourses
+                            apiSetEntityId={setEntityId}
+                            apiSetFlashcardType={setFlashcardType}
                         />
                     </div>
                 </div>
@@ -134,14 +146,25 @@ function CreateFLashcardModule() {
 
             <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-2">
-                    <Button className="gap-2 bg-white" variant="outline">
+                    <Button
+                        className="gap-2 bg-white"
+                        variant="outline"
+                        onClick={() => setImportOpen(true)}
+                    >
                         <IconUpload className="size-4 rotate-90" />
                         Import terms
                     </Button>
-                    <Button className="gap-2 bg-white" variant="outline">
-                        <IconUpload className="size-4" />
-                        Import from Quizlet
-                    </Button>
+                    <ImportFlashcardContentButtonExcel onImport={handleAddTerms} />
+                    <ImportTermModal
+                        isOpen={importOpen}
+                        onClose={() => {
+                            setImportOpen(false);
+                        }}
+                        onImport={(terms) => {
+                            setImportOpen(false);
+                            handleAddTerms(terms);
+                        }}
+                    />
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -155,11 +178,19 @@ function CreateFLashcardModule() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem>
                                 <IconGlobe className="mr-2 size-4" />
-                                Public
+                                {StudySetVisibility.Public}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
-                                <IconGlobe className="mr-2 size-4" />
-                                Private
+                                <IconLock className="mr-2 size-4" />
+                                {StudySetVisibility.Private}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <IconLink className="mr-2 size-4" />
+                                {StudySetVisibility.Unlisted}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <IconShield className="mr-2 size-4" />
+                                {StudySetVisibility.Closed}
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -167,111 +198,11 @@ function CreateFLashcardModule() {
             </div>
 
             <div className="flex flex-col">
-                {flashcards.map((flashcard, index) => {
-                    return (
-                        <div key={flashcard.id}>
-                            <div>
-                                <Card className="p-4 shadow-sm">
-                                    <div className="mb-4 flex items-center justify-between">
-                                        <span className="text-xl font-bold text-slate-700">
-                                            {index + 1}
-                                        </span>
-                                        <div className="flex items-center gap-2">
-                                            <Button className="size-8" size="icon" variant="ghost">
-                                                <IconGrid3x3 className="size-4" />
-                                            </Button>
-                                            <Button
-                                                className="size-8 text-red-500 hover:bg-red-50 hover:text-red-600"
-                                                size="icon"
-                                                variant="ghost"
-                                                onClick={() => deleteFlashcard(flashcard.id)}
-                                            >
-                                                <IconTrash className="size-4" />
-                                            </Button>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid gap-4 md:grid-cols-2">
-                                        <div>
-                                            <Input
-                                                className="h-10 rounded-none border-0 border-b border-dashed border-slate-300 px-0 focus-visible:border-blue-500 focus-visible:ring-0"
-                                                placeholder="Enter term"
-                                                value={flashcard.term}
-                                                onChange={(e) =>
-                                                    updateFlashcard(flashcard.id, "term", e.target.value)
-                                                }
-                                            />
-                                            <p className="mb-1 mt-2 text-sm text-slate-500">Term</p>
-                                        </div>
-                                        <div>
-                                            <Input
-                                                className="h-10 rounded-none border-0 border-b border-dashed border-slate-300 px-0 focus-visible:border-blue-500 focus-visible:ring-0"
-                                                placeholder="Enter definition"
-                                                value={flashcard.definition}
-                                                onChange={(e) =>
-                                                    updateFlashcard(
-                                                        flashcard.id,
-                                                        "definition",
-                                                        e.target.value,
-                                                    )
-                                                }
-                                            />
-                                            <p className="mb-1 mt-2 text-sm text-slate-500">
-                                                Definition
-                                            </p>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </div>
-                            <div
-                                className="h-4"
-                                onMouseEnter={(e) => {
-                                    const position = e.currentTarget.getBoundingClientRect();
-
-                                    setHoverIndex(index);
-                                    setHoverPosition({
-                                        top: position.top + window.scrollY + position.height / 2,
-                                        left: position.left + position.width / 2 - position.x,
-                                    });
-                                }}
-                                onMouseLeave={() => {
-                                    setHoverIndex(null);
-                                    setHoverPosition(null);
-                                }}
-                            />
-                        </div>
-                    );
-                })}
+                <FLashcardContent
+                    flashcards={flashcardContents}
+                    setFlashcards={setFlashcardContents}
+                />
             </div>
-
-            {hoverPosition && hoverIndex !== null && (
-                <div
-                    className="absolute z-50"
-                    style={{
-                        top: hoverPosition.top,
-                        left: hoverPosition.left,
-                        transform: "translate(-50%, -50%)",
-                    }}
-                    onMouseEnter={() => {
-                        setHoverIndex(hoverIndex);
-                        setHoverPosition(hoverPosition);
-                    }}
-                    onMouseLeave={() => {
-                        setHoverIndex(null);
-                        setHoverPosition(null);
-                    }}
-                >
-                    <Button
-                        className="h-8 rounded-full border-blue-200 bg-blue-50 px-3 text-blue-600 hover:border-blue-300 hover:bg-blue-100 hover:text-blue-700"
-                        size="sm"
-                        variant="outline"
-                        onClick={() => addFlashcard(hoverIndex)}
-                    >
-                        <IconPlus className="mr-1 size-4" />
-                        Add term here
-                    </Button>
-                </div>
-            )}
         </div>
     );
 }

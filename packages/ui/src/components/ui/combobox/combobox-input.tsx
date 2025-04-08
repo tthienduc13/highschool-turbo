@@ -46,7 +46,7 @@ export const ComboboxInput = ({
         />
       </PopoverAnchor>
       <div className='pointer-events-none absolute inset-y-0 end-3 grid h-full place-items-center'>
-        <IconChevronDown className={`size-4 opacity-50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <IconChevronDown className={` size-4 opacity-50 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </div>
     </div>
   );

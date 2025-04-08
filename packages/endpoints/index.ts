@@ -1041,6 +1041,11 @@ export const tagEndpoints = {
     API_VERSIONS.V1,
     "/tags",
   ),
+  createTagFlashcard: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/tags",
+  ),
 } as const;
 
 // Game Endpoints
@@ -1087,6 +1092,12 @@ export const curriculumEndpoints = {
     API_VERSIONS.V1,
     "/curriculum",
   ),
+  edit: (curriculumId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V2,
+      `/curriculum?id=${curriculumId}`,
+    ),
 } as const;
 
 export const reportEndpoint = {

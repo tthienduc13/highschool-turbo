@@ -20,12 +20,18 @@ export const getCurricula = async ({
 
 export const createCurriculum = async ({
   curriculumName,
+  isExternal,
+  imageUrl,
 }: {
   curriculumName: string;
+  isExternal: boolean;
+  imageUrl: string;
 }): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.post(curriculumEndpoints.create, {
       curriculumName,
+      isExternal,
+      imageUrl,
     });
 
     return data;
@@ -37,24 +43,30 @@ export const createCurriculum = async ({
 
 // TODO: Edit curriculum function
 
-// export const editMasterCourse = async ({
-//   id,
-//   masterSubjectName,
-// }: {
-//   id: string;
-//   masterSubjectName: string;
-// }): Promise<ResponseModel<string>> => {
-//   try {
-//     const { data } = await axiosServices.patch(masterCourseEndpoints.edit(id), {
-//       masterSubjectName,
-//     });
+export const editCurriculum = async ({
+  id,
+  curriculumName,
+  isExternal,
+  imageUrl,
+}: {
+  id: string;
+  curriculumName: string;
+  isExternal: boolean;
+  imageUrl: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(curriculumEndpoints.edit(id), {
+      curriculumName,
+      isExternal,
+      imageUrl,
+    });
 
-//     return data;
-//   } catch (error) {
-//     console.log("Error while creating master course", error);
-//     throw error;
-//   }
-// };
+    return data;
+  } catch (error) {
+    console.log("Error while creating master course", error);
+    throw error;
+  }
+};
 
 export const deleteCurriculum = async ({
   id,

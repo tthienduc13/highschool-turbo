@@ -19,7 +19,10 @@ import { IconCheck, IconCirclePlus, IconSearch } from "@tabler/icons-react";
 import { cn } from "@highschool/ui/lib/utils";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { Badge } from "@highschool/ui/components/ui/badge";
-import { useGetTagFlashcardQuery } from "@highschool/react-query/queries";
+import {
+  useCreateTagFlashcardMutation,
+  useGetTagFlashcardQuery,
+} from "@highschool/react-query/queries";
 import { useDebounceValue } from "@highschool/hooks";
 import { Input } from "@highschool/ui/components/ui/input";
 import { useState, useEffect } from "react";
@@ -62,6 +65,9 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
     search: debounceSearch,
   });
 
+  const { mutateAsync: createTagFlashcard, isPending: isTagFlashcardCreating } =
+    useCreateTagFlashcardMutation();
+
   useEffect(() => {
     if (tags?.data) {
       if (page === 1) {
@@ -77,6 +83,17 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
   useEffect(() => {
     setPage(1);
   }, [debounceSearch]);
+
+  const handleCreateTagFlashcard = async () => {
+    if (searchQuery.length > 0) {
+      const newTags = await createTagFlashcard({ names: [searchQuery] });
+
+      setTagList([...tagList, newTags[0]]);
+
+      setSelectedValues((prev) => [...prev, searchQuery]);
+      setTags((prev) => [...prev, searchQuery]);
+    }
+  };
 
   return (
     <Popover>
@@ -94,7 +111,7 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
                 {selectedValues.length}
               </Badge>
               <div className="hidden space-x-1 lg:flex">
-                {selectedValues.length > 2 ? (
+                {selectedValues.length > 0 ? (
                   <Badge
                     className="rounded-sm px-1 font-normal"
                     variant="secondary"
@@ -121,7 +138,7 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="h-[45vh] w-[200px] p-0">
+      <PopoverContent align="start" className="h-80 w-[200px] p-0">
         <Command>
           <div className="flex items-center border-b px-3">
             <IconSearch className="mr-2 size-4 shrink-0 opacity-50" />
@@ -148,15 +165,28 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
               }
             }}
           >
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty className="mt-0">
+              <div className="flex flex-col gap-4">
+                <Button
+                  className="border-none"
+                  disabled={isTagFlashcardCreating}
+                  variant={"outline"}
+                  onClick={handleCreateTagFlashcard}
+                >
+                  <IconCirclePlus className="size-4" />
+                  Create tag
+                </Button>
+                <p className="text-center">No results found.</p>
+              </div>
+            </CommandEmpty>
             <CommandGroup key={debounceSearch}>
               {tagList.map((option) => {
-                const isSelected = selectedValues.indexOf(option.id) !== -1;
+                const isSelected = selectedValues.indexOf(option.name) !== -1;
 
                 return (
                   <CommandItem
                     key={option.id}
-                    value={option.id}
+                    value={option.name}
                     onSelect={handleSelectedValues}
                   >
                     <div
@@ -183,7 +213,10 @@ export function ComboboxTag({ setTags }: ComboboxTagProps) {
                 <CommandGroup>
                   <CommandItem
                     className="justify-center text-center"
-                    onSelect={() => setSelectedValues([])}
+                    onSelect={() => {
+                      setSelectedValues([]);
+                      setTags([]);
+                    }}
                   >
                     Clear filters
                   </CommandItem>

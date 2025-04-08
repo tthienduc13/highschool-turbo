@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createCurriculum,
   deleteCurriculum,
+  editCurriculum,
   getCurricula,
 } from "../apis/curriculum.ts";
 
@@ -33,9 +34,9 @@ export const useDeleteCurriculumMutation = () => {
   });
 };
 
-// export const useEditCurriculumMutation = () => {
-//     return useMutation({
-//         mutationKey: ["edit-curriculum"],
-//         mutationFn: edit
-//     })
-// }
+export const useEditCurriculumMutation = () => {
+  return useMutation({
+    mutationKey: ["edit-curriculum"],
+    mutationFn: editCurriculum,
+  });
+};

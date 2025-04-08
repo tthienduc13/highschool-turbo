@@ -73,7 +73,7 @@ export const navModerator = {
         },
         {
           title: "Create Flashcard",
-          url: "/flashcard/create",
+          url: "/flashcard/modify",
         },
         {
           title: "Flashcard Template",
