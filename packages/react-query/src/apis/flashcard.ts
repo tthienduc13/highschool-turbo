@@ -5,10 +5,16 @@ import {
   EditSetPayload,
   Flashcard,
   FlashcardContainer,
+  FlashcardPreview,
   Pagination,
   ResponseModel,
+  TagFlashcard,
 } from "@highschool/interfaces";
-import { flashcardEndpoints, userEndpoints } from "@highschool/endpoints";
+import {
+  flashcardEndpoints,
+  tagEndpoints,
+  userEndpoints,
+} from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -232,4 +238,60 @@ export const updateContainer = async ({
     console.error("Error while getting draft:", error);
     throw error;
   }
+};
+
+export const getFlashcards = async ({
+  pageSize,
+  pageNumber,
+  search,
+  tags,
+  entityId,
+  flashcardType,
+  userId,
+  isCreatedBySystem,
+  status,
+  isDeleted,
+}: {
+  pageSize: number;
+  pageNumber: number;
+  search?: string;
+  tags?: string[];
+  entityId?: string;
+  flashcardType?: string;
+  userId?: string;
+  isCreatedBySystem?: boolean;
+  status?: string;
+  isDeleted?: boolean;
+}): Promise<Pagination<FlashcardPreview[]>> => {
+  return fetchPaginatedData<FlashcardPreview[]>(
+    flashcardEndpoints.getFlashcards,
+    {
+      pageNumber,
+      pageSize,
+      search,
+      tags,
+      entityId,
+      flashcardType,
+      userId,
+      isCreatedBySystem,
+      status,
+      isDeleted,
+    },
+  );
+};
+
+export const getTagFlashcard = async ({
+  pageNumber,
+  pageSize,
+  search,
+}: {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+}): Promise<Pagination<TagFlashcard[]>> => {
+  return fetchPaginatedData<TagFlashcard[]>(tagEndpoints.getTagFlashcard, {
+    pageNumber,
+    pageSize,
+    search,
+  });
 };

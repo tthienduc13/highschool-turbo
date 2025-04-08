@@ -69,15 +69,15 @@ export const navModerator = {
       items: [
         {
           title: "Flashcard List",
-          url: "/flashcard-management/flashcards",
+          url: "/flashcard/management",
         },
         {
           title: "Create Flashcard",
-          url: "/flashcard-management/create-flashcard",
+          url: "/flashcard/create",
         },
         {
           title: "Flashcard Template",
-          url: "/flashcard-management/template",
+          url: "/flashcard/template",
         },
       ],
     },

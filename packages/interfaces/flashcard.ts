@@ -117,18 +117,24 @@ export type FlashcardPreview = {
   entityId: string;
   entityName: string;
   entitySlug: string;
-  flashcardType: "Lesson" | "Topic" | "Subject" | string;
-  grade: number | null;
+  flashcardType: string;
+  grade?: number | null;
   flashcardName: string;
   slug: string;
   flashcardDescription: string;
   created: boolean;
-  status: "Open" | "Closed" | string; // Add other statuses as needed
+  status: string;
   star: number;
   createdBy: string;
-  createdAt: string; // Consider converting to `Date` if you're parsing it
-  updatedAt: string; // Same as above
+  createdAt: string;
+  updatedAt?: string;
   updatedBy: string;
   numberOfFlashcardContent: number;
-  tags: string[]; // Empty array or array of strings
+  tags?: string[];
+};
+
+export type TagFlashcard = {
+  id: string;
+  name: string;
+  usageCount: number;
 };

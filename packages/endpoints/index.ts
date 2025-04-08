@@ -436,6 +436,11 @@ export const flashcardEndpoints = {
       API_VERSIONS.V1,
       `/container/flashcard/${flashcardId}`,
     ),
+  getFlashcards: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/management",
+  ),
 } as const;
 
 // Flashcard Content Endpoints
@@ -900,6 +905,11 @@ export const newsEndpoints = {
 export const tagEndpoints = {
   getAll: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/newstags"),
   create: createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, "/newstag"),
+  getTagFlashcard: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/tags",
+  ),
 } as const;
 
 // Game Endpoints

@@ -20,7 +20,7 @@ export function usePagination({
 }: UsePaginationProps): Pagination {
   const [page, setPage] = useState(initialPage);
   const [pageSize, setPageSize] = useState(initialPageSize);
-  const [pageCount, setPageCount] = useState(0); // Can be updated dynamically from API
+  const [pageCount, setPageCount] = useState(0);
 
   return {
     page,
@@ -28,6 +28,6 @@ export function usePagination({
     pageCount,
     setPage,
     setPageSize,
-    setPageCount, // Allow updating total pages dynamically
+    setPageCount,
   };
 }
