@@ -1,0 +1,53 @@
+import { AnimatePresence, motion } from "framer-motion";
+import { Button } from "@highschool/ui/components/ui/button";
+
+import { AnyKeyPressLayer } from "../study-set-learn/any-key-press-layer";
+
+import { useCramContext } from "@/stores/use-study-set-cram-store";
+
+export const ActionBar = () => {
+  const status = useCramContext((s) => s.status);
+  const roundSummary = useCramContext((s) => s.summary);
+  const goToNextQuestion = useCramContext((s) => s.goToNextQuestion);
+
+  const handleAction = () => {
+    if (status === "incorrect") {
+      goToNextQuestion();
+    }
+  };
+
+  const visible = status == "incorrect" || !!roundSummary;
+
+  return (
+    <>
+      {visible && <AnyKeyPressLayer onSubmit={handleAction} />}
+      <AnimatePresence>
+        {visible && (
+          <motion.div
+            animate={{ translateY: 0 }}
+            exit={{ translateY: 80 }}
+            initial={{ translateY: 80 }}
+            style={{
+              position: "fixed",
+              bottom: 0,
+              width: "100%",
+              left: 0,
+              zIndex: 100,
+            }}
+          >
+            <div className="dark:border-t-800 bg-background w-full border-t-2 border-t-gray-100">
+              <div className="mx-auto flex max-w-4xl flex-row justify-between p-4 md:px-0">
+                <p className="hidden font-medium text-gray-500 md:flex">
+                  Bấm nút bất kì để tiếp tục
+                </p>
+                <Button className="w-full md:w-auto" onClick={handleAction}>
+                  {status === "incorrect" ? "Tiếp tục" : "Bắt đầu vòng mới"}
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
