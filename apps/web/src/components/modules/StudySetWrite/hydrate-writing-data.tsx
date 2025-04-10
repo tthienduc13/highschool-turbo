@@ -1,8 +1,8 @@
 import { FlashcardLearn } from "@highschool/interfaces";
-import { useFSRSByIdQuery } from "@highschool/react-query/queries";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { useFSRSBySlugQuery } from "@highschool/react-query/queries";
 
 import {
   createWritingStore,
@@ -21,24 +21,14 @@ export const HydrateWritingData = ({
   children,
   placeholder,
 }: HydrateWritingDataProps) => {
-  const id = "01960be8-5cf8-7ea2-b97f-fb9e00be0694";
   const router = useRouter();
-
-  //   const {
-  //     data: fsrsData,
-  //     isLoading,
-  //     refetch,
-  //   } = useFSRSBySlugQuery({
-  //     slug: slug,
-  //     isReview: false,
-  //   });
 
   const {
     data: fsrsData,
     isLoading,
     isError,
-  } = useFSRSByIdQuery({
-    flashcardId: id,
+  } = useFSRSBySlugQuery({
+    slug: slug,
     isReview: false,
   });
 
