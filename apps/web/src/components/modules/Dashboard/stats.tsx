@@ -31,7 +31,7 @@ export const Stats = () => {
             <p className="text-2xl font-bold">
               <NumberTicker
                 className="text-2xl font-bold"
-                value={stats.currentStreak}
+                value={stats.currentLoginStreak}
               />{" "}
               {""}
               ngày
@@ -48,7 +48,7 @@ export const Stats = () => {
             <p className="text-2xl font-bold">
               <NumberTicker
                 className="text-2xl font-bold"
-                value={stats.longestStreak}
+                value={stats.longestLoginStreak}
               />{" "}
               ngày
             </p>
@@ -60,12 +60,13 @@ export const Stats = () => {
             <IconCards className="size-6 text-blue-500" />
           </div>
           <div>
-            <p className="text-sm text-gray-600">Tổng bộ thẻ</p>
+            <p className="text-sm text-gray-600">Thẻ đã học</p>
             <p className="text-2xl font-bold">
               <NumberTicker
                 className="text-2xl font-bold"
-                value={stats.totalFlashcard}
-              />
+                value={stats.totalFlashcardContentLearned}
+              />{" "}
+              thẻ
             </p>
           </div>
         </div>
@@ -76,12 +77,13 @@ export const Stats = () => {
               <IconTarget className="size-6 text-green-500" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Tổng thẻ ghi nhớ</p>
+              <p className="text-sm text-gray-600">Bài đã học</p>
               <p className="text-2xl font-bold">
                 <NumberTicker
                   className="text-2xl font-bold"
-                  value={stats.totalFlashcard}
+                  value={stats.todayLessonLearned}
                 />
+                {""} bài
               </p>
             </div>
           </div>

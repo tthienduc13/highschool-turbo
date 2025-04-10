@@ -58,12 +58,9 @@ export const DEFAULT_PROPS: CramStoreProps = {
   answerMode: StudySetAnswerMode.FlashcardContentTerm,
 };
 
-export const createCramStore = (
-  initProps?: Partial<CramStoreProps>,
-  behaviors?: Partial<CramState>,
-) => {
+export const createCramStore = (initProps?: Partial<CramStoreProps>) => {
   return createStore<CramState>()(
-    subscribeWithSelector((set, get) => ({
+    subscribeWithSelector((set) => ({
       ...DEFAULT_PROPS,
       ...initProps,
       initialize: (
@@ -100,7 +97,6 @@ export const createCramStore = (
         let pool = shuffleArray(initialTerms);
         const timeline: TestQuestion[] = [];
 
-        // Create multiple choice questions for all terms
         for (const term of pool) {
           const question = generateMcqQuestion(term, answerMode, allTerms);
 
@@ -144,14 +140,14 @@ export const createCramStore = (
           return {};
         });
       },
-      endQuestionCallback: (correct) => {
+      endQuestionCallback: () => {
         set((state) => {
           const roundCounter = state.roundCounter + 1;
           const roundProgress = state.progress + 1;
 
-          if (state.progress === state.allTerms.length - 1) {
+          if (state.roundCounter === state.allTerms.length - 1) {
             return {
-              roundSummary: true,
+              completed: true,
               status: undefined,
             };
           }

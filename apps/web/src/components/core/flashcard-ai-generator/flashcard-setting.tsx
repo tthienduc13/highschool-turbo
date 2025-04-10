@@ -11,11 +11,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
-
-import { DIFFICULTY_TRANSLATIONS, useFlashcardStore } from "@/stores/use-ai-flashcard-store";
 import { FlashcardDifficulty } from "@highschool/interfaces";
 
-
+import {
+  DIFFICULTY_TRANSLATIONS,
+  useFlashcardStore,
+} from "@/stores/use-ai-flashcard-store";
 
 export const FlashcardSettings = () => {
   const { options, updateOption, getExampleText } = useFlashcardStore();
@@ -137,7 +138,7 @@ export const FlashcardSettings = () => {
             </RadioGroup>
           </div>
           <Card className="col-span-5 w-full rounded-2xl border-2 border-gray-200 dark:border-gray-800/50 ">
-            <CardContent className="flex h-[250px] w-full flex-col items-center justify-between gap-2 rounded-2xl px-6 py-4">
+            <CardContent className="no-scrollbar flex h-[250px] w-full flex-col items-center justify-between gap-2 rounded-2xl px-6 py-4">
               <p className="text-muted-foreground font-semibold uppercase tracking-widest">
                 Mẫu mặt trước
               </p>
@@ -186,11 +187,11 @@ export const FlashcardSettings = () => {
             </RadioGroup>
           </div>
           <Card className="col-span-5 w-full rounded-2xl border-2 border-gray-200 dark:border-gray-800/50 ">
-            <CardContent className="flex h-[250px] w-full flex-col items-center justify-between gap-2 rounded-2xl px-6 py-4">
+            <CardContent className=" flex h-[250px] w-full flex-col items-center justify-between gap-2 rounded-2xl px-6 py-4">
               <p className="text-muted-foreground font-semibold uppercase tracking-widest">
                 Mẫu mặt sau
               </p>
-              <p className="flex grow  items-center justify-center overflow-y-scroll px-2 text-center text-base font-semibold">
+              <p className="no-scrollbar flex grow  items-center justify-center overflow-y-scroll px-2 text-center text-base font-semibold">
                 {getExampleText("back", options.backTextLength)}
               </p>
             </CardContent>

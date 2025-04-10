@@ -99,10 +99,16 @@ export type UserCreate = {
 };
 
 export interface UserOwnStatistics {
-  currentStreak: number;
-  longestStreak: number;
-  totalFlashcard: number;
-  totalFlashcardContent: number;
+  currentLoginStreak: number;
+  longestLoginStreak: number;
+  currentLearnStreak: number;
+  longestLearnStreak: number;
+  todayLessonLearned: number;
+  totalLessonLearned: number;
+  totalFlashcardLearned: number;
+  totalFlashcardContentLearned: number;
+  totalFlashcardLearnDates: number;
+  totalFlashcardContentHours: number;
 }
 
 export type UserStatistics = {
@@ -133,3 +139,16 @@ export type UserRetention = {
   count: number;
   percent: number;
 };
+
+export interface Heatmap {
+  totalActivity: number;
+  viewType: string;
+  startYear: number;
+  endYear: number;
+  data: Datum[];
+}
+
+export interface Datum {
+  date: Date;
+  count: number;
+}

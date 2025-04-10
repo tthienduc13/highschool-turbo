@@ -9,20 +9,21 @@ import {
 } from "@highschool/ui/components/ui/card";
 import { IconArrowLeft, IconArrowRight, IconTrash } from "@tabler/icons-react";
 import { Button } from "@highschool/ui/components/ui/button";
-
-import { UploadStep } from "./upload";
-import { FlashcardSettings } from "./flashcard-setting";
-
-import { ShineBorder } from "@/components/ui/shine-border";
-import { useFlashcardStore } from "@/stores/use-ai-flashcard-store";
 import { toast } from "sonner";
 import {
   useAIFlashcardMutation,
   useDeleteFlashcardMutation,
 } from "@highschool/react-query/queries";
 import { FlashcardGeneratePayload } from "@highschool/interfaces";
-import { FlashcardCreate } from "./create";
 import { useRouter } from "next/navigation";
+import { CreateFlashcardResponse } from "@highschool/react-query/apis";
+
+import { UploadStep } from "./upload";
+import { FlashcardSettings } from "./flashcard-setting";
+import { FlashcardCreate } from "./create";
+
+import { ShineBorder } from "@/components/ui/shine-border";
+import { useFlashcardStore } from "@/stores/use-ai-flashcard-store";
 
 export const FlashcardAiGenerator = () => {
   const router = useRouter();
@@ -42,19 +43,30 @@ export const FlashcardAiGenerator = () => {
   const handleNext = () => {
     if (currentStep === "settings") {
       const submitData = submit();
+
       if (!submitData) {
         toast.error("Validation Error", {
           description:
             "Please ensure you have provided either a file or text with length between 150 and 10000 characters",
         });
+
         return;
       }
 
       createFLashcard.mutate(submitData as FlashcardGeneratePayload, {
         onSuccess: (data) => {
+          if (data.status === 400 && typeof data.data === "string") {
+            toast.error(data.message);
+            router.push(`/study-set/edit/${data.data}`);
+
+            return;
+          }
+
+          const createdData = data.data as CreateFlashcardResponse;
+
           setResult({
-            id: data.data?.id!,
-            flashcardContents: data.data?.flashcardContents!,
+            id: createdData.id!,
+            flashcardContents: createdData.flashcardContents!,
           });
           goToNextStep();
         },
@@ -66,7 +78,8 @@ export const FlashcardAiGenerator = () => {
           });
         },
       });
-      return; 
+
+      return;
     }
     goToNextStep();
   };
@@ -79,13 +92,13 @@ export const FlashcardAiGenerator = () => {
           useFlashcardStore.getState().resetStore();
           router.push("/");
         },
-      }
+      },
     );
   };
 
   const handleContinueEdit = () => {
-    router.push(`/study-set/edit/${result.id}`)
-  }
+    router.push(`/study-set/edit/${result.id}`);
+  };
 
   const isNextDisabled = !canProceedToNextStep() || createFLashcard.isPending;
   const isPreviousDisabled = currentStep === "upload";
@@ -114,22 +127,33 @@ export const FlashcardAiGenerator = () => {
       <CardFooter className="flex flex-row items-center justify-between">
         {currentStep !== "upload" ? (
           <Button
+            disabled={
+              currentStep !== "create"
+                ? isPreviousDisabled
+                : deleteFlashcard.isPending
+            }
             variant={currentStep === "create" ? "destructive" : "outline"}
-            onClick={currentStep !== "create" ? goToPreviousStep : handleDiscard}
-            disabled={currentStep !== "create" ? isPreviousDisabled : deleteFlashcard.isPending}
+            onClick={
+              currentStep !== "create" ? goToPreviousStep : handleDiscard
+            }
           >
-            {currentStep === "create" ? <IconTrash/> : <IconArrowLeft />}
+            {currentStep === "create" ? <IconTrash /> : <IconArrowLeft />}
             {currentStep === "create" ? "Hủy bỏ" : "Quay lại"}
           </Button>
         ) : (
           <div />
         )}
-        <Button onClick={currentStep === "create" ? handleContinueEdit : handleNext} disabled={currentStep === "create" ? !result.id : isNextDisabled}>
+        <Button
+          disabled={currentStep === "create" ? !result.id : isNextDisabled}
+          onClick={currentStep === "create" ? handleContinueEdit : handleNext}
+        >
           {currentStep === "settings"
             ? createFLashcard.isPending
               ? "Đang tạo"
-              : "Tạo thẻ" 
-            : currentStep === "create" ? "Tiếp tục chỉnh sửa" : "Tiếp theo"}
+              : "Tạo thẻ"
+            : currentStep === "create"
+              ? "Tiếp tục chỉnh sửa"
+              : "Tiếp theo"}
           <IconArrowRight />
         </Button>
       </CardFooter>

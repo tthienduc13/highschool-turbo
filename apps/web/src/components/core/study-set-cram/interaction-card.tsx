@@ -43,11 +43,10 @@ export const InteractionCard = () => {
 
   const progress = Math.min(1, Math.max(0, roundCounter / timeLine.length));
 
-  console.log(progress);
-
   const { theme } = useTheme();
 
   const [isVisible, setIsVisible] = useState(false);
+  const status = useCramContext((s) => s.status);
 
   useEffect(() => {
     if (status !== undefined) {
@@ -61,14 +60,11 @@ export const InteractionCard = () => {
   const incorrectColor = theme === "dark" ? "#fc8181" : "#e53e3e";
   const neutralColor = theme === "dark" ? "#7ea6ff" : "#0042da";
 
-  const { question, answered, data } =
-    useCardSelector<MultipleChoiceData>(roundCounter);
+  const { question, data } = useCardSelector<MultipleChoiceData>(roundCounter);
 
   const active = useCardSelector<MultipleChoiceData>(roundCounter);
 
   if (!timeLine || !question || !active) return;
-
-  console.log(active);
 
   return (
     <motion.div

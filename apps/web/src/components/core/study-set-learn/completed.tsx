@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useResetProgressMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-import { cn } from "@highschool/ui/lib/utils";
-import { IconReload } from "@tabler/icons-react";
 
 import { TermMastery } from "./term-mastery";
 
@@ -13,8 +10,6 @@ import { useSet } from "@/hooks/use-set";
 export const Completed = () => {
   const { flashcard, terms } = useSet();
   const router = useRouter();
-
-  const { mutateAsync: resetProgress, isPending } = useResetProgressMutation();
 
   useEffect(() => {
     effectChannel.emit("confetti");
@@ -35,26 +30,19 @@ export const Completed = () => {
         </div>
         <div className="flex flex-col gap-3">
           <Button
-            disabled={isPending}
             size={"lg"}
             onClick={() => router.push(`/study-set/${flashcard.slug}`)}
           >
             Hoàn thành
           </Button>
           <Button
-            disabled={isPending}
             size={"lg"}
             variant={"ghost"}
             onClick={async () => {
-              resetProgress({ flashcardId: flashcard.id });
               window.location.reload();
             }}
           >
-            <IconReload
-              className={cn(isPending && "animate-spin")}
-              size={"lg"}
-            />
-            {!isPending && " Làm lại từ đầu"}
+            Làm lại từ đầu
           </Button>
         </div>
       </div>

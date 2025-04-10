@@ -31,7 +31,6 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const storeRef = useRef<SortFlashcardsStore>(null);
 
-  // Initialize the store with FSRS data when it's available
   useEffect(() => {
     if (fsrsData && storeRef.current) {
       const dueCards = fsrsData.dueCards;

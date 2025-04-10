@@ -44,7 +44,7 @@ export const RecentView = ({ isLoading, data }: RecentViewProps) => {
   return (
     <Wrapper title={"Xem gần đây"}>
       <div className="grid grid-cols-1 md:grid-cols-2">
-        {data?.items.slice(0, 3).map((item) => (
+        {data?.items.slice(0, 4).map((item) => (
           <Link
             key={item.idDocument}
             passHref
