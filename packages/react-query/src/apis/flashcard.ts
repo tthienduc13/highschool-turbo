@@ -11,26 +11,33 @@ import {
   Pagination,
   ResponseModel,
 } from "@highschool/interfaces";
-import { aIFlashcardEndpoint, flashcardEndpoints, flashcardStudyEndpoints, userEndpoints } from "@highschool/endpoints";
+import {
+  aIFlashcardEndpoint,
+  flashcardEndpoints,
+  flashcardStudyEndpoints,
+  userEndpoints,
+} from "@highschool/endpoints";
 
-
-import fetchPaginatedData from "./common.ts";
 import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
+import fetchPaginatedData from "./common.ts";
 
-interface CreateFlashcardResponse {
+export interface CreateFlashcardResponse {
   id: string;
-  flashcardContents: FlashcardContent[]
+  flashcardContents: FlashcardContent[];
 }
 
 export const createFlashcardWithAI = async (
   values: FlashcardGeneratePayload,
-): Promise<ResponseModel<CreateFlashcardResponse>> => {
+): Promise<ResponseModel<CreateFlashcardResponse | string>> => {
   try {
     const formData = new FormData();
 
     formData.append("note", values.note || "");
-    formData.append("numberFlashcardContent", values.numberFlashcardContent.toString());
+    formData.append(
+      "numberFlashcardContent",
+      values.numberFlashcardContent.toString(),
+    );
     formData.append("levelHard", values.levelHard);
     formData.append("frontTextLong", values.frontTextLong);
     formData.append("backTextLong", values.backTextLong);
@@ -39,8 +46,7 @@ export const createFlashcardWithAI = async (
       formData.append("textRaw", values.textRaw.toString());
     }
 
-  
-      formData.append("fileRaw", values.fileRaw!);
+    formData.append("fileRaw", values.fileRaw!);
 
     const response = await axiosClientUpload.post(
       aIFlashcardEndpoint.create,
@@ -49,7 +55,12 @@ export const createFlashcardWithAI = async (
 
     return response.data;
   } catch (error) {
-    console.error("Error while creating flashcard", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+
+      return data;
+    }
+    console.error("Error while creating flashcard by AI:", error);
     throw error;
   }
 };
@@ -274,31 +285,93 @@ export const updateContainer = async ({
   }
 };
 
-
-export const getFSRSById = async({flashcardId, isReview}: {flashcardId: string,isReview: boolean}): Promise<FlashcardLearn> => {
+export const getFSRSById = async ({
+  flashcardId,
+  isReview,
+}: {
+  flashcardId: string;
+  isReview: boolean;
+}): Promise<FlashcardLearn> => {
   try {
-    const { data } = await axiosServices.get(flashcardStudyEndpoints.getFSRSById(flashcardId), {
-      params: {
-        isReview
-      }
-    });
+    const { data } = await axiosServices.get(
+      flashcardStudyEndpoints.getFSRSById(flashcardId),
+      {
+        params: {
+          isReview,
+        },
+      },
+    );
+
     return data;
   } catch (error) {
     console.error("Error while getting fsrs by id", error);
     throw error;
   }
-}
+};
 
-export const updateFSRSProgress = async({flashcardContentId, rating, timeSpent}: {flashcardContentId: string, rating: number, timeSpent: number}) => {
+export const getFSRSBySlug = async ({
+  slug,
+  isReview,
+}: {
+  slug: string;
+  isReview: boolean;
+}): Promise<FlashcardLearn> => {
   try {
-    const { data } = await axiosServices.post(flashcardStudyEndpoints.updateProgress, {
-      flashcardContentId,
-      rating,
-      timeSpent
-    } )
+    const { data } = await axiosServices.get(
+      flashcardStudyEndpoints.getFSRSBySlug(slug),
+      {
+        params: {
+          isReview,
+        },
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting fsrs by id", error);
+    throw error;
+  }
+};
+
+export const updateFSRSProgress = async ({
+  flashcardContentId,
+  rating,
+  timeSpent,
+}: {
+  flashcardContentId: string;
+  rating: number;
+  timeSpent: number;
+}) => {
+  try {
+    const { data } = await axiosServices.post(
+      flashcardStudyEndpoints.updateProgress,
+      {
+        flashcardContentId,
+        rating,
+        timeSpent,
+      },
+    );
+
     return data;
   } catch (error) {
     console.error("Error while updating fsrs progress", error);
     throw error;
   }
-}
+};
+
+export const resetFlashcardProgress = async ({
+  flashcardId,
+}: {
+  flashcardId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      flashcardStudyEndpoints.resetProgress(flashcardId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while resetting flashcard progress", error);
+    throw error;
+  }
+};

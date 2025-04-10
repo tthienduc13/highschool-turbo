@@ -108,8 +108,6 @@ export const TitleProperties = () => {
     limit: 6,
   });
 
-
-
   // Cập nhật searchInput khi component mount và có entityId
   useEffect(() => {
     if (_entityId && searchResult && searchResult.length > 0) {

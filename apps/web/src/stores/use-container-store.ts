@@ -10,6 +10,7 @@ import {
 
 export interface ContainerStoreProps {
   hideFlashcard: boolean;
+  cardPerDay: number;
   flashcardHideWith: LimitedStudySetAnswerMode;
   shuffleFlashcards: boolean;
   autoplayFlashcards: boolean;
@@ -40,6 +41,7 @@ interface ContainerState extends ContainerStoreProps {
   setCardsStudyStarred: (cardsStudyStarred: boolean) => void;
   setCardsAnswerWith: (cardsAnswerWith: LimitedStudySetAnswerMode) => void;
   setMatchStudyStarred: (matchStudyStarred: boolean) => void;
+  setCardPerDay: (cardPerDay: number) => void;
   starTerm: (termId: string) => void;
   unstarTerm: (termId: string) => void;
 }
@@ -51,6 +53,7 @@ export const createContainerStore = (
 ) => {
   const DEFAULT_PROPS: ContainerStoreProps = {
     shuffleFlashcards: false,
+    cardPerDay: 0,
     hideFlashcard: false,
     flashcardHideWith: LimitedStudySetAnswerMode.Definition,
     autoplayFlashcards: false,
@@ -94,6 +97,9 @@ export const createContainerStore = (
       },
       setFlashcardHideWith: (flashcardHideWith: LimitedStudySetAnswerMode) => {
         set({ flashcardHideWith });
+      },
+      setCardPerDay: (cardPerDay: number) => {
+        set({ cardPerDay });
       },
       setShuffleLearn: (shuffleLearn: boolean) => set({ shuffleLearn }),
       setStudyStarred: (studyStarred: boolean) => set({ studyStarred }),

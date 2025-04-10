@@ -4,12 +4,17 @@ import FullCalendar from "@fullcalendar/react";
 import { useRef } from "react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { IconCalendarUser } from "@tabler/icons-react";
 
 export const Calendar = () => {
   const calendarRef = useRef<any>(null);
 
   return (
-    <div>
+    <div className="flex w-full flex-col gap-6 ">
+      <div className="flex flex-row items-center gap-2">
+        <IconCalendarUser size={24} />
+        <h2 className="text-3xl font-semibold">Hoạt động của bạn</h2>
+      </div>
       <FullCalendar
         ref={calendarRef}
         allDaySlot={false}

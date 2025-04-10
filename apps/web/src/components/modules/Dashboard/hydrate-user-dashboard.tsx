@@ -3,11 +3,11 @@
 import { useSession } from "next-auth/react";
 import { createContext } from "react";
 import {
+  useHeatmapQuery,
   useUserOwnStatisticQuery,
   useUserProfileQuery,
 } from "@highschool/react-query/queries";
-import { HeatMapValue } from "@uiw/react-heat-map";
-import { UserOwnStatistics } from "@highschool/interfaces";
+import { Heatmap, UserOwnStatistics } from "@highschool/interfaces";
 
 import { ProfileNotFound } from "../../core/common/404s/profile-404";
 
@@ -28,13 +28,7 @@ export interface UserDashboard {
     createdAt?: string;
   };
   stats: UserOwnStatistics;
-  heatmap: {
-    totalActivities: number;
-    viewType: "flashcard" | "login" | "learnedLesson";
-    startDate: string;
-    endDate: string;
-    values: HeatMapValue[];
-  };
+  heatmap: Heatmap;
 }
 
 export const DashboardContext = createContext<UserDashboard>({
@@ -45,17 +39,23 @@ export const DashboardContext = createContext<UserDashboard>({
     profilePicture: "",
   },
   stats: {
-    currentStreak: 0,
-    longestStreak: 0,
-    totalFlashcard: 0,
-    totalFlashcardContent: 0,
+    currentLoginStreak: 0,
+    longestLoginStreak: 0,
+    totalFlashcardLearned: 0,
+    todayLessonLearned: 0,
+    totalLessonLearned: 0,
+    totalFlashcardContentLearned: 0,
+    totalFlashcardLearnDates: 0,
+    totalFlashcardContentHours: 0,
+    currentLearnStreak: 0,
+    longestLearnStreak: 0,
   },
   heatmap: {
-    totalActivities: 0,
+    totalActivity: 0,
     viewType: "flashcard",
-    startDate: "",
-    endDate: "",
-    values: [],
+    startYear: new Date().getFullYear() - 1,
+    endYear: new Date().getFullYear(),
+    data: [],
   },
 });
 
@@ -73,6 +73,12 @@ export const HydrateDashboardData = ({
   const { data: statisticData, isLoading: statisticLoading } =
     useUserOwnStatisticQuery();
 
+  const { data: heatmapData, isLoading: heatmapLoading } = useHeatmapQuery({
+    viewType: "login",
+    startYear: new Date().getFullYear(),
+    endYear: new Date().getFullYear() + 1,
+  });
+
   if (data?.status === 404 || isError) return <ProfileNotFound />;
   if (isLoading || !data?.data) {
     return fallback ?? <Loading />;
@@ -88,25 +94,26 @@ export const HydrateDashboardData = ({
           profilePicture: data.data.profilePicture,
         },
         stats: {
-          currentStreak: statisticData?.currentStreak ?? 0,
-          longestStreak: statisticData?.longestStreak ?? 0,
-          totalFlashcard: statisticData?.totalFlashcard ?? 0,
-          totalFlashcardContent: statisticData?.totalFlashcardContent ?? 0,
+          currentLoginStreak: statisticData?.currentLoginStreak ?? 0,
+          longestLoginStreak: statisticData?.longestLoginStreak ?? 0,
+          totalFlashcardLearned: statisticData?.totalFlashcardLearned ?? 0,
+          todayLessonLearned: statisticData?.todayLessonLearned ?? 0,
+          totalLessonLearned: statisticData?.totalLessonLearned ?? 0,
+          totalFlashcardContentLearned:
+            statisticData?.totalFlashcardContentLearned ?? 0,
+          totalFlashcardLearnDates:
+            statisticData?.totalFlashcardLearnDates ?? 0,
+          totalFlashcardContentHours:
+            statisticData?.totalFlashcardContentHours ?? 0,
+          currentLearnStreak: statisticData?.currentLearnStreak ?? 0,
+          longestLearnStreak: statisticData?.longestLearnStreak ?? 0,
         },
         heatmap: {
-          totalActivities: 0,
+          totalActivity: heatmapData?.totalActivity ?? 0,
           viewType: "flashcard",
-          startDate: "2024/01/01",
-          endDate: "2024/12/31",
-          values: [
-            { date: "2024/01/11", count: 2, content: "oknha" },
-            { date: "2024/01/12", count: 20 },
-            { date: "2024/01/13", count: 10 },
-            { date: "2024/04/11", count: 2 },
-            { date: "2024/05/01", count: 5 },
-            { date: "2024/05/02", count: 5 },
-            { date: "2024/05/04", count: 11 },
-          ],
+          startYear: heatmapData?.startYear ?? new Date().getFullYear() - 1,
+          endYear: heatmapData?.endYear ?? new Date().getFullYear(),
+          data: heatmapData?.data ?? [],
         },
       }}
     >

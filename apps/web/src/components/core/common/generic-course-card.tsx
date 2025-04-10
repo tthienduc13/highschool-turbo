@@ -17,8 +17,8 @@ export const GenericCourseCard = ({
 }: GenericCourseCardProps) => {
   return (
     <Link passHref className="flex" href={href}>
-      <div className="flex size-full cursor-pointer flex-row rounded-lg border-2 border-gray-200 bg-white shadow-md md:flex-col dark:border-gray-700 dark:bg-gray-800">
-        <div className="relative h-[120px] w-full border-gray-200 md:w-full md:border-b-2 dark:border-gray-700">
+      <div className="flex size-full cursor-pointer flex-row  rounded-lg border-2 border-gray-200 bg-white shadow-md md:flex-col dark:border-gray-700 dark:bg-gray-800">
+        <div className="relative h-[140px] w-full overflow-hidden rounded-t-lg border-gray-200 md:w-full md:border-b-2 dark:border-gray-700">
           <Image
             fill
             alt={title}

@@ -1,7 +1,6 @@
 import { InnerDashboard } from "./inner-dashboard";
 import { HydrateDashboardData } from "./hydrate-user-dashboard";
 
-import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
 
 function DashboardModule() {
@@ -9,11 +8,9 @@ function DashboardModule() {
     <HydrateDashboardData
     //  fallback={<ProfileLoading />}
     >
-      <WithFooter>
-        <Container maxWidth="7xl">
-          <InnerDashboard />
-        </Container>
-      </WithFooter>
+      <Container className="mt-10 max-w-6xl" maxWidth="6xl">
+        <InnerDashboard />
+      </Container>
     </HydrateDashboardData>
   );
 }

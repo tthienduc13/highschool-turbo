@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  assessAnswer,
   getFlashcardContentsById,
   getFlashcardContentsBySlug,
   patchFlashcardContent,
@@ -58,5 +59,12 @@ export const useEditFlashcardContentMutation = ({
 
       return data;
     },
+  });
+};
+
+export const useAssessAnswerMutation = () => {
+  return useMutation({
+    mutationKey: ["assess-answer"],
+    mutationFn: assessAnswer,
   });
 };

@@ -7,31 +7,55 @@ import {
   getFlashcardById,
   getFlashcardBySlug,
   getFSRSById,
+  getFSRSBySlug,
   getOwnerFlashcard,
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
+  resetFlashcardProgress,
   starTerm,
   updateContainer,
   updateFSRSProgress,
 } from "../apis/flashcard.ts";
 
-export const useFSRSByIdQuery = ({flashcardId, isReview}: {flashcardId: string, isReview: boolean}) => {
+export const useFSRSByIdQuery = ({
+  flashcardId,
+  isReview,
+}: {
+  flashcardId: string;
+  isReview: boolean;
+}) => {
   return useQuery({
     queryKey: ["fsrs-by-id", flashcardId, isReview],
-    queryFn: () => getFSRSById({flashcardId, isReview}),
+    queryFn: () => getFSRSById({ flashcardId, isReview }),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 0,
-  })
-}
+  });
+};
+
+export const useFSRSBySlugQuery = ({
+  slug,
+  isReview,
+}: {
+  slug: string;
+  isReview: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["fsrs-by-slug", slug, isReview],
+    queryFn: () => getFSRSBySlug({ slug, isReview }),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    staleTime: 0,
+  });
+};
 
 export const useAIFlashcardMutation = () => {
   return useMutation({
     mutationKey: ["ai-flashcard"],
-    mutationFn: createFlashcardWithAI
-  })
-}
+    mutationFn: createFlashcardWithAI,
+  });
+};
 
 export const useUserFlashcardQuery = ({
   pageSize,
@@ -50,6 +74,9 @@ export const useUserFlashcardQuery = ({
         pageSize: pageSize,
         username: username,
       }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
     enabled: !!username,
   });
 };
@@ -68,6 +95,9 @@ export const useOwnFlashcardQuery = ({
         pageNumber: pageNumber,
         pageSize: pageSize,
       }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 };
 
@@ -160,5 +190,12 @@ export const useFSRSProgressMutation = () => {
   return useMutation({
     mutationKey: ["update-fsrs-progress"],
     mutationFn: updateFSRSProgress,
+  });
+};
+
+export const useResetFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["reset-flashcard"],
+    mutationFn: resetFlashcardProgress,
   });
 };

@@ -14,15 +14,14 @@ export enum FlashcardDifficulty {
 
 export type FlashcardTextLength = "short" | "medium" | "long";
 
-
 export interface FlashcardGeneratePayload {
   fileRaw?: File;
-  textRaw? : string;
+  textRaw?: string;
   note?: string;
   numberFlashcardContent: number;
   levelHard: FlashcardDifficulty;
-  frontTextLong:FlashcardTextLength
-  backTextLong:FlashcardTextLength
+  frontTextLong: FlashcardTextLength;
+  backTextLong: FlashcardTextLength;
 }
 
 export enum FlashcardAttachToType {
@@ -56,11 +55,10 @@ export interface FlashcardEntitySearch {
 export interface Flashcard {
   id: string;
   userId: string;
-  subjectId: string;
-  subjectName: string;
   grade: Grade;
   flashcardName: string;
   entityId: string;
+  entityName: string;
   flashcardType: FlashcardAttachToType;
   slug: string;
   flashcardDescription: string;
@@ -143,6 +141,7 @@ export interface FlashcardContainer {
   cardsStudyStarred: boolean;
   cardsAnswerWith: LimitedStudySetAnswerMode;
   matchStudyStarred: boolean;
+  cardsPerDay: number;
   starredTerms: string[];
   studiableTerms: StudiableTerm[];
 }
@@ -152,14 +151,12 @@ enum LearnMode {
   Review = "Review",
 }
 
-export enum FlashcardLearnState
-{
-    New,
-    Learning,
-    Review,
-    Relearning
+export enum FlashcardLearnState {
+  New,
+  Learning,
+  Review,
+  Relearning,
 }
-
 
 export interface FlashcardLearn {
   flashcardId: string;
@@ -192,4 +189,11 @@ export interface DueCard {
   correctness: number;
   incorrectCount: number;
   appearedInRound: number;
+}
+
+export enum FlashcardRating {
+  Again = "again",
+  Hard = "hard",
+  Good = "good",
+  Easy = "easy",
 }

@@ -1,14 +1,16 @@
 import { Modal } from "@highschool/components/modal";
 import { useSession } from "next-auth/react";
 import { Separator } from "@highschool/ui/components/ui/separator";
+import { useResetFlashcardMutation } from "@highschool/react-query/queries";
+import { toast } from "sonner";
 
 import { StudyStarredSection } from "./settings/study-starred";
 import { CardsAnswerModeSection } from "./settings/answer-mode";
 import { CardsSortingSection } from "./settings/card-sorting";
+import { CardPerDaySection } from "./settings/card-per-day";
 
 import { useSet } from "@/hooks/use-set";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
-import { useContainerContext } from "@/stores/use-container-store";
 
 interface SettingModal {
   isOpen: boolean;
@@ -19,30 +21,31 @@ export const SettingModal = ({ isOpen, onClose }: SettingModal) => {
   const { status } = useSession();
   const { flashcard } = useSet();
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
-  const cardsStudyStarred = useContainerContext((s) => s.cardsStudyStarred);
 
-  const setDirtyProps = {
-    onSuccess: () => {
-      onClose();
-      setIsDirty(true);
-    },
-  };
-
-  //   const apiResetCardsProgress =
-  //     api.container.resetCardsProgress.useMutation(setDirtyProps);
+  const apiResetFlashcardProgress = useResetFlashcardMutation();
 
   return (
     <Modal
       withoutCancel
       buttonLabel="Đặt lại bộ thẻ"
+      isDisabled={apiResetFlashcardProgress.isPending}
       isOpen={isOpen}
+      isPending={apiResetFlashcardProgress.isPending}
       title="Cài đặt"
       withoutFooter={status == "unauthenticated"}
       onClose={() => {
-        const isDirty =
-          flashcard.container?.cardsStudyStarred !== cardsStudyStarred;
-
-        if (status == "authenticated" && isDirty) setIsDirty(true);
+        if (status == "authenticated") {
+          apiResetFlashcardProgress.mutate(
+            {
+              flashcardId: flashcard.id,
+            },
+            {
+              onSuccess: (data) => {
+                toast.success(data.message);
+              },
+            },
+          );
+        }
 
         onClose();
       }}
@@ -54,6 +57,8 @@ export const SettingModal = ({ isOpen, onClose }: SettingModal) => {
     >
       <div className="flex flex-col gap-6">
         <CardsSortingSection />
+        <Separator />
+        <CardPerDaySection />
         <Separator />
         <CardsAnswerModeSection />
         <StudyStarredSection />
