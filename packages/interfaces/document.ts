@@ -63,3 +63,13 @@ export enum Sort {
   NEWEST = "Mới nhất",
   OLDEST = "Cũ nhất",
 }
+
+export type CreateDocument = {
+  documentName: string;
+  documentDescription: string;
+  schoolId: string;
+  curriculumId: string;
+  subjectId: string;
+  semester: number;
+  documentYear: number;
+};

@@ -315,12 +315,17 @@ export const documentEndpoints = {
     API_VERSIONS.V1,
     "/categories",
   ),
-  DELETE: (id: string) =>
+  deleteDocument: (id: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,
       API_VERSIONS.V1,
       `/document/${id}`,
     ),
+  createDocument: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/document",
+  ),
 } as const;
 
 // Folder Endpoints

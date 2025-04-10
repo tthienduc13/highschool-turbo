@@ -1,7 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FilterPayload } from "@highschool/interfaces";
+import { toast } from "sonner";
 
 import {
+  createDocument,
+  deleteDocument,
   getDocumentBySlug,
   getDocumentMedia,
   getDocuments,
@@ -72,5 +75,45 @@ export const useDownloadDocumentMediaQuery = (documentId: string) => {
   return useQuery({
     queryKey: ["document-media", "download", documentId],
     queryFn: () => getDownloadDocument({ documentId }),
+  });
+};
+
+export const useDeleteDocumentMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["delete-document"],
+    mutationFn: (documentId: string) => {
+      return deleteDocument(documentId);
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+      toast.success(data.message ?? "Document deleted successfully");
+    },
+    onError: () => {
+      toast.error("An error occurred while deleting the document.");
+    },
+  });
+};
+
+export const useCreateDocumentMutation = ({ file }: { file: File }) => {
+  // const { mutate: uploadFile } = useUploadfileMutation();
+
+  return useMutation({
+    mutationKey: ["create-document"],
+    mutationFn: createDocument,
+    onSuccess: (data) => {
+      // if (data.status === 201) {
+      //   toast({
+      //     title: data.message,
+      //   });
+      //   uploadFile({ documentId: data.data!, file: file });
+      // }
+
+      return;
+    },
+    onError: (error) => {
+      toast.error("An error occurred while uploading the file.");
+    },
   });
 };

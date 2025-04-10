@@ -1,4 +1,5 @@
 import {
+  CreateDocument,
   Document,
   DocumentMedia,
   FilterPayload,
@@ -93,15 +94,33 @@ export const getDownloadDocument = async ({
   return response;
 };
 
-export const deleteDocument = async (documentId: string) => {
+export const deleteDocument = async (
+  documentId: string,
+): Promise<ResponseModel<string>> => {
   try {
     const { data } = await axiosServices.delete(
-      documentEndpoints.DELETE(documentId),
+      documentEndpoints.deleteDocument(documentId),
     );
 
     return data;
   } catch (error) {
     console.error("Error while deleting document");
+    throw error;
+  }
+};
+
+export const createDocument = async (
+  document: CreateDocument,
+): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.post(
+      documentEndpoints.createDocument,
+      document,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while creating document", error);
     throw error;
   }
 };
