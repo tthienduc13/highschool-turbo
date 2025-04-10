@@ -157,6 +157,33 @@ export enum FlashcardLearnState {
   Review,
   Relearning,
 }
+export type FlashcardPreview = {
+  id: string;
+  userId: string;
+  entityId: string;
+  entityName: string;
+  entitySlug: string;
+  flashcardType: string;
+  grade?: number | null;
+  flashcardName: string;
+  slug: string;
+  flashcardDescription: string;
+  created: boolean;
+  status: string;
+  star: number;
+  createdBy: string;
+  createdAt: string;
+  updatedAt?: string;
+  updatedBy: string;
+  numberOfFlashcardContent: number;
+  tags?: string[];
+};
+
+export type TagFlashcard = {
+  id: string;
+  name: string;
+  usageCount: number;
+};
 
 export interface FlashcardLearn {
   flashcardId: string;

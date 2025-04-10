@@ -3,8 +3,9 @@ import { University } from "@highschool/interfaces";
 
 import { DataTableColumnHeader } from "../../core/table/data-table-column-header";
 
+import { UniversityTableRowActions } from "./university-table-row-actions";
+
 import LongText from "@/components/ui/long-text";
-import { DataTableRowActions } from "@/components/core/table/data-table-row-actions";
 
 export const columns: ColumnDef<University>[] = [
   {
@@ -74,6 +75,6 @@ export const columns: ColumnDef<University>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Actions" />
     ),
-    cell: DataTableRowActions,
+    cell: UniversityTableRowActions,
   },
 ];

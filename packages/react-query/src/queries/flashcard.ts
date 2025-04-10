@@ -6,9 +6,11 @@ import {
   getDraftFlashcard,
   getFlashcardById,
   getFlashcardBySlug,
+  getFlashcards,
   getFSRSById,
   getFSRSBySlug,
   getOwnerFlashcard,
+  getTagFlashcard,
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
@@ -184,6 +186,79 @@ export const useUpdateContainerMutation = () => {
     mutationKey: ["update-container"],
     mutationFn: updateContainer,
   });
+};
+
+export const useFlashcardQuery = ({
+  pageSize,
+  pageNumber,
+  search,
+  tags,
+  entityId,
+  flashcardType,
+  userId,
+  isCreatedBySystem,
+  status,
+  isDeleted,
+}: {
+  pageSize: number;
+  pageNumber: number;
+  search?: string;
+  tags?: string[];
+  entityId?: string;
+  flashcardType?: string;
+  userId?: string;
+  isCreatedBySystem?: boolean;
+  status?: string;
+  isDeleted?: boolean;
+}) => {
+  return useQuery({
+    queryKey: [
+      "flashcard",
+      pageNumber,
+      pageSize,
+      search,
+      tags,
+      entityId,
+      flashcardType,
+      userId,
+      isCreatedBySystem,
+      status,
+      isDeleted,
+    ],
+    queryFn: () =>
+      getFlashcards({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        search: search,
+        tags: tags,
+        entityId: entityId,
+        flashcardType: flashcardType,
+        userId: userId,
+        isCreatedBySystem: isCreatedBySystem,
+        status: status,
+        isDeleted: isDeleted,
+      }),
+  });
+};
+
+export const useGetTagFlashcardQuery = ({
+  pageNumber,
+  pageSize,
+  search,
+}: {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+}) => {
+  return useQuery({
+    queryKey: ["tag-flashcard", pageNumber, pageSize, search],
+    queryFn: () =>
+      getTagFlashcard({
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        search: search,
+      }),
+  })
 };
 
 export const useFSRSProgressMutation = () => {

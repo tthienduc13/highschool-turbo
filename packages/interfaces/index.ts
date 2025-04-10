@@ -28,4 +28,5 @@ export * from "./search";
 export * from "./ai";
 export * from "./zone";
 export * from "./report";
+export * from "./fsrs";
 export * from "./theory";

@@ -30,11 +30,11 @@ export interface Major {
 }
 
 export interface MajorCategory {
-  id: string;
+  id?: string;
   majorCategoryCode: string;
   name: string;
   mbtiTypes: string[];
-  primaryHollandTrait: PrimaryHollandTrait;
+  primaryHollandTrait: PrimaryHollandTrait | string;
   secondaryHollandTrait: string;
 }
 export enum PrimaryHollandTrait {

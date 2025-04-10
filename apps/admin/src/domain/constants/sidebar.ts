@@ -8,6 +8,7 @@ import {
   IconPaperclip,
   IconUserCircle,
   IconSettings,
+  IconPlayCardStar,
 } from "@tabler/icons-react";
 
 export const navModerator = {
@@ -41,7 +42,47 @@ export const navModerator = {
       ],
     },
     {
-      title: "Subject Managements",
+      title: "FSRS Algorithms",
+      url: "#",
+      isActive: true,
+      icon: IconBook,
+      items: [
+        {
+          title: "Information",
+          url: "/fsrs-management/information",
+        },
+        {
+          title: "Presets Managements",
+          url: "/fsrs-management/presets",
+        },
+        {
+          title: "Create Preset",
+          url: "/fsrs-management/create-preset",
+        },
+      ],
+    },
+    {
+      title: "Flashcard Managments",
+      url: "#",
+      isActive: true,
+      icon: IconPlayCardStar,
+      items: [
+        {
+          title: "Flashcard List",
+          url: "/flashcard/management",
+        },
+        {
+          title: "Create Flashcard",
+          url: "/flashcard/create",
+        },
+        {
+          title: "Flashcard Template",
+          url: "/flashcard/template",
+        },
+      ],
+    },
+    {
+      title: "Subject Managments",
       url: "/subjects",
       isActive: true,
       icon: IconBook,
@@ -90,8 +131,8 @@ export const navModerator = {
       icon: IconBriefcase2,
       items: [
         {
-          title: "MBTI",
-          url: "/career-mentor/mbti",
+          title: "Informations",
+          url: "/career-mentor/information",
         },
         {
           title: "Majors",

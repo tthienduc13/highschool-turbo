@@ -1,4 +1,6 @@
-export function formatDate(input: string | number): string {
+export function formatDate(input: string | number | null | undefined): string {
+  if (!input) return "";
+
   const date = new Date(input);
 
   return date.toLocaleDateString("en-US", {
