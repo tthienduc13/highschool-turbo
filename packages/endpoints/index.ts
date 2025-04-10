@@ -544,6 +544,18 @@ export const flashcardStudyEndpoints = {
     API_VERSIONS.V1,
     "/feature/flashcard/progress",
   ),
+  assessmentAnswer: (flashcardContentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcardContent/${flashcardContentId}/assess-answer`,
+    ),
+  resetProgress: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${flashcardId}/reset-progress`,
+    ),
 };
 
 export const subjectCurriculumEndpoints = {
@@ -847,6 +859,11 @@ export const userAnalyticEndpoints = {
     SERVICE_PREFIXES.ANALYSE,
     API_VERSIONS.V1,
     "/ownedStatistic",
+  ),
+  heatmap: createEndpoint(
+    SERVICE_PREFIXES.ANALYSE,
+    API_VERSIONS.V1,
+    "/heatmap",
   ),
 };
 

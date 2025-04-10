@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
+  assessAnswer,
   getFlashcardContentsById,
   getFlashcardContentsBySlug,
   patchFlashcardContent,
@@ -61,10 +62,9 @@ export const useEditFlashcardContentMutation = ({
   });
 };
 
-// export const useCreateFlashcardContentMutation = ({
-//   flashcardId
-// }: {
-//   flashcardId: string,
-//   }): Promise<ResponseModel<string>> => {
-
-// }
+export const useAssessAnswerMutation = () => {
+  return useMutation({
+    mutationKey: ["assess-answer"],
+    mutationFn: assessAnswer,
+  });
+};

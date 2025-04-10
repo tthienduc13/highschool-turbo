@@ -12,11 +12,13 @@ import {
   getFlashcardBySlug,
   getFlashcards,
   getFSRSById,
+  getFSRSBySlug,
   getOwnerFlashcard,
   getTagFlashcard,
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
+  resetFlashcardProgress,
   starTerm,
   updateContainer,
   updateFSRSProgress,
@@ -32,6 +34,22 @@ export const useFSRSByIdQuery = ({
   return useQuery({
     queryKey: ["fsrs-by-id", flashcardId, isReview],
     queryFn: () => getFSRSById({ flashcardId, isReview }),
+    refetchOnWindowFocus: false,
+    refetchOnMount: true,
+    staleTime: 0,
+  });
+};
+
+export const useFSRSBySlugQuery = ({
+  slug,
+  isReview,
+}: {
+  slug: string;
+  isReview: boolean;
+}) => {
+  return useQuery({
+    queryKey: ["fsrs-by-slug", slug, isReview],
+    queryFn: () => getFSRSBySlug({ slug, isReview }),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 0,
@@ -62,6 +80,9 @@ export const useUserFlashcardQuery = ({
         pageSize: pageSize,
         username: username,
       }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
     enabled: !!username,
   });
 };
@@ -80,6 +101,9 @@ export const useOwnFlashcardQuery = ({
         pageNumber: pageNumber,
         pageSize: pageSize,
       }),
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 0,
   });
 };
 
@@ -273,5 +297,12 @@ export const useCreateFlashcardStatus = () => {
   return useMutation({
     mutationKey: ["create-flashcard-status"],
     mutationFn: createFlashcardStatus,
+  });
+}
+
+export const useResetFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["reset-flashcard"],
+    mutationFn: resetFlashcardProgress,
   });
 };

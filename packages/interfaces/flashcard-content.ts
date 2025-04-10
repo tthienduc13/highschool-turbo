@@ -35,3 +35,9 @@ export type EditTermsPayload = {
   rank: number;
   id: string;
 };
+
+export interface AssessAnswer {
+  assessment: string;
+  improvement: string;
+  rating: number;
+}

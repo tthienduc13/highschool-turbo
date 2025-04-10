@@ -50,7 +50,6 @@ export const HydrateSetData: React.FC<
   const isDirty = useSetPropertiesStore((s) => s.isDirty);
   const setIsDirty = useSetPropertiesStore((s) => s.setIsDirty);
 
-  // Sử dụng staleTime dài hơn để ngăn gọi API trùng lặp
   const {
     data: flashcardData,
     refetch: refetchFlashcard,
@@ -103,7 +102,6 @@ export const HydrateSetData: React.FC<
     [withDistractors],
   );
 
-  // Tối ưu useEffect để tránh gọi API trùng lặp
   useEffect(() => {
     if (flashcardSuccess && flashcardContentSuccess && isDirty) {
       setIsDirty(false);
@@ -122,7 +120,6 @@ export const HydrateSetData: React.FC<
     setIsDirty,
   ]);
 
-  // Chỉ refetch khi thực sự cần thiết
   useEffect(() => {
     const refetch = async () => {
       await Promise.all([refetchFlashcard(), refetchFlashcardContent()]);
@@ -173,6 +170,7 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
 
     return {
       hideFlashcard: false,
+      cardPerDay: data.container.cardsPerDay,
       flashcardHideWith: LimitedStudySetAnswerMode.Definition,
       shuffleFlashcards: data.container.shuffleFlashcards,
       shuffleLearn: data.container.shuffleLearn,

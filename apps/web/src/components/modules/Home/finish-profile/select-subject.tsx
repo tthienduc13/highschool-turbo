@@ -1,19 +1,11 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { Grade, classNumberMap } from "@highschool/interfaces";
 import {
-  useCurriculaQuery,
   useMasterCoursesQuery,
   useUpdateBaseUserInfoMutation,
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconLoader2 } from "@tabler/icons-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@highschool/ui/components/ui/select";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 
@@ -54,9 +46,6 @@ export const SelectSubject = () => {
     pageNumber: 1,
     pageSize: 100,
   });
-
-  const { data: curriculumData, isLoading: curriculumLoading } =
-    useCurriculaQuery({ pageNumber: 1, pageSize: 100 });
 
   const transformData =
     data?.data.map((course) => ({
@@ -111,30 +100,6 @@ export const SelectSubject = () => {
       title="Chọn các môn học "
     >
       <div className="flex flex-col gap-4 pt-4">
-        <Select
-          disabled={curriculumLoading}
-          value={selectedCurriculum ?? ""}
-          onValueChange={(curriculum) => {
-            setSelectedCurriculum(curriculum);
-          }}
-        >
-          <SelectTrigger className="bg-background h-12 w-full rounded-lg border-2 border-gray-200 text-left text-lg font-bold dark:border-gray-800">
-            <SelectValue
-              className="px-4"
-              placeholder={"Bạn học bộ sách nào?"}
-            />
-          </SelectTrigger>
-          <SelectContent
-            className="placeholder:text-muted-foreground"
-            onCloseAutoFocus={(e) => e.preventDefault()}
-          >
-            {curriculumData?.data.map((curriculum) => (
-              <SelectItem key={curriculum.id} value={curriculum.id}>
-                {curriculum.curriculumName}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
         <MultiSelect
           animation={2}
           defaultValue={selectedSubjects}

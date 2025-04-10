@@ -6,21 +6,17 @@ import { CORRECT, INCORRECT } from "@highschool/lib/constants";
 
 export interface LearnStoreProps {
   studiableTerms: Question[];
-  // allTerms: TermWithDistractors[]
   numTerms: number;
   termsThisRound: number;
   currentRound: number;
   roundProgress: number;
   roundCounter: number;
   roundTimeline: Question[];
-  // specialCharacters: string[]
   feedbackBank: { correct: string[]; incorrect: string[] };
   answered?: string;
   status?: "correct" | "incorrect" | "unknownPartial";
   roundSummary?: boolean;
   completed: boolean;
-  // hasMissedTerms?: boolean
-  // prevTermWasIncorrect?: boolean
 }
 
 interface LearnState extends LearnStoreProps {
@@ -29,10 +25,7 @@ interface LearnState extends LearnStoreProps {
   answerIncorrectly: (termId: string) => void;
   acknowledgeIncorrect: () => void;
   goToNextQuestion: () => void;
-  // answerUnknownPartial: () => void
   endQuestionCallback: (correct: boolean) => void;
-  // correctFromUnknown: (termId: string) => void
-  // incorrectFromUnknown: (termId: string) => void
   nextRound: (start?: boolean) => void;
   setFeedbackBank: (correct: string[], incorrect: string[]) => void;
 }
@@ -42,14 +35,12 @@ export type LearnStore = ReturnType<typeof createLearnStore>;
 export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
   const DEFAULT_PROPS: LearnStoreProps = {
     studiableTerms: [],
-    // allTerms: [],
     numTerms: 0,
     termsThisRound: 0,
     currentRound: 0,
     roundProgress: 0,
     roundCounter: 0,
     roundTimeline: [],
-    // specialCharacters: [],
     feedbackBank: {
       correct: CORRECT,
       incorrect: INCORRECT,
@@ -118,14 +109,11 @@ export const createLearnStore = (initProps?: Partial<LearnStoreProps>) => {
 
           return {
             roundSummary: false,
-            // termsThisRound: termsThisRound.length,
-            // roundTimeline,
             roundCounter: 0,
             roundProgress: 0,
             answered: undefined,
             status: undefined,
             completed: !state.studiableTerms.length,
-            // hasMissedTerms,
             currentRound,
           };
         });

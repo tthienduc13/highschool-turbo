@@ -92,6 +92,8 @@ function PlatformLayout({
 
   const shouldHideFooter = () => {
     if (pathName.endsWith("/flashcards")) return true;
+    if (pathName.endsWith("/cram")) return true;
+    if (pathName.endsWith("/write")) return true;
 
     if (pathName.includes("/chapters/")) return true;
 

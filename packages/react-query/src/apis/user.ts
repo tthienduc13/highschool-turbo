@@ -1,6 +1,7 @@
 import {
   Author,
   CareerGuidanceStatus,
+  Heatmap,
   Pagination,
   ResponseModel,
   TecherExperience,
@@ -463,6 +464,31 @@ export const getOwnStatistic = async (): Promise<UserOwnStatistics> => {
     return data;
   } catch (error) {
     console.log("error while getting own statistic", error);
+    throw error;
+  }
+};
+
+export const getUserHeatmap = async ({
+  viewType,
+  startYear,
+  endYear,
+}: {
+  viewType: "flashcard" | "login" | "learnedlesson";
+  startYear: number;
+  endYear: number;
+}): Promise<Heatmap> => {
+  try {
+    const { data } = await axiosServices.get(userAnalyticEndpoints.heatmap, {
+      params: {
+        viewType,
+        startYear,
+        endYear,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log("error while getting user heatmap", error);
     throw error;
   }
 };

@@ -2,7 +2,14 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { cn } from "@highschool/ui/lib/utils";
-import { IconCards, IconGridDots, IconLayersSubtract, IconLock, IconMeteor, IconReport } from "@tabler/icons-react";
+import {
+  IconBrain,
+  IconGridDots,
+  IconLock,
+  IconPokeball,
+  IconReport,
+  IconWritingSign,
+} from "@tabler/icons-react";
 
 import { Hint } from "../common/hint";
 
@@ -14,32 +21,41 @@ export const LinkArea = () => {
 
   return (
     <div className="grid h-fit w-full grid-cols-2 gap-4 md:grid-cols-3 lg:w-[160px] lg:grid-cols-1">
-      {/* <Linkable
+      {/* Quet trai phai */}
+      <Linkable
         requireAuth
-        href={`/study-set/${flashcard.slug}/learn`}
+        href={`/study-set/${flashcard.slug}/flashcards`}
         icon={<IconBrain />}
         name="Học"
-      /> */}
+      />
+      {/*  */}
       <Linkable
+        requireAuth
+        href={`/study-set/${flashcard.slug}/cram`}
+        icon={<IconPokeball />}
+        name="Cram"
+      />
+      <Linkable
+        isAI
+        requireAuth
+        href={`/study-set/${flashcard.slug}/write`}
+        icon={<IconWritingSign />}
+        name="Viết"
+      />
+      {/* <Linkable
         href={`/study-set/${flashcard.slug}/flashcards`}
         icon={<IconCards />}
         name="Thẻ"
-      />
+      /> */}
       <Linkable
         requireAuth
         href={`/study-set/${flashcard.slug}/test`}
         icon={<IconReport />}
         name="Kiểm tra"
       />
-      <Linkable
-        comingSoon
-        requireAuth
-        icon={<IconLayersSubtract />}
-        name="Nối"
-        // href={`/study-set/${flashcard.slug}/match?intro=true`}
-      />
+
       <Linkable comingSoon icon={<IconGridDots />} name="Ô chữ" />
-      <Linkable comingSoon icon={<IconMeteor />} name="Gravity" />
+      {/* <Linkable comingSoon icon={<IconMeteor />} name="Gravity" /> */}
     </div>
   );
 };
@@ -49,6 +65,7 @@ interface LinkableProps {
   icon: React.ReactNode;
   href?: string;
   disabled?: boolean;
+  isAI?: boolean;
   requireAuth?: boolean;
   comingSoon?: boolean;
 }
@@ -102,15 +119,17 @@ export const Linkable: React.FC<LinkableProps> = ({
 
         <div className="flex flex-row items-center gap-3">
           <div className="relative size-6">
-            {/* <div
-                            className={cn(
-                                "w-full h-full absolute top-1 opacity-30 -left-1 transition-all duration-200 ease-in-out group-hover:-translate-x-[3px] group-focus-within:-translate-x-[3px]  backdrop-blur-3xl",
-                                !comingSoon ? "text-blue-400" : "text-gray-600"
-                            )}
-                        >
-                            {icon}
-                        </div> */}
-            <div className="text-primary relative transition-all duration-200 ease-in-out group-focus-within:-translate-y-[2px] group-hover:-translate-y-[2px]">
+            <div
+              className={cn(
+                "w-full h-full absolute top-1 opacity-30 blur-[2px] -left-1 transition-all duration-200 ease-in-out group-hover:-translate-x-[3px] group-focus-within:-translate-x-[3px] ",
+                !comingSoon
+                  ? "text-blue-500"
+                  : "text-gray-400 dark:text-gray-600",
+              )}
+            >
+              {icon}
+            </div>
+            <div className="text-primary -group-focus-within:translate-y-[2px] -group-hover:translate-y-[2px] relative transition-all duration-200 ease-in-out">
               {icon}
             </div>
           </div>

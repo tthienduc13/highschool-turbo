@@ -43,7 +43,9 @@ export function NavUser() {
             <AvatarFallback className="rounded-lg">HS</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 truncate text-left text-base leading-tight">
-            <span className="truncate font-semibold">{me?.fullname!}</span>
+            <span className="truncate break-all font-semibold">
+              {me?.fullname!}
+            </span>
           </div>
         </SidebarMenuButton>
       </SidebarMenuItem>

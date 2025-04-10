@@ -1,9 +1,13 @@
 import {
+  AssessAnswer,
   EditTermsPayload,
   FlashcardContent,
   ResponseModel,
 } from "@highschool/interfaces";
-import { flashcardContentEndpoints } from "@highschool/endpoints";
+import {
+  flashcardContentEndpoints,
+  flashcardStudyEndpoints,
+} from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -212,6 +216,26 @@ export const reorderTerm = async ({
     return data;
   } catch (error) {
     console.log("Error while reordering", error);
+    throw error;
+  }
+};
+
+export const assessAnswer = async ({
+  flashcardContentId,
+  userAnswer,
+}: {
+  flashcardContentId: string;
+  userAnswer: string;
+}): Promise<ResponseModel<AssessAnswer>> => {
+  try {
+    const { data } = await axiosServices.post(
+      flashcardStudyEndpoints.assessmentAnswer(flashcardContentId),
+      userAnswer,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while assessing answer", error);
     throw error;
   }
 };

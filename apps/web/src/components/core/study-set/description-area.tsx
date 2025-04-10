@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { useAuthorQuery } from "@highschool/react-query/queries";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-import { IconBooks, IconDiscountCheck, IconSchool } from "@tabler/icons-react";
+import { IconDiscountCheck, IconSchool } from "@tabler/icons-react";
+import { Button } from "@highschool/ui/components/ui/button";
 
 import { Hint } from "../common/hint";
-import { gradeTextRenderer } from "../common/renderer/grade";
 import { UsernameLink } from "../common/username-link";
+import { flashcardAttachToTypeLabels } from "../editor/title-properties";
 
 import { ActionArea } from "./action-area";
 
@@ -57,30 +57,23 @@ export const DescriptionArea = () => {
                   </Hint>
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 {authorData?.data?.username}
               </p>
             </div>
           </div>
         )}
-        <ActionArea />
-      </div>
-      {data.flashcard.subjectName && (
-        <div className="flex cursor-pointer flex-row gap-2 text-lg text-gray-600 dark:text-gray-400">
-          <Link
-            className="ease-in-out flex flex-row items-center gap-2 transition-all duration-200 hover:text-primary"
-            href={"/course"}
-          >
-            <IconBooks size={20} />
-            {data.flashcard.subjectName}
-          </Link>
-          <p>•</p>
-          <div className="flex flex-row items-center gap-2">
-            <IconSchool size={20} />
-            {gradeTextRenderer(data.flashcard.grade)}
-          </div>
+        <div className="flex flex-col items-center gap-2">
+          {data.flashcard.entityId && (
+            <Button>
+              {flashcardAttachToTypeLabels[data.flashcard.flashcardType].label}{" "}
+              : {data.flashcard.entityName}
+              <IconSchool />
+            </Button>
+          )}
+          <ActionArea />
         </div>
-      )}
+      </div>
       <p className="break-all">{data.flashcard.flashcardDescription}</p>
     </div>
   );

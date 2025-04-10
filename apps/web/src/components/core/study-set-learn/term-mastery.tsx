@@ -1,3 +1,4 @@
+import { NumberTicker } from "@highschool/components";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
 
@@ -34,9 +35,11 @@ export const GridStat: React.FC<GridStatProps> = ({ value, label, bg }) => {
       className={`rounded-2xl border-b-4 border-b-orange-300 pb-4 pt-3 shadow-lg ${bg || "bg-card"}`}
     >
       <CardContent className="p-0 text-center">
-        <p className="font-outfit text-3xl font-extrabold md:text-4xl">
-          {value}
-        </p>
+        <NumberTicker
+          className="font-outfit text-3xl font-extrabold md:text-4xl"
+          value={Number(value)}
+        />
+
         <p className="font-semibold text-gray-500">{label}</p>
       </CardContent>
     </Card>

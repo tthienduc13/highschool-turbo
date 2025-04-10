@@ -25,14 +25,14 @@ import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
-interface CreateFlashcardResponse {
+export interface CreateFlashcardResponse {
   id: string;
   flashcardContents: FlashcardContent[];
 }
 
 export const createFlashcardWithAI = async (
   values: FlashcardGeneratePayload,
-): Promise<ResponseModel<CreateFlashcardResponse>> => {
+): Promise<ResponseModel<CreateFlashcardResponse | string>> => {
   try {
     const formData = new FormData();
 
@@ -58,7 +58,12 @@ export const createFlashcardWithAI = async (
 
     return response.data;
   } catch (error) {
-    console.error("Error while creating flashcard", error);
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+
+      return data;
+    }
+    console.error("Error while creating flashcard by AI:", error);
     throw error;
   }
 };
@@ -380,6 +385,30 @@ export const getFSRSById = async ({
   }
 };
 
+export const getFSRSBySlug = async ({
+  slug,
+  isReview,
+}: {
+  slug: string;
+  isReview: boolean;
+}): Promise<FlashcardLearn> => {
+  try {
+    const { data } = await axiosServices.get(
+      flashcardStudyEndpoints.getFSRSBySlug(slug),
+      {
+        params: {
+          isReview,
+        },
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting fsrs by id", error);
+    throw error;
+  }
+};
+
 export const updateFSRSProgress = async ({
   flashcardContentId,
   rating,
@@ -433,6 +462,20 @@ export const createFlashcard = async ({
         tags,
       },
     );
+  } catch (error) {
+    console.error("Error while creating flashcard", error);
+  }
+}
+
+export const resetFlashcardProgress = async ({
+  flashcardId,
+}: {
+  flashcardId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      flashcardStudyEndpoints.resetProgress(flashcardId),
+    );
 
     return data;
   } catch (error) {
@@ -454,6 +497,7 @@ export const getDraftById = async ({
     return data;
   } catch (error) {
     console.error("Error while getting draft by id", error);
+    console.error("Error while resetting flashcard progress", error);
     throw error;
   }
 };

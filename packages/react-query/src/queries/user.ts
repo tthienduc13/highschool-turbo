@@ -14,6 +14,7 @@ import {
   getTeacherExperience,
   getUserActivities,
   getUserGrowth,
+  getUserHeatmap,
   getUserProfile,
   getUserProgressStage,
   getUserRetention,
@@ -235,5 +236,20 @@ export const useUserOwnStatisticQuery = () => {
   return useQuery({
     queryKey: ["user-own-statistic"],
     queryFn: getOwnStatistic,
+  });
+};
+
+export const useHeatmapQuery = ({
+  viewType,
+  startYear,
+  endYear,
+}: {
+  viewType: "flashcard" | "login" | "learnedlesson";
+  startYear: number;
+  endYear: number;
+}) => {
+  return useQuery({
+    queryKey: ["user-heatmap", { viewType, startYear, endYear }],
+    queryFn: () => getUserHeatmap({ viewType, startYear, endYear }),
   });
 };
