@@ -405,3 +405,55 @@ export const updateFSRSProgress = async ({
     throw error;
   }
 };
+
+export const createFlashcard = async ({
+  flashcardName,
+  flashcardDescription,
+  status,
+  entityId,
+  flashcardType,
+  tags,
+}: {
+  flashcardName: string;
+  flashcardDescription?: string;
+  status: string;
+  entityId: string;
+  flashcardType: string;
+  tags?: string[];
+}) => {
+  try {
+    const { data } = await axiosServices.post(
+      flashcardEndpoints.createFlashcard,
+      {
+        flashcardName,
+        flashcardDescription,
+        status,
+        entityId,
+        flashcardType,
+        tags,
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while creating flashcard", error);
+    throw error;
+  }
+};
+
+export const getDraftById = async ({
+  id,
+}: {
+  id: string;
+}): Promise<Flashcard> => {
+  try {
+    const { data } = await axiosServices.get(
+      flashcardEndpoints.getDraftById(id),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting draft by id", error);
+    throw error;
+  }
+};

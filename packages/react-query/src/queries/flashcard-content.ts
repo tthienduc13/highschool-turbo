@@ -60,3 +60,11 @@ export const useEditFlashcardContentMutation = ({
     },
   });
 };
+
+// export const useCreateFlashcardContentMutation = ({
+//   flashcardId
+// }: {
+//   flashcardId: string,
+//   }): Promise<ResponseModel<string>> => {
+
+// }

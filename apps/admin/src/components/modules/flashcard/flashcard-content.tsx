@@ -6,18 +6,28 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { Card } from "@highschool/ui/components/ui/card";
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 import { IconGrid3x3, IconPlus, IconTrash } from "@tabler/icons-react";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+
+import {
+    addTerm,
+    patchFlashcardContent,
+} from "../../../../../../packages/react-query/src/apis/flashcard-content";
 
 interface FlashcardProps {
     flashcards: FlashcardContentModify[];
     setFlashcards: React.Dispatch<React.SetStateAction<FlashcardContentModify[]>>;
+    deleteTerm: (rank: number, flashcardContentId?: string) => void;
+    flashcardId: string;
 }
 
 export const FLashcardContent = ({
     flashcards,
     setFlashcards,
+    deleteTerm,
+    flashcardId,
 }: FlashcardProps) => {
-    const addFlashcard = (index: number) => {
+    const addFlashcard = async (index: number) => {
         const newId = Math.max(...flashcards.map((card) => card.rank!), 0) + 1;
         const newFlashcards = [...flashcards];
 
@@ -31,6 +41,22 @@ export const FLashcardContent = ({
         setFlashcards(newFlashcards);
     };
 
+    const apiAddTerm = useMutation({
+        mutationFn: addTerm,
+        onSuccess: () => { },
+        onError: (error) => {
+            console.error("Error adding term:", error);
+        },
+    });
+
+    const apiEditTerm = useMutation({
+        mutationFn: patchFlashcardContent,
+        onSuccess: () => { },
+        onError: (error) => {
+            console.error("Error adding term:", error);
+        },
+    });
+
     const updateFlashcard = (
         id: number,
         field: keyof FlashcardContent,
@@ -43,9 +69,9 @@ export const FLashcardContent = ({
         );
     };
 
-    const deleteFlashcard = (id: number) => {
+    const deleteFlashcard = (rank: number, flashcardContent?: string) => {
         if (flashcards.length > 1) {
-            setFlashcards(flashcards.filter((card) => card.rank !== id));
+            deleteTerm(rank, flashcardContent);
         }
     };
 
@@ -72,6 +98,45 @@ export const FLashcardContent = ({
         setFlashcards(newFlashcards);
     };
 
+    const handleChangeContentTerm = async (index: number) => {
+        const flashcardContent = flashcards[index];
+
+        if (
+            flashcardContent.flashcardContentTerm !== "" &&
+            flashcardContent.flashcardContentDefinition !== ""
+        ) {
+            if (flashcardContent.id) {
+                apiEditTerm.mutate({
+                    flashcardId: flashcardId,
+                    values: {
+                        id: flashcardContent.id,
+                        flashcardContentTerm: flashcardContent.flashcardContentTerm,
+                        flashcardContentDefinition:
+                            flashcardContent.flashcardContentDefinition,
+                        flashcardContentTermRichText:
+                            flashcardContent.flashcardContentTermRichText,
+                        flashcardContentDefinitionRichText:
+                            flashcardContent.flashcardContentDefinitionRichText,
+                    },
+                });
+            } else {
+                await apiAddTerm.mutateAsync({
+                    values: {
+                        flashcardContentTerm: flashcardContent.flashcardContentTerm,
+                        flashcardContentDefinition:
+                            flashcardContent.flashcardContentDefinition,
+                        flashcardContentTermRichText:
+                            flashcardContent.flashcardContentTermRichText,
+                        flashcardContentDefinitionRichText:
+                            flashcardContent.flashcardContentDefinitionRichText,
+                        rank: index + 1,
+                    },
+                    flashcardId: flashcardId,
+                });
+            }
+        }
+    };
+
     return (
         <>
             {flashcards.map((flashcard, index) => {
@@ -91,7 +156,9 @@ export const FLashcardContent = ({
                                             className="size-8 text-red-500 hover:bg-red-50 hover:text-red-600"
                                             size="icon"
                                             variant="ghost"
-                                            onClick={() => deleteFlashcard(flashcard.rank!)}
+                                            onClick={() =>
+                                                deleteFlashcard(flashcard.rank!, flashcard.id ?? "")
+                                            }
                                         >
                                             <IconTrash className="size-4" />
                                         </Button>
@@ -104,6 +171,7 @@ export const FLashcardContent = ({
                                             className="h-10 rounded-none border-0 border-b border-dashed border-slate-300 px-0 focus-visible:border-blue-500 focus-visible:ring-0"
                                             placeholder="Enter term"
                                             value={flashcard.flashcardContentTerm}
+                                            onBlur={() => handleChangeContentTerm(index)}
                                             onChange={(e) => {
                                                 updateFlashcard(
                                                     flashcard.rank!,
@@ -120,6 +188,7 @@ export const FLashcardContent = ({
                                             className="h-10 rounded-none border-0 border-b border-dashed border-slate-300 px-0 focus-visible:border-blue-500 focus-visible:ring-0"
                                             placeholder="Enter definition"
                                             value={flashcard.flashcardContentDefinition}
+                                            onBlur={() => handleChangeContentTerm(index)}
                                             onChange={(e) => {
                                                 updateFlashcard(
                                                     flashcard.rank!,

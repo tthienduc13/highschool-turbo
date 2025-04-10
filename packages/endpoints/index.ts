@@ -315,6 +315,12 @@ export const documentEndpoints = {
     API_VERSIONS.V1,
     "/categories",
   ),
+  DELETE: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/document/${id}`,
+    ),
 } as const;
 
 // Folder Endpoints
@@ -444,6 +450,17 @@ export const flashcardEndpoints = {
     API_VERSIONS.V1,
     "/flashcard/management",
   ),
+  createFlashcard: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard",
+  ),
+  getDraftById: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/draft/${id}`,
+    ),
 } as const;
 
 // Flashcard Content Endpoints

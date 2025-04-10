@@ -1,9 +1,12 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import {
+  createFlashcard,
+  createFlashcardStatus,
   createFlashcardWithAI,
   createTagFlashcard,
   deleteFlashcard,
+  getDraftById,
   getDraftFlashcard,
   getFlashcardById,
   getFlashcardBySlug,
@@ -249,5 +252,26 @@ export const useFSRSProgressMutation = () => {
   return useMutation({
     mutationKey: ["update-fsrs-progress"],
     mutationFn: updateFSRSProgress,
+  });
+};
+
+export const useCreateFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["create-flashcard"],
+    mutationFn: createFlashcard,
+  });
+};
+
+export const useGetDraftFlashcardQuery = ({ id }: { id: string }) => {
+  return useQuery({
+    queryKey: ["draft-flashcard", id],
+    queryFn: () => getDraftById({ id: id }),
+  });
+};
+
+export const useCreateFlashcardStatus = () => {
+  return useMutation({
+    mutationKey: ["create-flashcard-status"],
+    mutationFn: createFlashcardStatus,
   });
 };

@@ -46,7 +46,7 @@ export const flashcardDefaults: FlashcardContentModify[] = [
         flashcardContentDefinitionRichText:
             "The process by which <i>green plants</i> convert sunlight into energy.",
         rank: 1,
-        id: "card-001",
+        id: "",
     },
     {
         flashcardContentTerm: "Ecosystem",
@@ -56,6 +56,7 @@ export const flashcardDefaults: FlashcardContentModify[] = [
         flashcardContentDefinitionRichText:
             "A system involving interactions between <u>living</u> and <u>non-living</u> things.",
         rank: 2,
+        id: "",
     },
     {
         flashcardContentTerm: "Mitochondria",
@@ -65,7 +66,7 @@ export const flashcardDefaults: FlashcardContentModify[] = [
         flashcardContentDefinitionRichText:
             "The <i>powerhouse</i> of the cell where energy is produced.",
         rank: 3,
-        id: "card-003",
+        id: "",
     },
     {
         flashcardContentTerm: "Gravity",
@@ -74,6 +75,7 @@ export const flashcardDefaults: FlashcardContentModify[] = [
         flashcardContentTermRichText: "<b>Gravity</b>",
         flashcardContentDefinitionRichText:
             "The force that causes <strong>objects</strong> to fall toward the earth.",
+        id: "",
     },
     {
         flashcardContentTerm: "Water Cycle",
@@ -83,6 +85,6 @@ export const flashcardDefaults: FlashcardContentModify[] = [
         flashcardContentTermRichText: "<b>Water Cycle</b>",
         flashcardContentDefinitionRichText:
             "The movement of water through <em>evaporation</em>, <em>condensation</em>, and <em>precipitation</em>.",
-        id: "card-005",
+        id: "",
     },
 ];

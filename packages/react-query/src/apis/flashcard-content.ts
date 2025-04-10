@@ -99,8 +99,6 @@ export const patchFlashcardContent = async ({
       cleanValues,
     );
 
-    console.log(data);
-
     return data;
   } catch (error) {
     console.error("Error while patching flashcard content", error);

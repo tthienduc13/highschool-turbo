@@ -17,7 +17,7 @@ export const columns: ColumnDef<Major>[] = [
     enableSorting: false,
   },
   {
-    id: "Name",
+    accessorKey: "Name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -27,24 +27,31 @@ export const columns: ColumnDef<Major>[] = [
     enableSorting: false,
   },
   {
-    id: "Description",
+    accessorKey: "Description",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Description" />
     ),
     cell: ({ row }) => (
-      <div className="min-w-[23vw]">{row.original.description}</div>
+      <div className="min-w-[20vw]">{row.original.description}</div>
     ),
     enableSorting: false,
   },
   {
-    id: "SkillYouLearn",
+    accessorKey: "SkillYouLearn",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="SkillYouLearn" />
     ),
     cell: ({ row }) => (
-      <div className="min-w-[23vw]">{row.original.skillYouLearn}</div>
+      <div className="min-w-[20vw]">{row.original.skillYouLearn}</div>
     ),
     enableSorting: false,
+  },
+  {
+    accessorKey: "Subjects",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Subjects" />
+    ),
+    cell: ({ row }) => <div>{row.original.subjects?.join(",")}</div>,
   },
   {
     id: "actions",

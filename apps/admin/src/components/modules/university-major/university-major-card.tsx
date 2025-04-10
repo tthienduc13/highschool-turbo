@@ -60,14 +60,6 @@ export const UniversityMajorCard = ({ data }: UniversityMajorCardProps) => {
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {data?.map((program) => (
         <div key={program.id}>
-          {/* <Alert
-                        isOpen={openAlert}
-                        loading={isPending}
-                        onClose={() => setOpenAlert(false)}
-                        onConfirm={() =>
-                            deleteUniversityMajor({ universityMajorId: program.id! })
-                        }
-                    /> */}
           <Card key={program.id} className="relative overflow-hidden">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -89,10 +81,7 @@ export const UniversityMajorCard = ({ data }: UniversityMajorCardProps) => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        className="gap-2"
-                        //onClick={() => openEdit(program)}
-                      >
+                      <DropdownMenuItem className="gap-2">
                         <IconEdit className="size-4" />
                         Edit
                       </DropdownMenuItem>
@@ -136,9 +125,8 @@ export const UniversityMajorCard = ({ data }: UniversityMajorCardProps) => {
                   >
                     View Details
                     <IconChevronDown
-                      className={`size-4 transition-transform ${
-                        expandedCard === program.id ? "rotate-180" : ""
-                      }`}
+                      className={`size-4 transition-transform ${expandedCard === program.id ? "rotate-180" : ""
+                        }`}
                     />
                   </Button>
                 </CollapsibleTrigger>

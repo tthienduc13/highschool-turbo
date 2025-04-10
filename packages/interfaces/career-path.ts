@@ -27,6 +27,12 @@ export interface Major {
   skillYouLearn: string;
   majorCategory?: MajorCategory;
   majorCategoryCode?: string;
+  subjects?:
+    | {
+        id: string;
+        name: string;
+      }[]
+    | string[];
 }
 
 export interface MajorCategory {

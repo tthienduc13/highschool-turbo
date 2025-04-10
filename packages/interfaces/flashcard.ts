@@ -14,15 +14,14 @@ export enum FlashcardDifficulty {
 
 export type FlashcardTextLength = "short" | "medium" | "long";
 
-
 export interface FlashcardGeneratePayload {
   fileRaw?: File;
-  textRaw? : string;
+  textRaw?: string;
   note?: string;
   numberFlashcardContent: number;
   levelHard: FlashcardDifficulty;
-  frontTextLong:FlashcardTextLength
-  backTextLong:FlashcardTextLength
+  frontTextLong: FlashcardTextLength;
+  backTextLong: FlashcardTextLength;
 }
 
 export enum FlashcardAttachToType {
@@ -76,6 +75,8 @@ export interface Flashcard {
   totalView: number;
   numberOfFlashcardContent: number;
   container: FlashcardContainer;
+  tags?: string[];
+  objectID?: string;
 }
 
 export enum StudySetVisibility {
@@ -179,14 +180,12 @@ export type TagFlashcard = {
   name: string;
   usageCount: number;
 };
-export enum FlashcardLearnState
-{
-    New,
-    Learning,
-    Review,
-    Relearning
+export enum FlashcardLearnState {
+  New,
+  Learning,
+  Review,
+  Relearning,
 }
-
 
 export interface FlashcardLearn {
   flashcardId: string;

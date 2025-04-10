@@ -7,7 +7,7 @@ import {
 } from "@highschool/interfaces";
 import { documentEndpoints, mediaEndpoints } from "@highschool/endpoints";
 
-import axiosServices, { axiosClientWithoutAuth } from "../lib/axios.ts";
+import axiosServices from "../lib/axios.ts";
 
 import { fetchUnauthedPaginatedData } from "./common.ts";
 
@@ -91,4 +91,17 @@ export const getDownloadDocument = async ({
   );
 
   return response;
+};
+
+export const deleteDocument = async (documentId: string) => {
+  try {
+    const { data } = await axiosServices.delete(
+      documentEndpoints.DELETE(documentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while deleting document");
+    throw error;
+  }
 };

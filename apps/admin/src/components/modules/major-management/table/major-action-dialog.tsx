@@ -28,6 +28,8 @@ import {
   SelectValue,
 } from "@highschool/ui/components/ui/select";
 
+import { ComboboxSubject } from "./combo-subject";
+
 import { useTable } from "@/stores/table-context";
 
 interface Props {
@@ -70,6 +72,7 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
   const [skillYouLearn, setSkillYouLearn] = useState<string>(
     currentRow?.skillYouLearn ?? "",
   );
+  const [subjects, setSubjects] = useState<string[]>([]);
 
   const clearFields = () => {
     setMajorCategoryCode("");
@@ -131,6 +134,7 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
             majorCode: majorCode,
             name: name,
             skillYouLearn: skillYouLearn,
+            subjects: subjects,
           },
         ],
       });
@@ -143,6 +147,7 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
           description: description,
           skillYouLearn: skillYouLearn,
           majorCategoryCode: majorCategoryCode,
+          subjects: subjects,
         },
       });
     }
@@ -233,6 +238,12 @@ export function MajorActionDialog({ currentRow, open, onOpenChange }: Props) {
               </SelectContent>
             </Select>
           </div>
+        </div>
+        <div className="mb-4 flex flex-col gap-2">
+          <Label className="text-sm font-semibold">
+            Subjects <span className="text-primary">(optional)</span>
+          </Label>
+          <ComboboxSubject setSubjects={setSubjects} />
         </div>
         <SheetFooter>
           <Button type="submit" onClick={handleSaveChange}>

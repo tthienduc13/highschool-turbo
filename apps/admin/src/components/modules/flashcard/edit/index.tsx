@@ -22,16 +22,16 @@ import {
 import { Textarea } from "@highschool/ui/components/ui/textarea";
 import { cn } from "@highschool/ui/lib/utils";
 import {
-    DraftData,
     FlashcardAttachToType,
     FlashcardContentModify,
     StudySetVisibility,
 } from "@highschool/interfaces";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import {
+    useContentsByIdQuery,
     useCreateFlashcardStatus,
     useEditSetMutation,
-    useFlashcardDraftMutation,
+    useGetDraftFlashcardQuery,
 } from "@highschool/react-query/queries";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
@@ -45,12 +45,24 @@ import { ImportFlashcardContentButtonExcel } from "../flashcard-content-manageme
 import { EditorLoading } from "../editor-loading";
 import { deleteFlashcardContent } from "../../../../../../../packages/react-query/src/apis/flashcard-content";
 
-function CreateFLashcardModule() {
+interface EditFLashcardModuleProps {
+    id?: string;
+}
+
+function EditFLashcardModule({ id }: EditFLashcardModuleProps) {
     const router = useRouter();
 
     const [importOpen, setImportOpen] = useState(false);
     const [isEditingTitle, setIsEditingTitle] = useState(false);
-
+    const { data: flashcard, isPending: draftLoading } =
+        useGetDraftFlashcardQuery({
+            id: id ?? "",
+        });
+    const { data: contents } = useContentsByIdQuery({
+        pageNumber: 1,
+        pageSize: 30,
+        id: id ?? "",
+    });
     const { mutateAsync: createFlashcardStatus } = useCreateFlashcardStatus();
     const apiDeleteTerm = useMutation({
         mutationKey: ["delete"],
@@ -67,50 +79,46 @@ function CreateFLashcardModule() {
 
     const [flashcardContents, setFlashcardContents] = useState<
         FlashcardContentModify[]
-    >([]);
+    >((contents as FlashcardContentModify[]) ?? []);
     const { mutateAsync: updateFlashcard } = useEditSetMutation();
 
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [tags, setTags] = useState<string[]>([]);
-    const [entityId, setEntityId] = useState("");
-    const [status, setStatus] = useState(StudySetVisibility.Private);
-    const [flashcardType, setFlashcardType] = useState<FlashcardAttachToType>(
-        FlashcardAttachToType.Lesson,
+    const [title, setTitle] = useState(flashcard?.flashcardName);
+    const [description, setDescription] = useState(
+        flashcard?.flashcardDescription ?? "",
     );
-    const [id, setId] = useState<string>("");
-
-    const getDraf = useFlashcardDraftMutation();
+    const [tags, setTags] = useState<string[]>(flashcard?.tags ?? []);
+    const [entityId, setEntityId] = useState(flashcard?.entityId ?? "");
+    const [status, setStatus] = useState(
+        flashcard?.status ?? StudySetVisibility.Private,
+    );
+    const [flashcardType, setFlashcardType] = useState<FlashcardAttachToType>(
+        flashcard?.flashcardType ?? FlashcardAttachToType.Lesson,
+    );
 
     useEffect(() => {
-        getDraf.mutate(undefined, {
-            onSuccess: (data) => {
-                if (data.status === 400 && typeof data.data === "string") {
-                    router.push(`/flashcard/edit/${data.data}`);
-                } else {
-                    const draftData = data.data as unknown as DraftData;
+        if (!flashcard && !draftLoading) {
+            router.push("/flashcard/create");
+        }
+    }, [draftLoading]);
 
-                    setFlashcardContents(
-                        draftData.flashcardContents as FlashcardContentModify[],
-                    );
+    useEffect(() => {
+        if (flashcard) {
+            setTitle(flashcard.flashcardName);
+            setDescription(flashcard.flashcardDescription ?? "");
+            setTags(flashcard.tags ?? []);
+            setEntityId(flashcard.entityId);
+            setStatus(flashcard.status ?? StudySetVisibility.Private);
+            setFlashcardType(flashcard.flashcardType ?? FlashcardAttachToType.Lesson);
+        }
+    }, [flashcard]);
 
-                    setTitle(draftData.flashcardName);
-                    setDescription(draftData.flashcardDescription ?? "");
-                    setEntityId(draftData.entityId);
-                    setStatus(
-                        (draftData.status as StudySetVisibility) ??
-                        StudySetVisibility.Private,
-                    );
-                    setFlashcardType(
-                        draftData.flashcardType ?? FlashcardAttachToType.Lesson,
-                    );
-                    setId(draftData.id ?? "");
-                }
-            },
-        });
-    }, []);
+    useEffect(() => {
+        if (contents) {
+            setFlashcardContents(contents);
+        }
+    }, [contents]);
 
-    if (getDraf.isPending) {
+    if (draftLoading) {
         return <EditorLoading />;
     }
 
@@ -173,8 +181,10 @@ function CreateFLashcardModule() {
                 <div className="flex items-center gap-3">
                     <IconEdit className="size-5 text-slate-600" />
                     <div>
-                        <h2 className="text-lg font-bold">Create a new set</h2>
-                        <p className="text-sm text-slate-500">8 terms saved just now</p>
+                        <h2 className="text-lg font-bold">Modify a set</h2>
+                        <p className="text-sm text-slate-500">
+                            {flashcard?.numberOfFlashcardContent} terms saved just now
+                        </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -182,7 +192,7 @@ function CreateFLashcardModule() {
                         className="bg-blue-600 hover:bg-blue-700"
                         onClick={handleSave}
                     >
-                        Create
+                        Save
                     </Button>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -308,7 +318,7 @@ function CreateFLashcardModule() {
             <div className="flex flex-col">
                 <FLashcardContent
                     deleteTerm={handleDeleteTerm}
-                    flashcardId={id}
+                    flashcardId={id ?? ""}
                     flashcards={flashcardContents}
                     setFlashcards={setFlashcardContents}
                 />
@@ -317,4 +327,4 @@ function CreateFLashcardModule() {
     );
 }
 
-export default CreateFLashcardModule;
+export default EditFLashcardModule;

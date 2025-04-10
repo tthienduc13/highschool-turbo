@@ -97,23 +97,6 @@ function UniversityMajorModule({ uniCode }: UniversityMajorModuleProps) {
           )}
         </div>
       </motion.div>
-
-      {/* <AnimatePresence>
-                {isOpenCreate && (
-                    <UniversityMajorAction
-                        key="create-university"
-                        mode="create"
-                        uniCode={uniCode}
-                    />
-                )}
-                {isOpenEdit && (
-                    <UniversityMajorAction
-                        key={"edit-university"}
-                        mode="edit"
-                        uniCode={uniCode}
-                    />
-                )}
-            </AnimatePresence> */}
     </div>
   );
 }

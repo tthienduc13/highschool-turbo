@@ -73,11 +73,7 @@ export const navModerator = {
         },
         {
           title: "Create Flashcard",
-          url: "/flashcard/modify",
-        },
-        {
-          title: "Flashcard Template",
-          url: "/flashcard/template",
+          url: "/flashcard/create",
         },
       ],
     },
@@ -96,11 +92,11 @@ export const navModerator = {
       items: [
         {
           title: "All documents",
-          url: "/document-management/documents",
+          url: "/documents/management",
         },
         {
           title: "Create",
-          url: "/document-management/create",
+          url: "/documents/create",
         },
         {
           title: "Settings",
