@@ -31,12 +31,3 @@ export interface CourseCategory {
   categoryName: string;
   categorySlug: string;
 }
-
-export interface SubjectCurriculum {
-  subjectCurriculumId: string;
-  subjectCurriculumName: string;
-  subjectName: string;
-  subjectId: string;
-  curriculumName: string;
-  curriculumId: string;
-}
