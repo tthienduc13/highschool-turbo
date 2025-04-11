@@ -326,6 +326,24 @@ export const documentEndpoints = {
     API_VERSIONS.V1,
     "/document",
   ),
+  updateDocument: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/document/${id}`,
+    ),
+  uploadDocument: (documentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.MEDIA,
+      API_VERSIONS.V1,
+      `/document/${documentId}`,
+    ),
+  getDocumentManagement: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/document/slug/${slug}/management`,
+    ),
 } as const;
 
 // Folder Endpoints
@@ -595,6 +613,11 @@ export const subjectCurriculumEndpoints = {
       API_VERSIONS.V2,
       `/subject/${subjectId}/curriculum/${curriculumId}/unpublish`,
     ),
+  getSubjectCurriculumPublished: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/subject-curriculum/publish",
+  ),
 };
 
 export const masterCourseEndpoints = {

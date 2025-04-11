@@ -2,45 +2,59 @@ import {
   CreateDocument,
   Document,
   DocumentMedia,
-  FilterPayload,
   Pagination,
   ResponseModel,
+  UpdateDocument,
 } from "@highschool/interfaces";
 import { documentEndpoints, mediaEndpoints } from "@highschool/endpoints";
 
-import axiosServices from "../lib/axios.ts";
+import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
-import { fetchUnauthedPaginatedData } from "./common.ts";
+import fetchPaginatedData from "./common.ts";
 
 export const getDocuments = async ({
-  search,
-  pageNumber,
   pageSize,
+  pageNumber,
+  seach,
+  sortPopular,
   schoolId,
-  categoryIds,
+  subjectIds,
   semester,
   documentYear,
-  sortPopular,
   provinceId,
+  categoryIds,
   curriculumIds,
-  subjectId,
-}: FilterPayload): Promise<Pagination<Document[]>> => {
-  return fetchUnauthedPaginatedData<Document[]>(
-    documentEndpoints.getDocuments,
-    {
-      search: search,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
-      sortPopular,
-      semester,
-      subjectId: schoolId,
-      categoryIds: categoryIds,
-      curriculumIds: curriculumIds,
-      SubjectId: subjectId,
-      documentYear: documentYear,
-      provinceId: provinceId,
-    },
-  );
+}: Partial<{
+  pageSize: number;
+  pageNumber: number;
+  seach?: string;
+  sortPopular?: boolean;
+  schoolId?: string | null;
+  subjectIds?: string;
+  semester?: number | null;
+  documentYear?: number | null;
+  provinceId?: string | null;
+  categoryIds?: string;
+  curriculumIds?: string;
+}>): Promise<Pagination<Document[]>> => {
+  schoolId = schoolId ?? undefined;
+  semester = semester ?? undefined;
+  documentYear = documentYear ?? undefined;
+  provinceId = provinceId ?? undefined;
+
+  return fetchPaginatedData<Document[]>(documentEndpoints.getDocuments, {
+    pageSize,
+    pageNumber,
+    seach,
+    sortPopular,
+    schoolId,
+    subjectIds,
+    semester,
+    documentYear,
+    provinceId,
+    categoryIds,
+    curriculumIds,
+  });
 };
 
 export const getDocumentBySlug = async ({
@@ -59,6 +73,24 @@ export const getDocumentBySlug = async ({
     throw error;
   }
 };
+
+export const getDocumentManagementBySlug = async ({
+  documentSlug,
+}: {
+  documentSlug: string;
+}): Promise<Document> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${documentEndpoints.getDocumentManagement(documentSlug)}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.log(`Error fetching document with slug:${documentSlug}`, error);
+    throw error;
+  }
+};
+
 export const getDocumentMedia = async ({
   documentId,
 }: {
@@ -121,6 +153,46 @@ export const createDocument = async (
     return data;
   } catch (error) {
     console.error("Error while creating document", error);
+    throw error;
+  }
+};
+
+export const updateDocument = async (
+  document: UpdateDocument,
+): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.put(
+      documentEndpoints.updateDocument(document.id!),
+      document,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while creating document", error);
+    throw error;
+  }
+};
+
+export const uploadDocument = async ({
+  documentId,
+  file,
+}: {
+  documentId: string;
+  file: File;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const { data } = await axiosClientUpload.postForm(
+      `${documentEndpoints.uploadDocument(documentId)}`,
+      formData,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while uploading file");
     throw error;
   }
 };

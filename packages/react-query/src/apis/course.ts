@@ -5,6 +5,7 @@ import {
   MasterCourse,
   Pagination,
   ResponseModel,
+  SubjectCurriculum,
 } from "@highschool/interfaces";
 import {
   categoryEndpoints,
@@ -391,4 +392,23 @@ export const editCourses = async (
     console.error("Error while editing course", error);
     throw error;
   }
+};
+
+export const getSubjectCurriculumPublished = async ({
+  search,
+  pageSize,
+  pageNumber,
+}: {
+  search?: string;
+  pageSize: number;
+  pageNumber: number;
+}): Promise<Pagination<SubjectCurriculum[]>> => {
+  return fetchPaginatedData<SubjectCurriculum[]>(
+    subjectCurriculumEndpoints.getSubjectCurriculumPublished,
+    {
+      search,
+      pageSize,
+      pageNumber,
+    },
+  );
 };

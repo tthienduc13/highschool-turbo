@@ -1,56 +1,73 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FilterPayload } from "@highschool/interfaces";
 import { toast } from "sonner";
 
 import {
   createDocument,
   deleteDocument,
   getDocumentBySlug,
+  getDocumentManagementBySlug,
   getDocumentMedia,
   getDocuments,
   getDownloadDocument,
+  updateDocument,
+  uploadDocument,
 } from "../apis/document.ts";
 
-export const useDocumentsQuery = ({
-  search,
-  pageNumber,
+export const useDocumentQuery = ({
   pageSize,
-  schoolId,
-  categoryIds,
-  semester,
+  pageNumber,
+  seach,
   sortPopular,
+  schoolId,
+  subjectIds,
+  semester,
   documentYear,
-  curriculumIds,
   provinceId,
-  subjectId,
-}: FilterPayload) => {
+  categoryIds,
+  curriculumIds,
+}: Partial<{
+  pageSize: number;
+  pageNumber: number;
+  seach?: string;
+  sortPopular?: boolean;
+  schoolId?: string | null;
+  subjectIds?: string;
+  semester?: number | null;
+  documentYear?: number | null;
+  provinceId?: string | null;
+  categoryIds?: string;
+  curriculumIds?: string;
+}>) => {
   return useQuery({
     queryKey: [
-      "document",
-      search,
-      pageNumber,
-      pageSize,
-      sortPopular,
-      semester,
-      schoolId,
-      categoryIds,
-      curriculumIds,
-      documentYear,
-      provinceId,
-      subjectId,
+      "documents",
+      {
+        pageSize,
+        pageNumber,
+        seach,
+        sortPopular,
+        schoolId,
+        subjectIds,
+        semester,
+        documentYear,
+        provinceId,
+        categoryIds,
+        curriculumIds,
+      },
     ],
     queryFn: () =>
       getDocuments({
-        search: search,
-        pageNumber: pageNumber,
-        pageSize: pageSize,
-        schoolId: schoolId,
-        semester: semester,
-        curriculumIds: curriculumIds,
-        categoryIds: categoryIds,
-        documentYear: documentYear,
-        subjectId: subjectId,
-        provinceId: provinceId,
+        pageSize,
+        pageNumber,
+        seach,
+        sortPopular,
+        schoolId,
+        subjectIds,
+        semester,
+        documentYear,
+        provinceId,
+        categoryIds,
+        curriculumIds,
       }),
   });
 };
@@ -59,6 +76,18 @@ export const useDocumentBySlugQuery = ({ slug }: { slug: string }) => {
   return useQuery({
     queryKey: ["document-by-slug", slug],
     queryFn: () => getDocumentBySlug({ documentSlug: slug }),
+    enabled: !!slug,
+  });
+};
+
+export const useDocumentManagementBySlugQuery = ({
+  slug,
+}: {
+  slug: string;
+}) => {
+  return useQuery({
+    queryKey: ["document-management-by-slug", slug],
+    queryFn: () => getDocumentManagementBySlug({ documentSlug: slug }),
     enabled: !!slug,
   });
 };
@@ -96,24 +125,53 @@ export const useDeleteDocumentMutation = () => {
   });
 };
 
+export const useUploadfileMutation = () => {
+  return useMutation({
+    mutationKey: ["document-media"],
+    mutationFn: uploadDocument,
+    onSuccess: (data) => {
+      toast.success(data.message ?? "File uploaded successfully");
+    },
+    onError: (error) => {
+      toast.error("An error occurred while uploading the file.");
+      console.log("Error uploading file:", error);
+    },
+  });
+};
+
 export const useCreateDocumentMutation = ({ file }: { file: File }) => {
-  // const { mutate: uploadFile } = useUploadfileMutation();
+  const { mutate: uploadFile } = useUploadfileMutation();
 
   return useMutation({
     mutationKey: ["create-document"],
     mutationFn: createDocument,
     onSuccess: (data) => {
-      // if (data.status === 201) {
-      //   toast({
-      //     title: data.message,
-      //   });
-      //   uploadFile({ documentId: data.data!, file: file });
-      // }
-
-      return;
+      if (data.status === 201) {
+        toast.success(data.message ?? "Document created successfully");
+        uploadFile({ documentId: data.data!, file: file });
+      } else {
+        toast.error(
+          data.message ?? "An error occurred while creating the document.",
+        );
+      }
     },
     onError: (error) => {
       toast.error("An error occurred while uploading the file.");
+      console.log("Error uploading file:", error);
+    },
+  });
+};
+
+export const useUpdateDocumentMutation = () => {
+  return useMutation({
+    mutationKey: ["update-document"],
+    mutationFn: updateDocument,
+    onSuccess: () => {
+      toast.success("Document updated successfully");
+    },
+    onError: (error) => {
+      toast.error("An error occurred while uploading the file.");
+      console.log("Error uploading file:", error);
     },
   });
 };

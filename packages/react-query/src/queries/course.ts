@@ -14,6 +14,7 @@ import {
   getCourseBySlug,
   getCourses,
   getMasterCourses,
+  getSubjectCurriculumPublished,
   publishCourse,
   unEnrollCourse,
   unpublishCourse,
@@ -157,5 +158,25 @@ export const useEditCourseMutation = () => {
   return useMutation({
     mutationKey: ["edit-course"],
     mutationFn: editCourses,
+  });
+};
+
+export const useGetSubjectCurriculumPublishedQuery = ({
+  search,
+  pageSize,
+  pageNumber,
+}: {
+  search?: string;
+  pageSize: number;
+  pageNumber: number;
+}) => {
+  return useQuery({
+    queryKey: ["subject-curriculum-published"],
+    queryFn: () =>
+      getSubjectCurriculumPublished({
+        search: search,
+        pageSize: pageSize,
+        pageNumber: pageNumber,
+      }),
   });
 };

@@ -6,16 +6,20 @@ export interface Document {
   documentYear: number;
   view: number;
   download: number;
+  schoolId?: string;
   schoolName: string;
   isLike: boolean;
   like: number;
   subjectCurriculum: SubjectCurriculum;
+  subjectId?: string;
+  curriculumId?: string;
   category: Category;
   semester: number;
   createdBy: string;
   updatedBy: string;
   createdAt: Date;
   updatedAt: Date;
+  isDownloaded?: boolean;
 }
 
 export interface Category {
@@ -36,11 +40,11 @@ export interface FilterPayload {
   search?: string;
   pageNumber: number;
   pageSize: number;
-  schoolId?: string;
+  schoolId?: string | null;
   semester?: number | null;
-  documentYear?: number;
+  documentYear?: number | null;
   sortPopular?: boolean | null;
-  provinceId?: string;
+  provinceId?: string | null;
   categoryIds?: string;
   curriculumIds?: string;
   subjectId?: string;
@@ -72,4 +76,17 @@ export type CreateDocument = {
   subjectId: string;
   semester: number;
   documentYear: number;
+};
+
+export type UpdateDocument = {
+  documentName?: string;
+  documentDescription?: string;
+  schoolId?: string;
+  curriculumId?: string;
+  subjectId?: string;
+  semester?: number;
+  documentYear?: number;
+  isDownloaded?: boolean;
+  documentFileName?: string;
+  id?: string;
 };

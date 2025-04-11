@@ -98,10 +98,6 @@ export const navModerator = {
           title: "Create",
           url: "/documents/create",
         },
-        {
-          title: "Settings",
-          url: "#",
-        },
       ],
     },
     {

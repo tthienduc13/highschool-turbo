@@ -1,10 +1,7 @@
+import DocumentModule from "@/components/modules/documents/management";
+
 function DocumentManagementPage() {
-    return (
-        <div>
-            <h1>Document Management</h1>
-            <p>Manage your documents here.</p>
-        </div>
-    );
+    return <DocumentModule />;
 }
 
 export default DocumentManagementPage;
