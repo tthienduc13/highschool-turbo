@@ -17,7 +17,15 @@ import {
   publishCourse,
   unEnrollCourse,
   unpublishCourse,
+  updateUserCurriculum,
 } from "../apis/course.ts";
+
+export const useUpdateUserCurriculumMutation = () => {
+  return useMutation({
+    mutationKey: ["update-user-curriculum"],
+    mutationFn: updateUserCurriculum,
+  });
+};
 
 export const useActivateCourseMutation = () => {
   return useMutation({

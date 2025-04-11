@@ -5,10 +5,10 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { IconX } from "@tabler/icons-react";
 
-import { useSet } from "@/hooks/use-set";
+import { useStudySetFSRSContext } from "@/stores/use-study-set-fsrs-store";
 
 export const TitleBar = () => {
-  const { flashcard } = useSet();
+  const title = useStudySetFSRSContext((s) => s.title);
   const router = useRouter();
   const pathName = usePathname();
 
@@ -20,11 +20,11 @@ export const TitleBar = () => {
 
   return (
     <div className="mt-2 flex w-full items-center justify-between gap-4">
-      <div className="flex h-8 w-[110px] items-center justify-center rounded-md bg-primary/40 px-3 text-base font-bold">
+      <div className="bg-primary/40 flex h-8 w-[110px] items-center justify-center rounded-md px-3 text-base font-bold">
         Thẻ ghi nhớ
       </div>
       <h1 className="line-clamp-1 hidden w-full flex-1 truncate text-center text-xl font-bold md:block">
-        {flashcard?.flashcardName}
+        {title}
       </h1>
       <div className="flex w-[110px] justify-end">
         <Button

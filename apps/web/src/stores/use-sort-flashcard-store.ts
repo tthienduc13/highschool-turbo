@@ -54,7 +54,8 @@ export const createSortFlashcardsStore = (
       initialize: (dueCards, totalCardCount) => {
         // Initialize start times for all cards
         const cardStartTimes: Record<string, number> = {};
-        dueCards.forEach(card => {
+
+        dueCards.forEach((card) => {
           cardStartTimes[card.contentId] = Date.now();
         });
 
@@ -111,9 +112,9 @@ export const createSortFlashcardsStore = (
 
           // Check if all cards have been rated
           const allRated = state.index >= state.dueCards.length;
-          
+
           // Check if all cards were rated as known (3)
-          const allKnown = state.dueCards.every(card => card.isReview);
+          const allKnown = state.dueCards.every((card) => card.isReview);
 
           return {
             dueCards: stillLearningCards,
@@ -140,7 +141,8 @@ export const createSortFlashcardsStore = (
 
           // Initialize start times for new cards
           const updatedCardStartTimes = { ...state.cardStartTimes };
-          updatedDueCards.forEach(card => {
+
+          updatedDueCards.forEach((card) => {
             if (!updatedCardStartTimes[card.contentId]) {
               updatedCardStartTimes[card.contentId] = Date.now();
             }
@@ -165,15 +167,18 @@ export const createSortFlashcardsStore = (
       getTimeSpent: (termId) => {
         const state = get();
         const startTime = state.cardStartTimes[termId] || Date.now();
+
         return Math.floor((Date.now() - startTime) / 1000); // Return time in seconds
       },
       checkAllCardsRated: () => {
         const state = get();
+
         return state.index >= state.dueCards.length;
       },
       checkAllCardsKnown: () => {
         const state = get();
-        return state.dueCards.every(card => card.isReview);
+
+        return state.dueCards.every((card) => card.isReview);
       },
       setManualRevalidate: (value) => {
         set({ manualRevalidate: value });

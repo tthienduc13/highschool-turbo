@@ -4,4 +4,5 @@ import { eventBus } from "@/lib/event-bus";
 
 export const queryEventChannel = eventBus<{
   setQueryRefetched: (data: SetData) => void;
+  FSRSQueryRefetched: (isReview: boolean) => void;
 }>();

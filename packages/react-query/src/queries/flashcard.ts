@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 
 import {
   createFlashcard,
@@ -11,6 +11,7 @@ import {
   getFlashcardById,
   getFlashcardBySlug,
   getFlashcards,
+  getFlashcardsFor,
   getFSRSById,
   getFSRSBySlug,
   getOwnerFlashcard,
@@ -245,6 +246,50 @@ export const useFlashcardQuery = ({
   });
 };
 
+export const useInifiniteFlashcard = ({
+  pageSize,
+  search,
+  tags,
+  entityId,
+  flashcardType,
+  userId,
+  isCreatedBySystem,
+  status,
+  isDeleted,
+}: {
+  pageSize: number;
+  search?: string;
+  tags?: string[];
+  entityId?: string;
+  flashcardType?: string;
+  userId?: string;
+  isCreatedBySystem?: boolean;
+  status?: string;
+  isDeleted?: boolean;
+}) => {
+  return useInfiniteQuery({
+    queryKey: ["flashcard", { entityId, flashcardType }],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      getFlashcardsFor({
+        pageNumber: pageParam,
+        pageSize: pageSize,
+        search: search,
+        tags: tags,
+        entityId: entityId,
+        flashcardType: flashcardType,
+        userId: userId,
+        isCreatedBySystem: isCreatedBySystem,
+        status: status,
+        isDeleted: isDeleted,
+      }),
+    getNextPageParam: (lastPage, allPages) => {
+      return allPages.length + 1;
+    },
+    refetchOnWindowFocus: true,
+  });
+};
+
 export const useGetTagFlashcardQuery = ({
   pageNumber,
   pageSize,
@@ -298,7 +343,7 @@ export const useCreateFlashcardStatus = () => {
     mutationKey: ["create-flashcard-status"],
     mutationFn: createFlashcardStatus,
   });
-}
+};
 
 export const useResetFlashcardMutation = () => {
   return useMutation({

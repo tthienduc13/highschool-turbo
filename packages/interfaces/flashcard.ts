@@ -28,7 +28,7 @@ export enum FlashcardAttachToType {
   Lesson = "Lesson",
   Chapter = "Chapter",
   Subject = "Subject",
-  SubjectCurriculum = "SubjectCurriculum",
+  //   SubjectCurriculum = "SubjectCurriculum",
 }
 
 export interface FlashcardEntitySearch {

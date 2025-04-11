@@ -6,7 +6,6 @@ import { toast } from "sonner";
 
 import { StudyStarredSection } from "./settings/study-starred";
 import { CardsAnswerModeSection } from "./settings/answer-mode";
-import { CardsSortingSection } from "./settings/card-sorting";
 import { CardPerDaySection } from "./settings/card-per-day";
 
 import { useSet } from "@/hooks/use-set";
@@ -34,30 +33,28 @@ export const SettingModal = ({ isOpen, onClose }: SettingModal) => {
       title="Cài đặt"
       withoutFooter={status == "unauthenticated"}
       onClose={() => {
-        if (status == "authenticated") {
-          apiResetFlashcardProgress.mutate(
-            {
-              flashcardId: flashcard.id,
-            },
-            {
-              onSuccess: (data) => {
-                toast.success(data.message);
-              },
-            },
-          );
-        }
-
         onClose();
       }}
       onConfirm={() => {
+        apiResetFlashcardProgress.mutate(
+          {
+            flashcardId: flashcard.id,
+          },
+          {
+            onSuccess: (data) => {
+              toast.success(data.message);
+            },
+          },
+        );
+
         onClose();
         setIsDirty(true);
       }}
       //   isPending={apiResetCardsProgress.isLoading}
     >
       <div className="flex flex-col gap-6">
-        <CardsSortingSection />
-        <Separator />
+        {/* <CardsSortingSection />
+        <Separator /> */}
         <CardPerDaySection />
         <Separator />
         <CardsAnswerModeSection />

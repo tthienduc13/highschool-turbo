@@ -6,6 +6,7 @@ import { useParams, usePathname } from "next/navigation";
 import { Chapter } from "@highschool/interfaces";
 import {
   useChapterListQuery,
+  useCurriculaQuery,
   useEnrollMutation,
   useUnEnrollMutation,
 } from "@highschool/react-query/queries";
@@ -19,30 +20,37 @@ import {
   IconLock,
   IconSettings,
 } from "@tabler/icons-react";
+import { useEffect } from "react";
 
 import AnimatedCircularProgressBar from "@/components/core/common/animated-progress-bar";
-import { useMe } from "@/hooks/use-me";
-import { CurriculumData } from "@/components/core/common/select-curriculum-modal";
 
 interface ChapterListProps {
   courseId: string;
   setSelectOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  userCurriculum: string;
 }
 
-export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
+export const ChapterList = ({
+  courseId,
+  setSelectOpen,
+  userCurriculum,
+}: ChapterListProps) => {
   const { slug } = useParams();
   const pathName = usePathname();
   const queryClient = useQueryClient();
 
-  const me = useMe();
-
-  const currentCurriculum = CurriculumData.find((curriculum) => {
-    return curriculum.id === me?.curriculumId;
+  const { data: currciulumData } = useCurriculaQuery({
+    pageNumber: 1,
+    pageSize: 20,
   });
+
+  const currentCurriculum = currciulumData?.data?.find(
+    (curriculum) => curriculum.id === userCurriculum,
+  );
 
   const { data, isLoading } = useChapterListQuery({
     courseSlug: slug as string,
-    curriculumId: me?.curriculumId as string,
+    curriculumId: userCurriculum as string,
     pageNumber: 1,
     pageSize: 100,
   });
@@ -54,7 +62,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
 
   const handleEnroll = () => {
     enrollCourse.mutate(
-      { subjectId: courseId, curriculumId: me?.curriculumId! },
+      { subjectId: courseId, curriculumId: userCurriculum },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
@@ -66,7 +74,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
 
   const handleUnEnroll = () => {
     unEnrollCourse.mutate(
-      { subjectId: courseId, curriculumId: me?.curriculumId! },
+      { subjectId: courseId, curriculumId: userCurriculum },
       {
         onSuccess: (data) => {
           queryClient.invalidateQueries({ queryKey: ["chapter-list"] });
@@ -77,6 +85,12 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
   };
 
   const isEnroll = data?.data?.subjectModel?.isEnroll ?? false;
+
+  useEffect(() => {
+    if (!userCurriculum) {
+      setSelectOpen(true);
+    }
+  }, [userCurriculum]);
 
   if (isLoading) {
     return (
@@ -91,7 +105,7 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
   const chapters = data?.data?.items || [];
   const enrollmentProgress = data?.data?.subjectModel?.enrollmentProgress;
 
-  if (!me?.curriculumId) {
+  if (!userCurriculum || userCurriculum === "") {
     return (
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold md:text-2xl">
@@ -128,17 +142,17 @@ export const ChapterList = ({ courseId, setSelectOpen }: ChapterListProps) => {
             </Button>
           )}
           <Button variant="outline" onClick={() => setSelectOpen(true)}>
-            {me.curriculumId ? (
+            {userCurriculum ? (
               <Image
                 alt={currentCurriculum?.curriculumName!}
                 height={18}
-                src={currentCurriculum?.image!}
+                src={currentCurriculum?.imageUrl!}
                 width={18}
               />
             ) : (
               <IconSettings />
             )}
-            {me?.curriculumId ? "Thay đổi chương trình" : "Chọn chương trình"}
+            {userCurriculum ? "Thay đổi chương trình" : "Chọn chương trình"}
           </Button>
         </div>
       </div>

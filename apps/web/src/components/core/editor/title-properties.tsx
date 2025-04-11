@@ -24,7 +24,6 @@ import {
 import {
   IconBook,
   IconBook2,
-  IconBuildingSkyscraper,
   IconLoader2,
   IconSchool,
 } from "@tabler/icons-react";
@@ -44,10 +43,10 @@ export const flashcardAttachToTypeLabels: Record<
     icon: <IconBook size={18} />,
     label: "Chương",
   },
-  [FlashcardAttachToType.SubjectCurriculum]: {
-    icon: <IconBuildingSkyscraper size={18} />,
-    label: "Chương trình môn học",
-  },
+  //   [FlashcardAttachToType.SubjectCurriculum]: {
+  //     icon: <IconBuildingSkyscraper size={18} />,
+  //     label: "Chương trình môn học",
+  //   },
   [FlashcardAttachToType.Subject]: {
     icon: <IconSchool size={18} />,
     label: "Môn học",
@@ -91,8 +90,8 @@ export const TitleProperties = () => {
       case FlashcardAttachToType.Chapter:
         return `Thuộc ${item.subject?.name || ""} / ${item.subjectCurriculum?.name || ""}`;
 
-      case FlashcardAttachToType.SubjectCurriculum:
-        return `Thuộc ${item.subject?.name || ""}`;
+      //   case FlashcardAttachToType.SubjectCurriculum:
+      //     return `Thuộc ${item.subject?.name || ""}`;
 
       case FlashcardAttachToType.Subject:
         return ""; // Môn học không cần hiển thị mối quan hệ
@@ -125,15 +124,14 @@ export const TitleProperties = () => {
     }
   }, [_entityId, searchResult, flashcardType]);
 
-  // Hàm helper để lấy ID dựa trên loại flashcard
   const getItemId = (item: any, type: FlashcardAttachToType): string => {
     switch (type) {
       case FlashcardAttachToType.Lesson:
         return item.lesson?.id || "";
       case FlashcardAttachToType.Chapter:
         return item.chapter?.id || "";
-      case FlashcardAttachToType.SubjectCurriculum:
-        return item.subjectCurriculum?.id || "";
+      //   case FlashcardAttachToType.SubjectCurriculum:
+      //     return item.subjectCurriculum?.id || "";
       case FlashcardAttachToType.Subject:
         return item.subject?.id || "";
       default:
@@ -229,18 +227,20 @@ export const TitleProperties = () => {
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(FlashcardAttachToType).map(([, typeValue]) => (
-                  <SelectItem
-                    key={typeValue}
-                    className="text-base"
-                    value={typeValue}
-                  >
-                    <div className="flex flex-row items-center gap-4">
-                      {flashcardAttachToTypeLabels[typeValue].icon}
-                      {flashcardAttachToTypeLabels[typeValue].label}
-                    </div>
-                  </SelectItem>
-                ))}
+                {Object.entries(FlashcardAttachToType).map(
+                  ([, typeValue], index) => (
+                    <SelectItem
+                      key={index}
+                      className="text-base"
+                      value={typeValue}
+                    >
+                      <div className="flex flex-row items-center gap-4">
+                        {flashcardAttachToTypeLabels[typeValue].icon}
+                        {flashcardAttachToTypeLabels[typeValue].label}
+                      </div>
+                    </SelectItem>
+                  ),
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -249,11 +249,11 @@ export const TitleProperties = () => {
             <h2 className="text-lg font-bold">
               {flashcardType === FlashcardAttachToType.Subject
                 ? "Môn học liên quan"
-                : flashcardType === FlashcardAttachToType.SubjectCurriculum
-                  ? "Chương trình môn học liên quan"
-                  : flashcardType === FlashcardAttachToType.Chapter
-                    ? "Chương liên quan"
-                    : "Bài học liên quan"}
+                : // : flashcardType === FlashcardAttachToType.SubjectCurriculum
+                  //   ? "Chương trình môn học liên quan"
+                  flashcardType === FlashcardAttachToType.Chapter
+                  ? "Chương liên quan"
+                  : "Bài học liên quan"}
             </h2>
             <Combobox
               value={entityId || null}

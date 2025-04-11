@@ -455,6 +455,11 @@ export const flashcardEndpoints = {
     API_VERSIONS.V1,
     "/flashcard/management",
   ),
+  getFlashcardsFor: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard",
+  ),
   createFlashcard: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,
@@ -634,7 +639,12 @@ export const courseEndpoints = {
     API_VERSIONS.V2,
     "/subject",
   ),
-  edit: createEndpoint(SERVICE_PREFIXES.DOCUMENT, API_VERSIONS.V1, "/subject"),
+  edit: createEndpoint(SERVICE_PREFIXES.USER, API_VERSIONS.V1, "/subject"),
+  updateUserCurriculum: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/users/subject-curriculum",
+  ),
   getCourses: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,

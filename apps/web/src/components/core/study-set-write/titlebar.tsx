@@ -2,8 +2,9 @@
 
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-import { IconSettings, IconX } from "@tabler/icons-react";
+import { IconArrowLeft, IconSettings } from "@tabler/icons-react";
 import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 import { useWritingContext } from "@/stores/use-study-set-writing-store";
 
@@ -16,20 +17,16 @@ export const TitleBar = () => {
 
   return (
     <div className="flex flex-row items-center justify-between gap-4">
-      <Button
-        className="rounded-full"
-        size={"icon"}
-        variant={"ghost"}
-        onClick={() => router.push(`/study-set/${slug}`)}
-      >
-        <IconX className="!size-6" />
-      </Button>
+      <Link href={`/study-set/${slug}`}>
+        <Button className="rounded-full" size={"icon"} variant={"ghost"}>
+          <IconArrowLeft className="!size-6" />
+        </Button>
+      </Link>
       <div className="flex flex-1 flex-col items-center justify-center gap-2">
         {completed ? (
           <p className="text-lg font-semibold">Bạn đã hoàn thành</p>
         ) : (
           <>
-            {" "}
             <div className="text-lg font-semibold">
               {cardCounter + 1}/{dueCardCount}
             </div>

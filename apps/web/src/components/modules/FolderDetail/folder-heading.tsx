@@ -94,14 +94,14 @@ export const FolderHeading = () => {
               <div className="flex flex-row items-center gap-2">
                 <IconCards className="text-muted-foreground" size={18} />
                 <p className="text-muted-foreground">
-                  {folder.folderUser.countFlashCard} thẻ ghi nhớ
+                  {folder.flashcards.length ?? 0} thẻ ghi nhớ
                 </p>
               </div>
               <Separator className="h-full w-[0.5px]" orientation="vertical" />
               <div className="flex flex-row items-center gap-2">
                 <IconFileTypePdf className="text-muted-foreground" size={18} />
                 <p className="text-muted-foreground">
-                  {folder.folderUser.countDocument} tài liệu
+                  {folder.documents.length ?? 0} tài liệu
                 </p>
               </div>
             </div>
