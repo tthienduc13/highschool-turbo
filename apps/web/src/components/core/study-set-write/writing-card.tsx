@@ -43,14 +43,14 @@ export const WritingCard = () => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div
+      className="flex w-full flex-col gap-4"
+      style={{ marginBottom: "100px" }}
+    >
       <motion.div
         key={active.contentId}
         animate={{ translateY: 0, opacity: 1 }}
         initial={{ translateY: -20, opacity: 0.5 }}
-        // style={{
-        //   marginBottom: 100,
-        // }}
       >
         <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
           {status !== undefined && (
@@ -108,7 +108,7 @@ export const WritingCard = () => {
             </p>
           </div>
 
-          {cardResult.improvement && (
+          {cardResult.improvement && cardResult.improvement !== "" && (
             <div className="flex flex-col gap-2">
               <div
                 className={cn(
@@ -119,7 +119,7 @@ export const WritingCard = () => {
                 Cần cải thiện
               </div>
               <p className="ml-2 text-gray-600 dark:text-gray-400">
-                {cardResult.assessment}
+                {cardResult.improvement}
               </p>
             </div>
           )}

@@ -31,6 +31,26 @@ export interface CreateCoursePayload {
   information: string;
 }
 
+export const updateUserCurriculum = async ({
+  subjectId,
+  curriculumId,
+}: {
+  subjectId: string;
+  curriculumId: string;
+}) => {
+  try {
+    const { data } = await axiosServices.post(
+      courseEndpoints.updateUserCurriculum,
+      { subjectId, curriculumId },
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while updating user curriculum", error);
+    throw error;
+  }
+};
+
 export interface PatchCoursePayload extends CreateCoursePayload {
   id: string;
   image: string;

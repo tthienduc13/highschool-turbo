@@ -82,9 +82,9 @@ export function CircularTermMastery({
             <span className="text-sm font-bold">{stillLearning}</span>
           </div>
         </div>
-        <div className="flex flex-col font-bold text-gray-800 dark:text-gray-50">
-          <span>Know</span>
-          <span>Still learning</span>
+        <div className="flex flex-col gap-2.5 font-bold text-gray-800 dark:text-gray-50">
+          <span>Đã biết</span>
+          <span>Đang học</span>
         </div>
       </div>
     </div>

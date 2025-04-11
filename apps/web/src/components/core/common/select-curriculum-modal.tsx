@@ -1,44 +1,40 @@
 import Image from "next/image";
 import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
+import {
+  useCurriculaQuery,
+  useUpdateUserCurriculumMutation,
+} from "@highschool/react-query/queries";
 import { IconCircleCheck } from "@tabler/icons-react";
-import { useUpdateBaseUserInfoMutation } from "@highschool/react-query/queries";
-import { useSession } from "next-auth/react";
-
-import { useMe } from "@/hooks/use-me";
+import { useQueryClient } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
 
 interface SelectCurriculumModalProps {
   isOpen: boolean;
   onClose: () => void;
+  courseId: string;
+  userCurriculum: string;
 }
-
-export const CurriculumData = [
-  {
-    id: "01931f33-7d05-758c-9580-aa477f5249a4",
-    curriculumName: "Chân trời sáng tạo",
-    image: "/images/curriculum/chan-troi-sang-tao.png",
-  },
-  {
-    id: "01932971-1395-78b7-8033-cd035de9566b",
-    curriculumName: "Kết nối tri thức",
-    image: "/images/curriculum/ket-noi-tri-thuc.png",
-  },
-  {
-    id: "01932971-336a-747b-d6c8-a28afe4411ba",
-    curriculumName: "Cánh diều",
-    image: "/images/curriculum/canh-dieu.png",
-  },
-];
 
 export const SelectCurriculumModal = ({
   isOpen,
   onClose,
+  courseId,
+  userCurriculum,
 }: SelectCurriculumModalProps) => {
-  const { data: session, update } = useSession();
+  const { data: CurriculumData } = useCurriculaQuery({
+    pageNumber: 1,
+    pageSize: 12,
+  });
+  const { slug } = useParams();
+  const queryClient = useQueryClient();
+  const apiUpdateUserCurriculum = useUpdateUserCurriculumMutation();
 
-  const updateBaseUser = useUpdateBaseUserInfoMutation();
+  const filterdCurriculum = CurriculumData?.data.filter(
+    (curriculum) => !curriculum.isExternal,
+  );
 
-  const me = useMe();
+  if (!CurriculumData) return;
 
   return (
     <Modal
@@ -48,26 +44,21 @@ export const SelectCurriculumModal = ({
       onClose={onClose}
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {CurriculumData.map((curriculum) => (
+        {filterdCurriculum!.map((curriculum) => (
           <Button
             key={curriculum.id}
             className="relative h-full border-gray-200 dark:border-gray-700"
             variant={"outline"}
             onClick={async () => {
-              await updateBaseUser.mutateAsync(
+              await apiUpdateUserCurriculum.mutateAsync(
                 {
-                  student: {
-                    curriculumId: curriculum.id,
-                  },
+                  curriculumId: curriculum.id,
+                  subjectId: courseId,
                 },
                 {
                   onSuccess: async () => {
-                    await update({
-                      ...session,
-                      user: {
-                        ...session?.user,
-                        curriculumId: curriculum.id,
-                      },
+                    await queryClient.invalidateQueries({
+                      queryKey: ["course", slug],
                     });
                     onClose();
                   },
@@ -82,12 +73,12 @@ export const SelectCurriculumModal = ({
                   priority
                   alt={curriculum.curriculumName}
                   sizes="(max-width: 768px) 100vw, 80px"
-                  src={curriculum.image}
+                  src={curriculum.imageUrl}
                 />
               </div>
               <p className="font-medium">{curriculum.curriculumName}</p>
             </div>
-            {me?.curriculumId === curriculum.id && (
+            {userCurriculum === curriculum.id && (
               <div className="absolute -right-3 -top-3 rounded-full bg-gray-50 p-1 dark:bg-gray-900">
                 <div className="rounded-full bg-white p-[4px] text-emerald-500 shadow-md dark:bg-gray-800/50">
                   <IconCircleCheck className="!size-[18px]" size={18} />

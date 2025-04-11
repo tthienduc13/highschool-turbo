@@ -288,6 +288,46 @@ export const updateContainer = async ({
   }
 };
 
+export const getFlashcardsFor = async ({
+  pageSize,
+  pageNumber,
+  search,
+  tags,
+  entityId,
+  flashcardType,
+  userId,
+  isCreatedBySystem,
+  status,
+  isDeleted,
+}: {
+  pageSize: number;
+  pageNumber: number;
+  search?: string;
+  tags?: string[];
+  entityId?: string;
+  flashcardType?: string;
+  userId?: string;
+  isCreatedBySystem?: boolean;
+  status?: string;
+  isDeleted?: boolean;
+}): Promise<Pagination<FlashcardPreview[]>> => {
+  return fetchPaginatedData<FlashcardPreview[]>(
+    flashcardEndpoints.getFlashcardsFor,
+    {
+      pageNumber,
+      pageSize,
+      search,
+      tags,
+      entityId,
+      flashcardType,
+      userId,
+      isCreatedBySystem,
+      status,
+      isDeleted,
+    },
+  );
+};
+
 export const getFlashcards = async ({
   pageSize,
   pageNumber,
@@ -465,7 +505,7 @@ export const createFlashcard = async ({
   } catch (error) {
     console.error("Error while creating flashcard", error);
   }
-}
+};
 
 export const resetFlashcardProgress = async ({
   flashcardId,

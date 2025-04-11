@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useCourseBySlugQuery } from "@highschool/react-query/queries";
@@ -12,6 +12,7 @@ import {
 } from "@tabler/icons-react";
 
 import { ChapterList } from "./chapter-list";
+import { RealatedResource } from "./related-resource";
 
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
 import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
@@ -42,12 +43,6 @@ function CourseDetailModule() {
     { title: data?.subjectName!, link: `/courses/${data?.slug}` },
   ];
 
-  useEffect(() => {
-    if (!me?.curriculumId) {
-      setSelectOpen(true);
-    }
-  }, []);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -55,7 +50,9 @@ function CourseDetailModule() {
   return (
     <Container maxWidth="7xl">
       <SelectCurriculumModal
+        courseId={data?.id!}
         isOpen={selectOpen}
+        userCurriculum={data?.curriculumIdUser!}
         onClose={() => setSelectOpen(false)}
       />
       <div className="flex flex-col gap-12">
@@ -90,7 +87,12 @@ function CourseDetailModule() {
             </div>
           </div>
         </div>
-        <ChapterList courseId={data?.id!} setSelectOpen={setSelectOpen} />
+        <ChapterList
+          courseId={data?.id!}
+          setSelectOpen={setSelectOpen}
+          userCurriculum={data?.curriculumIdUser!}
+        />
+        <RealatedResource courseId={data?.id!} />
       </div>
     </Container>
   );

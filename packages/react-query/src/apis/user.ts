@@ -141,12 +141,10 @@ export const getAuthorList = async ({
   userIds: string[];
 }): Promise<Author[]> => {
   try {
-    const params = new URLSearchParams();
-
-    userIds.forEach((id) => params.append("userIds", id));
-
     const { data } = await axiosServices.get(`${userEndpoints.getAuthor}`, {
-      params,
+      params: {
+        userId: userIds.map((id) => id),
+      },
     });
 
     return data;

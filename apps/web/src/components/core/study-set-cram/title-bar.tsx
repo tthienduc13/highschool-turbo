@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-import { IconArrowLeft, IconSettings } from "@tabler/icons-react";
+import { IconArrowLeft, IconReload } from "@tabler/icons-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { useSet } from "@/hooks/use-set";
 import { useCramContext } from "@/stores/use-study-set-cram-store";
@@ -18,29 +18,24 @@ import { useCramContext } from "@/stores/use-study-set-cram-store";
 
 export const TitleBar = () => {
   const { flashcard } = useSet();
+  const router = useRouter();
   const roundCounter = useCramContext((s) => s.roundCounter);
   const termsCount = useCramContext((s) => s.numTerms);
 
-  const [openSetting, setOpenSetting] = useState<boolean>(false);
-
-  const router = useRouter();
   const completed = useCramContext((s) => s.completed);
 
   return (
     <>
-      {/* <SettingModal
-        isOpen={openSetting}
-        onClose={() => setOpenSetting(false)}
-      /> */}
       <div className="flex flex-row items-center justify-between">
-        <Button
-          className="text-blue hover:text-blue size-10 rounded-full"
-          size={"icon"}
-          variant={"ghost"}
-          onClick={() => router.push(`/study-set/${flashcard.slug}`)}
-        >
-          <IconArrowLeft className="!size-6" />
-        </Button>
+        <Link href={`/study-set/${flashcard.slug}`}>
+          <Button
+            className="text-blue hover:text-blue size-10 rounded-full"
+            size={"icon"}
+            variant={"ghost"}
+          >
+            <IconArrowLeft className="!size-6" />
+          </Button>
+        </Link>
         <h1 className={`flex-1 text-center text-lg font-semibold md:text-2xl`}>
           {completed ? "Kết quả tổng quát" : `${roundCounter}/${termsCount}`}
         </h1>
@@ -48,9 +43,9 @@ export const TitleBar = () => {
           className="text-blue hover:text-blue size-10 rounded-full"
           size={"icon"}
           variant={"ghost"}
-          onClick={() => setOpenSetting(true)}
+          onClick={router.refresh}
         >
-          <IconSettings className="!size-6" />
+          <IconReload className="!size-6" />
         </Button>
       </div>
     </>

@@ -13,7 +13,7 @@ export const Calendar = () => {
     <div className="flex w-full flex-col gap-6 ">
       <div className="flex flex-row items-center gap-2">
         <IconCalendarUser size={24} />
-        <h2 className="text-3xl font-semibold">Hoạt động của bạn</h2>
+        <h2 className="text-3xl font-semibold">Lịch của bạn</h2>
       </div>
       <FullCalendar
         ref={calendarRef}

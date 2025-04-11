@@ -15,6 +15,7 @@ export interface Course {
   subjectCode: string;
   masterSubjectName: string;
   masterSubjectSlug: string;
+  curriculumIdUser: string;
   masterSubjectId: string;
   createdAt: Date;
   category: Grade;

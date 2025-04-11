@@ -44,7 +44,7 @@ export const AddToFolderModal = ({
       onClose={onClose}
       onConfirm={() => onAdd(selectedIds)}
     >
-      <div className="max-h-[500px] w-full overflow-y-scroll py-5">
+      <div className="no-scrollbar max-h-[500px] w-full overflow-y-scroll py-5">
         <div className="grid grid-cols-2 gap-4">
           {isEntitiesLoading &&
             Array.from({ length: 10 }).map((_, i) => (

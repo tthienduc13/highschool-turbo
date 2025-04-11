@@ -38,6 +38,5 @@ export const useFlashcardEntitySearch = ({
   return useQuery({
     queryKey: ["search-entity", { type, value, limit }],
     queryFn: () => searchFlashcardEntity({ type, value, limit }),
-    enabled: value.length > 0,
   });
 };

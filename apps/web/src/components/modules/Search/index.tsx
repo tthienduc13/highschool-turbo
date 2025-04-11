@@ -5,6 +5,8 @@ import { Input } from "@highschool/ui/components/ui/input";
 import { IconSearch } from "@tabler/icons-react";
 import { useSearchQuery } from "@highschool/react-query/queries";
 import {
+  Course,
+  Document,
   Flashcard,
   Pagination,
   SearchAll,
@@ -22,6 +24,8 @@ import { AllResult } from "@/components/core/search/tabs/all-results";
 import { StudySets } from "@/components/core/search/tabs/study-sets";
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
+import { Documents } from "@/components/core/search/tabs/documents";
+import { Courses } from "@/components/core/search/tabs/courses";
 
 function SearchModule() {
   const router = useRouter();
@@ -95,7 +99,7 @@ function SearchModule() {
               >
                 Thẻ ghi nhớ
               </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.Folder}
                 variant={"outline"}
@@ -106,7 +110,7 @@ function SearchModule() {
                 }}
               >
                 Thư mục
-              </TabsTrigger>
+              </TabsTrigger> */}
               <TabsTrigger
                 className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.Subject}
@@ -131,7 +135,7 @@ function SearchModule() {
               >
                 Tài liệu
               </TabsTrigger>
-              <TabsTrigger
+              {/* <TabsTrigger
                 className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={SearchType.News}
                 variant={"outline"}
@@ -142,7 +146,7 @@ function SearchModule() {
                 }}
               >
                 Hướng dẫn
-              </TabsTrigger>
+              </TabsTrigger> */}
             </TabsList>
             <TabsContent value={SearchType.All}>
               {isLoading ? (
@@ -163,10 +167,22 @@ function SearchModule() {
               )}
             </TabsContent>
             <TabsContent value={SearchType.Subject}>
-              <div>Subject</div>
+              {isLoading ? (
+                <div />
+              ) : data ? (
+                <Courses data={data as Pagination<Course[]>} />
+              ) : (
+                <SearchNotFound query={_searchQuery!} />
+              )}
             </TabsContent>
             <TabsContent value={SearchType.Document}>
-              <div>Document</div>
+              {isLoading ? (
+                <div />
+              ) : data ? (
+                <Documents data={data as Pagination<Document[]>} />
+              ) : (
+                <SearchNotFound query={_searchQuery!} />
+              )}
             </TabsContent>
           </Tabs>
         </div>

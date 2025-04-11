@@ -225,7 +225,7 @@ export const StudySets = ({ data }: StudySetsProps) => {
 
       {/* Main content */}
       <div className="flex flex-col gap-6">
-        {renderFilterSection()}
+        {/* {renderFilterSection()} */}
         <div className="grid grid-cols-1 items-stretch gap-0 md:grid-cols-3 md:gap-6">
           {renderFlashcardList()}
           {renderFlashcardPreview()}
