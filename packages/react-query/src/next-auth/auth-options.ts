@@ -38,12 +38,15 @@ const refreshAccessToken = async (token: JWT) => {
     );
 
     if (!response.ok) {
+      signOut();
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const result = await response.json();
 
     if (!result.data) {
+      signOut();
+
       throw new Error("RefreshTokenFailed");
     }
 

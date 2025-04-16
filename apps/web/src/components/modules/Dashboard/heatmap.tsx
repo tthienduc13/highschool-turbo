@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import HeatMap, { HeatMapValue } from "@uiw/react-heat-map";
+import React, { useRef, useState, useEffect } from "react";
+import HeatMap from "@uiw/react-heat-map";
 import { IconChevronDown, IconTrendingUp } from "@tabler/icons-react";
 import {
   Tooltip,
@@ -25,10 +25,68 @@ export const ActivityHeatMap = () => {
   const [selectedYear, setSelectedYear] = useState<number>(
     new Date().getFullYear(),
   );
+  const [debugData, setDebugData] = useState<any>(null);
 
   const years = [2025, 2024, 2023];
 
   const { heatmap } = useDashboard();
+
+  const generateEmptyHeatmapData = (startYear: number, endYear: number) => {
+    const startDate = new Date(`${startYear}/01/01`);
+    const endDate = new Date(`${endYear}/12/31`);
+    const days = [];
+
+    for (
+      let date = new Date(startDate);
+      date <= endDate;
+      date.setDate(date.getDate() + 1)
+    ) {
+      const formattedDate = date.toLocaleDateString("en-CA").replace(/-/g, "/");
+
+      days.push({
+        date: formattedDate,
+        count: 0, // Đảm bảo count = 0 cho ngày không có hoạt động
+        content: "Không có hoạt động ngày này",
+      });
+    }
+
+    return days;
+  };
+
+  // Debug: Kiểm tra dữ liệu
+  useEffect(() => {
+    // Kiểm tra dữ liệu từ hook và dữ liệu trống
+    if (heatmap?.data) {
+      const hasNonZeroCount = heatmap.data.some((item) => item.count > 0);
+
+      setDebugData({
+        sample: heatmap.data.slice(0, 5),
+        hasNonZero: hasNonZeroCount,
+      });
+    }
+  }, [heatmap]);
+
+  // Tạo dữ liệu test với count khác nhau để kiểm tra màu sắc
+  const testData = [
+    { date: "2024/01/01", count: 0, content: "Không có hoạt động" },
+    { date: "2024/01/02", count: 1, content: "1 hoạt động" },
+    { date: "2024/01/03", count: 2, content: "2 hoạt động" },
+    { date: "2024/01/04", count: 3, content: "3 hoạt động" },
+    { date: "2024/01/05", count: 4, content: "4 hoạt động" },
+  ];
+
+  const startDate = `${heatmap.startYear}/01/01`;
+  const endDate = `${heatmap.endYear}/01/01`;
+
+  const heatmapData = heatmap?.data.length
+    ? heatmap.data
+    : generateEmptyHeatmapData(heatmap.startYear, heatmap.endYear);
+
+  if (!heatmapData.length) {
+    return;
+  }
+
+  const hasActivities = heatmapData.some((item) => item.count > 0);
 
   return (
     <div ref={containerRef} className="flex w-full flex-col gap-6 ">
@@ -57,15 +115,10 @@ export const ActivityHeatMap = () => {
       </div>
 
       <div className="flex w-full justify-between gap-5">
-        <div className="w-full max-w-4xl  overflow-x-auto rounded-lg border-gray-100 bg-white p-6 shadow-lg">
+        <div className="w-full max-w-4xl overflow-x-auto rounded-lg border-gray-100 bg-white p-6 shadow-lg">
           <HeatMap
             className="w-full"
-            endDate={
-              new Date(
-                `${heatmap.endYear}/01/01` ||
-                  new Date().getFullYear().toString(),
-              )
-            }
+            endDate={new Date(endDate)}
             monthLabels={[
               "Tháng 1",
               "Tháng 2",
@@ -81,11 +134,11 @@ export const ActivityHeatMap = () => {
               "Tháng 12",
             ]}
             panelColors={[
-              "var(--rhm-rect, #EBEDF0)",
-              "#C6E48B",
-              "#7BC96F",
-              "#239A3B",
-              "#196127",
+              "var(--rhm-rect, #EBEDF0)", // Màu cho count = 0
+              "#C6E48B", // Màu cho count thấp
+              "#7BC96F", // Màu cho count trung bình thấp
+              "#239A3B", // Màu cho count trung bình cao
+              "#196127", // Màu cho count cao
             ]}
             rectProps={{
               rx: 2.5,
@@ -102,13 +155,8 @@ export const ActivityHeatMap = () => {
               );
             }}
             rectSize={14}
-            startDate={
-              new Date(
-                `${heatmap.startYear}/01/01` ||
-                  new Date().getFullYear().toString(),
-              )
-            }
-            value={heatmap.data as unknown as HeatMapValue[]}
+            startDate={new Date(startDate)}
+            value={heatmapData}
             weekLabels={["", "T2", "", "T4", "", "T6", ""]}
           />
         </div>
@@ -121,6 +169,7 @@ export const ActivityHeatMap = () => {
                 key={year}
                 className="w-full"
                 variant={active ? "secondary" : "ghost"}
+                onClick={() => setSelectedYear(year)}
               >
                 {year}
               </Button>

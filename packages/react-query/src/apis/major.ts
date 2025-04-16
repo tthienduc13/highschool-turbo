@@ -18,8 +18,8 @@ export const getMajor = async ({
   search: string;
   pageNumber: number;
   pageSize: number;
-}>): Promise<Pagination<Major>> => {
-  return fetchPaginatedData<Major>(majorEndpoints.getMajor, {
+}>): Promise<Pagination<Major[]>> => {
+  return fetchPaginatedData<Major[]>(majorEndpoints.getMajor, {
     search,
     pageNumber,
     pageSize,

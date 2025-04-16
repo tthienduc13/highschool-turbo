@@ -1,7 +1,7 @@
 import InformationModule from "@/components/modules/information";
 
 function InformationPage() {
-    return <InformationModule />;
+  return <InformationModule />;
 }
 
 export default InformationPage;

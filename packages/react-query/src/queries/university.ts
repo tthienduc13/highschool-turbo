@@ -8,6 +8,7 @@ import {
   deleteUniversity,
   deleteUniversityMajor,
   getUniversities,
+  getUniversityCategory,
   getUniversityMajor,
   getUniversityMajorName,
   updateUniversity,
@@ -47,6 +48,49 @@ export const useUniversitiesQuery = ({
         city,
       }),
     //enabled: !!majorCode,
+  });
+};
+
+export const useUniversityCategoryQuery = ({
+  search,
+  majorCode,
+  pageNumber,
+  pageSize,
+  minTuition,
+  maxTuition,
+  city,
+}: Partial<{
+  search: string;
+  majorCode: string;
+  pageNumber: number;
+  pageSize: number;
+  minTuition: number;
+  maxTuition: number;
+  city: number;
+}>) => {
+  return useQuery({
+    queryKey: [
+      "university-category",
+      {
+        search,
+        majorCode,
+        pageNumber,
+        pageSize,
+        minTuition,
+        maxTuition,
+        city,
+      },
+    ],
+    queryFn: () =>
+      getUniversityCategory({
+        search,
+        majorCode,
+        pageNumber,
+        pageSize,
+        minTuition,
+        maxTuition,
+        city,
+      }),
   });
 };
 

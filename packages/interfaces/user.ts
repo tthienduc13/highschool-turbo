@@ -149,6 +149,6 @@ export interface Heatmap {
 }
 
 export interface Datum {
-  date: Date;
+  date: string;
   count: number;
 }

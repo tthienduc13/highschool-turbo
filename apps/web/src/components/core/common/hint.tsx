@@ -6,7 +6,7 @@ import {
 } from "@highschool/ui/components/ui/tooltip";
 
 export interface HintProps {
-  label?: string;
+  label?: React.ReactNode;
   children: React.ReactNode;
   side?: "top" | "bottom" | "left" | "right";
   align?: "start" | "center" | "end";

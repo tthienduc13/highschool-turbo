@@ -26,6 +26,7 @@ interface MBTIStates extends MBTIStoreProps {
   answer: (active: MBTITestQuestion, choseOption: string) => void;
   goToNextQuestion: () => void;
   goToPreviousQuestion: () => void;
+  setRoundCounter: (roundCounter: number) => void;
   reset: () => void;
   setResult: (result: MBTIResult, mbtiType: string) => void;
 }
@@ -81,6 +82,11 @@ export const createMBTITestStore = (initProps?: Partial<MBTIStoreProps>) => {
           const progress = state.progress - 1;
 
           return { roundCounter, progress };
+        });
+      },
+      setRoundCounter: (roundCounter) => {
+        set(() => {
+          return { roundCounter };
         });
       },
       setResult: (result, mbtiType) => {

@@ -2,6 +2,7 @@ import {
   Pagination,
   ResponseModel,
   University,
+  UniversityCategory,
   UniversityCity,
   UniversityCreate,
   UniversityMajor,
@@ -37,6 +38,34 @@ export const getUniversities = async ({
     minTuition,
     maxTuition,
     city,
+  });
+};
+
+export const getUniversityCategory = async ({
+  search,
+  majorCode,
+  pageNumber,
+  pageSize,
+  minTuition,
+  maxTuition,
+  city,
+}: Partial<{
+  search: string;
+  majorCode: string;
+  pageNumber: number;
+  pageSize: number;
+  minTuition: number;
+  maxTuition: number;
+  city: number;
+}>): Promise<Pagination<UniversityCategory[]>> => {
+  return fetchPaginatedData<UniversityCategory[]>(universityEndpoints.getList, {
+    pageNumber,
+    pageSize,
+    search,
+    majorCode,
+    minTuition,
+    maxTuition,
+    city: city,
   });
 };
 
