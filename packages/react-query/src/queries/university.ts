@@ -22,6 +22,7 @@ export const useUniversitiesQuery = ({
   minTuition,
   maxTuition,
   city,
+  universityId,
 }: Partial<{
   search: string;
   majorCode: string;
@@ -30,11 +31,21 @@ export const useUniversitiesQuery = ({
   minTuition: number;
   maxTuition: number;
   city: UniversityCity;
+  universityId: string;
 }>) => {
   return useQuery({
     queryKey: [
       "universities",
-      { search, majorCode, pageNumber, pageSize, minTuition, maxTuition, city },
+      {
+        search,
+        majorCode,
+        pageNumber,
+        pageSize,
+        minTuition,
+        maxTuition,
+        city,
+        universityId,
+      },
     ],
     queryFn: () =>
       getUniversities({
@@ -45,6 +56,7 @@ export const useUniversitiesQuery = ({
         minTuition,
         maxTuition,
         city,
+        universityId,
       }),
     //enabled: !!majorCode,
   });
@@ -151,6 +163,7 @@ export const useCreateUniversityMajorListMutation = () => {
     mutationKey: ["create-university-major"],
     mutationFn: createUniversityMajorList,
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["university-major-name"] });
       queryClient.invalidateQueries({ queryKey: ["university-major"] });
       toast.success(data.message ?? "Create successfully");
 
@@ -170,6 +183,7 @@ export const useUpdateUniversityMajorMutation = () => {
     mutationFn: updateUniversityMajor,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["university-major"] });
+      queryClient.invalidateQueries({ queryKey: ["university-major-name"] });
       toast.success(data.message ?? "Update successfully");
 
       return data;
@@ -188,6 +202,7 @@ export const useDeleteUniversityMajorMutation = () => {
     mutationFn: deleteUniversityMajor,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["university-major"] });
+      queryClient.invalidateQueries({ queryKey: ["university-major-name"] });
       toast.success(data.message ?? "Delete successfully");
 
       return data;

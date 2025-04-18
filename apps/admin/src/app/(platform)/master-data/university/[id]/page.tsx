@@ -5,7 +5,7 @@ type Params = Promise<{ id: string }>;
 async function UniversityMajorProps({ params }: { params: Params }) {
     const { id } = await params;
 
-    return <UniversityMajorModule uniCode={id} />;
+    return <UniversityMajorModule slug={id} />;
 }
 
 export default UniversityMajorProps;

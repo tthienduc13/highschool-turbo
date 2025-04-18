@@ -1057,6 +1057,11 @@ export const zoneEndpoints = {
       API_VERSIONS.V1,
       `/zones/${zoneId}`,
     ),
+  getZones: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/zones",
+  ),
 } as const;
 
 // News Endpoints

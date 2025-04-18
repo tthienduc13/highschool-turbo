@@ -45,7 +45,7 @@ export type User = {
   username: string;
   email: string;
   bio: string | null;
-  fullname: string;
+  fullname?: string;
   roleName: string | null;
   provider: string;
   status: string;
@@ -57,6 +57,9 @@ export type User = {
   notes: string[];
   recentViews: string[];
   reports: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  phone?: string;
 };
 
 export type Teacher = User & {
@@ -64,7 +67,7 @@ export type Teacher = User & {
   contactNumber: string;
   pin: string;
   workPlace: string;
-  subjectsTaught: string;
+  subjectsTaught: string[];
   rating: number;
   experienceYears: number;
   verified: boolean;
@@ -75,7 +78,7 @@ export type Teacher = User & {
 export type Student = User & {
   grade: number;
   schoolName: string;
-  enrollments: unknown[];
+  enrollments: any[];
 };
 
 export type UserPreview = {

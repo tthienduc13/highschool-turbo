@@ -13,6 +13,7 @@ import {
   getStatisticUsers,
   getTeacherExperience,
   getUserActivities,
+  getUserDetail,
   getUserGrowth,
   getUserHeatmap,
   getUserProfile,
@@ -251,5 +252,12 @@ export const useHeatmapQuery = ({
   return useQuery({
     queryKey: ["user-heatmap", { viewType, startYear, endYear }],
     queryFn: () => getUserHeatmap({ viewType, startYear, endYear }),
+  });
+};
+
+export const useUserDetailQuery = ({ username }: { username: string }) => {
+  return useQuery({
+    queryKey: ["user-detail", username],
+    queryFn: () => getUserDetail({ username }),
   });
 };

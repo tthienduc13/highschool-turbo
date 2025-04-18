@@ -1,3 +1,5 @@
+import { School } from "./information";
+
 export interface Document {
   id: string;
   documentSlug: string;
@@ -20,6 +22,35 @@ export interface Document {
   createdAt: Date;
   updatedAt: Date;
   isDownloaded?: boolean;
+}
+
+export interface DocumentUpdate {
+  id: string;
+  documentSlug: string;
+  documentName: string;
+  documentDescription: string;
+  documentYear: number;
+  view: number;
+  download: number;
+  schoolName: string;
+  isLike: boolean;
+  like: number;
+  subjectCurriculum: SubjectCurriculum;
+  masterSubject?: MasterSubject;
+  school: School;
+  category: Category;
+  semester: number;
+  createdBy: string;
+  updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isDownloaded?: boolean;
+}
+
+export interface MasterSubject {
+  masterSubjectId: string;
+  masterSubjectName: string;
+  masterSubjectSlug: string;
 }
 
 export interface Category {

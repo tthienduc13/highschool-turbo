@@ -1,37 +1,41 @@
 "use client";
 
-import { useState } from "react";
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { toast } from "sonner";
 import {
   Alert,
   AlertDescription,
   AlertTitle,
 } from "@highschool/ui/components/ui/alert";
-import { Input } from "@highschool/ui/components/ui/input";
-import { Label } from "@highschool/ui/components/ui/label";
-import { School } from "@highschool/interfaces";
+import { UniversityMajor } from "@highschool/interfaces";
+import { useDeleteUniversityMajorMutation } from "@highschool/react-query/queries";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  currentRow: School;
+  currentRow: UniversityMajor;
 }
 
-export function UniversityDeleteDialog({
+export function UniversityMajorDeleteDialog({
   open,
   onOpenChange,
   currentRow,
 }: Props) {
-  const [value, setValue] = useState("");
+  const { mutate: deleteUniversityMajor } = useDeleteUniversityMajorMutation();
 
   const handleDelete = () => {
-    if (value.trim() !== currentRow.schoolName) return;
-
     onOpenChange(false);
-    toast.success("University deleted successfully");
+    deleteUniversityMajor(
+      {
+        universityMajorId: currentRow.id!,
+      },
+      {
+        onSuccess: () => {
+          onOpenChange(false);
+        },
+      },
+    );
   };
 
   return (
@@ -42,23 +46,8 @@ export function UniversityDeleteDialog({
         <div className="space-y-4">
           <p className="mb-2">
             Are you sure you want to delete{" "}
-            <span className="font-bold">{currentRow.schoolName}</span>?
-            <br />
-            This action will permanently remove the user with the role of{" "}
-            <span className="font-bold">
-              {currentRow.schoolName?.toUpperCase()}
-            </span>{" "}
-            from the system. This cannot be undone.
+            <span className="font-bold">{currentRow.major?.name}</span>
           </p>
-
-          <Label className="my-2">
-            Schoolname:
-            <Input
-              placeholder="Enter schoolname to confirm deletion."
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </Label>
 
           <Alert variant="destructive">
             <AlertTitle>Warning!</AlertTitle>
@@ -68,7 +57,6 @@ export function UniversityDeleteDialog({
           </Alert>
         </div>
       }
-      disabled={value.trim() !== currentRow.schoolName}
       handleConfirm={handleDelete}
       open={open}
       title={
@@ -77,7 +65,7 @@ export function UniversityDeleteDialog({
             className="stroke-destructive mr-1 inline-block"
             size={18}
           />{" "}
-          Delete School
+          Delete University Major
         </span>
       }
       onOpenChange={onOpenChange}

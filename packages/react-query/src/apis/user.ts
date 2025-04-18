@@ -4,8 +4,11 @@ import {
   Heatmap,
   Pagination,
   ResponseModel,
+  Student,
+  Teacher,
   TecherExperience,
   TypeExam,
+  User,
   UserCreate,
   UserGrowth,
   UserOwnStatistics,
@@ -487,6 +490,23 @@ export const getUserHeatmap = async ({
     return data;
   } catch (error) {
     console.log("error while getting user heatmap", error);
+    throw error;
+  }
+};
+
+export const getUserDetail = async ({
+  username,
+}: {
+  username: string;
+}): Promise<ResponseModel<Student | User | Teacher>> => {
+  try {
+    const { data } = await axiosServices.get(
+      userEndpoints.getProfile(username),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting user profile", error);
     throw error;
   }
 };

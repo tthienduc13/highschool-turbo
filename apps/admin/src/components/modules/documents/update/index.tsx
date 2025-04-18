@@ -34,9 +34,9 @@ import {
     useProvincesQuery,
     useSchoolsQuery,
     useUpdateDocumentMutation,
+    useUploadfileMutation,
 } from "@highschool/react-query/queries";
 import { useRouter } from "next/navigation";
-import { Switch } from "@highschool/ui/components/ui/switch";
 
 const currentYear = new Date().getFullYear();
 const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
@@ -44,7 +44,7 @@ const years = Array.from({ length: 10 }, (_, i) => currentYear - i);
 const formSchema = z.object({
     documentName: z.string().min(1, "Document name is required"),
     documentDescription: z.string().min(1, "Document description is required"),
-    schoolId: z.string().uuid("Invalid school ID"),
+    schoolId: z.string().uuid("Invalid school ID").optional(),
     curriculumId: z.string().uuid("Invalid curriculum ID"),
     subjectId: z.string().uuid("Invalid subject ID"),
     semester: z.enum(["1", "2"]),
@@ -58,8 +58,8 @@ const formSchema = z.object({
             (file) => file.type === "application/pdf",
             "Only PDF files are allowed.",
         )
-        .refine((file) => file.size <= 5000000, "Max file size is 5MB."),
-    isDownloaded: z.boolean().optional(),
+        .refine((file) => file.size <= 5000000, "Max file size is 5MB.")
+        .optional(),
 });
 
 interface UpdateDocumentModuleProps {
@@ -78,6 +78,7 @@ export default function UpdateDocumentModule({
         pageNumber: 1,
         pageSize: 100,
     });
+
     const { data: curriculums, isLoading: curriculumLoading } = useCurriculaQuery(
         {
             pageNumber: 1,
@@ -87,8 +88,9 @@ export default function UpdateDocumentModule({
     const { data: schoolData, isLoading: schoolLoading } = useSchoolsQuery({
         searchProvince: selectedProvince,
         pageNumber: 1,
-        pageSize: 100,
+        pageSize: 9999,
     });
+
     const { data: provinceData } = useProvincesQuery({
         pageSize: 63,
         pageNumber: 1,
@@ -108,7 +110,6 @@ export default function UpdateDocumentModule({
         if (document === undefined && !documentLoading) {
             router.push("/documents/management");
         }
-        console.log(document);
     }, [document, documentLoading]);
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -118,9 +119,9 @@ export default function UpdateDocumentModule({
             documentDescription: document?.documentDescription,
             semester: (document?.semester?.toString() as "1" | "2") ?? "1",
             documentYear: currentYear,
-            schoolId: document?.schoolId,
-            curriculumId: document?.curriculumId,
-            isDownloaded: document?.isDownloaded,
+            schoolId: document?.school.id,
+            curriculumId: document?.subjectCurriculum.curriculumId,
+            subjectId: document?.subjectCurriculum.subjectCurriculumId,
         },
     });
 
@@ -131,15 +132,20 @@ export default function UpdateDocumentModule({
                 documentDescription: document.documentDescription,
                 semester: (document.semester?.toString() as "1" | "2") ?? "1",
                 documentYear: document.documentYear,
-                schoolId: document.schoolId,
-                curriculumId: document.curriculumId,
-                subjectId: document.subjectId,
-                isDownloaded: document.isDownloaded ?? false,
+                schoolId: document.school.id,
+                curriculumId: document.subjectCurriculum.curriculumId,
+                subjectId: document.subjectCurriculum.subjectId,
             });
         }
     }, [document, documentLoading]);
 
+    const { mutate: uploadFile } = useUploadfileMutation();
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (file) {
+            uploadFile({ documentId: document?.id ?? "", file: file! });
+        }
+
         const resultUpdating = await updateDocument({
             documentName: values.documentName,
             documentDescription: values.documentDescription,
@@ -148,6 +154,7 @@ export default function UpdateDocumentModule({
             documentYear: values.documentYear,
             curriculumId: values.curriculumId,
             subjectId: values.subjectId,
+            id: document?.id,
         });
 
         if (
@@ -376,23 +383,6 @@ export default function UpdateDocumentModule({
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="documentYear"
-                            render={({ field }) => (
-                                <FormItem className="flex flex-col gap-2">
-                                    <FormLabel>Allow Download</FormLabel>
-                                    <FormControl>
-                                        <Switch
-                                            checked={isDownloaded}
-                                            value={field.value.toString()}
-                                            onCheckedChange={setIsDownloaded}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
                     </div>
 
                     {/* File Upload */}
@@ -432,7 +422,7 @@ export default function UpdateDocumentModule({
                         {creating ? (
                             <IconLoader2 className="animate-spin" />
                         ) : (
-                            "Create Document"
+                            "Update Document"
                         )}
                     </Button>
                 </form>

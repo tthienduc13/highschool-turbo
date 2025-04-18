@@ -27,12 +27,10 @@ export interface Major {
   skillYouLearn: string;
   majorCategory?: MajorCategory;
   majorCategoryCode?: string;
-  subjects?:
-    | {
-        id: string;
-        name: string;
-      }[]
-    | string[];
+  subjects?: {
+    masterSubjectId: string;
+    masterSubjectName: string;
+  }[];
 }
 
 export interface MajorCategory {

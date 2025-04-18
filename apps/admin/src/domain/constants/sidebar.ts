@@ -9,10 +9,25 @@ import {
   IconUserCircle,
   IconSettings,
   IconPlayCardStar,
+  IconTimezone,
 } from "@tabler/icons-react";
 
 export const navModerator = {
   navMain: [
+    {
+      title: "Subject Managments",
+      url: "/subjects",
+      isActive: true,
+      icon: IconBook,
+      items: [],
+    },
+    {
+      title: "Zone Managments",
+      url: "/zones",
+      isActive: true,
+      icon: IconTimezone,
+      items: [],
+    },
     {
       title: "Master data",
       url: "/master-data",
@@ -76,13 +91,6 @@ export const navModerator = {
           url: "/flashcard/create",
         },
       ],
-    },
-    {
-      title: "Subject Managments",
-      url: "/subjects",
-      isActive: true,
-      icon: IconBook,
-      items: [],
     },
     {
       title: "Document Managments",

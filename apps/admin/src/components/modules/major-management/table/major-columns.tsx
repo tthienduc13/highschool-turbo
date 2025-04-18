@@ -51,7 +51,13 @@ export const columns: ColumnDef<Major>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Subjects" />
     ),
-    cell: ({ row }) => <div>{row.original.subjects?.join(",")}</div>,
+    cell: ({ row }) => (
+      <div>
+        {row.original.subjects
+          ?.map((subject) => subject.masterSubjectName)
+          .join(", ")}
+      </div>
+    ),
   },
   {
     id: "actions",
