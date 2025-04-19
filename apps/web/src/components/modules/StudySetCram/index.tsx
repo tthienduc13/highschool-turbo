@@ -1,6 +1,8 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useEffect } from "react";
+import { CORRECT, INCORRECT } from "@highschool/lib/constants";
 
 import { HydrateSetData } from "../StudySet/hydrate-set-data";
 
@@ -8,11 +10,13 @@ import { CreateCramData } from "./create-cram-data";
 
 import { Container } from "@/components/core/layouts/container";
 import { useCramContext } from "@/stores/use-study-set-cram-store";
-import { Completed } from "@/components/core/study-set-learn/completed";
 import { InteractionCard } from "@/components/core/study-set-cram/interaction-card";
 import { ActionBar } from "@/components/core/study-set-cram/action-bar";
 import { TitleBar } from "@/components/core/study-set-cram/title-bar";
 import { LearnLoading } from "@/components/core/study-set-learn/learn-loading";
+import { useContainerContext } from "@/stores/use-container-store";
+import { CompletedView } from "@/components/core/study-set-cram/completed-view";
+import { RoundSummary } from "@/components/core/study-set-cram/round-sumary";
 
 function StudySetCramModule() {
   const { slug } = useParams();
@@ -43,9 +47,19 @@ function StudySetCramModule() {
 }
 
 const CramContainer = () => {
+  const extendedFeedbackBank = useContainerContext(
+    (s) => s.extendedFeedbackBank,
+  );
   const completed = useCramContext((s) => s.completed);
+  const roundSummary = useCramContext((s) => s.roundSummary);
+  const setFeedbackBank = useCramContext((s) => s.setFeedbackBank);
 
-  if (completed) return <Completed />;
+  useEffect(() => {
+    if (!extendedFeedbackBank) setFeedbackBank(CORRECT, INCORRECT);
+  }, [extendedFeedbackBank, setFeedbackBank]);
+
+  if (completed) return <CompletedView />;
+  if (roundSummary) return <RoundSummary />;
 
   return <InteractionCard />;
 };

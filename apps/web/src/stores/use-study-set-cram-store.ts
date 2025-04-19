@@ -1,125 +1,118 @@
 import {
   FlashcardContent,
+  StudiableTerm,
+  StudiableTermWithDistractors,
   StudySetAnswerMode,
-  TestQuestion,
 } from "@highschool/interfaces";
-import { Distractor, DistractorType } from "@highschool/interfaces/distractors";
 import { shuffleArray } from "@highschool/lib/array";
 import { CORRECT, INCORRECT } from "@highschool/lib/constants";
 import { createContext, useContext } from "react";
 import { createStore, useStore } from "zustand";
 import { subscribeWithSelector } from "zustand/middleware";
 
-import { generateMcqQuestion } from "@/utils/generator";
+const LEARN_TERMS_IN_ROUND = 7;
+
+export interface RoundSummary {
+  round: number;
+  termsThisRound: FlashcardContent[];
+  progress: number;
+  totalTerms: number;
+}
+
+export interface Question {
+  answerMode: StudySetAnswerMode;
+  term: StudiableTerm;
+  type: "choice" | "write";
+  choices: FlashcardContent[];
+}
 
 export interface CramStoreProps {
-  questionCount: number;
+  answerMode: StudySetAnswerMode;
+  studiableTerms: StudiableTermWithDistractors[];
   allTerms: FlashcardContent[];
-  timeline: TestQuestion[];
   numTerms: number;
-  answered?: string;
-  progress: number;
-  status?: "correct" | "incorrect" | "unknownPartial";
-  feedbackBank: { correct: string[]; incorrect: string[] };
-  completed: boolean;
+  termsThisRound: number;
+  currentRound: number;
+  roundProgress: number;
   roundCounter: number;
-  summary?: boolean;
-  answerMode?: StudySetAnswerMode;
+  roundTimeline: Question[];
+  feedbackBank: { correct: string[]; incorrect: string[] };
+  answered?: string;
+  status?: "correct" | "incorrect" | "unknownPartial";
+  roundSummary?: RoundSummary;
+  completed: boolean;
+  hasMissedTerms?: boolean;
+  prevTermWasIncorrect?: boolean;
 }
 
 interface CramState extends CramStoreProps {
   initialize: (
+    answerMode: StudySetAnswerMode,
+    studiableTerms: StudiableTermWithDistractors[],
     allTerms: FlashcardContent[],
-    completed: boolean,
-    answerMode?: StudySetAnswerMode,
+    round: number,
   ) => void;
   answerCorrectly: (termId: string) => void;
   answerIncorrectly: (termId: string) => void;
-  goToNextQuestion: () => void;
+  acknowledgeIncorrect: () => void;
+  answerUnknownPartial: () => void;
+  overrideCorrect: () => void;
   endQuestionCallback: (correct: boolean) => void;
-  //   nextRound: (start?: boolean) => void;
+  correctFromUnknown: (termId: string) => void;
+  incorrectFromUnknown: (termId: string) => void;
+  nextRound: (start?: boolean) => void;
   setFeedbackBank: (correct: string[], incorrect: string[]) => void;
 }
 
 export type CramStore = ReturnType<typeof createCramStore>;
 
-export const DEFAULT_PROPS: CramStoreProps = {
-  questionCount: 10,
-  allTerms: [],
-  timeline: [],
-  numTerms: 0,
-  roundCounter: 0,
-  progress: 0,
-  feedbackBank: {
-    correct: CORRECT,
-    incorrect: INCORRECT,
-  },
-  completed: false,
-  answerMode: StudySetAnswerMode.FlashcardContentTerm,
-};
-
 export const createCramStore = (initProps?: Partial<CramStoreProps>) => {
+  const DEFAULT_PROPS: CramStoreProps = {
+    answerMode: StudySetAnswerMode.FlashcardContentDefinition,
+    studiableTerms: [],
+    allTerms: [],
+    numTerms: 0,
+    termsThisRound: 0,
+    currentRound: 0,
+    roundProgress: 0,
+    roundCounter: 0,
+    roundTimeline: [],
+    feedbackBank: { correct: CORRECT, incorrect: INCORRECT },
+    completed: false,
+  };
+
   return createStore<CramState>()(
     subscribeWithSelector((set) => ({
       ...DEFAULT_PROPS,
       ...initProps,
-      initialize: (
-        allTerms,
-        completed,
-        answerMode = StudySetAnswerMode.FlashcardContentDefinition,
-      ) => {
-        const all = Array.from(allTerms);
-
-        const initialTerms = all.map((term) => {
-          const availableDistractors = all.filter(
-            (distractorTerm) => distractorTerm.id !== term.id,
-          );
-          const shuffledDistractors = shuffleArray(availableDistractors).slice(
-            0,
-            3,
-          );
-          const definitionDistractors: Distractor[] = shuffledDistractors.map(
-            (distractorTerm) => ({
-              type: DistractorType.FlashcardContentDefinition,
-              termId: term.id,
-              distractingId: distractorTerm.id,
-            }),
-          );
-
-          const distractors = [...definitionDistractors];
-
-          return {
-            ...term,
-            distractors,
-          };
+      initialize: (answerMode, studiableTerms, allTerms, round) => {
+        set({
+          answerMode,
+          studiableTerms,
+          allTerms,
+          numTerms: studiableTerms.length,
+          currentRound: round,
         });
 
-        let pool = shuffleArray(initialTerms);
-        const timeline: TestQuestion[] = [];
+        set((state) => {
+          state.nextRound(true);
 
-        for (const term of pool) {
-          const question = generateMcqQuestion(term, answerMode, allTerms);
-
-          timeline.push(question);
-        }
-
-        set({
-          allTerms,
-          numTerms: allTerms.length,
-          timeline,
-          progress: 0,
-          completed,
-          answerMode,
+          return {};
         });
       },
       answerCorrectly: (termId) => {
-        set(() => ({
+        set({
           answered: termId,
           status: "correct",
-        }));
+          prevTermWasIncorrect: false,
+        });
 
         setTimeout(() => {
           set((state) => {
+            const active = state.roundTimeline[state.roundCounter]!;
+
+            active.term.correctness = active.type == "choice" ? 1 : 2;
+
             state.endQuestionCallback(true);
 
             return {};
@@ -130,27 +123,83 @@ export const createCramStore = (initProps?: Partial<CramStoreProps>) => {
         set((state) => ({
           answered: termId,
           status: "incorrect",
-          roundTimeline: state.timeline,
+          roundTimeline:
+            state.roundProgress != state.termsThisRound - 1
+              ? [
+                  ...state.roundTimeline,
+                  state.roundTimeline[state.roundCounter]!,
+                ]
+              : state.roundTimeline,
+          prevTermWasIncorrect: true,
         }));
       },
-      goToNextQuestion: () => {
+      acknowledgeIncorrect: () => {
         set((state) => {
-          state.endQuestionCallback(true);
+          const active = state.roundTimeline[state.roundCounter]!;
+
+          active.term.correctness = -1;
+          active.term.incorrectCount++;
+
+          state.endQuestionCallback(false);
 
           return {};
         });
       },
-      endQuestionCallback: () => {
+      answerUnknownPartial: () => {
+        set({ status: "unknownPartial" });
+      },
+      overrideCorrect: () => {
         set((state) => {
-          const roundCounter = state.roundCounter + 1;
-          const roundProgress = state.progress + 1;
+          const active = state.roundTimeline[state.roundCounter]!;
 
-          if (state.roundCounter === state.allTerms.length - 1) {
+          active.term.correctness = 2;
+
+          const roundTimeline = state.roundTimeline;
+
+          if (state.roundProgress != state.termsThisRound - 1) {
+            // Remove the added question from the timeline
+            roundTimeline.splice(-1);
+          }
+
+          state.endQuestionCallback(true);
+
+          return {
+            roundTimeline,
+            prevTermWasIncorrect: false,
+          };
+        });
+      },
+      endQuestionCallback: (correct) => {
+        set((state) => {
+          const masteredCount = state.studiableTerms.filter(
+            (x) => x.correctness == 2,
+          ).length;
+
+          if (masteredCount == state.numTerms) {
+            const hasMissedTerms = !!state.studiableTerms.find(
+              (x) => x.incorrectCount > 0,
+            );
+
+            return { completed: true, hasMissedTerms };
+          }
+
+          if (state.roundProgress === state.termsThisRound - 1) {
             return {
-              completed: true,
+              roundSummary: {
+                round: state.currentRound,
+                termsThisRound: Array.from(
+                  new Set(state.roundTimeline.map((q) => q.term)),
+                ),
+                progress: state.studiableTerms.filter((x) => x.correctness != 0)
+                  .length,
+                totalTerms: state.numTerms,
+              },
               status: undefined,
             };
           }
+
+          const roundCounter = state.roundCounter + 1;
+          const roundProgress = state.roundProgress + (correct ? 1 : 0);
 
           return {
             roundCounter,
@@ -160,7 +209,137 @@ export const createCramStore = (initProps?: Partial<CramStoreProps>) => {
           };
         });
       },
+      correctFromUnknown: (termId) => {
+        set({
+          answered: termId,
+          prevTermWasIncorrect: false,
+        });
 
+        set((state) => {
+          const active = state.roundTimeline[state.roundCounter]!;
+
+          active.term.correctness = active.type == "choice" ? 1 : 2;
+
+          state.endQuestionCallback(true);
+
+          return {};
+        });
+      },
+      incorrectFromUnknown: (termId) => {
+        set((state) => ({
+          answered: termId,
+          roundTimeline:
+            state.roundProgress != state.termsThisRound - 1
+              ? [
+                  ...state.roundTimeline,
+                  state.roundTimeline[state.roundCounter]!,
+                ]
+              : state.roundTimeline,
+          prevTermWasIncorrect: true,
+        }));
+
+        set((state) => {
+          const active = state.roundTimeline[state.roundCounter]!;
+
+          active.term.correctness = -1;
+          active.term.incorrectCount++;
+
+          state.endQuestionCallback(false);
+
+          return {};
+        });
+      },
+      nextRound: (start = false) => {
+        set((state) => {
+          const currentRound = state.currentRound + (!start ? 1 : 0);
+
+          const incorrectTerms = state.studiableTerms.filter(
+            (x) => x.correctness == -1,
+          );
+          const unstudied = state.studiableTerms.filter(
+            (x) => x.correctness == 0,
+          );
+
+          const familiarTerms = state.studiableTerms.filter(
+            (x) => x.correctness == 1,
+          );
+          const familiarTermsWithRound = familiarTerms.map((x) => {
+            if (x.appearedInRound === undefined)
+              throw new Error("No round information for familiar term!");
+
+            return x;
+          });
+
+          const termsThisRound = incorrectTerms
+            .concat(
+              // Add the familiar terms that haven't been seen at least 2 rounds ago
+              familiarTermsWithRound.filter(
+                (x) => currentRound - x.appearedInRound! >= 2,
+              ),
+            )
+            .concat(unstudied)
+            .concat(familiarTerms) // Add the rest of the familar terms if there's nothing else left
+            .slice(0, LEARN_TERMS_IN_ROUND);
+
+          // For each term that hasn't been seen (correctness == 0), set the round it appeared in as the current round
+          termsThisRound.forEach((x) => {
+            if (x.correctness == 0) x.appearedInRound = currentRound;
+          });
+
+          const roundTimeline: Question[] = termsThisRound.map((term) => {
+            const choice = term.correctness < 1;
+            const answerMode: StudySetAnswerMode =
+              state.answerMode != StudySetAnswerMode.Both
+                ? state.answerMode
+                : Math.random() < 0.5
+                  ? StudySetAnswerMode.FlashcardContentDefinition
+                  : StudySetAnswerMode.FlashcardContentTerm;
+
+            if (choice) {
+              const distractorIds = term.distractors
+                .filter((x) => x.type === String(answerMode))
+                .map((x) => x.distractingId);
+
+              const distractors = state.allTerms.filter((x) =>
+                (distractorIds ?? []).includes(x.id),
+              );
+
+              const choices = shuffleArray(distractors.concat(term));
+
+              return {
+                answerMode,
+                choices,
+                term,
+                type: "choice",
+              };
+            } else {
+              return {
+                answerMode,
+                choices: [],
+                term,
+                type: "write",
+              };
+            }
+          });
+
+          const hasMissedTerms = !!state.studiableTerms.find(
+            (x) => x.incorrectCount > 0,
+          );
+
+          return {
+            roundSummary: undefined,
+            termsThisRound: termsThisRound.length,
+            roundTimeline,
+            roundCounter: 0,
+            roundProgress: 0,
+            answered: undefined,
+            status: undefined,
+            completed: !termsThisRound.length,
+            hasMissedTerms,
+            currentRound,
+          };
+        });
+      },
       setFeedbackBank: (correct, incorrect) => {
         set({
           feedbackBank: { correct, incorrect },

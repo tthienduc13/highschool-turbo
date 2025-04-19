@@ -7,16 +7,21 @@ import { useCramContext } from "@/stores/use-study-set-cram-store";
 
 export const ActionBar = () => {
   const status = useCramContext((s) => s.status);
-  const roundSummary = useCramContext((s) => s.summary);
-  const goToNextQuestion = useCramContext((s) => s.goToNextQuestion);
+  const roundSummary = useCramContext((s) => s.roundSummary);
+  const roundTimeline = useCramContext((s) => s.roundTimeline);
+  const roundCounter = useCramContext((s) => s.roundCounter);
+  const acknowledgeIncorrect = useCramContext((s) => s.acknowledgeIncorrect);
+  const nextRound = useCramContext((s) => s.nextRound);
 
-  const handleAction = () => {
-    if (status === "incorrect") {
-      goToNextQuestion();
-    }
+  const handleAcknowledgeIncorrect = () => {
+    acknowledgeIncorrect();
   };
 
   const visible = status == "incorrect" || !!roundSummary;
+
+  const handleAction = () => {
+    status == "incorrect" ? handleAcknowledgeIncorrect() : nextRound();
+  };
 
   return (
     <>
@@ -41,7 +46,8 @@ export const ActionBar = () => {
                   Bấm nút bất kì để tiếp tục
                 </p>
                 <Button className="w-full md:w-auto" onClick={handleAction}>
-                  {status === "incorrect" ? "Tiếp tục" : "Bắt đầu vòng mới"}
+                  Tiếp tục
+                  {roundSummary && ` đến vòng ${roundSummary.round + 2}`}
                 </Button>
               </div>
             </div>

@@ -35,14 +35,12 @@ export const generateMetadata = async ({
 }): Promise<Metadata | undefined> => {
   const { slug } = await params;
 
-  // Tạo một QueryClient để sử dụng cache
   const queryClient = new QueryClient();
 
-  // Prefetch và lưu trữ dữ liệu trong cache
   const flashcardData = await queryClient.fetchQuery({
     queryKey: getFlashcardQueryKey(slug),
     queryFn: () => getFlashcardData(slug),
-    staleTime: 60 * 1000, // 1 phút
+    staleTime: 60 * 1000,
   });
 
   if (!flashcardData) return undefined;

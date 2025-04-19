@@ -9,20 +9,11 @@ import { useRouter } from "next/navigation";
 import { useSet } from "@/hooks/use-set";
 import { useCramContext } from "@/stores/use-study-set-cram-store";
 
-// const SettingModal = dynamic(
-//   () => import("./learn-setting-modal").then((mod) => mod.LearnSettingModal),
-//   {
-//     ssr: false,
-//   },
-// );
-
 export const TitleBar = () => {
   const { flashcard } = useSet();
   const router = useRouter();
-  const roundCounter = useCramContext((s) => s.roundCounter);
-  const termsCount = useCramContext((s) => s.numTerms);
-
   const completed = useCramContext((s) => s.completed);
+  const currentRound = useCramContext((s) => s.currentRound);
 
   return (
     <>
@@ -37,7 +28,7 @@ export const TitleBar = () => {
           </Button>
         </Link>
         <h1 className={`flex-1 text-center text-lg font-semibold md:text-2xl`}>
-          {completed ? "Kết quả tổng quát" : `${roundCounter}/${termsCount}`}
+          {completed ? "Kết quả tổng quát" : `Vòng ${currentRound + 1}`}
         </h1>
         <Button
           className="text-blue hover:text-blue size-10 rounded-full"
