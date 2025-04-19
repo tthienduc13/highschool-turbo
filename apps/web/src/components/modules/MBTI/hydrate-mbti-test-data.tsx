@@ -11,6 +11,7 @@ import {
   MBTITestContext,
   MBTITestStore,
 } from "@/stores/use-mbti-test-store";
+import { Loading } from "@/components/core/common/loading";
 
 interface HydrateMBTITestDataProps {
   children: React.ReactNode;
@@ -18,7 +19,7 @@ interface HydrateMBTITestDataProps {
 
 export const HydrateMBTITestData = ({ children }: HydrateMBTITestDataProps) => {
   const router = useRouter();
-  const { data, isError } = useMBTITestQuery();
+  const { data, isError, isLoading } = useMBTITestQuery();
 
   useEffect(() => {
     if (isError) {
@@ -26,6 +27,10 @@ export const HydrateMBTITestData = ({ children }: HydrateMBTITestDataProps) => {
       router.push("/");
     }
   }, [isError, router]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (!data?.length) {
     return null;

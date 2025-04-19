@@ -4,7 +4,14 @@ import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { FlashcardContent } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
-import { IconKeyframes } from "@tabler/icons-react";
+import {
+  IconKeyframes,
+  IconProgress,
+  IconProgressBolt,
+  IconProgressCheck,
+  TablerIcon,
+} from "@tabler/icons-react";
+import { cn } from "@highschool/ui/lib/utils";
 
 import { TermsSortSelect } from "./term-sort-select";
 import { TermWrapper } from "./term-wrapper";
@@ -32,8 +39,8 @@ export const TermOverView = () => {
 
   const termsListComponent = () => {
     switch (sortType) {
-      // case "stats":
-      //     return <TermsByStats />;
+      case "stats":
+        return <TermsByStats />;
       case "original":
         return <TermsByOriginal />;
       case "alphabetical":
@@ -60,7 +67,7 @@ export const TermOverView = () => {
               <p>thẻ trong bộ này</p>
             </div>
           </h2>
-          <TermsSortSelect studiable={studiable} onChange={setSortType} />
+          <TermsSortSelect onChange={setSortType} />
         </div>
         {termsListComponent()}
       </div>
@@ -68,62 +75,45 @@ export const TermOverView = () => {
   );
 };
 
-// const TermsByStats = () => {
-//     const { terms, injected } = useSet();
+const TermsByStats = () => {
+  const { terms } = useSet();
 
-//     let familiarTerms = injected?.studiableLearnTerms
-//         .filter((x) => x.correctness != 0 && x.correctness != 2)
-//         .map((x) => terms.find((t) => t.id === x.id)!)
-//         .filter((x) => x);
+  const unLearnTerms = terms.filter((term) => term.currentState === 0);
+  const learnedTerms = terms.filter((term) => term.currentState === 1);
+  const dueToday = terms.filter((term) => term.currentState === 2);
 
-//     let unstudiedTerms = terms.filter((x) => {
-//         const studiableTerm = injected?.studiableLearnTerms.find(
-//             (s) => s.id === x.id
-//         );
-//         return !studiableTerm || studiableTerm.correctness === 0;
-//     });
-
-//     let masteredTerms = injected?.studiableLearnTerms
-//         .filter((x) => x.correctness === 2)
-//         .map((x) => terms.find((t) => t.id === x.id)!)
-//         .filter((x) => x);
-
-//     familiarTerms = container.learnMode == "Learn" ? familiarTerms : [];
-//     unstudiedTerms = container.learnMode == "Learn" ? unstudiedTerms : [];
-//     masteredTerms = container.learnMode == "Learn" ? masteredTerms : terms;
-
-//     return (
-//         <>
-//             {!!familiarTerms.length && (
-//                 <TermsCategory
-//                     heading="still studying"
-//                     icon={IconProgressBolt}
-//                     subheading="You're still learning these terms. Keep it up!"
-//                     terms={familiarTerms}
-//                     color="orange"
-//                 />
-//             )}
-//             {!!unstudiedTerms.length && (
-//                 <TermsCategory
-//                     heading="not studied"
-//                     icon={IconProgress}
-//                     subheading="You haven't studied these terms yet."
-//                     terms={unstudiedTerms}
-//                     color="gray"
-//                 />
-//             )}
-//             {!!masteredTerms.length && (
-//                 <TermsCategory
-//                     heading="mastered"
-//                     icon={IconProgressCheck}
-//                     subheading="You've mastered these terms. Great job!"
-//                     terms={masteredTerms}
-//                     color="blue"
-//                 />
-//             )}
-//         </>
-//     );
-// };
+  return (
+    <>
+      {!!dueToday.length && (
+        <TermsCategory
+          color="blue"
+          heading="tới hạn ôn tập"
+          icon={IconProgressCheck}
+          subheading="Đây là những thẻ bạn cần học hôm nãy. Hãy học ngay nhé!"
+          terms={dueToday}
+        />
+      )}
+      {!!unLearnTerms.length && (
+        <TermsCategory
+          color="red"
+          heading="đang học"
+          icon={IconProgressBolt}
+          subheading="Bạn vẫn đang trong quá trình học những thẻ này. Cố lên nhé!"
+          terms={unLearnTerms}
+        />
+      )}
+      {!!learnedTerms.length && (
+        <TermsCategory
+          color="gray"
+          heading="chưa học"
+          icon={IconProgress}
+          subheading="Bạn chưa học những thẻ này."
+          terms={learnedTerms}
+        />
+      )}
+    </>
+  );
+};
 
 const TermsByOriginal = () => {
   const { terms } = useSet();
@@ -142,64 +132,60 @@ const TermsByAlphabetical = () => {
   return <TermsList slice={20} sortOrder={sortOrder} terms={terms} />;
 };
 
-// interface TermsCategoryProps {
-//     heading: string;
-//     subheading: string;
-//     terms: FlashcardContent[];
-//     icon: TablerIcon;
-//     color: string;
-// }
+interface TermsCategoryProps {
+  heading: string;
+  subheading: string;
+  terms: FlashcardContent[];
+  icon: TablerIcon;
+  color: string;
+}
 
-// const TermsCategory: React.FC<TermsCategoryProps> = ({
-//     heading,
-//     subheading,
-//     terms,
-//     icon: Icon,
-//     color,
-// }) => {
-//     const headingColor = useColorModeValue(`${color}.500`, `${color}.300`);
+const TermsCategory: React.FC<TermsCategoryProps> = ({
+  heading,
+  subheading,
+  terms,
+  icon: Icon,
+  color,
+}) => {
+  const starredTerms = useContainerContext((s) => s.starredTerms);
+  const starredOnly = useContext(TermsOverviewContext).starredOnly;
+  const internalTerms = starredOnly
+    ? terms.filter((x) => starredTerms.includes(x.id))
+    : terms;
 
-//     const starredTerms = useContainerContext((s) => s.starredTerms);
-//     const starredOnly = useContext(TermsOverviewContext).starredOnly;
-//     const internalTerms = starredOnly
-//         ? terms.filter((x) => starredTerms.includes(x.id))
-//         : terms;
+  if (!internalTerms.length) return null;
 
-//     if (!internalTerms.length) return null;
-
-//     return (
-//         <div className="flex flex-col gap-6" spacing={6}>
-//             <div className="flex flex-row gap-4" spacing="4">
-//                 <Box
-//                     h="64px"
-//                     w="3px"
-//                     bg={headingColor}
-//                     rounded="full"
-//                     opacity="0.3"
-//                 />
-//                 <Stack spacing="1">
-//                     <Heading size="md">
-//                         <HStack spacing="2">
-//                             <HStack
-//                                 spacing="1"
-//                                 color={headingColor}
-//                                 fontSize="2xl"
-//                             >
-//                                 <Icon size={20} />
-//                                 <>{terms.length}</>
-//                             </HStack>
-//                             <>{heading}</>
-//                         </HStack>
-//                     </Heading>
-//                     <Text color="gray.500" fontWeight={500}>
-//                         {subheading}
-//                     </Text>
-//                 </Stack>
-//             </div>
-//             <TermsList terms={terms} />
-//         </div>
-//     );
-// };
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-row items-center gap-4">
+        <div
+          className={cn(
+            "h-16 w-[3px] rounded-full",
+            `bg-${color}-500 dark:bg-${color}-300`,
+          )}
+        />
+        <div className="flex flex-col gap-1">
+          <div className="text-2xl font-bold">
+            <div className="flex flex-row items-center gap-2">
+              <div
+                className={cn(
+                  "flex flex-row items-center gap-1 text-3xl",
+                  `text-${color}-500 dark:text-${color}-300:`,
+                )}
+              >
+                <Icon size={30} />
+                <>{terms.length}</>
+              </div>
+              <>{heading}</>
+            </div>
+          </div>
+          <p className="font-medium text-gray-500">{subheading}</p>
+        </div>
+      </div>
+      <TermsList terms={terms} />
+    </div>
+  );
+};
 
 interface TermsListProps {
   terms: FlashcardContent[];

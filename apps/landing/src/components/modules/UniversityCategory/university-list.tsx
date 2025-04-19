@@ -60,7 +60,7 @@ export const UniversityList = () => {
       pageNumber: currentPage,
       pageSize: 12,
       city: selectedCity?.provinceId,
-      majorCode: selectedMajors[0]?.majorCode,
+      majorCode: selectedMajors.map((major) => major.majorCode).join(","),
     });
 
   const handleDeleteMajor = (majorId: string) => {
@@ -251,7 +251,7 @@ export const UniversityList = () => {
                 </Button>
               )}
             </div>
-            <div className="grid grid-cols-2 gap-5 sm:grid-cols-1 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
               {universityData?.data.map((university) => (
                 <UniversityCard key={university.id} university={university} />
               ))}

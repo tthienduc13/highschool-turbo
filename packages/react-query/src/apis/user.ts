@@ -58,6 +58,23 @@ export interface CachePersonality {
 
 // GET
 
+export const updateStudentMajor = async ({
+  majorId,
+}: {
+  majorId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      userEndpoints.updateMajor(majorId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while updating student major", error);
+    throw error;
+  }
+};
+
 export const getUserProgressStage = async (): Promise<
   ResponseModel<string>
 > => {

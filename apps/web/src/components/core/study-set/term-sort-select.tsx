@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+import { useSession } from "next-auth/react";
 
 const allOptions = [
   {
@@ -25,15 +26,14 @@ const allOptions = [
 ];
 
 interface TermsSortSelectProps {
-  studiable: boolean;
   onChange: (value: string) => void;
 }
 
 export const TermsSortSelect: React.FC<TermsSortSelectProps> = ({
-  studiable,
   onChange,
 }) => {
-  const options = studiable ? allOptions : allOptions.slice(1);
+  const { status } = useSession();
+  const options = status === "authenticated" ? allOptions : allOptions.slice(1);
   const [sortMethod, setSortMethod] = useState<string>(options[0].value);
 
   return (

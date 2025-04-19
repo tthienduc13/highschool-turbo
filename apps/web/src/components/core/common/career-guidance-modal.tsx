@@ -76,7 +76,7 @@ export const CareerGuidanceModal = () => {
 
   return (
     <Credenza open={open} onOpenChange={() => setOpen(false)}>
-      <CredenzaContent>
+      <CredenzaContent className="w-full">
         <CredenzaTitle className="text-center text-2xl md:text-start md:text-3xl">
           Hướng nghiệp
         </CredenzaTitle>

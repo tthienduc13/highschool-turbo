@@ -23,7 +23,15 @@ import {
   saveCachePersonality,
   updateBaseUserInfo,
   updateStatusUser,
+  updateStudentMajor,
 } from "../apis/user.ts";
+
+export const useUpdateStudentMajorMutation = () => {
+  return useMutation({
+    mutationKey: ["update-student-major"],
+    mutationFn: updateStudentMajor,
+  });
+};
 
 export const useOrientationStatusQuery = (isOpen: boolean) => {
   return useQuery({
