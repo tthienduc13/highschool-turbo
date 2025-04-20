@@ -5,8 +5,8 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { IconCheck, IconThumbUp } from "@tabler/icons-react";
 import { useFSRSProgressMutation } from "@highschool/react-query/queries";
 
-import { AnyKeyPressLayer } from "../study-set-learn/any-key-press-layer";
-import { ChoiceShortcutLayer } from "../study-set-learn/choice-shorcut-layer";
+import { AnyKeyPressLayer } from "../common/any-key-press-layer";
+import { ChoiceShortcutLayer } from "../common/choice-shortcut-layer";
 
 import { useWritingContext } from "@/stores/use-study-set-writing-store";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   IconArrowRight,
@@ -92,6 +92,10 @@ export const Instruction = ({ onClose }: InstructionProps) => {
   const handleTypeClick = (type: string) => {
     setActiveType((prevType) => (prevType === type ? null : type));
   };
+
+  useEffect(() => {
+    setActiveType(MBTIType.INTJ);
+  }, []);
 
   const userAnswers = useMBTITestContext((s) => s.userTestAnswers);
 

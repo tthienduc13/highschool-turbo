@@ -13,10 +13,10 @@ import { useCramContext } from "@/stores/use-study-set-cram-store";
 import { InteractionCard } from "@/components/core/study-set-cram/interaction-card";
 import { ActionBar } from "@/components/core/study-set-cram/action-bar";
 import { TitleBar } from "@/components/core/study-set-cram/title-bar";
-import { LearnLoading } from "@/components/core/study-set-learn/learn-loading";
 import { useContainerContext } from "@/stores/use-container-store";
 import { CompletedView } from "@/components/core/study-set-cram/completed-view";
 import { RoundSummary } from "@/components/core/study-set-cram/round-sumary";
+import { LearnLoading } from "@/components/core/common/learn-loading";
 
 function StudySetCramModule() {
   const { slug } = useParams();

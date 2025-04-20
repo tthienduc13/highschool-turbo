@@ -8,7 +8,7 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useDashboard } from "@/hooks/use-user-dashboard";
 
 export const ProfileArea = () => {
-  const { user } = useDashboard();
+  const { user, stats } = useDashboard();
 
   return (
     <div className="flex flex-row items-center gap-4 md:gap-6">
@@ -16,12 +16,14 @@ export const ProfileArea = () => {
         <Avatar className="size-16 ">
           <AvatarImage alt={user.fullName} src={user.profilePicture} />
         </Avatar>
-        <DotLottieReact
-          autoplay
-          loop
-          className="absolute -bottom-5 left-1/2 -z-10 size-48 -translate-x-1/2 "
-          src="/animation/flame.lottie"
-        />
+        {stats.currentLoginStreak > 4 && (
+          <DotLottieReact
+            autoplay
+            loop
+            className="absolute -bottom-5 left-1/2 -z-10 size-48 -translate-x-1/2 "
+            src="/animation/flame.lottie"
+          />
+        )}
       </div>
       <div
         className={cn(

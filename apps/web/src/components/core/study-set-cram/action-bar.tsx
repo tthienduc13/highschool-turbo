@@ -1,15 +1,13 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { AnyKeyPressLayer } from "../study-set-learn/any-key-press-layer";
+import { AnyKeyPressLayer } from "../common/any-key-press-layer";
 
 import { useCramContext } from "@/stores/use-study-set-cram-store";
 
 export const ActionBar = () => {
   const status = useCramContext((s) => s.status);
   const roundSummary = useCramContext((s) => s.roundSummary);
-  const roundTimeline = useCramContext((s) => s.roundTimeline);
-  const roundCounter = useCramContext((s) => s.roundCounter);
   const acknowledgeIncorrect = useCramContext((s) => s.acknowledgeIncorrect);
   const nextRound = useCramContext((s) => s.nextRound);
 

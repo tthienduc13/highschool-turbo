@@ -5,7 +5,7 @@ import { cn } from "@highschool/ui/lib/utils";
 import { StudySetAnswerMode } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 
-import { GenericLabel } from "../../study-set-learn/generic-label";
+import { GenericLabel } from "../../common/generic-label";
 
 import { useContainerContext } from "@/stores/use-container-store";
 import { Question, useCramContext } from "@/stores/use-study-set-cram-store";

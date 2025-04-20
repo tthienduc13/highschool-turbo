@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useReviewContext } from "./hydrate-fsrs-data";
 
 import { useStudySetFSRSContext } from "@/stores/use-study-set-fsrs-store";
-import { AnyKeyPressLayer } from "@/components/core/study-set-learn/any-key-press-layer";
 import { CircularTermMastery } from "@/components/core/study-set/circular-term-mastery";
+import { AnyKeyPressLayer } from "@/components/core/common/any-key-press-layer";
 
 interface SortFlashcardProgressProps {
   h?: string;

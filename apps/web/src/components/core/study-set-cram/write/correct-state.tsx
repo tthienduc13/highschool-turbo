@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import React, { useState } from "react";
 import { getRandom } from "@highschool/lib/array";
 
-import { GenericLabel } from "../../study-set-learn/generic-label";
+import { GenericLabel } from "../../common/generic-label";
 
 import { AnswerCard } from "./answer-card";
 

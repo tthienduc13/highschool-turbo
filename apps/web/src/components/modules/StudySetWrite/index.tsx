@@ -8,9 +8,9 @@ import { Container } from "@/components/core/layouts/container";
 import { ActionBar } from "@/components/core/study-set-write/action-bar";
 import { TitleBar } from "@/components/core/study-set-write/titlebar";
 import { WritingCard } from "@/components/core/study-set-write/writing-card";
-import { LearnLoading } from "@/components/core/study-set-learn/learn-loading";
 import { useWritingContext } from "@/stores/use-study-set-writing-store";
 import { Completed } from "@/components/core/study-set-write/completed";
+import { LearnLoading } from "@/components/core/common/learn-loading";
 
 function StudySetWriteModule() {
   const { slug } = useParams();

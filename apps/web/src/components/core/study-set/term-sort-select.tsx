@@ -12,16 +12,16 @@ import { useSession } from "next-auth/react";
 
 const allOptions = [
   {
-    label: "Theo tiến độ",
-    value: "stats",
-  },
-  {
     label: "Thứ tự gốc",
     value: "original",
   },
   {
     label: "Bảng chữ cái",
     value: "alphabetical",
+  },
+  {
+    label: "Theo tiến độ",
+    value: "stats",
   },
 ];
 

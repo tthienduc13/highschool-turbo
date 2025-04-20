@@ -39,12 +39,12 @@ export const TermOverView = () => {
 
   const termsListComponent = () => {
     switch (sortType) {
-      case "stats":
-        return <TermsByStats />;
       case "original":
         return <TermsByOriginal />;
       case "alphabetical":
         return <TermsByAlphabetical />;
+      case "stats":
+        return <TermsByStats />;
     }
   };
 

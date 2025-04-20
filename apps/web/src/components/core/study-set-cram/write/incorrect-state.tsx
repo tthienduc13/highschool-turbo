@@ -8,7 +8,7 @@ import { IconProgressCheck } from "@tabler/icons-react";
 import { ScriptFormatter } from "@highschool/lib/script-formatter";
 
 import { word } from "../../../../utils/terms";
-import { GenericLabel } from "../../study-set-learn/generic-label";
+import { GenericLabel } from "../../common/generic-label";
 
 import { AnswerCard } from "./answer-card";
 

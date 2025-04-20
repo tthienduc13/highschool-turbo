@@ -1,5 +1,3 @@
-// "use client";
-
 import { getRandom } from "@highschool/lib/array";
 import { useEffect, useState } from "react";
 import { FlashcardContent, StudySetAnswerMode } from "@highschool/interfaces";
@@ -8,11 +6,11 @@ import { cn } from "@highschool/ui/lib/utils";
 import { useTheme } from "next-themes";
 import { ScriptFormatter } from "@highschool/lib/script-formatter";
 
-import { GenericLabel } from "../study-set-learn/generic-label";
-import { ChoiceShortcutLayer } from "../study-set-learn/choice-shorcut-layer";
 import { AnimatedCheckCircle } from "../common/animated-icons/animated-check-circle";
 import { AnimatedXCircle } from "../common/animated-icons/animated-x-icon";
 import { SquareAssetPreview } from "../study-set/square-asset-preview";
+import { ChoiceShortcutLayer } from "../common/choice-shortcut-layer";
+import { GenericLabel } from "../common/generic-label";
 
 import { Question, useCramContext } from "@/stores/use-study-set-cram-store";
 import { word } from "@/utils/terms";
