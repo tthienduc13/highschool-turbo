@@ -3,7 +3,8 @@ module.exports = {
     {
       name: "highschool-web",
       git_branch: "main",
-      script: "turbo run build --filter web && turbo run start --filter web", // Build trước và chạy start
+      script:
+        "NEXTAUTH_URL=https://app.highschool.vn turbo run build --filter web && NEXTAUTH_URL=https://app.highschool.vn turbo run start --filter web",
       watch: false,
       env: {
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",

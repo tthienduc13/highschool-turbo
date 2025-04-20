@@ -23,6 +23,7 @@ function HomeModule() {
   const me = useMe();
   const isStudent = me?.roleName?.toLocaleLowerCase() === "student";
 
+  console.log(process.env.NEXTAUTH_URL);
   const {
     data: recommendedData,
     isLoading: recommendedIsLoading,
