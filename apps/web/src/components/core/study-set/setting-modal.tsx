@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { StudyStarredSection } from "./settings/study-starred";
 import { CardsAnswerModeSection } from "./settings/answer-mode";
 import { CardPerDaySection } from "./settings/card-per-day";
+import { FSRSPreset } from "./settings/fsrs-preset";
 
 import { useSet } from "@/hooks/use-set";
 import { useSetPropertiesStore } from "@/stores/use-set-properties";
@@ -52,10 +53,12 @@ export const SettingModal = ({ isOpen, onClose }: SettingModal) => {
       }}
       //   isPending={apiResetCardsProgress.isLoading}
     >
-      <div className="flex flex-col gap-6">
+      <div className="mb-6 flex flex-col gap-6">
         {/* <CardsSortingSection />
         <Separator /> */}
         <CardPerDaySection />
+        <Separator />
+        <FSRSPreset />
         <Separator />
         <CardsAnswerModeSection />
         <StudyStarredSection />

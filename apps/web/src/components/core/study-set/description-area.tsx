@@ -66,7 +66,10 @@ export const DescriptionArea = () => {
         <div className="flex flex-col items-end gap-2">
           <ActionArea />
           {data.flashcard.entityId && (
-            <Button>
+            <Button
+              className="border-gray-200 dark:border-gray-700"
+              variant={"outline"}
+            >
               {flashcardAttachToTypeLabels[data.flashcard.flashcardType].label}{" "}
               : {data.flashcard.entityName}
               <IconSchool />
