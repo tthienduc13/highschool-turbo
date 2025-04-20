@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "highschool-web",
       git_branch: "main",
-      script: "turbo run dev --filter web",
+      script: "turbo run start --filter web",
       watch: false,
       env: {
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",
