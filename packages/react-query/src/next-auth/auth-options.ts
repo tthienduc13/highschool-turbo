@@ -257,6 +257,11 @@ export const authConfig: NextAuthConfig = {
 
       return session;
     },
+    async redirect({ url, baseUrl }) {
+      console.log("REDIRECT DEBUG:", { url, baseUrl });
+
+      return baseUrl;
+    },
   },
   pages: {
     signIn: "/sign-in",

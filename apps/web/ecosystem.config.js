@@ -20,7 +20,7 @@ module.exports = {
           "200245631284-jj3661ph7d8nv2704do68jl0njgfluta.apps.googleusercontent.com",
         AUTH_GOOGLE_SECRET: "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",
         NEXT_PUBLIC_NOTIFICATION_APPLICATION_IDENTIFIER: "2T6E0LAU8aRZ",
-        NEXTAUTH_URL: "https://highschool.vn",
+        NEXTAUTH_URL: "https://app.highschool.vn",
         PORT: 3002,
       },
     },
