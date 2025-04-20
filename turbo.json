@@ -57,6 +57,14 @@
                 ".env",
                 ".env.local"
             ]
+        },
+        "start": {
+            "cache": false,
+            "persistent": true,
+            "inputs": [
+                ".env",
+                ".env.local"
+            ]
         }
     }
 }
