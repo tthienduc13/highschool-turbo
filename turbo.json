@@ -5,7 +5,8 @@
         "**/.env"
     ],
     "globalPassThroughEnv": [
-        "PORT"
+        "PORT",
+        "HOST"
     ],
     "globalEnv": [
         "NEXT_PUBLIC_UNSPLASH_ACCESS_KEY",

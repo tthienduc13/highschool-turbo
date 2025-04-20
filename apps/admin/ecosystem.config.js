@@ -19,6 +19,7 @@ module.exports = {
         AUTH_GOOGLE_ID:
           "200245631284-jj3661ph7d8nv2704do68jl0njgfluta.apps.googleusercontent.com",
         AUTH_GOOGLE_SECRET: "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",
+        NEXTAUTH_URL: "https://admin.highschool.vn",
         PORT: 3000,
       },
     },
