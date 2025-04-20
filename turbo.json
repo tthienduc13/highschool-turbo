@@ -37,6 +37,17 @@
                 "dist/**"
             ]
         },
+        "start": {
+            "dependsOn": [
+                "^build"
+            ],
+            "cache": false,
+            "persistent": true,
+            "inputs": [
+                ".env",
+                ".env.local"
+            ]
+        },
         "lint": {
             "dependsOn": [
                 "^lint"
