@@ -85,6 +85,9 @@ export const authConfig: NextAuthConfig = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      authorization: {
+        redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
+      },
     }),
     {
       id: "magic-link",

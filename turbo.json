@@ -6,7 +6,8 @@
     ],
     "globalPassThroughEnv": [
         "PORT",
-        "HOST"
+        "HOST",
+        "NEXTAUTH_URL"
     ],
     "globalEnv": [
         "NEXT_PUBLIC_UNSPLASH_ACCESS_KEY",
@@ -41,12 +42,8 @@
             "dependsOn": [
                 "^build"
             ],
-            "cache": false,
-            "persistent": true,
-            "inputs": [
-                ".env",
-                ".env.local"
-            ]
+            "cache": true,
+            "persistent": true
         },
         "lint": {
             "dependsOn": [
