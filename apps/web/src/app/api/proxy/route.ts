@@ -110,6 +110,8 @@ export async function POST(request: NextRequest) {
       ...(useAuth && accessToken && { Authorization: `Bearer ${accessToken}` }),
     };
 
+    console.log("Making request to:", targetUrl);
+
     // Create request options based on content type
     let requestOptions: RequestInit = {
       method: method.toUpperCase(),
@@ -134,40 +136,21 @@ export async function POST(request: NextRequest) {
     if (response.status === 401) {
       await clearAuthCookies();
 
-      // Add signOut from NextAuth route
-      const signOutUrl = "/api/auth/signout";
-
-      try {
-        await fetch(signOutUrl, { method: "POST" });
-      } catch (signOutError) {
-        console.error("Error signing out from NextAuth:", signOutError);
-      }
-
       return NextResponse.json(
         {
           error: "Unauthorized",
           shouldLogout: true,
           message: "Your session has expired or is invalid",
-          redirectUrl: "/auth/signin", // Redirect to sign in page after logout
         },
         { status: 401 },
       );
     }
 
-    // Handle 400, 404 and 500+ errors with shouldRetry: false
-    if (
-      response.status === 400 ||
-      response.status === 404 ||
-      response.status >= 500
-    ) {
+    // Handle 500+ errors
+    if (response.status >= 500) {
       return NextResponse.json(
         {
-          error:
-            response.status === 400
-              ? "Bad Request"
-              : response.status === 404
-                ? "Not Found"
-                : "Server error",
+          error: "Server error",
           message: `The server returned a ${response.status} error`,
           shouldRetry: false,
         },

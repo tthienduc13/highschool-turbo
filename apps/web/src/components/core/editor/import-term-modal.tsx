@@ -67,7 +67,7 @@ export const ImportTermModal = ({
       onClose={onClose}
       onConfirm={() => onImport(previewTerms)}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 pb-6">
         <div className="flex flex-col">
           <Label className="mb-3">
             Copy và dán thuật ngữ theo định dạng sau
@@ -113,14 +113,14 @@ export const ImportTermModal = ({
           Xem trước
           {!!previewTerms.length && ` (${previewTerms.length} thẻ)`}
         </div>
-        <div className="flex max-h-[150px] flex-col gap-1 overflow-y-scroll">
+        <div className="no-scrollbar flex max-h-[150px] flex-col gap-1 overflow-y-scroll">
           {previewTerms.map(({ term, definition }, i) => (
             <div
               key={i}
-              className="flex flex-row divide-x overflow-hidden rounded-lg bg-secondary/40 py-2"
+              className="bg-secondary/40 flex h-full flex-row divide-x  rounded-lg py-2"
             >
-              <div className="w-3/5 px-4">{term}</div>
-              <div className="w-2/5 px-4">{definition}</div>
+              <div className="w-3/5 px-4 ">{term}</div>
+              <div className="w-2/5 px-4 ">{definition}</div>
             </div>
           ))}
           {!previewTerms.length && (

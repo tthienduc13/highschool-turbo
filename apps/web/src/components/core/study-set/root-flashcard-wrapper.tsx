@@ -9,12 +9,10 @@ import {
   useUnStarTermMutation,
 } from "@highschool/react-query/queries";
 
-import { CreateSortFlashcardsData } from "./create-sort-flashcard-data";
-import { DefaultFlashcardWrapper } from "./default-flashcard-wrapper";
 import { EditTermModal } from "./edit-term-modal";
 import { FlashcardsEmpty } from "./flashcard-empty";
 import { LoadingFlashcard } from "./loading-flashcard";
-import { SortFlashcardWrapper } from "./sort-flashcard-wrapper";
+import { DefaultFlashcardWrapper } from "./default-flashcard-wrapper";
 
 import { useContainerContext } from "@/stores/use-container-store";
 import { menuEventChannel } from "@/events/menu";
@@ -57,16 +55,9 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
   const setStarMutation = useStarTermMutation();
   const unStarMutation = useUnStarTermMutation();
 
-  const enableCardsSorting = useContainerContext((s) => s.enableCardsSorting);
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const starTerm = useContainerContext((s) => s.starTerm);
   const unstarTerm = useContainerContext((s) => s.unstarTerm);
-
-  const FlashcardWrapper = enableCardsSorting
-    ? SortFlashcardWrapper
-    : DefaultFlashcardWrapper;
-
-  const Wrapper = authed ? CreateSortFlashcardsData : React.Fragment;
 
   if (isDirty || (!termOrder.length && !flashcard.container))
     return <LoadingFlashcard h={h} />;
@@ -108,22 +99,17 @@ export const RootFlashcardWrapper: React.FC<RootFlashcardWrapperProps> = ({
         },
       }}
     >
-      <Wrapper>
-        <div
-          className="relative size-full"
-          style={{ minHeight: h, zIndex: 100 }}
-        >
-          <EditTermModal
-            isOpen={editModalOpen}
-            term={editTerm}
-            onClose={() => {
-              setEditModalOpen(false);
-            }}
-            onDefinition={focusDefinition}
-          />
-          <FlashcardWrapper />
-        </div>
-      </Wrapper>
+      <div className="relative size-full" style={{ minHeight: h, zIndex: 100 }}>
+        <EditTermModal
+          isOpen={editModalOpen}
+          term={editTerm}
+          onClose={() => {
+            setEditModalOpen(false);
+          }}
+          onDefinition={focusDefinition}
+        />
+        <DefaultFlashcardWrapper />
+      </div>
     </RootFlashcardContext.Provider>
   );
 };

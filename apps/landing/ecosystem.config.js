@@ -3,7 +3,8 @@ module.exports = {
     {
       name: "highschool-landing",
       git_branch: "main",
-      script: "turbo run dev --filter landing",
+      script:
+        " turbo run build --filter landing &&  turbo run start --filter landing",
       watch: false,
       env: {
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",

@@ -247,13 +247,11 @@ export const EditorContextLayer = ({
         },
         bulkAddTerms: (terms, deleted) => {
           void (async () => {
-            // if (!!deleted?.length) {
-            //   await apiBulkDeleteTerms.mutateAsync({
-            //     studySetId: data.id,
-            //     terms: deleted,
-            //   });
-            // }
+            if (!!deleted?.length) {
+              const state = storeRef.current!.getState();
 
+              state.removeServerTerms(deleted);
+            }
             apiBulkAddTerms.mutate({
               flashcardId: data?.id!,
               values: terms.map((value) => {
@@ -345,8 +343,6 @@ export const EditorContextLayer = ({
         onSubscribeDelegate: () => {
           void (async () => {
             const state = storeRef.current!.getState();
-
-            console.log(state.flashcardType);
 
             await apiEditSet.mutateAsync({
               flashcardId: data?.id!,
