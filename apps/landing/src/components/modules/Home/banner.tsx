@@ -97,7 +97,7 @@ export const Banner = () => {
         <h1 className="text-left text-3xl font-bold md:text-center md:text-4xl lg:text-[42px] xl:text-5xl">
           Nền tảng <FlipWords words={words} />
           <br />
-          cho học sinh trung học phổ thông
+          cho học sinh trung học phổ thông 123
         </h1>
         <div className="flex w-full flex-col md:flex-row lg:mt-10 lg:max-w-7xl lg:px-10 xl:px-20">
           <div className="flex max-w-[400px] flex-col justify-center gap-4 md:gap-6 lg:gap-8">
