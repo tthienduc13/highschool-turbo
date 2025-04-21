@@ -1,13 +1,21 @@
 #! /bin/bash
 
 GIT_BRANCH="main"
-PATH_TO_REPO="/var/www/highschool"
+PATH_TO_REPO="/var/www/highschool-turbo"
 
 PATH_TO_WEB="${PATH_TO_REPO}/apps/web"
-PATH_TO_ADMIN="${PATH_TO_REPO}/apps/api"
+PATH_TO_ADMIN="${PATH_TO_REPO}/apps/admin"
 PATH_TO_LANDING="${PATH_TO_REPO}/apps/landing"
 
 PM2_COMMAND="/usr/local/bin/pm2"
+
+LOCAL_GIT_HASH=$(git rev-parse HEAD)
+REMOTE_GIT_HASH=$(git rev-parse origin/${GIT_BRANCH})
+
+if [ "$LOCAL_GIT_HASH" = "$REMOTE_GIT_HASH" ]; then
+    echo "Local git hash matches remote git hash, no need to pull"
+    exit 0
+fi
 
 cd ${PATH_TO_REPO}
 git checkout ${GIT_BRANCH}
