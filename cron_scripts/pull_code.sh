@@ -8,6 +8,9 @@ PATH_TO_ADMIN="${PATH_TO_REPO}/apps/admin"
 PATH_TO_LANDING="${PATH_TO_REPO}/apps/landing"
 
 PM2_COMMAND="/usr/local/bin/pm2"
+cd ${PATH_TO_REPO}
+
+git fetch origin ${GIT_BRANCH}
 
 LOCAL_GIT_HASH=$(git rev-parse HEAD)
 REMOTE_GIT_HASH=$(git rev-parse origin/${GIT_BRANCH})
