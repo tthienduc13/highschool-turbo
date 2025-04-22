@@ -27,16 +27,16 @@ git pull origin ${GIT_BRANCH}
 
 echo "Pulled code"
 
-# Run pnpm install and restart for each app
+# ✅ Install all dependencies at the root (for all apps/packages)
+echo "Installing dependencies from monorepo root"
+pnpm install
 
+# 🔁 Restart each app
 for APP_PATH in "$PATH_TO_WEB" "$PATH_TO_ADMIN" "$PATH_TO_LANDING"; do
   echo "cd to ${APP_PATH}"
   cd ${APP_PATH}
 
-  echo "Installing dependencies with pnpm"
-  pnpm install
-
-  echo "Restarting PM2"
+  echo "Restarting PM2 for this app"
   $PM2_COMMAND restart ecosystem.config.js --update-env
 done
 
