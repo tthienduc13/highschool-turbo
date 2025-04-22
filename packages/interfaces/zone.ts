@@ -4,7 +4,7 @@ export interface Zone {
   description: string | null;
   logoUrl: string | null;
   bannerUrl: string | null;
-  createdBy: string;
+  author: AuthorZone;
   deletedAt: string | null;
   documentIds: string[];
   flashcardIds: string[];
@@ -13,6 +13,31 @@ export interface Zone {
   pendingZoneInvitesCount: number;
   zoneBansCount: number;
   zoneMembershipsCount: number;
+  createdAt?: string;
+  updatedAt?: string;
+  status?: string;
+}
+
+export interface AuthorZone {
+  firstName?: string;
+  lastName: string;
+  email: string;
+  avatar?: string;
+}
+
+export interface ZonePreview {
+  id: string;
+  name: string;
+  description: string | null;
+  logoUrl: string | null;
+  bannerUrl: string | null;
+  documentCount: number;
+  flashcardCount: number;
+  folderCount: number;
+  assignmentCount: number;
+  createdBy: string;
+  createdAt: string;
+  status?: string;
 }
 
 export enum MemberRole {

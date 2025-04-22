@@ -1,5 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { University } from "@highschool/interfaces";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@highschool/ui/components/ui/avatar";
 
 import { DataTableColumnHeader } from "../../core/table/data-table-column-header";
 
@@ -14,8 +19,15 @@ export const columns: ColumnDef<University>[] = [
       <DataTableColumnHeader column={column} title="UniCode" />
     ),
     cell: ({ row }) => (
-      <div className="w-fit text-nowrap">{row.original.uniCode}</div>
+      <div className="flex items-center gap-x-2">
+        <Avatar className="size-8">
+          <AvatarImage alt={"image"} src={row.original.logoUrl ?? ""} />
+          <AvatarFallback>Thumbnail</AvatarFallback>
+        </Avatar>
+        <LongText className="max-w-36">{row.original.uniCode}</LongText>
+      </div>
     ),
+    meta: { className: "max-w-12" },
     enableSorting: false,
   },
   {
@@ -26,7 +38,7 @@ export const columns: ColumnDef<University>[] = [
     cell: ({ row }) => {
       const { name } = row.original;
 
-      return <LongText className="max-w-36">{name}</LongText>;
+      return <LongText className="max-w-52">{name}</LongText>;
     },
     meta: { className: "w-36" },
     enableSorting: false,

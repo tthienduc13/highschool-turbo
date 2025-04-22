@@ -2,7 +2,6 @@ import {
   getAdmissionMethodLabel,
   UniversityMajor,
 } from "@highschool/interfaces";
-import { useDeleteUniversityMajorMutation } from "@highschool/react-query/queries";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
@@ -37,24 +36,24 @@ import {
   IconWallpaper,
 } from "@tabler/icons-react";
 import { useState } from "react";
-
-// const Alert = dynamic(
-//     () =>
-//         import("@/components/core/commons/modals/alert-modal").then(
-//             (mod) => mod.AlertModal
-//         ),
-//     { ssr: false }
-// );
-
 interface UniversityMajorCardProps {
   data?: UniversityMajor[];
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setMode: React.Dispatch<
+    React.SetStateAction<"create" | "edit" | "delete" | null>
+  >;
+  setUniCode: React.Dispatch<React.SetStateAction<string>>;
+  setSelectUniversityMajor: React.Dispatch<UniversityMajor>;
 }
 
-export const UniversityMajorCard = ({ data }: UniversityMajorCardProps) => {
+export const UniversityMajorCard = ({
+  data,
+  setOpen,
+  setMode,
+  setUniCode,
+  setSelectUniversityMajor,
+}: UniversityMajorCardProps) => {
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
-  const { mutate: deleteUniversityMajor, isPending } =
-    useDeleteUniversityMajorMutation();
-  const [openAlert, setOpenAlert] = useState<boolean>(false);
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -81,13 +80,26 @@ export const UniversityMajorCard = ({ data }: UniversityMajorCardProps) => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="gap-2">
+                      <DropdownMenuItem
+                        className="gap-2"
+                        onClick={() => {
+                          setOpen(true),
+                            setMode("edit"),
+                            setUniCode(program.uniCode),
+                            setSelectUniversityMajor(program);
+                        }}
+                      >
                         <IconEdit className="size-4" />
                         Edit
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive gap-2"
-                        onClick={() => setOpenAlert(true)}
+                        onClick={() => {
+                          setOpen(true),
+                            setMode("delete"),
+                            setUniCode(program.uniCode),
+                            setSelectUniversityMajor(program);
+                        }}
                       >
                         <IconTrash className="size-4" />
                         Delete

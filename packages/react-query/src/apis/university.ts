@@ -21,6 +21,7 @@ export const getUniversities = async ({
   minTuition,
   maxTuition,
   city,
+  universityId,
 }: Partial<{
   search: string;
   majorCode: string;
@@ -29,6 +30,7 @@ export const getUniversities = async ({
   minTuition: number;
   maxTuition: number;
   city: UniversityCity;
+  universityId: string;
 }>): Promise<Pagination<University[]>> => {
   return fetchPaginatedData<University[]>(universityEndpoints.getList, {
     pageNumber,
@@ -38,6 +40,7 @@ export const getUniversities = async ({
     minTuition,
     maxTuition,
     city,
+    universityId,
   });
 };
 

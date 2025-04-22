@@ -2,6 +2,7 @@ import { Row } from "@tanstack/react-table";
 import {
   IconDotsCircleHorizontal,
   IconEdit,
+  IconInfoCircle,
   IconTrash,
 } from "@tabler/icons-react";
 import { Button } from "@highschool/ui/components/ui/button";
@@ -37,6 +38,17 @@ export function UserTableRowActions<T>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuItem
+          onClick={() => {
+            setCurrentRow(row.original);
+            setOpen("view");
+          }}
+        >
+          Detail
+          <DropdownMenuShortcut>
+            <IconInfoCircle size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(row.original);

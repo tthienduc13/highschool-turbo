@@ -11,6 +11,11 @@ export interface University {
   logoUrl: string;
   city: string;
   universityMajors: UniversityMajor[];
+  news_details: string;
+  admission_details: string;
+  program_details: string;
+  field_details: string;
+  tags: string[];
 }
 
 export interface UniversityMajor {

@@ -2,6 +2,7 @@ import {
   CreateDocument,
   Document,
   DocumentMedia,
+  DocumentUpdate,
   Pagination,
   ResponseModel,
   UpdateDocument,
@@ -78,7 +79,7 @@ export const getDocumentManagementBySlug = async ({
   documentSlug,
 }: {
   documentSlug: string;
-}): Promise<Document> => {
+}): Promise<DocumentUpdate> => {
   try {
     const { data } = await axiosServices.get(
       `${documentEndpoints.getDocumentManagement(documentSlug)}`,
