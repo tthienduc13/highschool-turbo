@@ -54,7 +54,9 @@ export const columns: ColumnDef<Major>[] = [
     cell: ({ row }) => (
       <div>
         {row.original.subjects
-          ?.map((subject) => subject.masterSubjectName)
+          ?.map((subject) =>
+            typeof subject === "object" ? subject.masterSubjectName : subject,
+          )
           .join(", ")}
       </div>
     ),
