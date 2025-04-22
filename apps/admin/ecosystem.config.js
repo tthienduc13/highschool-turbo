@@ -4,7 +4,7 @@ module.exports = {
       name: "highschool-admin",
       git_branch: "main",
       script:
-        "NEXTAUTH_URL=https://admin.highschool.vn turbo run build --filter admin && NEXTAUTH_URL=https://admin.highschool.vn turbo run start --filter admin",
+        "pnpm install NEXTAUTH_URL=https://admin.highschool.vn turbo run build --filter admin && NEXTAUTH_URL=https://admin.highschool.vn turbo run start --filter admin",
       watch: false,
       env: {
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",
