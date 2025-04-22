@@ -34,13 +34,12 @@ function MemberOnboardingModule() {
     <WizardLayout
       currentStep={1}
       description="Mời thêm quản trị viên tổ chức tham gia. Thành viên có thể quản lý hoạt động tổ chức, lớp học, giáo viên và học sinh.."
-      steps={5}
+      steps={3}
       title="Mời thành viên"
     >
       {zone && (
         <InviteMemberModal
           isOpen={inviteModalOpen}
-          //   token={org.inviteToken?.token}
           zoneId={zone.id}
           onClose={() => setInviteModalOpen(false)}
         />
@@ -63,7 +62,7 @@ function MemberOnboardingModule() {
               size="sm"
               variant="ghost"
               onClick={async () => {
-                //   await router.push(`/new/${org!.id}/domain-setup`);
+                await router.push(`/zone/${params.id as string}/zone-publish`);
               }}
             >
               {/* {(org?.members?.length || 1) + (org?.pendingInvites.length || 0) >

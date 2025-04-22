@@ -22,7 +22,6 @@ import {
   IconMoon,
   IconSettings,
   IconSun,
-  IconUser,
   TablerIcon,
 } from "@tabler/icons-react";
 
@@ -44,11 +43,11 @@ export const UserMenu = () => {
   const user = session?.user;
 
   const menuItems: MenuItem[] = [
-    {
-      label: "Thông tin cá nhân",
-      icon: IconUser,
-      action: () => router.push(`/profile/${user?.username}`),
-    },
+    // {
+    //   label: "Thông tin cá nhân",
+    //   icon: IconUser,
+    //   action: () => router.push(`/profile/${user?.username}`),
+    // },
     {
       label: "Cài đặt",
       icon: IconSettings,

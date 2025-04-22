@@ -1,31 +1,31 @@
-"use client";
-
-import { useTheme } from "next-themes";
-import React, { useEffect, useState } from "react";
-import { MultipleChoiceData, TestQuestion } from "@highschool/interfaces";
 import { getRandom } from "@highschool/lib/array";
+import { useEffect, useState } from "react";
+import { FlashcardContent, StudySetAnswerMode } from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
+import { useTheme } from "next-themes";
+import { ScriptFormatter } from "@highschool/lib/script-formatter";
 
 import { AnimatedCheckCircle } from "../common/animated-icons/animated-check-circle";
 import { AnimatedXCircle } from "../common/animated-icons/animated-x-icon";
-import { GenericLabel } from "../study-set-learn/generic-label";
-import { ChoiceShortcutLayer } from "../study-set-learn/choice-shorcut-layer";
+import { SquareAssetPreview } from "../study-set/square-asset-preview";
+import { ChoiceShortcutLayer } from "../common/choice-shortcut-layer";
+import { GenericLabel } from "../common/generic-label";
 
-import { useCramContext } from "@/stores/use-study-set-cram-store";
-
+import { Question, useCramContext } from "@/stores/use-study-set-cram-store";
+import { word } from "@/utils/terms";
 interface ChoiceCardProps {
-  active: TestQuestion<MultipleChoiceData>;
+  active: Question;
 }
 
 export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
   const { theme } = useTheme();
 
   const answered = useCramContext((s) => s.answered);
+  const status = useCramContext((s) => s.status);
   const answerCorrectly = useCramContext((s) => s.answerCorrectly);
   const answerIncorrectly = useCramContext((s) => s.answerIncorrectly);
   const feedbackBank = useCramContext((s) => s.feedbackBank);
-  const status = useCramContext((s) => s.status);
 
   const getCorrect = () => getRandom(feedbackBank.correct)!;
   const getIncorrect = () => getRandom(feedbackBank.incorrect)!;
@@ -40,25 +40,18 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
       correct: getCorrect(),
       incorrect: getIncorrect(),
     });
-  }, [active.data.term.id, feedbackBank]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active.term.id, feedbackBank]);
 
-  const text =
-    status == "correct"
-      ? remark.correct
-      : status == "incorrect"
-        ? remark.incorrect
-        : `Chọn thuật ngữ phù hợp`;
-
-  const choose = (termId: string) => {
-    if (termId === active.data.term.id) {
-      answerCorrectly(termId);
+  const choose = (term: FlashcardContent) => {
+    if (term.id === active.term.id) {
+      answerCorrectly(term.id);
     } else {
-      answerIncorrectly(termId);
+      answerIncorrectly(term.id);
     }
   };
 
-  const isCorrectTerm = (id: string) =>
-    !!answered && id === active.data.term.id;
+  const isCorrectTerm = (id: string) => !!answered && id === active.term.id;
   const isIncorrectTerm = (id: string) =>
     id === answered && status === "incorrect";
   const isHighlightedTerm = (id: string) =>
@@ -82,12 +75,12 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
 
   const colorSchemeForTerm = (id: string) => {
     if (!answered) return "gray";
+
     if (isCorrectTerm(id)) return "green";
     else if (isIncorrectTerm(id)) return "red";
 
     return "gray";
   };
-
   const colorForTerm = (id: string) => {
     const scheme = colorSchemeForTerm(id);
 
@@ -100,6 +93,17 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
         return buttonBorder;
     }
   };
+
+  const text =
+    status == "correct"
+      ? remark.correct
+      : status == "incorrect"
+        ? remark.incorrect
+        : `Chọn ${
+            active.answerMode == StudySetAnswerMode.FlashcardContentDefinition
+              ? "định nghĩa"
+              : "thuật ngữ"
+          }  phù hợp`;
 
   return (
     <div className="flex flex-col gap-3">
@@ -115,71 +119,87 @@ export const ChoiceCard: React.FC<ChoiceCardProps> = ({ active }) => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <ChoiceShortcutLayer
           choose={(i) => {
-            if (active.data.choices.length > i)
-              choose(active.data.choices[i].id);
+            if (active.choices.length > i) choose(active.choices[i]!);
           }}
         />
-        {active.data.choices.map((option, i) => {
-          const colorScheme = colorSchemeForTerm(option.id);
+        {active.choices.map((choice, i) => {
+          const colorScheme = colorSchemeForTerm(choice.id);
 
           return (
-            <Button
-              key={option.id}
-              className={cn(
-                "h-auto w-full rounded-xl px-8 py-5 disabled:cursor-not-allowed",
-                `border-2 ${colorForTerm(option.id)}`,
-                answered &&
-                  option.id === active.data.term.id &&
-                  `bg-${colorScheme}-100 dark:bg-${colorScheme}-900`,
-                !answered && "hover:bg-gray-100 dark:hover:bg-gray-800",
-              )}
-              disabled={
-                !!answered &&
-                option.id !== active.data.term.id &&
-                option.id !== answered
-              }
-              variant="outline"
-              onClick={() => choose(option.id)}
-            >
-              <div className="flex w-full items-center gap-4">
-                {!answered || !isHighlightedTerm(option.id) ? (
-                  <div
-                    className={`flex size-6 min-w-6 items-center justify-center rounded-full border-2 ${defaultBorder}`}
-                  >
-                    <span
-                      className={`font-heading text-[11px] leading-none ${questionNumText}`}
-                    >
-                      {i + 1}
-                    </span>
-                  </div>
-                ) : isCorrectTerm(option.id) ? (
-                  <div
-                    className="size-6 scale-110"
-                    style={{ color: "green", transform: "scale(1.1)" }}
-                  >
-                    <AnimatedCheckCircle />
-                  </div>
-                ) : (
-                  <div
-                    className="size-6 scale-110"
-                    style={{ color: "red", transform: "scale(1.1)" }}
-                  >
-                    <AnimatedXCircle />
-                  </div>
+            <div key={i} className="h-auto">
+              <Button
+                className={cn(
+                  "h-full w-full border-2 px-8 py-5 rounded-xl",
+                  `border-2 ${colorForTerm(choice.id)}`,
+                  answered &&
+                    choice.id === active.term.id &&
+                    `bg-${colorScheme}-100 dark:bg-${colorScheme}-900`,
+                  answered ? "pointer-events-none" : "pointer-events-auto",
                 )}
-                <span
-                  className={`whitespace-pre-wrap break-words text-left text-lg font-medium ${
-                    isHighlightedTerm(option.id)
-                      ? isCorrectTerm(option.id)
-                        ? greenText
-                        : redText
-                      : textColor
-                  }`}
-                >
-                  {option.flashcardContentDefinition}
-                </span>
-              </div>
-            </Button>
+                disabled={
+                  !!answered &&
+                  choice.id !== active.term.id &&
+                  choice.id !== answered
+                }
+                variant="outline"
+                onClick={() => choose(choice)}
+              >
+                <div className="items-c flex w-full gap-4">
+                  {!answered || !isHighlightedTerm(choice.id) ? (
+                    <div
+                      className={cn(
+                        "flex h-6 justify-center min-w-6 rounded-full w-6 items-center border-2 ",
+                        defaultBorder,
+                      )}
+                    >
+                      <p
+                        className={`font-heading text-[11px] leading-none ${questionNumText}`}
+                      >
+                        {i + 1}
+                      </p>
+                    </div>
+                  ) : isCorrectTerm(choice.id) ? (
+                    <div
+                      className="size-6 scale-125"
+                      style={{ color: "green", transform: "scale(1.25)" }}
+                    >
+                      <AnimatedCheckCircle />
+                    </div>
+                  ) : (
+                    <div
+                      className="size-6 scale-125"
+                      style={{ color: "red", transform: "scale(1.25)" }}
+                    >
+                      <AnimatedXCircle />
+                    </div>
+                  )}
+                  <span
+                    className={`whitespace-pre-wrap break-words text-left text-lg font-medium ${
+                      isHighlightedTerm(choice.id)
+                        ? isCorrectTerm(choice.id)
+                          ? greenText
+                          : redText
+                        : textColor
+                    }`}
+                  >
+                    <ScriptFormatter>
+                      {word(active.answerMode, choice, "answer")}
+                    </ScriptFormatter>
+                  </span>
+                </div>
+                {active.answerMode ==
+                  StudySetAnswerMode.FlashcardContentDefinition &&
+                  choice.image && (
+                    <div className="ml-2">
+                      <SquareAssetPreview
+                        rounded={8}
+                        size={60}
+                        src={choice.image}
+                      />
+                    </div>
+                  )}
+              </Button>
+            </div>
           );
         })}
       </div>

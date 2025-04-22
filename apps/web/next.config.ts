@@ -24,30 +24,16 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "**",
+        hostname: "**",
       },
       {
         protocol: "http",
-        hostname: "res.cloudinary.com",
-        port: "",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "play-lh.googleusercontent.com",
-        port: "",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
-        hostname: "hinowahimedesu-bucket.s3.ap-southeast-1.amazonaws.com",
-        port: "",
-        pathname: "**/**",
-        search: "",
+        hostname: "**",
       },
     ],
+  },
+  env: {
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
 };
 

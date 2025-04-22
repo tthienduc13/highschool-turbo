@@ -115,7 +115,7 @@ export const TermsList = () => {
 
   const items = terms.sort((a, b) => a.rank - b.rank);
   // const disableAdd = terms.length >= MAX_TERMS;
-  const disableAdd = !terms.length ;
+  const disableAdd = !terms.length;
 
   return (
     <div className="flex flex-col gap-4">

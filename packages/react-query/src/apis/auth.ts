@@ -6,6 +6,7 @@ import {
 } from "@highschool/interfaces";
 import axios from "axios";
 import { authEndpoints } from "@highschool/endpoints";
+import { signOut } from "next-auth/react";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -115,6 +116,7 @@ export const requestRefreshToken = async ({
     return data;
   } catch (error) {
     console.log("Error while getting refresh token", error);
+    signOut();
     throw error;
   }
 };

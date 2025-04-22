@@ -38,12 +38,15 @@ const refreshAccessToken = async (token: JWT) => {
     );
 
     if (!response.ok) {
+      signOut();
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const result = await response.json();
 
     if (!result.data) {
+      signOut();
+
       throw new Error("RefreshTokenFailed");
     }
 
@@ -82,6 +85,9 @@ export const authConfig: NextAuthConfig = {
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
+      authorization: {
+        redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`,
+      },
     }),
     {
       id: "magic-link",
@@ -253,6 +259,11 @@ export const authConfig: NextAuthConfig = {
       };
 
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      console.log("REDIRECT DEBUG:", { url, baseUrl });
+
+      return baseUrl;
     },
   },
   pages: {

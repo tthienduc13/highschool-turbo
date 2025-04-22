@@ -2,23 +2,27 @@ import { NumberTicker } from "@highschool/components";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
 
-interface TermMasteryProps {
-  unLearnCount?: number;
-  studyingCount?: number;
-  masteredCount?: number;
-  excludeThisRound?: boolean;
-}
+import { useCramContext } from "@/stores/use-study-set-cram-store";
 
-export const TermMastery = ({
-  unLearnCount,
-  studyingCount,
-  masteredCount,
-}: TermMasteryProps) => {
+export const useTermMastery = () => {
+  const terms = useCramContext((s) => s.studiableTerms);
+  const unstudied = terms.filter((t) => t.correctness === 0);
+  const familiar = terms.filter(
+    (t) => t.correctness == 1 || t.correctness == -1,
+  );
+  const mastered = terms.filter((t) => t.correctness === 2);
+
+  return [unstudied, familiar, mastered];
+};
+
+export const TermMastery = () => {
+  const [unstudied, familiar, mastered] = useTermMastery();
+
   return (
     <div className={cn("grid w-full gap-4", "grid-cols-3")}>
-      <GridStat label="Chưa học" value={unLearnCount ?? 0} />
-      <GridStat label="Đang học" value={studyingCount ?? 0} />
-      <GridStat label="Đã biết" value={masteredCount ?? 0} />
+      <GridStat label="Chưa học" value={unstudied?.length || 0} />
+      <GridStat label="Đã biết" value={familiar?.length || 0} />
+      <GridStat label="Đã thuộc" value={mastered?.length || 0} />
     </div>
   );
 };

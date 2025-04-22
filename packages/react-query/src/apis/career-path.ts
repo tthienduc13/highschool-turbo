@@ -14,6 +14,7 @@ export const getRecommendMajor = async ({
       {
         params: {
           limit,
+          advanceFilter: false,
         },
       },
     );

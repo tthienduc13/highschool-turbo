@@ -40,7 +40,7 @@ export const MemberRoleSelect: React.FC<MemberRoleSelectProps> = ({
 }) => {
   return (
     <Select disabled={isDisabled} value={value} onValueChange={onChange}>
-      <SelectTrigger className="h-10 w-48 border-gray-200 bg-white text-base focus-visible:ring-0 dark:border-gray-800/50 dark:bg-gray-800">
+      <SelectTrigger className="h-10 w-full border-gray-200 bg-white text-base focus-visible:ring-0 dark:border-gray-800/50 dark:bg-gray-800">
         <SelectValue className="text-base" placeholder="Chọn vai trò" />
       </SelectTrigger>
       <SelectContent className="border-gray-200 bg-gray-100 dark:border-gray-800/50 dark:bg-gray-800">

@@ -47,15 +47,9 @@ export const FlashcardSettings = () => {
             <SelectContent className="!text-base">
               <SelectItem value="10">10</SelectItem>
               <SelectItem value="20">20</SelectItem>
-              <SelectItem disabled value="30">
-                30(Cho người đăng kí)
-              </SelectItem>
-              <SelectItem disabled value="50">
-                50 (Cho người đăng kí)
-              </SelectItem>
-              <SelectItem disabled value="100">
-                100 (Cho người đăng kí)
-              </SelectItem>
+              <SelectItem value="30">30</SelectItem>
+              <SelectItem value="30">40</SelectItem>
+              <SelectItem value="50">50</SelectItem>
             </SelectContent>
           </Select>
         </div>

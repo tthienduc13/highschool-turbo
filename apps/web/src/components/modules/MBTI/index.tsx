@@ -31,7 +31,7 @@ const TestContainer = () => {
   const submitAnswer = useSubmitMBTITestMutation();
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto">
       {showInstruction ? (
         <Instruction onClose={() => setShowInstruction(false)} />
       ) : submitAnswer.isPending ? (

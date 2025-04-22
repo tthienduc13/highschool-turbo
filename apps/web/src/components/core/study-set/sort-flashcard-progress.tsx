@@ -9,7 +9,7 @@ import {
   TablerIcon,
 } from "@tabler/icons-react";
 
-import { AnyKeyPressLayer } from "../study-set-learn/any-key-press-layer";
+import { AnyKeyPressLayer } from "../common/any-key-press-layer";
 
 import { CircularTermMastery } from "./circular-term-mastery";
 

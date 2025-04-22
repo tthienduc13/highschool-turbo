@@ -1,4 +1,5 @@
 import { Grade } from "./common";
+import { Distractor } from "./distractors";
 import { FlashcardContent } from "./flashcard-content";
 import {
   LimitedStudySetAnswerMode,
@@ -101,6 +102,10 @@ export interface StudiableTerm extends FlashcardContent {
   appearedInRound?: number | null;
   incorrectCount: number;
 }
+
+export type StudiableTermWithDistractors = StudiableTerm & {
+  distractors: Distractor[];
+};
 
 export interface DraftData {
   id: string;

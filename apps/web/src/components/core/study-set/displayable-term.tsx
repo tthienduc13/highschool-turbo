@@ -16,11 +16,16 @@ import {
   hasRichText,
   richTextToHtml,
 } from "@highschool/lib/editor";
-import { useEditFlashcardContentMutation } from "@highschool/react-query/queries";
+import {
+  useEditFlashcardContentMutation,
+  useStarTermMutation,
+  useUnStarTermMutation,
+} from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { cn } from "@highschool/ui/lib/utils";
-import { IconEditCircle, IconStar } from "@tabler/icons-react";
+import { IconEditCircle, IconStar, IconStarFilled } from "@tabler/icons-react";
+import { useSession } from "next-auth/react";
 
 import { CreatorOnly } from "../common/creator-only";
 import { editorConfig } from "../editor/editor-config";
@@ -33,6 +38,7 @@ import { resize } from "@/utils/resize-image";
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSet } from "@/hooks/use-set";
 import { editorEventChannel } from "@/events/editor";
+import { menuEventChannel } from "@/events/menu";
 
 export interface DisplayableTermProps {
   flashcardContent: FlashcardContent;
@@ -40,21 +46,19 @@ export interface DisplayableTermProps {
 
 export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
   const { flashcard } = useSet();
+  const authed = useSession().status == "authenticated";
 
   const hideFlashcard = useContainerContext((s) => s.hideFlashcard);
   const flashcardHideWith = useContainerContext((s) => s.flashcardHideWith);
 
-  // const starMutation = api.container.starTerm.useMutation();
-  // const unstarMutation = api.container.unstarTerm.useMutation();
-  // const removeImage = api.terms.removeImage.useMutation();
+  const apiStarTerm = useStarTermMutation();
+  const apiUnStarMutation = useUnStarTermMutation();
+  const starredTerms = useContainerContext((s) => s.starredTerms);
+  const starTerm = useContainerContext((s) => s.starTerm);
+  const unstarTerm = useContainerContext((s) => s.unstarTerm);
 
-  // const { container } = useSet();
-  // const starredTerms = useContainerContext((s) => s.starredTerms);
-  // const starTerm = useContainerContext((s) => s.starTerm);
-  // const unstarTerm = useContainerContext((s) => s.unstarTerm);
-
-  // const starred = starredTerms.includes(term.id);
-  // const Star = starred ? IconStarFilled : IconStar;
+  const starred = starredTerms.includes(flashcardContent.id);
+  const Star = starred ? IconStarFilled : IconStar;
 
   const [isEditing, setIsEditing] = useState(false);
   const [assetUrl, setAssetUrl] = useState(flashcardContent.image);
@@ -288,7 +292,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
             )}
           </div>
         </div>
-        <div className="h-full border-b-2 border-gray-100 px-1 py-2 dark:border-gray-700 md:border-b-0 md:p-0">
+        <div className="h-full border-b-2 border-gray-100 px-1 py-2 md:border-b-0 md:p-0 dark:border-gray-700">
           <div className="flex w-full justify-end">
             <div className="flex h-6 w-full items-center justify-between md:justify-end md:space-x-1">
               <CreatorOnly userId={flashcard.userId}>
@@ -310,8 +314,30 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
                 className="size-8 scale-75 rounded-full md:scale-100"
                 size="icon"
                 variant={isEditing ? "default" : "ghost"}
+                onClick={() => {
+                  if (!authed) {
+                    menuEventChannel.emit("openSignup", {
+                      message:
+                        "Tạo tài khoản miễn phí để tuỳ chỉnh và đánh dấu thuật ngữ",
+                    });
+
+                    return;
+                  }
+
+                  if (!starred) {
+                    starTerm(flashcardContent.id);
+                    apiStarTerm.mutate({
+                      flashcardContentId: flashcardContent.id,
+                    });
+                  } else {
+                    unstarTerm(flashcardContent.id);
+                    apiUnStarMutation.mutate({
+                      flashcardContentId: flashcardContent.id,
+                    });
+                  }
+                }}
               >
-                <IconStar size={18} />
+                <Star />
               </Button>
             </div>
           </div>

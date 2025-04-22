@@ -19,6 +19,7 @@ export interface FlashcardContent {
   flashcardContentTermRichText: string;
   flashcardContentDefinitionRichText: string;
   rank: number;
+  currentState?: number;
   createdAt: Date;
   updatedAt: Date;
   createdBy: string;

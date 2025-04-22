@@ -70,6 +70,7 @@ export const SortFlashcardWrapper = () => {
       flashcardId: dueCard.contentId,
       flashcardContentTerm: dueCard.term,
       flashcardContentDefinition: dueCard.definition,
+      currentState: 0,
       image: null,
       flashcardContentTermRichText: "",
       flashcardContentDefinitionRichText: "",

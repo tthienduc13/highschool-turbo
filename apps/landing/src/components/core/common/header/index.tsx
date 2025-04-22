@@ -35,12 +35,12 @@ export const Header = () => {
       href: "/tin-tuc",
     },
     {
-      name: "Hướng nghiệp",
-      href: "/huong-nghiep",
+      name: "Đại học",
+      href: "/dai-hoc",
     },
     {
-      name: "Về chúng tôi",
-      href: "/ve-chung-toi",
+      name: "Hướng nghiệp",
+      href: "/huong-nghiep",
     },
   ];
 
@@ -102,7 +102,7 @@ export const Header = () => {
         </Button>
         <div className="hidden flex-row justify-center gap-2 md:flex">
           <Link
-            className="hover:border-primary group cursor-pointer rounded-xl border-4 border-transparent border-opacity-0 bg-transparent p-1 transition-all duration-500 hover:border-opacity-100"
+            className="hover:border-primary hover: group cursor-pointer rounded-xl border-4  border-transparent bg-transparent p-1 transition-all duration-500"
             href={env.NEXT_PUBLIC_APP_URL}
             rel="noopener noreferrer"
             target="_blank"

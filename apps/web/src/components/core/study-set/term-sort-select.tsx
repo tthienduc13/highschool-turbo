@@ -8,12 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+import { useSession } from "next-auth/react";
 
 const allOptions = [
-  {
-    label: "Theo tiến độ",
-    value: "stats",
-  },
   {
     label: "Thứ tự gốc",
     value: "original",
@@ -22,18 +19,21 @@ const allOptions = [
     label: "Bảng chữ cái",
     value: "alphabetical",
   },
+  {
+    label: "Theo tiến độ",
+    value: "stats",
+  },
 ];
 
 interface TermsSortSelectProps {
-  studiable: boolean;
   onChange: (value: string) => void;
 }
 
 export const TermsSortSelect: React.FC<TermsSortSelectProps> = ({
-  studiable,
   onChange,
 }) => {
-  const options = studiable ? allOptions : allOptions.slice(1);
+  const { status } = useSession();
+  const options = status === "authenticated" ? allOptions : allOptions.slice(1);
   const [sortMethod, setSortMethod] = useState<string>(options[0].value);
 
   return (

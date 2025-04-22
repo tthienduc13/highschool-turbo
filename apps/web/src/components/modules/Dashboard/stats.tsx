@@ -21,7 +21,7 @@ export const Stats = () => {
         <IconMenu3 size={24} />
         <h2 className="text-3xl font-semibold">Tổng quan</h2>
       </div>
-      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
+      <div className=" grid grid-cols-1 gap-4 md:grid-cols-4">
         <div className="flex items-center rounded-lg bg-white p-6 shadow">
           <div className="mr-4 rounded-full bg-orange-100 p-3">
             <IconFlame className="size-6 text-orange-500" />

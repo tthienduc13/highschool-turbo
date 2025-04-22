@@ -30,6 +30,47 @@ export const ActivityHeatMap = () => {
 
   const { heatmap } = useDashboard();
 
+  const generateEmptyHeatmapData = (
+    startYear: number,
+    endYear: number,
+  ): HeatMapValue[] => {
+    const startDate = new Date(`${startYear}-01-01`);
+    const endDate = new Date(`${endYear}-12-31`);
+    const days = [];
+
+    for (
+      let date = new Date(startDate);
+      date <= endDate;
+      date.setDate(date.getDate() + 1)
+    ) {
+      const formattedDate = date.toISOString().split("T")[0];
+
+      days.push({
+        date: formattedDate,
+        count: 0,
+        content: "Không có hoạt động ngày này",
+      });
+    }
+
+    return days;
+  };
+
+  const startDate = `${heatmap.startYear}/01/01`;
+  const endDate = `${heatmap.endYear}/01/01`;
+
+  const heatmapData = heatmap?.data.length
+    ? heatmap.data
+    : [
+        {
+          date: "2022-01-01",
+          count: 1,
+        },
+      ];
+
+  if (!heatmapData.length) {
+    return;
+  }
+
   return (
     <div ref={containerRef} className="flex w-full flex-col gap-6 ">
       <div className="flex flex-row items-center justify-between">
@@ -57,15 +98,10 @@ export const ActivityHeatMap = () => {
       </div>
 
       <div className="flex w-full justify-between gap-5">
-        <div className="w-full max-w-4xl  overflow-x-auto rounded-lg border-gray-100 bg-white p-6 shadow-lg">
+        <div className="w-full max-w-4xl overflow-x-auto rounded-lg border-gray-100 bg-white p-6 shadow-lg">
           <HeatMap
             className="w-full"
-            endDate={
-              new Date(
-                `${heatmap.endYear}/01/01` ||
-                  new Date().getFullYear().toString(),
-              )
-            }
+            endDate={new Date(endDate)}
             monthLabels={[
               "Tháng 1",
               "Tháng 2",
@@ -94,7 +130,11 @@ export const ActivityHeatMap = () => {
               return (
                 <Hint
                   label={
-                    data.content?.toString() ?? "Không có hoạt động ngày này"
+                    data.content?.toString()
+                      ? data.content.toString()
+                      : data.count > 0
+                        ? `${data.count} hoạt động`
+                        : "Không có hoạt động"
                   }
                 >
                   <rect {...props} />
@@ -102,13 +142,8 @@ export const ActivityHeatMap = () => {
               );
             }}
             rectSize={14}
-            startDate={
-              new Date(
-                `${heatmap.startYear}/01/01` ||
-                  new Date().getFullYear().toString(),
-              )
-            }
-            value={heatmap.data as unknown as HeatMapValue[]}
+            startDate={new Date(startDate)}
+            value={heatmapData}
             weekLabels={["", "T2", "", "T4", "", "T6", ""]}
           />
         </div>
@@ -121,6 +156,7 @@ export const ActivityHeatMap = () => {
                 key={year}
                 className="w-full"
                 variant={active ? "secondary" : "ghost"}
+                onClick={() => setSelectedYear(year)}
               >
                 {year}
               </Button>

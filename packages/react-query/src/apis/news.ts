@@ -12,16 +12,13 @@ import {
   tagEndpoints,
 } from "@highschool/endpoints";
 
-import axiosServices, {
-  axiosClientUpload,
-  axiosClientWithoutAuth,
-} from "../lib/axios.ts";
+import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
 export const getHotNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(newsEndpoints.getHotNews);
+    const { data } = await axiosServices.get(newsEndpoints.getHotNews);
 
     return data;
   } catch (error) {
@@ -31,9 +28,7 @@ export const getHotNews = async (): Promise<News[]> => {
 };
 export const getPopularNews = async (): Promise<News[]> => {
   try {
-    const { data } = await axiosClientWithoutAuth.get(
-      newsEndpoints.getPopularNews,
-    );
+    const { data } = await axiosServices.get(newsEndpoints.getPopularNews);
 
     return data;
   } catch (error) {
