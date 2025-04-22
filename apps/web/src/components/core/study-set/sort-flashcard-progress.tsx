@@ -77,6 +77,7 @@ export const SortFlashcardProgress: React.FC<SortFlashcardProgressProps> = ({
                   <CircularTermMastery
                     known={isComplete ? totalCardCount : known}
                     progressPercentage={progressPercentage}
+                    state="stillLearning"
                     stillLearning={isComplete ? 0 : stillLearning}
                   />
                 </CardContent>

@@ -1,7 +1,14 @@
-import { ResponseModel, Zone } from "@highschool/interfaces";
+import {
+  Pagination,
+  ResponseModel,
+  Zone,
+  ZonePreview,
+} from "@highschool/interfaces";
 import { zoneEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
+
+import fetchPaginatedData from "./common.ts";
 
 interface CreateZonePayload {
   name: string;
@@ -42,4 +49,23 @@ export const getZoneById = async (zoneId: string): Promise<Zone> => {
     console.log("Error while getting zone detail", error);
     throw error;
   }
+};
+
+export const getZones = async ({
+  search,
+  pageSize,
+  pageNumber,
+  isAscending,
+}: {
+  search: string;
+  pageSize: number;
+  pageNumber: number;
+  isAscending: boolean;
+}): Promise<Pagination<ZonePreview[]>> => {
+  return fetchPaginatedData(zoneEndpoints.getZones, {
+    search,
+    pageSize,
+    pageNumber,
+    isAscending,
+  });
 };

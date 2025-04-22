@@ -13,18 +13,18 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
-import { University } from "@highschool/interfaces";
+import { ZonePreview } from "@highschool/interfaces";
 import { useRouter } from "next/navigation";
 
 import { useTable } from "@/stores/table-context";
 
-interface UniversityTableRowActionsProps {
-  row: Row<University>;
+interface ZoneTableRowActionsProps {
+  row: Row<ZonePreview>;
 }
 
-export function UniversityTableRowActions({
+export function ZoneTableRowActions({
   row,
-}: Readonly<UniversityTableRowActionsProps>) {
+}: Readonly<ZoneTableRowActionsProps>) {
   const { setOpen, setCurrentRow } = useTable();
   const router = useRouter();
 
@@ -43,23 +43,10 @@ export function UniversityTableRowActions({
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(row.original);
-            router.push(
-              `/master-data/university/${row.original.uniCode}&${row.original.id}`,
-            );
+            router.push("/zones/" + row.original.id);
           }}
         >
           View
-          <DropdownMenuShortcut>
-            <IconEdit size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            setCurrentRow(row.original);
-            setOpen("edit");
-          }}
-        >
-          Edit
           <DropdownMenuShortcut>
             <IconEdit size={16} />
           </DropdownMenuShortcut>

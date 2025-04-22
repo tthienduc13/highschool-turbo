@@ -1,3 +1,4 @@
+import { UserDetailsModal } from "./user-detail";
 import { UsersActionDialog } from "./users-action-dialog";
 import { UsersDeleteDialog } from "./users-delete-dialog";
 
@@ -16,10 +17,21 @@ export function UsersDialogs() {
 
       {currentRow && (
         <>
+          <UserDetailsModal
+            currentUser={currentRow}
+            isOpen={open === "view"}
+            onOpenChange={() => {
+              setOpen("view");
+              setTimeout(() => {
+                setCurrentRow(null);
+              }, 500);
+            }}
+          />
+
           <UsersActionDialog
             key={`user-edit-${currentRow.id}`}
             currentRow={currentRow}
-            open={open === "edit" || open === "view"}
+            open={open === "edit"}
             onOpenChange={() => {
               setOpen(open);
               setTimeout(() => {

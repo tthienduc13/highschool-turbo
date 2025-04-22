@@ -169,7 +169,7 @@ export default function ReportDetailModule({ id }: { id: string }) {
                                                 src={report?.user.profilePicture ?? ""}
                                             />
                                             <AvatarFallback>
-                                                {report?.user.fullname[0]}
+                                                {report?.user?.fullname?.[0] ?? ""}
                                             </AvatarFallback>
                                         </Avatar>
                                         <span className="text-sm">{report?.fullName}</span>

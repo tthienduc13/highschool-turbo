@@ -28,11 +28,11 @@ export interface Major {
   majorCategory?: MajorCategory;
   majorCategoryCode?: string;
   subjects?:
+    | string[]
     | {
-        id: string;
-        name: string;
-      }[]
-    | string[];
+        masterSubjectId: string;
+        masterSubjectName: string;
+      }[];
 }
 
 export interface MajorCategory {

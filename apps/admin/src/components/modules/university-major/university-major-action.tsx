@@ -1,6 +1,11 @@
-import { AdmissionMethod, degreeLevels } from "@highschool/interfaces";
+import {
+  AdmissionMethod,
+  degreeLevels,
+  UniversityMajor,
+} from "@highschool/interfaces";
 import {
   useCreateUniversityMajorListMutation,
+  useDeleteUniversityMajorMutation,
   useGetMajorNameQuery,
   useUpdateUniversityMajorMutation,
 } from "@highschool/react-query/queries";
@@ -14,46 +19,89 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
-import { IconLoader2, IconX } from "@tabler/icons-react";
-import { motion } from "framer-motion";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@highschool/ui/components/ui/sheet";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { Combobox } from "../documents/management/combobox-document";
+
+import { FancyBox, FancyBoxType } from "@/components/ui/fancy-box";
+
 interface UniversityMajorActionProps {
-  mode: "create" | "edit";
+  mode: "create" | "edit" | "delete" | null;
   uniCode: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  currentUniversityMajor?: UniversityMajor;
 }
 
 export const UniversityMajorAction = ({
   mode,
   uniCode,
+  open,
+  onOpenChange,
+  currentUniversityMajor,
 }: UniversityMajorActionProps) => {
+  console.log("currentUniversityMajor", currentUniversityMajor);
+  const title =
+    mode === "create" ? "Create University Major" : "Edit University Major";
   const { mutate: createUniversityMajorList, isPending: isCreating } =
     useCreateUniversityMajorListMutation();
   const { mutate: updateUniversity, isPending: isUpdating } =
     useUpdateUniversityMajorMutation();
+  const { mutate: deleteUniversityMajor, isPending: isDeleting } =
+    useDeleteUniversityMajorMutation();
 
   const { data: majorNames, isPending: isMajorLoading } = useGetMajorNameQuery({
     pageNumber: -1,
     pageSize: 10,
   });
 
-  const [majorCode, setMajorCode] = useState<string>("");
-  const [quota, setQuota] = useState<number>(0);
-  const [admissionMethod, setAdmissionMethod] = useState<string>("");
-  const [degreeLevel, setDegreeLevel] = useState<string>("");
+  const [majorCode, setMajorCode] = useState<string>(
+    currentUniversityMajor?.majorCode ?? "",
+  );
+  const [quota, setQuota] = useState<number>(
+    currentUniversityMajor?.quota ?? 0,
+  );
+  const [admissionMethods, setAdmissionMethods] = useState<FancyBoxType[]>(
+    currentUniversityMajor?.admissionMethods
+      ? (currentUniversityMajor?.admissionMethods as AdmissionMethod[]).map(
+        (item) => ({
+          label: item,
+          value: item,
+          color: "black",
+        }),
+      )
+      : [],
+  );
+  const [degreeLevel, setDegreeLevel] = useState<string>(
+    currentUniversityMajor?.degreeLevel ?? "",
+  );
+  const [tuitionFee, setTuitionFee] = useState<number>(
+    currentUniversityMajor?.tuitionPerYear ?? 0,
+  );
+  const [yearReference, setYearReference] = useState<number>(
+    currentUniversityMajor?.yearOfReference ?? new Date().getFullYear(),
+  );
 
   const isDisabled = isCreating || isUpdating;
 
   const resetField = () => {
     setMajorCode("");
     setQuota(0);
-    setAdmissionMethod("");
+    setAdmissionMethods([]);
     setDegreeLevel("");
   };
 
   const validationFields = () => {
-    if (!majorCode || !quota || !admissionMethod || !degreeLevel) {
+    if (!majorCode || !quota || !admissionMethods.length || !degreeLevel) {
       toast.error("Please fill all required fields");
 
       return false;
@@ -80,117 +128,120 @@ export const UniversityMajorAction = ({
             {
               uniCode: uniCode,
               majorCode: majorCode,
-              admissionMethods: admissionMethod,
+              admissionMethods: admissionMethods.map(
+                (item) => item.value,
+              ) as AdmissionMethod[],
               quota: quota,
               degreeLevel: degreeLevel,
+              tuitionPerYear: tuitionFee,
+              yearOfReference: yearReference,
             },
           ],
         });
       } else if (mode === "edit") {
-        // updateUniversity({
-        //     universityMajor: {
-        //         id: universityMajor?.id,
-        //         uniCode: uniCode,
-        //         majorCode: majorCode,
-        //         admissionMethods: admissionMethod,
-        //         quota: quota,
-        //         degreeLevel: degreeLevel,
-        //     },
-        // });
+        updateUniversity({
+          universityMajor: {
+            id: currentUniversityMajor?.id,
+            uniCode: uniCode,
+            majorCode: majorCode,
+            admissionMethods: admissionMethods.map(
+              (item) => item.value,
+            ) as AdmissionMethod[],
+            quota: quota,
+            degreeLevel: degreeLevel,
+            tuitionPerYear: tuitionFee,
+            yearOfReference: yearReference,
+          },
+        });
       }
 
       resetField();
-      //closeCreate();
     } catch {
       return;
     }
   };
 
   return (
-    <motion.div
-      animate={{ width: "35%", opacity: 1 }}
-      className="flex h-full flex-col gap-4 overflow-auto rounded-lg"
-      exit={{ width: 0, opacity: 0 }}
-      initial={{ width: 0, opacity: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
-      <div className="bg-background  flex flex-col gap-4 p-4">
-        <div className="flex w-full flex-row items-center justify-between">
-          <h2 className="text-lg font-semibold">Create University</h2>
-          <div className="flex flex-row gap-2">
-            <Button disabled={isDisabled} onClick={handleSaveUniversityMajor}>
-              {isCreating ? (
-                <IconLoader2 className="animate-spin" />
-              ) : mode === "create" ? (
-                "Create"
-              ) : (
-                "Update"
-              )}
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              //onClick={mode === "create" ? closeCreate : closeEdit}
-            >
-              <IconX />
-            </Button>
-          </div>
-        </div>
-        <div className="w-full space-y-5 px-1 ">
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent className="overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle>{title}</SheetTitle>
+          <SheetDescription>
+            Make changes to your profile here. Click save when you&apos;re done.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="w-full space-y-5 px-1 py-4">
           <div>
             <Label className="text-sm font-semibold">
               Major <span className="text-primary">(required)</span>
             </Label>
-            {/* <Combobox
-                            className="w-full"
-                            disabled={isMajorLoading}
-                            items={
-                                majorNames?.data.map((item) => ({
-                                    label: item.name,
-                                    value: item.majorCode,
-                                })) ?? []
-                            }
-                            placeHolder="Select Major"
-                            setValue={setMajorCode}
-                            value={majorCode}
-                        /> */}
+            <Combobox
+              className="w-full"
+              disabled={isMajorLoading}
+              items={
+                majorNames?.data.map((item) => ({
+                  label: item.name,
+                  value: item.majorCode,
+                })) ?? []
+              }
+              placeHolder="Select Major"
+              setValue={setMajorCode}
+              value={majorCode}
+            />
           </div>
           <div>
             <Label className="text-sm font-semibold">
-              Quota <span className="text-primary">(required)</span>
+              Year Reference <span className="text-primary">(required)</span>
             </Label>
             <Input
-              placeholder="Quota"
-              type="text"
-              value={quota}
-              onChange={(e) => setQuota(Number(e.target.value))}
+              placeholder="yearReference"
+              type="number"
+              value={yearReference}
+              onChange={(e) => setYearReference(Number(e.target.value))}
             />
+          </div>
+
+          <div className="flex gap-4">
+            <div>
+              <Label className="text-sm font-semibold">
+                Quota <span className="text-primary">(required)</span>
+              </Label>
+              <Input
+                placeholder="Quota"
+                type="number"
+                value={quota}
+                onChange={(e) => setQuota(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <Label className="text-sm font-semibold">
+                Tuitio Fee <span className="text-primary">(required)</span>
+              </Label>
+              <Input
+                placeholder="Quota"
+                type="number"
+                value={tuitionFee}
+                onChange={(e) => setTuitionFee(Number(e.target.value))}
+              />
+            </div>
           </div>
           <div>
             <Label className="text-sm font-semibold">
               Admission Method <span className="text-primary">(required)</span>
             </Label>
-            <Select
-              value={admissionMethod}
-              onValueChange={(value) => setAdmissionMethod(value)}
-            >
-              <SelectTrigger className="bg-background mr-4 rounded-lg border-2 text-left">
-                <SelectValue
-                  className="px-4"
-                  placeholder="Select your method"
-                />
-              </SelectTrigger>
-              <SelectContent
-                className="placeholder:text-muted-foreground h-[25vh] overflow-y-auto"
-                onCloseAutoFocus={(e) => e.preventDefault()}
-              >
-                {Object.entries(AdmissionMethod)?.map(([key, value]) => (
-                  <SelectItem key={key} value={key}>
-                    {value}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FancyBox
+              items={
+                Object.entries(AdmissionMethod)?.map(([key, value]) => {
+                  return {
+                    label: key,
+                    value: value,
+                    color: "black",
+                  };
+                }) ?? []
+              }
+              selectedValues={admissionMethods}
+              setSelectedValues={setAdmissionMethods}
+            />
           </div>
           <div>
             <Label className="text-sm font-semibold">
@@ -216,7 +267,16 @@ export const UniversityMajorAction = ({
             </Select>
           </div>
         </div>
-      </div>
-    </motion.div>
+        <SheetFooter>
+          <Button
+            disabled={isDisabled}
+            type="submit"
+            onClick={handleSaveUniversityMajor}
+          >
+            Save changes
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 };

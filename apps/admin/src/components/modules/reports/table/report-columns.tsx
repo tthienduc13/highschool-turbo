@@ -41,7 +41,9 @@ export const columns: ColumnDef<Report>[] = [
             alt={row.original.user.fullname}
             src={row.original.user.profilePicture ?? ""}
           />
-          <AvatarFallback>{row.original.user.fullname[0]}</AvatarFallback>
+          <AvatarFallback>
+            {row.original.user.fullname?.[0] ?? ""}
+          </AvatarFallback>
         </Avatar>
         <LongText className="max-w-36">{row.original.user.fullname}</LongText>
       </div>
