@@ -21,6 +21,7 @@ export const SortFlashcardWrapper = ({ h }: SortFlashcardWrapperProps) => {
 
   const cardCounter = useStudySetFSRSContext((s) => s.cardCounter);
   const dueCards = useStudySetFSRSContext((s) => s.dueCards);
+  const isReviewToday = useStudySetFSRSContext((s) => s.isReviewToday);
 
   const completed = useStudySetFSRSContext((s) => s.completed);
 
@@ -116,6 +117,10 @@ export const SortFlashcardWrapper = ({ h }: SortFlashcardWrapperProps) => {
     }
   }, [completed]);
 
+  if (isReviewToday) {
+    return <SortFlashcardProgress h={h} state="known" />;
+  }
+
   return (
     <div
       className="relative w-full"
@@ -124,13 +129,7 @@ export const SortFlashcardWrapper = ({ h }: SortFlashcardWrapperProps) => {
       }}
     >
       {completed ? (
-        <SortFlashcardProgress
-          h={h}
-          onNextRound={() => {
-            // setVisibleFlashcards([]);
-            // setHasUserEngaged(false);
-          }}
-        />
+        <SortFlashcardProgress h={h} state="stillLearning" />
       ) : (
         <>
           {" "}

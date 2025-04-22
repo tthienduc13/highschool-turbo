@@ -11,28 +11,19 @@ import { useReviewContext } from "./hydrate-fsrs-data";
 
 import { useStudySetFSRSContext } from "@/stores/use-study-set-fsrs-store";
 import { CircularTermMastery } from "@/components/core/study-set/circular-term-mastery";
-import { AnyKeyPressLayer } from "@/components/core/common/any-key-press-layer";
 
 interface SortFlashcardProgressProps {
   h?: string;
-  onNextRound: () => void;
+  state: "stillLearning" | "known";
 }
 
 export const SortFlashcardProgress = ({
   h,
-  onNextRound,
+  state,
 }: SortFlashcardProgressProps) => {
-  const completed = useStudySetFSRSContext((s) => s.completed);
-  const dueCardCount = useStudySetFSRSContext((s) => s.dueCardCount);
   const knownCardsCount = useStudySetFSRSContext((s) => s.knownCount);
   const stilLearningCardsCount = useStudySetFSRSContext((s) => s.unknownCount);
   const { setIsReview, setIsDirty } = useReviewContext();
-
-  // Function to handle review mode toggle and call onNextRound
-  const handleReviewToggle = (reviewMode: boolean) => {
-    setIsReview(reviewMode);
-    onNextRound();
-  };
 
   const handleKeepLearning = (review: boolean) => {
     setIsReview(review);
@@ -50,7 +41,6 @@ export const SortFlashcardProgress = ({
       style={{ height: h }}
     >
       <CardContent className=" flex h-full flex-col gap-0 bg-transparent p-0 ">
-        {!completed && <AnyKeyPressLayer onSubmit={onNextRound} />}
         <div className="flex  flex-1 flex-col justify-between">
           <div className="grid grid-cols-1 gap-8 xl:grid-cols-2">
             <div className="flex h-full flex-col gap-6">
@@ -59,6 +49,7 @@ export const SortFlashcardProgress = ({
                 <CardContent className="flex size-full items-center justify-center p-4">
                   <CircularTermMastery
                     known={knownCardsCount}
+                    state={state}
                     stillLearning={stilLearningCardsCount}
                   />
                 </CardContent>
@@ -122,14 +113,14 @@ export const SortFlashcardProgress = ({
                   description="Ôn tập lại các thẻ bạn đã học để củng cố kiến thức"
                   icon={IconRefresh}
                   name="Ôn tập thẻ đã học"
-                  onClick={handleLeanNew}
+                  onClick={() => handleKeepLearning(false)}
                 />
 
                 <Actionable
                   description="Tiếp tục ôn tập và xem lại các thẻ bạn chưa nắm vững"
                   icon={IconCards}
                   name="Học thẻ mới"
-                  onClick={() => handleKeepLearning(false)}
+                  onClick={handleLeanNew}
                 />
               </div>
             </div>

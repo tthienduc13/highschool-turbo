@@ -260,9 +260,7 @@ export const authConfig: NextAuthConfig = {
 
       return session;
     },
-    async redirect({ url, baseUrl }) {
-      console.log("REDIRECT DEBUG:", { url, baseUrl });
-
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
   },

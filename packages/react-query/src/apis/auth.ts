@@ -28,7 +28,6 @@ export const login = async ({
 
     return data;
   } catch (error) {
-    console.log("Error while login by  magic link", error);
     throw error;
   }
 };

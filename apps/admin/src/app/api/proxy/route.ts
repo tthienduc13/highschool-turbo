@@ -110,8 +110,6 @@ export async function POST(request: NextRequest) {
       ...(useAuth && accessToken && { Authorization: `Bearer ${accessToken}` }),
     };
 
-    console.log("Making request to:", targetUrl);
-
     // Create request options based on content type
     let requestOptions: RequestInit = {
       method: method.toUpperCase(),

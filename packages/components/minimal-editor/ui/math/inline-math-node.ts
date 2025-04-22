@@ -115,7 +115,6 @@ export const InlineMathNode = Node.create<MathExtensionOptions>({
         new InputRule({
           find: new RegExp(inlineRegex, ""),
           handler: (props) => {
-            console.log({ props });
             if (props.match[1].length === 0) {
               return;
             }

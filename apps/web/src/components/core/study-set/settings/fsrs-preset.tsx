@@ -10,6 +10,8 @@ import { LimitedStudySetAnswerMode } from "@highschool/interfaces";
 import { useUpdateContainerMutation } from "@highschool/react-query/queries";
 import { IconProgressHelp } from "@tabler/icons-react";
 
+import { Hint } from "../../common/hint";
+
 import { useContainerContext } from "@/stores/use-container-store";
 import { useSet } from "@/hooks/use-set";
 
@@ -38,7 +40,12 @@ export const FSRSPreset = () => {
       <div className="flex w-full flex-col gap-0">
         <div className="flex flex-row gap-2">
           <p className="font-bold">FSRS Preset</p>
-          <IconProgressHelp size={20} />
+          <Hint label="Thông tin ">
+            <IconProgressHelp
+              className="cursor-pointer text-blue-700 transition-transform duration-200 hover:scale-110 dark:text-blue-300"
+              size={20}
+            />
+          </Hint>
         </div>
         <p className="text-sm text-gray-600 dark:text-gray-400">
           Cá nhân hoá thẻ ghi nhớ của bạn với FSRS Preset

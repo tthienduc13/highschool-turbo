@@ -5,6 +5,7 @@ import { subscribeWithSelector } from "zustand/middleware";
 
 export interface StudySetFSRSProps {
   title: string;
+  isReviewToday: boolean;
   dueCardCount: number;
   totalCardCount: number;
   dueCards: DueCard[];
@@ -17,7 +18,12 @@ export interface StudySetFSRSProps {
 }
 
 interface StudySetFSRSState extends StudySetFSRSProps {
-  initialize: (dueCards: DueCard[], title: string, completed: boolean) => void;
+  initialize: (
+    dueCards: DueCard[],
+    title: string,
+    completed: boolean,
+    isReviewToday: boolean,
+  ) => void;
   setTitle: (title: string) => void;
   markStillLearning: (termId: string, timeSpent: number) => void;
   markKnown: (termId: string, timeSpent: number) => void;
@@ -30,6 +36,7 @@ export type StudySetFSRSStore = ReturnType<typeof createStudySetFSRSStore>;
 
 export const DEFAULT_PROPS: StudySetFSRSProps = {
   title: "",
+  isReviewToday: false,
   dueCardCount: 0,
   cardStartTimes: {},
   cardCounter: 0,
@@ -49,7 +56,12 @@ export const createStudySetFSRSStore = (
       return {
         ...DEFAULT_PROPS,
         ...initProps,
-        initialize: (dueCards: DueCard[], title, completed: boolean) => {
+        initialize: (
+          dueCards: DueCard[],
+          title,
+          completed: boolean,
+          isReviewToday: boolean,
+        ) => {
           const cardStartTimes: Record<string, number> = {};
 
           dueCards.forEach((card) => {
@@ -62,6 +74,7 @@ export const createStudySetFSRSStore = (
             dueCards: dueCards,
             cardStartTimes,
             completed,
+            isReviewToday,
           });
         },
         setTitle: (title) => {

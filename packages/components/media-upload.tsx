@@ -1,14 +1,12 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 
 import Compressor from "compressorjs";
 import { motion } from "framer-motion";
-
 import React, { forwardRef, useEffect, useRef, useState } from "react";
-
 import Image from "next/image";
-
 import { cn } from "@highschool/ui/lib/utils";
-
 import {
   IconCloudUpload,
   IconFile,
@@ -137,6 +135,7 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
 
     const handleFiles = (files: FileList) => {
       const file = files[0];
+
       if (!file) return;
 
       if (file.type.startsWith("image/")) {
@@ -177,58 +176,58 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
       }
       setUploading(false);
     };
-    console.log(onHover);
+
     return (
       <div
-        style={{ aspectRatio: aspectRatio }}
-        onMouseEnter={() => setOnHover(true)}
-        onMouseLeave={() => setOnHover(false)}
         className={cn(
           "relative w-full items-center justify-center overflow-hidden rounded-lg border-2 border-gray-200 bg-white shadow-md transition-all duration-200 hover:bg-black dark:border-gray-800 dark:bg-gray-700",
           onHover && "blur-2xl filter backdrop-blur-2xl",
         )}
+        style={{ aspectRatio: aspectRatio }}
         onClick={handleFileSelection}
-        onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
         onDrop={handleDrop}
+        onMouseEnter={() => setOnHover(true)}
+        onMouseLeave={() => setOnHover(false)}
         {...rest}
       >
         {!loading && (
           <>
             {previewImage ? (
               <Image
+                fill
+                alt="Preview of uploaded image"
+                className={cn(onHover && "grayscale")}
+                sizes={sizes}
+                src={previewImage ? previewImage : ""}
                 style={{
                   cursor: "pointer",
                   filter: onHover ? "blur(4px) " : "none",
                 }}
-                sizes={sizes}
-                className={cn(onHover && "grayscale")}
-                fill
-                src={previewImage ? previewImage : ""}
-                alt="Preview of uploaded image"
               />
             ) : (
               <div className="relative flex h-full items-center justify-center">
-                <div className="relative flex h-full w-full flex-col items-center justify-center gap-5 text-center">
+                <div className="relative flex size-full flex-col items-center justify-center gap-5 text-center">
                   <div className="relative z-10 flex flex-row gap-[-12px]">
                     <motion.div {...file} className="opacity-50">
-                      <IconFile size={40} strokeWidth="2px" opacity="0.8" />
+                      <IconFile opacity="0.8" size={40} strokeWidth="2px" />
                     </motion.div>
                     <motion.div {...upload} className="p-3 px-8 opacity-80">
                       <IconCloudUpload
+                        opacity="0.8"
                         size={60}
                         strokeWidth="2px"
-                        opacity="0.8"
                       />
                     </motion.div>
                     <motion.div {...folder} className="opacity-50">
-                      <IconFolder size={40} strokeWidth="2px" opacity="0.9" />
+                      <IconFolder opacity="0.9" size={40} strokeWidth="2px" />
                     </motion.div>
                     <div
+                      className="absolute left-0 top-10 -z-10 size-full rounded-full opacity-50"
                       style={{
                         backgroundImage: "linear(to-b, #6b7280, transparent)",
                       }}
-                      className="absolute left-0 top-10 -z-10 h-full w-full rounded-full opacity-50"
                     />
                   </div>
                   <div className="z-10 flex cursor-pointer flex-col px-5">
@@ -264,10 +263,10 @@ const MediaUpload = forwardRef<HTMLInputElement, MediaUploadProps>(
           )}
         </div>
         <input
-          type="file"
           ref={inputRef}
           accept={accept}
           style={{ display: "none" }}
+          type="file"
           onChange={(e) => {
             if (e.target.files) {
               handleFiles(e.target.files);

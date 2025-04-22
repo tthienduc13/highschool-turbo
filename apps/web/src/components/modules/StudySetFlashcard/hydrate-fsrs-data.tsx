@@ -16,7 +16,6 @@ interface HydrateFSRSDataProps {
   children: React.ReactNode;
 }
 
-// Create a context for isReview state
 interface ReviewContextType {
   isReview: boolean;
   isDirty: boolean;
@@ -100,7 +99,12 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
     if (storeRef.current) {
       storeRef.current
         .getState()
-        .initialize(data.dueCards ?? [], data.flashcardName, false);
+        .initialize(
+          data.dueCards ?? [],
+          data.flashcardName,
+          false,
+          data.isReview,
+        );
     }
   }, [data]);
 

@@ -2,18 +2,24 @@
 
 import { useEffect, useState } from "react";
 
+import { useStudySetFSRSContext } from "@/stores/use-study-set-fsrs-store";
+
 interface CircularTermMasteryProps {
   known: number;
   stillLearning: number;
   progressPercentage?: number;
+  state: "stillLearning" | "known";
 }
 
 export function CircularTermMastery({
   known,
+  state,
   stillLearning,
   progressPercentage,
 }: CircularTermMasteryProps) {
   const [perc, setPerc] = useState(0);
+
+  const dueCardCount = useStudySetFSRSContext((s) => s.dueCardCount);
   const total = known + stillLearning;
   const calculatedPercentage = Math.round((known / total) * 100);
   const percentage =
@@ -29,18 +35,18 @@ export function CircularTermMastery({
     return () => clearTimeout(timer);
   }, [percentage]);
 
-  // Calculate the circle properties
   const size = 100;
   const strokeWidth = 4;
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
-  const strokeDashoffset = circumference - (perc / 100) * circumference;
+  const strokeDashoffset =
+    state === "stillLearning"
+      ? circumference - (perc / 100) * circumference
+      : circumference - (100 / 100) * circumference;
 
   return (
     <div className="flex flex-row items-center gap-6">
-      {/* Circular Progress */}
       <div className="relative size-[100px]">
-        {/* Track Circle (orange) */}
         <svg className="size-full -rotate-90">
           <circle
             className="text-orange-300"
@@ -66,7 +72,7 @@ export function CircularTermMastery({
         </svg>
         {/* Percentage Label */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold">{`${perc}%`}</span>
+          <span className="text-xl font-bold">{`${state === "stillLearning" ? perc : 100}%`}</span>
         </div>
       </div>
 
@@ -75,16 +81,20 @@ export function CircularTermMastery({
         <div className="flex flex-col gap-2">
           {/* Known Count */}
           <div className="flex h-6 items-center justify-center rounded-full border-[1.5px] border-blue-300 px-2 text-blue-300 shadow-sm">
-            <span className="text-sm font-bold">{known}</span>
+            <span className="text-sm font-bold">
+              {state === "stillLearning" ? known : dueCardCount}
+            </span>
           </div>
           {/* Still Learning Count */}
           <div className="flex h-6 items-center justify-center rounded-full border-[1.5px] border-orange-300 px-2 text-orange-300 shadow-sm">
-            <span className="text-sm font-bold">{stillLearning}</span>
+            <span className="text-sm font-bold">
+              {state === "stillLearning" ? stillLearning : dueCardCount}
+            </span>
           </div>
         </div>
         <div className="flex flex-col gap-2.5 font-bold text-gray-800 dark:text-gray-50">
-          <span>Đã biết</span>
-          <span>Đang học</span>
+          <span>{state === "stillLearning" ? "Đã biết" : "Thẻ tới hạn"}</span>
+          <span>{state === "stillLearning" ? "Đang học" : "Đã học xong"}</span>
         </div>
       </div>
     </div>

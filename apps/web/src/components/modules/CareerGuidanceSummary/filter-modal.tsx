@@ -28,8 +28,6 @@ export const FilterModal = ({
   updateFilterState,
   clearFilter,
 }: FilterModalProps) => {
-  console.log(filterState);
-
   return (
     <Modal withoutFooter isOpen={isOpen} title="Bộ lọc" onClose={onClose}>
       <div className="flex flex-col gap-4">
