@@ -27,25 +27,18 @@ git pull origin ${GIT_BRANCH}
 
 echo "Pulled code"
 
-# npm install
+# Run pnpm install and restart for each app
 
-echo "cd to ${PATH_TO_WEB}"
-cd ${PATH_TO_WEB}
+for APP_PATH in "$PATH_TO_WEB" "$PATH_TO_ADMIN" "$PATH_TO_LANDING"; do
+  echo "cd to ${APP_PATH}"
+  cd ${APP_PATH}
 
-echo "restart pm2"
-$PM2_COMMAND restart ecosystem.config.js --update-env
+  echo "Installing dependencies with pnpm"
+  pnpm install
 
-echo "cd to ${PATH_TO_ADMIN}"
-cd ${PATH_TO_ADMIN}
-
-echo "restart pm2"
-$PM2_COMMAND restart ecosystem.config.js --update-env
-
-echo "cd to ${PATH_TO_LANDING}"
-cd ${PATH_TO_LANDING}
-
-echo "restart pm2"
-$PM2_COMMAND restart ecosystem.config.js --update-env
+  echo "Restarting PM2"
+  $PM2_COMMAND restart ecosystem.config.js --update-env
+done
 
 $PM2_COMMAND save
 
