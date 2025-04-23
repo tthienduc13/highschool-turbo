@@ -86,7 +86,7 @@ const TermsByStats = () => {
     <>
       {!!dueToday.length && (
         <TermsCategory
-          color="blue"
+          color="yellow"
           heading="tới hạn ôn tập"
           icon={IconProgressCheck}
           subheading="Đây là những thẻ bạn cần học hôm nãy. Hãy học ngay nhé!"
@@ -104,10 +104,10 @@ const TermsByStats = () => {
       )}
       {!!learnedTerms.length && (
         <TermsCategory
-          color="gray"
-          heading="chưa học"
+          color="green"
+          heading="đã học"
           icon={IconProgress}
-          subheading="Bạn chưa học những thẻ này."
+          subheading="Bạn đã hoàn thành những thẻ này."
           terms={learnedTerms}
         />
       )}

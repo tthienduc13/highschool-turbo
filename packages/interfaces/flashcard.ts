@@ -150,6 +150,8 @@ export interface FlashcardContainer {
   matchStudyStarred: boolean;
   cardsPerDay: number;
   starredTerms: string[];
+  presetId?: string;
+
   studiableTerms: StudiableTerm[];
 }
 

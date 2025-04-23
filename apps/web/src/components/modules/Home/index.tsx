@@ -6,7 +6,6 @@ import {
   useTopFlashcardQuery,
 } from "@highschool/react-query/queries";
 
-import { Activities } from "./activities";
 import { FinishProfile } from "./finish-profile";
 import { RecentView } from "./recent-view";
 import { RecommendCourse } from "./recommend-course";
@@ -75,7 +74,6 @@ function HomeModule() {
           ) : (
             <ErrorSection message="Không thể tải flashcard hàng đầu" />
           )}
-          <Activities />
         </Container>
       </WithFooter>
     );
@@ -102,8 +100,6 @@ function HomeModule() {
         {!recommendedIsError && recommendedData?.documents && (
           <RecommendDocument data={recommendedData.documents} />
         )}
-
-        <Activities />
 
         {!topFlashcardIsError ? (
           <TopFlashcard

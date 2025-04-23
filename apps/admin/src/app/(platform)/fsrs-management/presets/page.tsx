@@ -1,7 +1,7 @@
 import PresetManagementModule from "@/components/modules/fsrs-management/management-preset";
 
 function PresetManagementPage() {
-    return <PresetManagementModule />;
+  return <PresetManagementModule />;
 }
 
 export default PresetManagementPage;

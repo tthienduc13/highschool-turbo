@@ -288,6 +288,30 @@ export const updateContainer = async ({
   }
 };
 
+export const updatePreset = async ({
+  presetId,
+  flashcardId,
+}: {
+  presetId: string;
+  flashcardId: string;
+}) => {
+  try {
+    const { data } = await axiosServices.patch(
+      `${flashcardEndpoints.updatePreset(flashcardId, presetId)}`,
+    );
+
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      const { data } = error.response;
+
+      return data;
+    }
+    console.error("Error while updating preset:", error);
+    throw error;
+  }
+};
+
 export const getFlashcardsFor = async ({
   pageSize,
   pageNumber,

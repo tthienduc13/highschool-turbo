@@ -23,6 +23,7 @@ import {
   starTerm,
   updateContainer,
   updateFSRSProgress,
+  updatePreset,
 } from "../apis/flashcard.ts";
 
 export const useFSRSByIdQuery = ({
@@ -190,6 +191,13 @@ export const useUpdateContainerMutation = () => {
   return useMutation({
     mutationKey: ["update-container"],
     mutationFn: updateContainer,
+  });
+};
+
+export const useUpdateFlashcardPresetMutation = () => {
+  return useMutation({
+    mutationKey: ["update-flashcard-preset"],
+    mutationFn: updatePreset,
   });
 };
 

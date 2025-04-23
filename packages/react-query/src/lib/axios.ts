@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { env } from "@highschool/env";
 import { cookies } from "next/headers.js";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
+import { signOut } from "next-auth/react";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 const TIMEOUT = 50000;
@@ -123,6 +124,7 @@ const createContextAwareAxiosInstance = (
 
       if (error.response?.status >= 500) {
         error.config.__isRetryAttempt = true;
+        signOut();
         console.error(
           "Server error, not retrying:",
           error.response?.data || error.message,
@@ -132,6 +134,7 @@ const createContextAwareAxiosInstance = (
       }
 
       if (error.response?.status === 401 && !isServerSide()) {
+        signOut();
         window.location.href = "/sign-in";
 
         return Promise.reject(error);

@@ -170,6 +170,7 @@ const ContextLayer = ({ data, children }: ContextLayerProps) => {
 
     return {
       hideFlashcard: false,
+      presetId: data.container.presetId,
       cardPerDay: data.container.cardsPerDay,
       flashcardHideWith: LimitedStudySetAnswerMode.Definition,
       shuffleFlashcards: data.container.shuffleFlashcards,

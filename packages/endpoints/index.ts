@@ -417,6 +417,12 @@ export const userPersonalizedEndpoints = {
 
 // Flashcard Endpoints
 export const flashcardEndpoints = {
+  updatePreset: (flashcardId: string, presetId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/container/flashcard/${flashcardId}/preset/${presetId}`,
+    ),
   getTop: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,

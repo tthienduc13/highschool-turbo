@@ -84,6 +84,7 @@ function PlatformLayout({
 
   const shouldHideSidebar = () => {
     if (pathName.endsWith("/flashcards")) return true;
+    if (pathName.endsWith("/about-fsrs")) return true;
 
     if (pathName.includes("/chapters/")) return true;
 
@@ -106,7 +107,7 @@ function PlatformLayout({
 
   return (
     <>
-      <div className="min-h-screen w-screen">
+      <div className="min-h-screen w-screen overflow-hidden">
         {!isHideHeader && (
           <div className="sticky top-0 z-50">
             <Header />

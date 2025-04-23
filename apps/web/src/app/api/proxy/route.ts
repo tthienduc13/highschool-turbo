@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@highschool/lib/constants";
 import { env } from "@highschool/env";
-import { auth } from "@highschool/react-query/auth";
+import { auth, signOut } from "@highschool/react-query/auth";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -146,6 +146,8 @@ export async function POST(request: NextRequest) {
 
     // Handle 500+ errors
     if (response.status >= 500) {
+      signOut();
+
       return NextResponse.json(
         {
           error: "Server error",
@@ -203,6 +205,7 @@ export async function POST(request: NextRequest) {
     return nextResponse;
   } catch (error) {
     console.error("API proxy error:", error);
+    signOut();
 
     // Return a clear error without retrying
     return NextResponse.json(
