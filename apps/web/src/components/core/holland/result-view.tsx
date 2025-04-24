@@ -1,10 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUpdateStudentHollandMutation } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
-import { IconDownload, IconLoader2 } from "@tabler/icons-react";
+import { IconLoader2 } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
 import { useHollandTestContext } from "@/stores/use-holland-test-store";
@@ -12,19 +11,10 @@ import { useHollandTestContext } from "@/stores/use-holland-test-store";
 export const ResultView = () => {
   const result = useHollandTestContext((s) => s.result);
   const hollandType = useHollandTestContext((s) => s.hollandType);
-  const [shouldPrint, setShouldPrint] = useState(false);
   const [activeTab, setActiveTab] = useState<string | null>(null);
-  const printRef = useRef(null);
   const queryClient = useQueryClient();
 
   const updateStudent = useUpdateStudentHollandMutation();
-
-  const handlePrint = useReactToPrint({
-    content: () => printRef.current,
-    onAfterPrint: () => {
-      setShouldPrint(false);
-    },
-  });
 
   const handleSave = async () => {
     await updateStudent.mutateAsync(hollandType, {
@@ -49,30 +39,8 @@ export const ResultView = () => {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-y-5">
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-start">
         <h1 className="text-2xl font-bold">Kết quả bài định hướng</h1>
-        <Button
-          onClick={() => {
-            setShouldPrint(true);
-            requestAnimationFrame(() => {
-              handlePrint();
-            });
-          }}
-        >
-          {shouldPrint ? (
-            <IconLoader2 className="animate-spin" />
-          ) : (
-            <>
-              <IconDownload className="mr-2" size={18} />
-              Tải xuống kết quả
-            </>
-          )}
-        </Button>
-        {/* {shouldPrint && (
-                    <div style={{ display: "none" }}>
-                        <ResultPrintComponent ref={printRef} data={data} />
-                    </div>
-                )} */}
       </div>
       <div className="relative mt-5 w-full">
         <div className="flex flex-row items-center border-b-2 py-2">

@@ -1,8 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import { useReactToPrint } from "react-to-print";
 import { toast } from "sonner";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Modal } from "@highschool/components/modal";
 import { MBTIResult } from "@highschool/interfaces";
@@ -12,13 +11,7 @@ import {
 } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Input } from "@highschool/ui/components/ui/input";
-import {
-  IconDownload,
-  IconLoader2,
-  IconPointFilled,
-} from "@tabler/icons-react";
-
-import { ResultPrintComponent } from "./result-print-component";
+import { IconLoader2, IconPointFilled } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
 import { useMBTITestContext } from "@/stores/use-mbti-test-store";
@@ -26,10 +19,8 @@ import { useMBTITestContext } from "@/stores/use-mbti-test-store";
 export const ResultView = () => {
   const result = useMBTITestContext((s) => s.result);
   const { data: session } = useSession();
-  const [shouldPrint, setShouldPrint] = useState<boolean>(false);
   const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
-  const printRef = useRef(null);
   const mbtiType = useMBTITestContext((s) => s.mbtiType);
   const queryClient = useQueryClient();
 
@@ -47,13 +38,6 @@ export const ResultView = () => {
       },
     });
   };
-
-  const handlePrint = useReactToPrint({
-    content: printRef.current!,
-    onAfterPrint: () => {
-      setShouldPrint(false);
-    },
-  });
 
   const sections: (keyof Pick<MBTIResult, "advantages" | "disadvantages">)[] = [
     "advantages",
@@ -92,32 +76,8 @@ export const ResultView = () => {
         />
       </Modal>
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-y-5">
-        <div className="flex flex-row items-center justify-between">
+        <div className="flex flex-row items-center justify-start">
           <h1 className="text-2xl font-bold">Kết quả bài kiểm tra</h1>
-          {session?.user && (
-            <Button
-              onClick={() => {
-                setShouldPrint(true);
-                requestAnimationFrame(() => {
-                  handlePrint();
-                });
-              }}
-            >
-              {shouldPrint ? (
-                <IconLoader2 className="animate-spin" />
-              ) : (
-                <>
-                  <IconDownload className="mr-2" size={18} />
-                  Tải xuống kết quả
-                </>
-              )}
-            </Button>
-          )}
-          {shouldPrint && (
-            <div style={{ display: "none" }}>
-              <ResultPrintComponent ref={printRef} data={result} />
-            </div>
-          )}
         </div>
         <div className="mt-4 flex flex-col gap-y-2">
           <div className="flex flex-col items-center gap-4 md:flex-row">
