@@ -26,6 +26,7 @@ interface HollandStates extends HollandStoreProps {
   answer: (active: HollandQuestion, choseOption: string[]) => void;
   goToNextQuestion: () => void;
   goToPreviousQuestion: () => void;
+  setRoundCounter: (roundCounter: number) => void;
   reset: () => void;
   setResult: (result: HollandResult[], hollandType: string) => void;
 }
@@ -56,6 +57,9 @@ export const createHollandTestStore = (
           roundTimeline: questions,
           questionsCount: questions.length,
         });
+      },
+      setRoundCounter: (roundCounter) => {
+        set({ roundCounter });
       },
       answer: (active: HollandQuestion, choseOption: string[]) =>
         set((state) => {

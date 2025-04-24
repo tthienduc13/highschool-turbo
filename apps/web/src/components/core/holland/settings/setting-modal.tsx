@@ -6,9 +6,9 @@ import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import { ShortcutListSection } from "../../common/shorcut-list-section";
 
 import { Shortcut } from "@/types/shortcut";
-import { useMBTITestContext } from "@/stores/use-mbti-test-store";
+import { useHollandTestContext } from "@/stores/use-holland-test-store";
 
-interface MBTISettingModalProps {
+interface HollandModalProps {
   isOpen: boolean;
   onClose: () => void;
   showInstruction: () => void;
@@ -19,14 +19,18 @@ const SHORTCUT_LIST: Shortcut[] = [
   { label: "Câu tiếp theo", shortcut: <IconArrowRight /> },
   { label: "Chọn câu 1", shortcut: "1" },
   { label: "Chọn câu 2", shortcut: "2" },
+  { label: "Chọn câu 3", shortcut: "3" },
+  { label: "Chọn câu 4", shortcut: "4" },
+  { label: "Chọn câu 5", shortcut: "5" },
+  { label: "Chọn câu 6", shortcut: "6" },
 ];
 
-export const MBTISettingModal = ({
+export const HollandModal = ({
   showInstruction,
   isOpen,
   onClose,
-}: MBTISettingModalProps) => {
-  const reset = useMBTITestContext((s) => s.reset);
+}: HollandModalProps) => {
+  const reset = useHollandTestContext((s) => s.reset);
 
   return (
     <Modal

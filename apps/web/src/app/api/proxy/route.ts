@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ACCESS_TOKEN } from "@highschool/lib/constants";
 import { env } from "@highschool/env";
-import { auth, signOut } from "@highschool/react-query/auth";
+import { auth } from "@highschool/react-query/auth";
 
 const BASE_URL = env.NEXT_PUBLIC_API_URL;
 
@@ -127,92 +127,147 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Make the actual request
-    const response = await fetch(targetUrl, requestOptions);
+    // Thêm timeout cho request
+    let controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 giây timeout
 
-    // Handle 401 Unauthorized separately
-    if (response.status === 401) {
-      await clearAuthCookies();
-
-      return NextResponse.json(
-        {
-          error: "Unauthorized",
-          shouldLogout: true,
-          message: "Your session has expired or is invalid",
-        },
-        { status: 401 },
-      );
-    }
-
-    // Handle 500+ errors
-    if (response.status >= 500) {
-      signOut();
-
-      return NextResponse.json(
-        {
-          error: "Server error",
-          message: `The server returned a ${response.status} error`,
-          shouldRetry: false,
-        },
-        {
-          status: response.status,
-          headers: {
-            "x-request-id": response.headers.get("x-request-id") || "",
-            "x-correlation-id": response.headers.get("x-correlation-id") || "",
-          },
-        },
-      );
-    }
-
-    // Get all the response headers
-    const responseHeaders = new Headers();
-
-    response.headers.forEach((value, key) => {
-      if (
-        key.toLowerCase() !== "content-type" &&
-        key.toLowerCase() !== "content-length"
-      ) {
-        responseHeaders.set(key, value);
-      }
-    });
-
-    // Clone response before reading the body
-    const responseClone = response.clone();
-
-    // Try to parse as JSON
-    let responseData;
-    let isJson = false;
+    requestOptions.signal = controller.signal;
 
     try {
-      responseData = await response.json();
-      isJson = true;
-    } catch (e) {
-      // Not JSON, try to get text
-      try {
-        responseData = { message: await responseClone.text() };
-      } catch (textError) {
-        // If both fail, return empty object
-        responseData = {};
+      // Make the actual request
+      const response = await fetch(targetUrl, requestOptions);
+
+      clearTimeout(timeoutId);
+
+      // Handle 401 Unauthorized separately
+      if (response.status === 401) {
+        await clearAuthCookies();
+
+        return NextResponse.json(
+          {
+            error: "Unauthorized",
+            shouldLogout: true,
+            message: "Your session has expired or is invalid",
+          },
+          { status: 401 },
+        );
       }
+
+      // Xử lý riêng lỗi 503
+      if (response.status === 503) {
+        console.error(`Service unavailable: ${targetUrl}`);
+
+        return NextResponse.json(
+          {
+            error: "Service unavailable",
+            message:
+              "The service is temporarily unavailable. Please try again later.",
+            shouldRetry: true,
+          },
+          { status: 503 },
+        );
+      }
+
+      // Handle 500+ errors
+      if (response.status >= 500) {
+        // Không gọi signOut() trực tiếp để tránh redirect
+        await clearAuthCookies();
+
+        return NextResponse.json(
+          {
+            error: "Server error",
+            message: `The server returned a ${response.status} error`,
+            shouldRetry: true,
+          },
+          {
+            status: response.status,
+            headers: {
+              "x-request-id": response.headers.get("x-request-id") || "",
+              "x-correlation-id":
+                response.headers.get("x-correlation-id") || "",
+            },
+          },
+        );
+      }
+
+      // Get all the response headers
+      const responseHeaders = new Headers();
+
+      response.headers.forEach((value, key) => {
+        if (
+          key.toLowerCase() !== "content-type" &&
+          key.toLowerCase() !== "content-length"
+        ) {
+          responseHeaders.set(key, value);
+        }
+      });
+
+      // Clone response before reading the body
+      const responseClone = response.clone();
+
+      // Try to parse as JSON
+      let responseData;
+      let isJson = false;
+
+      try {
+        responseData = await response.json();
+        isJson = true;
+      } catch (e) {
+        // Not JSON, try to get text
+        try {
+          responseData = { message: await responseClone.text() };
+        } catch (textError) {
+          // If both fail, return empty object
+          responseData = {};
+        }
+      }
+
+      // Create the NextResponse
+      const nextResponse = NextResponse.json(responseData, {
+        status: response.status,
+        headers: responseHeaders,
+      });
+
+      return nextResponse;
+    } catch (fetchError: unknown) {
+      // Xử lý lỗi fetch
+      clearTimeout(timeoutId);
+
+      if (fetchError instanceof Error && fetchError.name === "AbortError") {
+        return NextResponse.json(
+          {
+            error: "Request timeout",
+            message: "The request took too long to complete",
+            shouldRetry: true,
+          },
+          { status: 408 },
+        );
+      }
+
+      console.error("Fetch error:", fetchError);
+
+      return NextResponse.json(
+        {
+          error: "Connection error",
+          message:
+            fetchError instanceof Error
+              ? fetchError.message
+              : "Failed to connect to service",
+          shouldRetry: true,
+        },
+        { status: 502 },
+      );
     }
-
-    // Create the NextResponse
-    const nextResponse = NextResponse.json(responseData, {
-      status: response.status,
-      headers: responseHeaders,
-    });
-
-    return nextResponse;
   } catch (error) {
     console.error("API proxy error:", error);
-    signOut();
 
-    // Return a clear error without retrying
+    // Không gọi signOut() để tránh redirect
+    // Trả về lỗi nhưng không redirect
     return NextResponse.json(
       {
         error: "Proxy error",
         message: error instanceof Error ? error.message : "Unknown error",
-        shouldRetry: false,
+        shouldRetry: true,
       },
       { status: 500 },
     );

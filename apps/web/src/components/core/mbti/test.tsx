@@ -55,9 +55,25 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
   const active = timeline[roundCounter];
   const neutralColor = theme === "dark" ? "#7ea6ff" : "#0042da";
 
+  // Kiểm tra một cách chính xác xem tất cả câu hỏi đã được trả lời chưa
   const isUserAnswerAll =
     userTestAnswers.length === timeline.length &&
-    userTestAnswers.every((answer) => answer !== null && answer !== undefined);
+    userTestAnswers.every(
+      (answer) =>
+        answer !== null &&
+        answer !== undefined &&
+        answer.answerOption &&
+        answer.answerOption.trim() !== "",
+    );
+
+  // Đếm số câu hỏi đã trả lời
+  const answeredQuestionsCount = userTestAnswers.filter(
+    (answer) =>
+      answer !== null &&
+      answer !== undefined &&
+      answer.answerOption &&
+      answer.answerOption.trim() !== "",
+  ).length;
 
   const handleSubmit = async () => {
     if (!isUserAnswerAll) {
@@ -190,6 +206,19 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
     </CardFooter>
   );
 
+  // Hàm kiểm tra câu hỏi đã trả lời hay chưa
+  const isQuestionAnswered = (index: number) => {
+    const answer = userTestAnswers[index];
+
+    return (
+      answer !== null &&
+      answer !== undefined &&
+      answer.answerOption !== null &&
+      answer.answerOption !== undefined &&
+      answer.answerOption.trim() !== ""
+    );
+  };
+
   if (!active) {
     return null;
   }
@@ -213,24 +242,15 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
                   <CardTitle className="flex items-center justify-between text-lg">
                     <span>Câu hỏi</span>
                     <span className="text-muted-foreground text-sm font-normal">
-                      {userTestAnswers.length}/{timeline.length}
+                      {answeredQuestionsCount}/{timeline.length}
                     </span>
                   </CardTitle>
-                  {/* <Progress
-                    className="h-2"
-                    value={
-                      (answers.filter((a) => a !== "").length /
-                        mbtiQuestions.length) *
-                      100
-                    }
-                  /> */}
                 </CardHeader>
                 <CardContent className="">
                   <ScrollArea className="h-[40vh] pr-2">
                     <div className="mb-2 grid grid-cols-5 gap-2 p-4">
                       {timeline.map((question, index) => {
-                        const isAnswered =
-                          userTestAnswers[index]?.answerOption !== "";
+                        const isAnswered = isQuestionAnswered(index);
                         const isCurrent = question.id === active.id;
 
                         return (
@@ -240,7 +260,7 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
                               isCurrent
                                 ? "ring-primary ring-2 ring-offset-2"
                                 : isAnswered
-                                  ? "bg-primary/10 hover:bg-primary/20"
+                                  ? "bg-primary/20 hover:bg-primary/20"
                                   : "opacity-70 hover:opacity-100"
                             }`}
                             size="sm"
@@ -266,24 +286,17 @@ export const TestView = ({ submitAnswer, showInstruction }: TestViewProps) => {
                   <div className="mb-1 grid w-full grid-cols-3 gap-2 text-center text-xs">
                     <div className="flex flex-col items-center">
                       <div className="bg-primary mb-1 size-4 rounded-full" />
-                      <span>Current</span>
+                      <span>Câu hiện tại</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <div className="border-primary bg-primary/10 mb-1 size-4 rounded-full border" />
-                      <span>Answered</span>
+                      <div className="border-primary bg-primary/20 mb-1 size-4 rounded-full border" />
+                      <span>Đã trả lời</span>
                     </div>
                     <div className="flex flex-col items-center">
                       <div className="bg-muted mb-1 size-4 rounded-full" />
-                      <span>Unanswered</span>
+                      <span>Chưa trả lời</span>
                     </div>
                   </div>
-
-                  {/* {answers.filter((a) => a !== "").length ===
-                    mbtiQuestions.length && (
-                    <Button className="mt-2 w-full" onClick={handleSubmit}>
-                      Submit Test
-                    </Button>
-                  )} */}
                 </CardFooter>
               </Card>
             </div>

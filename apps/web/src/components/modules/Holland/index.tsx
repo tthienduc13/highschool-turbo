@@ -31,7 +31,7 @@ const TestContainer = () => {
   const submitAnswer = useSubmitHollandMutation();
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto">
       {showInstruction ? (
         <Instruction onClose={() => setShowInstruction(false)} />
       ) : submitAnswer.isPending ? (
@@ -39,7 +39,10 @@ const TestContainer = () => {
       ) : result ? (
         <ResultView />
       ) : (
-        <TestView submitAnswer={submitAnswer} />
+        <TestView
+          showInstruction={() => setShowInstruction(true)}
+          submitAnswer={submitAnswer}
+        />
       )}
     </div>
   );

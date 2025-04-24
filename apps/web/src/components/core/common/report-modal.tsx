@@ -56,21 +56,18 @@ export const ReportModal = () => {
       description?: string;
     } = {};
 
-    // Kiểm tra tiêu đề
     if (title.trim().length < TITLE_MIN_LENGTH) {
       validationErrors.title = `Tiêu đề phải có ít nhất ${TITLE_MIN_LENGTH} ký tự.`;
     } else if (title.length > TITLE_MAX_LENGTH) {
       validationErrors.title = `Tiêu đề không được vượt quá ${TITLE_MAX_LENGTH} ký tự.`;
     }
 
-    // Kiểm tra mô tả
     if (description.trim().length < DESCRIPTION_MIN_LENGTH) {
       validationErrors.description = `Mô tả phải có ít nhất ${DESCRIPTION_MIN_LENGTH} ký tự.`;
     } else if (description.length > DESCRIPTION_MAX_LENGTH) {
       validationErrors.description = `Mô tả không được vượt quá ${DESCRIPTION_MAX_LENGTH} ký tự.`;
     }
 
-    // Kiểm tra số lượng ảnh
     if (images.length > MAX_IMAGES) {
       validationErrors.images = `Bạn chỉ có thể tải lên tối đa ${MAX_IMAGES} ảnh.`;
     }
@@ -156,7 +153,6 @@ export const ReportModal = () => {
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
-              // Xóa lỗi khi đạt đủ độ dài tối thiểu
               if (
                 e.target.value.trim().length >= TITLE_MIN_LENGTH &&
                 e.target.value.length <= TITLE_MAX_LENGTH
@@ -181,12 +177,12 @@ export const ReportModal = () => {
         </div>
         <div className="flex flex-col gap-2">
           <Label className="text-base text-gray-600 dark:text-gray-400">
-            Nội dung
+            Mô tả
           </Label>
           <Textarea
             className="w-full border-0 border-l-4 border-l-red-300  bg-gray-100 pt-2 font-medium shadow-none focus-within:border-l-4 focus-visible:border-l-red-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-red-300"
             maxLength={DESCRIPTION_MAX_LENGTH}
-            placeholder="Nội dung"
+            placeholder="Mô tả"
             value={description}
             onChange={(e) => {
               setDescription(e.target.value);

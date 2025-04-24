@@ -11,6 +11,7 @@ import {
   HollandTestContext,
   HollandTestStore,
 } from "@/stores/use-holland-test-store";
+import { Loading } from "@/components/core/common/loading";
 
 interface HydrateHollandTestDataProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export const HydrateHollandTestData = ({
   children,
 }: HydrateHollandTestDataProps) => {
   const router = useRouter();
-  const { data, isError } = useHollandTestQuery();
+  const { data, isError, isLoading } = useHollandTestQuery();
 
   useEffect(() => {
     if (isError) {
@@ -28,6 +29,10 @@ export const HydrateHollandTestData = ({
       router.push("/");
     }
   }, [isError, router]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (!data?.length) {
     return null;
