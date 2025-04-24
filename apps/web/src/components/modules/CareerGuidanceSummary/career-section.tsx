@@ -78,8 +78,6 @@ export const CareerSection = ({
               <RecommendCard
                 key={career.name}
                 career={career}
-                selectedMajor={selectedMajor ?? ""}
-                setSelectedMajor={setSelectedMajor}
                 onSelect={setSelectedPath}
               />
             );
@@ -92,17 +90,10 @@ export const CareerSection = ({
 
 interface RecommendCardProps {
   career: CareerPath;
-  setSelectedMajor: React.Dispatch<React.SetStateAction<string | null>>;
   onSelect: React.Dispatch<React.SetStateAction<CareerPath | null>>;
-  selectedMajor: string;
 }
 
-const RecommendCard = ({
-  career,
-  onSelect,
-  setSelectedMajor,
-  selectedMajor,
-}: RecommendCardProps) => {
+const RecommendCard = ({ career, onSelect }: RecommendCardProps) => {
   return (
     <Card className="flex h-full flex-col p-4 dark:bg-gray-800">
       <CardContent className="flex flex-1 flex-col p-0">

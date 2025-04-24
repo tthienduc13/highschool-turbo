@@ -984,6 +984,21 @@ export const universityEndpoints = {
       API_VERSIONS.V1,
       `/universityMajor/${universityMajorId}`,
     ),
+  saveUniversity: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/saved",
+  ),
+  deleteSavedUniversity: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/saved",
+  ),
+  getSavedUniversity: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/saved",
+  ),
 } as const;
 
 // KET Endpoints

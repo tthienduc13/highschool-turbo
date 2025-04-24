@@ -26,7 +26,7 @@ export const CreateSortFlashcardsData: React.FC<React.PropsWithChildren> = ({
     refetch,
   } = useFSRSByIdQuery({
     flashcardId: flashcard.id,
-    isReview,
+    isLearningNew: isReview,
   });
   const starredTerms = useContainerContext((s) => s.starredTerms);
   const storeRef = useRef<SortFlashcardsStore>(null);

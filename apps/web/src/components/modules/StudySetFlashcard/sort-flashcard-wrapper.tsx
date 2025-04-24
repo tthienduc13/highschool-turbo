@@ -117,7 +117,7 @@ export const SortFlashcardWrapper = ({ h }: SortFlashcardWrapperProps) => {
     }
   }, [completed]);
 
-  if (isReviewToday) {
+  if (isReviewToday && dueCards.length === 0) {
     return <SortFlashcardProgress h={h} state="known" />;
   }
 

@@ -107,7 +107,7 @@ function PlatformLayout({
 
   return (
     <>
-      <div className="min-h-screen w-screen overflow-hidden">
+      <div className="min-h-screen w-screen ">
         {!isHideHeader && (
           <div className="sticky top-0 z-50">
             <Header />
@@ -135,7 +135,7 @@ function PlatformLayout({
                 }}
               >
                 {!hideSidebar && <AppSidebar />}
-                <SidebarInset className="relative flex-1 bg-transparent">
+                <SidebarInset className="relative flex-1 overflow-hidden bg-transparent">
                   {children}
                 </SidebarInset>
               </div>
@@ -144,7 +144,7 @@ function PlatformLayout({
           ) : (
             <div className="flex h-[calc(100vh-88px)] flex-row">
               {!hideSidebar && <AppSidebar />}
-              <SidebarInset className="relative flex-1 bg-transparent">
+              <SidebarInset className="relative flex-1 overflow-hidden bg-transparent">
                 {children}
               </SidebarInset>
             </div>

@@ -5,17 +5,17 @@ import { InnerProfile } from "./inner-profile";
 import { ProfileLoading } from "./profile-loading";
 
 import { Container } from "@/components/core/layouts/container";
-import { WithFooter } from "@/components/core/common/with-footer";
+import { EnterWrapper } from "@/components/core/common/auth/enter-wrapper";
 
 function UserProfileModule() {
   return (
-    <HydrateProfileData fallback={<ProfileLoading />}>
-      <WithFooter>
+    <EnterWrapper>
+      <HydrateProfileData fallback={<ProfileLoading />}>
         <Container maxWidth="4xl">
           <InnerProfile />
         </Container>
-      </WithFooter>
-    </HydrateProfileData>
+      </HydrateProfileData>
+    </EnterWrapper>
   );
 }
 

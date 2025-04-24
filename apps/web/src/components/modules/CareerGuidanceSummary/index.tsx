@@ -100,11 +100,7 @@ function CareerGuidanceSummaryModule() {
               selectedMajor={selectedMajor}
               setSelectedMajor={setSelectedMajor}
             />
-            <UniversitySection
-              savedUniversities={savedUniversity}
-              selectedMajor={selectedMajor}
-              setSavedUniversity={setSavedUniversity}
-            />
+            <UniversitySection selectedMajor={selectedMajor} />
             <div className="mt-5 flex w-full flex-col items-center justify-center gap-2">
               <p>Bạn không hài lòng với kết quả?</p>
               <Button

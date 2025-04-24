@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useUserBriefQuery } from "@highschool/react-query/queries";
 
 import { CurrentCareerGuidanceSummary } from "./current-career-guidance-summary";
+import { CareerGuidanceHistory } from "./career-guidance-history";
 
 export const CareerGuidanceSummary = () => {
   const { data, isLoading } = useUserBriefQuery();
@@ -49,7 +50,7 @@ export const CareerGuidanceSummary = () => {
       {viewState === "current" ? (
         <CurrentCareerGuidanceSummary brief={data?.data!} />
       ) : (
-        <div>history</div>
+        <CareerGuidanceHistory />
       )}
     </div>
   );

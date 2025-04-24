@@ -244,3 +244,55 @@ export const getUniversityMajor = async ({
     throw error;
   }
 };
+
+export const saveUniversity = async ({
+  universityId,
+}: {
+  universityId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.post(
+      universityEndpoints.saveUniversity,
+      { universityId },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while save university ", error);
+    throw error;
+  }
+};
+
+export const getSavedUniversities = async ({
+  pageNumber,
+  pageSize,
+}: Partial<{
+  pageNumber: number;
+  pageSize: number;
+}>): Promise<Pagination<UniversityCategory>> => {
+  return fetchPaginatedData<UniversityCategory>(
+    universityEndpoints.getSavedUniversity,
+    {
+      pageNumber,
+      pageSize,
+    },
+  );
+};
+
+export const deleteSavedUniversity = async ({
+  universityId,
+}: {
+  universityId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      universityEndpoints.saveUniversity,
+      { params: { universityId } },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while delete university ", error);
+    throw error;
+  }
+};

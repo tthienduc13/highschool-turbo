@@ -23,6 +23,7 @@ import {
 
 import { menuEventChannel } from "@/events/menu";
 import { useSet } from "@/hooks/use-set";
+import { useMe } from "@/hooks/use-me";
 
 export interface AddToFolderModalProps {
   isOpen: boolean;
@@ -34,8 +35,10 @@ export const AddToFolderModal = ({
   onClose,
 }: AddToFolderModalProps) => {
   const { flashcard } = useSet();
+  const me = useMe();
   const { data, isLoading, refetch } = useUserFoldersQuery({
     pageNumber: 1,
+    userName: me?.username!,
     pageSize: 5,
     flashcardId: flashcard.id,
   });
@@ -63,7 +66,7 @@ export const AddToFolderModal = ({
       title="Thêm vào thư mục"
       onClose={onClose}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 pb-6">
         {isLoading ? (
           Array.from({ length: 5 }).map((_, i) => (
             <Skeleton key={i} className="h-[60px] w-full rounded-lg" />
@@ -123,13 +126,13 @@ const FolderCard = ({
   }, [removeFlashcard.isSuccess, addToFolder.isSuccess]);
 
   return (
-    <Card className="ease-in-out group rounded-lg border-2 border-gray-100 px-4 py-3 shadow-sm transition-all duration-200 focus-visible:border-blue-500 dark:border-gray-700 dark:focus-visible:border-blue-500">
+    <Card className="group rounded-lg border-2 border-gray-100 px-4 py-3 shadow-sm transition-all duration-200 ease-in-out focus-visible:border-blue-500 dark:border-gray-700 dark:focus-visible:border-blue-500">
       <CardContent className="p-0">
         <div className="flex flex-row items-center justify-between gap-4">
           <div className="flex flex-row items-center gap-4 overflow-hidden">
             <IconFolder size={18} />
             <Link
-              className="ease-in-out transition-all duration-200 hover:text-primary"
+              className="hover:text-primary transition-all duration-200 ease-in-out"
               href={`/profile/${user.username}/folder/${folderId}`}
             >
               <div className="line-clamp-1 overflow-hidden whitespace-nowrap text-lg">

@@ -28,14 +28,14 @@ import {
 
 export const useFSRSByIdQuery = ({
   flashcardId,
-  isReview,
+  isLearningNew,
 }: {
   flashcardId: string;
-  isReview: boolean;
+  isLearningNew: boolean;
 }) => {
   return useQuery({
-    queryKey: ["fsrs-by-id", flashcardId, isReview],
-    queryFn: () => getFSRSById({ flashcardId, isReview }),
+    queryKey: ["fsrs-by-id", flashcardId, isLearningNew],
+    queryFn: () => getFSRSById({ flashcardId, isLearningNew }),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 0,
@@ -44,14 +44,14 @@ export const useFSRSByIdQuery = ({
 
 export const useFSRSBySlugQuery = ({
   slug,
-  isReview,
+  isLearningNew,
 }: {
   slug: string;
-  isReview: boolean;
+  isLearningNew: boolean;
 }) => {
   return useQuery({
-    queryKey: ["fsrs-by-slug", slug, isReview],
-    queryFn: () => getFSRSBySlug({ slug, isReview }),
+    queryKey: ["fsrs-by-slug", slug, isLearningNew],
+    queryFn: () => getFSRSBySlug({ slug, isLearningNew }),
     refetchOnWindowFocus: false,
     refetchOnMount: true,
     staleTime: 0,

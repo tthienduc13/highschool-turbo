@@ -39,7 +39,7 @@ export const ProfileSection = ({
             <IconDownload className="!size-5" />
             Tải xuống bản PDF
           </Button>
-          {savedUniversity.length > 0 && (
+          {savedUniversity?.length > 0 && (
             <Button variant={"outline"} onClick={onViewSaved}>
               <IconBuilding className="!size-5" />
               Xem trường đã lưu
@@ -96,11 +96,11 @@ export const ProfileSection = ({
                       Kiểm tra tính cách (MBTI)
                     </h3>
                     <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                      {brief.mbtiResponse.mbtiType}
+                      {brief?.mbtiResponse?.mbtiType}
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 pl-4">
-                    {brief.mbtiResponse.mbtiSummary.map((item, index) => (
+                    {brief?.mbtiResponse?.mbtiSummary?.map((item, index) => (
                       <p key={index} className="list-item text-gray-700">
                         {item}
                       </p>
@@ -115,15 +115,17 @@ export const ProfileSection = ({
                       Định hướng nghề nghiệp (Holland)
                     </h3>
                     <div className="bg-primary/40 flex h-8 items-center justify-center rounded-md px-3 text-base font-bold">
-                      {brief.hollandResponse.hollandType}
+                      {brief?.hollandResponse?.hollandType}
                     </div>
                   </div>
                   <div className="flex flex-col gap-1 pl-4">
-                    {brief.hollandResponse.hollandSummary.map((item, index) => (
-                      <p key={index} className="list-item text-gray-700">
-                        {item}
-                      </p>
-                    ))}
+                    {brief?.hollandResponse?.hollandSummary?.map(
+                      (item, index) => (
+                        <p key={index} className="list-item text-gray-700">
+                          {item}
+                        </p>
+                      ),
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -136,7 +138,7 @@ export const ProfileSection = ({
                   </h3>
                 </div>
                 <div className="flex flex-col gap-1 pl-4">
-                  {brief.overallResponse.overallBrief.map((item, index) => (
+                  {brief?.overallResponse?.overallBrief?.map((item, index) => (
                     <p key={index} className="list-item text-gray-700">
                       {item}
                     </p>

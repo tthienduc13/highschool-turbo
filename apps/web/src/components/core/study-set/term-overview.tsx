@@ -86,10 +86,10 @@ const TermsByStats = () => {
     <>
       {!!dueToday.length && (
         <TermsCategory
-          color="yellow"
+          color="blue"
           heading="tới hạn ôn tập"
           icon={IconProgressCheck}
-          subheading="Đây là những thẻ bạn cần học hôm nãy. Hãy học ngay nhé!"
+          subheading="Đây là những thẻ bạn cần học hôm nay. Hãy học ngay nhé!"
           terms={dueToday}
         />
       )}

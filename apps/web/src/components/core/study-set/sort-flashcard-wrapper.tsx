@@ -59,7 +59,7 @@ export const SortFlashcardWrapper = () => {
   const [isReview, setIsReview] = useState(false);
   const { data: fsrsData, refetch } = useFSRSByIdQuery({
     flashcardId: flashcard.id,
-    isReview,
+    isLearningNew: isReview,
   });
 
   type FlashcardWithUI = DueCard & { isFlipped: boolean; index: number };

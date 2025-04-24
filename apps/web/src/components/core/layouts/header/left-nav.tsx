@@ -19,6 +19,7 @@ import {
   IconChevronDown,
   IconFileTypePdf,
   IconFolder,
+  IconRouteAltRight,
   IconSchool,
   IconSparkles,
   TablerIcon,
@@ -32,6 +33,7 @@ import { TeacherOnly } from "@/components/core/common/teacher-only";
 import { AnimatedBackground } from "@/components/ui/animated-hover-tab";
 import { useIsTeacher } from "@/hooks/use-role";
 import { useAppStore } from "@/stores/use-app-store";
+import { menuEventChannel } from "@/events/menu";
 
 type MenuItem = {
   label: string;
@@ -204,6 +206,25 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
               side="bottom"
               style={{ zIndex: 10000 }}
             >
+              {!isTeacher && (
+                <>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      className="group cursor-pointer px-3 py-2 text-base"
+                      onClick={() =>
+                        menuEventChannel.emit("openCareerGuidanceModal")
+                      }
+                    >
+                      <IconRouteAltRight
+                        className="transition-transform group-hover:rotate-[-20deg] group-hover:scale-125"
+                        size={20}
+                      />
+                      Hướng nghiệp
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                </>
+              )}
               <DropdownMenuGroup>
                 {menuItems.map(
                   (

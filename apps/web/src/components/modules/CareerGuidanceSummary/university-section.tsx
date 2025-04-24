@@ -1,6 +1,6 @@
 "use client";
 
-import { University, UniversityCity } from "@highschool/interfaces";
+import { UniversityCity } from "@highschool/interfaces";
 import { useUniversityCategoryQuery } from "@highschool/react-query/queries";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconFilter } from "@tabler/icons-react";
@@ -11,8 +11,6 @@ import { Loading } from "@/components/core/common/loading";
 
 interface UniversitySectionProps {
   selectedMajor: string | null;
-  setSavedUniversity: React.Dispatch<React.SetStateAction<University[]>>;
-  savedUniversities: University[];
 }
 
 export interface FilterState {
@@ -23,8 +21,6 @@ export interface FilterState {
 
 export const UniversitySection = ({
   selectedMajor,
-  setSavedUniversity,
-  savedUniversities,
 }: UniversitySectionProps) => {
   const { data: universityData, isLoading: universityLoading } =
     useUniversityCategoryQuery({

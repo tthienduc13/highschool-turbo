@@ -5,12 +5,15 @@ import { toast } from "sonner";
 import {
   createUniversityList,
   createUniversityMajorList,
+  deleteSavedUniversity,
   deleteUniversity,
   deleteUniversityMajor,
+  getSavedUniversities,
   getUniversities,
   getUniversityCategory,
   getUniversityMajor,
   getUniversityMajorName,
+  saveUniversity,
   updateUniversity,
   updateUniversityMajor,
 } from "../apis/university.ts";
@@ -254,5 +257,32 @@ export const useDeleteUniversityMajorMutation = () => {
     onError: (error) => {
       toast.error(error.message ?? "Some error occured");
     },
+  });
+};
+
+export const useSaveUniversityMutation = () => {
+  return useMutation({
+    mutationKey: ["save-university"],
+    mutationFn: saveUniversity,
+  });
+};
+
+export const useDeleteSavedUniversityMutation = () => {
+  return useMutation({
+    mutationKey: ["delete-saved-university"],
+    mutationFn: deleteSavedUniversity,
+  });
+};
+
+export const useSavedUniversitiesQuery = ({
+  pageSize,
+  pageNumber,
+}: {
+  pageSize: number;
+  pageNumber: number;
+}) => {
+  return useMutation({
+    mutationKey: ["save-university", { pageSize, pageNumber }],
+    mutationFn: () => getSavedUniversities({ pageSize, pageNumber }),
   });
 };

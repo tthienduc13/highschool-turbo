@@ -50,7 +50,7 @@ export const HydrateFSRSData = ({
     refetch: fsrsRefetch,
   } = useFSRSBySlugQuery({
     slug: slug,
-    isReview: isReview,
+    isLearningNew: isReview,
   });
 
   useEffect(() => {

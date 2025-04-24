@@ -29,7 +29,7 @@ export const HydrateWritingData = ({
     isError,
   } = useFSRSBySlugQuery({
     slug: slug,
-    isReview: false,
+    isLearningNew: false,
   });
 
   useEffect(() => {

@@ -49,7 +49,6 @@ const refreshAccessToken = async (token: JWT) => {
       throw new Error("RefreshTokenFailed");
     }
 
-    // Return the refreshed token data
     return {
       ...token,
       accessToken: result.data.accessToken,

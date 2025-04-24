@@ -1,10 +1,19 @@
+"use client";
+
 import { env } from "@highschool/env";
 import { UniversityCategory } from "@highschool/interfaces";
+import {
+  useDeleteSavedUniversityMutation,
+  useSaveUniversityMutation,
+} from "@highschool/react-query/queries";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
+import { cn } from "@highschool/ui/lib/utils";
 import { IconHeart, IconMapPin, IconSchool } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface UniversityCardProps {
   university: UniversityCategory;
@@ -15,12 +24,43 @@ export default function UniversityCard({
   university,
   savedButton = false,
 }: UniversityCardProps) {
+  const [isUniSaved, setIsUniSaved] = useState(university.isSaved);
   const displayTags = university.tags.slice(0, 3);
 
   const truncatedDescription =
     university.description.length > 150
       ? university.description.substring(0, 150) + "..."
       : university.description;
+
+  const apiSaveUniversity = useSaveUniversityMutation();
+  const apiDeleteSavedUniversity = useDeleteSavedUniversityMutation();
+
+  const handleSaveUniversity = () => {
+    if (isUniSaved) {
+      apiDeleteSavedUniversity.mutate(
+        {
+          universityId: university.id,
+        },
+        {
+          onSuccess: (data) => {
+            toast.success(data.message);
+          },
+        },
+      );
+    } else {
+      apiSaveUniversity.mutate(
+        {
+          universityId: university.id,
+        },
+        {
+          onSuccess: (data) => {
+            toast.success(data.message);
+          },
+        },
+      );
+    }
+    setIsUniSaved(!isUniSaved);
+  };
 
   return (
     <div className="overflow-hidden rounded-lg border bg-white shadow-md transition-all  duration-300 hover:-translate-y-2 hover:shadow-lg">
@@ -53,8 +93,18 @@ export default function UniversityCard({
             </div>
           </div>
           {savedButton && (
-            <Button size={"icon"} variant="ghost">
-              <IconHeart />
+            <Button
+              className="rounded-full"
+              size={"icon"}
+              variant="ghost"
+              onClick={handleSaveUniversity}
+            >
+              <IconHeart
+                className={cn(
+                  "!size-5 ",
+                  isUniSaved && "fill-red-500 text-red-500",
+                )}
+              />
             </Button>
           )}
         </div>
@@ -84,7 +134,7 @@ export default function UniversityCard({
         <div className="flex items-center justify-between">
           <div className="flex items-center text-sm text-gray-500">
             <IconSchool className="mr-1" size={16} />
-            <span>50+ ngành</span>
+            <span>{university.universityMajors.length ?? 0}+ ngành</span>
           </div>
           <Link
             className="text-sm font-medium text-rose-600 hover:text-rose-700"

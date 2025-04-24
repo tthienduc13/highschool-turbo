@@ -6,6 +6,7 @@ import {
   TablerIcon,
 } from "@tabler/icons-react";
 import Link from "next/link";
+import { cn } from "@highschool/ui/lib/utils";
 
 import { useReviewContext } from "./hydrate-fsrs-data";
 
@@ -110,14 +111,23 @@ export const SortFlashcardProgress = ({
                 )} */}
 
                 <Actionable
-                  description="Ôn tập lại các thẻ bạn đã học để củng cố kiến thức"
+                  description={
+                    stilLearningCardsCount > 0
+                      ? "Tiếp tục học những thẻ bạn chưa nắm vững"
+                      : "Ôn tập lại các thẻ bạn đã học để củng cố kiến thức"
+                  }
                   icon={IconRefresh}
-                  name="Ôn tập thẻ đã học"
+                  name={
+                    stilLearningCardsCount > 0
+                      ? "Tiếp tục học"
+                      : "Ôn tập thẻ đã học"
+                  }
                   onClick={() => handleKeepLearning(false)}
                 />
 
                 <Actionable
                   description="Tiếp tục ôn tập và xem lại các thẻ bạn chưa nắm vững"
+                  disabled={stilLearningCardsCount > 0}
                   icon={IconCards}
                   name="Học thẻ mới"
                   onClick={handleLeanNew}
@@ -137,9 +147,11 @@ interface ActionableProps {
   icon: TablerIcon;
   onClick?: () => void;
   href?: string;
+  disabled?: boolean;
 }
 
 export function Actionable({
+  disabled = false,
   name,
   description,
   icon: Icon,
@@ -160,7 +172,12 @@ export function Actionable({
 
   return (
     <CardWrapper>
-      <Card className="hover:border-primary dark:hover:border-primary cursor-pointer rounded-xl border-2 border-gray-200 bg-white p-4 transition-all hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-800/50 dark:hover:bg-gray-800">
+      <Card
+        className={cn(
+          "hover:border-primary dark:hover:border-primary cursor-pointer rounded-xl border-2 border-gray-200 bg-white p-4 transition-all hover:bg-gray-50 dark:border-gray-800 dark:bg-gray-800/50 dark:hover:bg-gray-800",
+          disabled && "pointer-events-none opacity-60",
+        )}
+      >
         <CardContent className="flex items-center gap-4 p-0">
           <div className="bg-primary/10 text-primary flex size-12 items-center justify-center rounded-full">
             <Icon size={24} />

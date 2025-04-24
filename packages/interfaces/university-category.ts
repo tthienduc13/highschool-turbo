@@ -1,6 +1,7 @@
 export interface UniversityCategory {
   id: string;
   uniCode: string;
+  isSaved: boolean;
   name: string;
   description: string;
   logoUrl: null;

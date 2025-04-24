@@ -427,17 +427,17 @@ export const createTagFlashcard = async ({
 
 export const getFSRSById = async ({
   flashcardId,
-  isReview,
+  isLearningNew,
 }: {
   flashcardId: string;
-  isReview: boolean;
+  isLearningNew: boolean;
 }): Promise<FlashcardLearn> => {
   try {
     const { data } = await axiosServices.get(
       flashcardStudyEndpoints.getFSRSById(flashcardId),
       {
         params: {
-          isReview,
+          isLearningNew,
         },
       },
     );
@@ -451,17 +451,17 @@ export const getFSRSById = async ({
 
 export const getFSRSBySlug = async ({
   slug,
-  isReview,
+  isLearningNew,
 }: {
   slug: string;
-  isReview: boolean;
+  isLearningNew: boolean;
 }): Promise<FlashcardLearn> => {
   try {
     const { data } = await axiosServices.get(
       flashcardStudyEndpoints.getFSRSBySlug(slug),
       {
         params: {
-          isReview,
+          isLearningNew,
         },
       },
     );
