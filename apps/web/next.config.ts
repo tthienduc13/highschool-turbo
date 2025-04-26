@@ -32,6 +32,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
   env: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },

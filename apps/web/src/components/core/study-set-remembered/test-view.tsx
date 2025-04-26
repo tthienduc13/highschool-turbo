@@ -37,6 +37,8 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
     s.timeline.every((q) => q.answered),
   );
 
+  const flashcardName = useRememberedContext((s) => s.flashcardName);
+
   const manualReset = () => {
     pushQueryParams(params.slug as string, store.getState().settings, router);
 
@@ -71,7 +73,7 @@ export const TestView = ({ onSubmit }: TestViewProps) => {
           }}
         >
           <TestCardGap
-            title={"TODO: xu ly name"}
+            title={flashcardName}
             type="start"
             onResetClick={manualReset}
             onSettingsClick={() => setSettingsOpen(true)}

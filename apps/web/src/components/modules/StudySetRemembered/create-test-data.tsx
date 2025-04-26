@@ -59,7 +59,6 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
   );
 
   useEffect(() => {
-    console.log("testRangeParam changed, refetching...", testRangeParam);
     refetch();
     setStoreInitialized(false);
   }, [testRangeParam, refetch]);
@@ -78,11 +77,6 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
       testData.dueCards.length > 0 &&
       !storeInitialized
     ) {
-      console.log(
-        "Initializing store with new test data:",
-        testData.dueCards.length,
-      );
-
       const { settings, valid } = searchParams.get("count")
         ? getQueryParams(searchParams)
         : { settings: DEFAULT_PROPS.settings, valid: true };
@@ -104,6 +98,10 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
           settings.answerMode,
           (testRangeParam as unknown as TestRange) ?? settings.testRange,
         );
+
+      storeRef.current.setState({
+        flashcardName: testData.flashcardName,
+      });
 
       setStoreInitialized(true);
     }

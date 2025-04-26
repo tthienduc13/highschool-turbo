@@ -7,6 +7,7 @@ module.exports = {
         "NEXTAUTH_URL=https://app.highschool.vn turbo run build --filter web && NEXTAUTH_URL=https://app.highschool.vn turbo run start --filter web",
       watch: false,
       env: {
+        NODE_ENV: "production",
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",
         NEXT_PUBLIC_APP_URL: "https://app.highschool.vn",
         NEXT_PUBLIC_GAME_URL: "https://game.highschool.vn",
@@ -20,7 +21,7 @@ module.exports = {
         AUTH_GOOGLE_ID:
           "200245631284-jj3661ph7d8nv2704do68jl0njgfluta.apps.googleusercontent.com",
         AUTH_GOOGLE_SECRET: "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",
-        NEXT_PUBLIC_NOTIFICATION_APPLICATION_IDENTIFIER: "2T6E0LAU8aRZ",
+        NEXT_PUBLIC_NOTIFICATION_APPLICATION_IDENTIFIER: "MLgSyidUszrF",
         NEXTAUTH_URL: "https://app.highschool.vn",
         PORT: 3002,
       },

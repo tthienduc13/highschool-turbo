@@ -47,6 +47,7 @@ export interface RememberedStoreProps {
     testRange: TestRange;
     answerMode: StudySetAnswerMode;
   };
+  flashcardName: string;
   questionCount: number;
   questionTypes: TestQuestionType[];
   answerMode: StudySetAnswerMode;
@@ -79,6 +80,7 @@ interface RememberedState extends RememberedStoreProps {
     answerMode: StudySetAnswerMode,
     testRange: TestRange,
   ) => void;
+  setFlashcardName: (flashcardName: string) => void;
   setSettings: (settings: Partial<RememberedStoreProps["settings"]>) => void;
   getMaxQuestions: () => number;
   answerQuestion: <D extends DefaultData>(
@@ -99,6 +101,7 @@ interface RememberedState extends RememberedStoreProps {
 export type RememberedStore = ReturnType<typeof createRememberedStore>;
 
 export const DEFAULT_PROPS: RememberedStoreProps = {
+  flashcardName: "",
   settings: {
     questionCount: 20,
     questionTypes: [
@@ -307,6 +310,9 @@ export const createRememberedStore = (
         set((state) => ({
           settings: { ...state.settings, ...settings },
         }));
+      },
+      setFlashcardName: (flashcardName: string) => {
+        set({ flashcardName });
       },
       getMaxQuestions: () => {
         const state = get();
