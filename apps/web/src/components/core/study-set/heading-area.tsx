@@ -107,10 +107,12 @@ export const HeadingArea = () => {
           ) : (
             <>
               {flashcard.isRated ? (
-                <div className="flex flex-row items-center gap-2 text-lg">
-                  <IconStarFilled className="text-yellow-500" size={24} />
-                  {flashcard.star} sao
-                </div>
+                <Hint label="Bạn đã đánh giá bộ thẻ này">
+                  <div className="flex cursor-pointer flex-row items-center gap-2 text-lg">
+                    <IconStarFilled className="text-yellow-500" size={24} />
+                    {flashcard.star} sao
+                  </div>
+                </Hint>
               ) : (
                 <Button
                   variant={"outline"}

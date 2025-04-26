@@ -12,19 +12,17 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
 import { cn } from "@highschool/ui/lib/utils";
 import {
   IconBrain,
-  IconCards,
   IconChevronDown,
   IconChevronUp,
-  IconGridDots,
-  IconLayersSubtract,
-  IconMeteor,
+  IconPokeball,
+  IconRefreshDot,
   IconReport,
+  IconWritingSign,
 } from "@tabler/icons-react";
 
 import { menuEventChannel } from "@/events/menu";
@@ -54,47 +52,33 @@ export const InteractorModes = () => {
         align="center"
         className="w-full border-gray-200 dark:border-gray-700"
         side="top"
-        sideOffset={10}
+        sideOffset={20}
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel className="text-base text-gray-800 dark:text-gray-400">
-            Trò chơi và hoạt động
-          </DropdownMenuLabel>
-          <InteractorMode
-            comingSoon
-            requireAuth
-            icon={<IconLayersSubtract />}
-            name="Nối"
-            // href={`/study-set/${flashcard.slug}/match?intro=true`}
-          />
-          <InteractorMode
-            comingSoon
-            requireAuth
-            icon={<IconGridDots />}
-            name="Ô chữ"
-          />
-          <InteractorMode
-            comingSoon
-            requireAuth
-            icon={<IconMeteor />}
-            name=" Gravity"
-          />
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuLabel className="text-base text-gray-800 dark:text-gray-400">
-            Ôn tập
+            Hoạt động học tập
           </DropdownMenuLabel>
           <InteractorMode
             requireAuth
-            href={`/study-set/${flashcard.slug}/learn`}
+            href={`/study-set/${flashcard.slug}/flashcards`}
             icon={<IconBrain />}
             name="Học"
           />
           <InteractorMode
-            href={`/study-set/${flashcard.slug}/flashcards`}
-            icon={<IconCards />}
-            name="Thẻ"
+            href={`/study-set/${flashcard.slug}/remembered`}
+            icon={<IconRefreshDot />}
+            name="Ôn tập"
+          />
+          <InteractorMode
+            requireAuth
+            href={`/study-set/${flashcard.slug}/cram`}
+            icon={<IconPokeball />}
+            name="Học"
+          />
+          <InteractorMode
+            href={`/study-set/${flashcard.slug}/write`}
+            icon={<IconWritingSign />}
+            name="Viết"
           />
           <InteractorMode
             requireAuth

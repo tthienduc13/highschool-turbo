@@ -7,6 +7,7 @@ import {
   IconGridDots,
   IconLock,
   IconPokeball,
+  IconRefreshDot,
   IconReport,
   IconWritingSign,
 } from "@tabler/icons-react";
@@ -21,14 +22,18 @@ export const LinkArea = () => {
 
   return (
     <div className="grid h-fit w-full grid-cols-2 gap-4 md:grid-cols-3 lg:w-[160px] lg:grid-cols-1">
-      {/* Quet trai phai */}
       <Linkable
         requireAuth
         href={`/study-set/${flashcard.slug}/flashcards`}
         icon={<IconBrain />}
         name="Học"
       />
-      {/*  */}
+      <Linkable
+        requireAuth
+        href={`/study-set/${flashcard.slug}/remembered`}
+        icon={<IconRefreshDot />}
+        name="Ôn tập"
+      />
       <Linkable
         requireAuth
         href={`/study-set/${flashcard.slug}/cram`}

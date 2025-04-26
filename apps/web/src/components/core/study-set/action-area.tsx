@@ -1,21 +1,23 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   IconLoader2,
   IconPlus,
-  IconPrinter,
   IconShare,
   IconTableExport,
   TablerIcon,
 } from "@tabler/icons-react";
+import { usePathname } from "next/navigation";
 
 import { Hint } from "../common/hint";
+import { ShareModal } from "../common/share-modal";
 
 import { menuEventChannel } from "@/events/menu";
+import { useSet } from "@/hooks/use-set";
 
 const AddToFolderModal = dynamic(
   () => import("./add-to-folder-modal").then((mod) => mod.AddToFolderModal),
@@ -32,17 +34,14 @@ const ExportTermModal = dynamic(
 );
 
 export const ActionArea = () => {
+  const pathName = usePathname();
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { flashcard, terms } = useSet();
+
   const [addToFolder, setAddToFolder] = useState(false);
-  //   const [share, setShare] = useState(false);
-  const [shouldPrint, setShouldPrint] = useState(false);
+  const [share, setShare] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
 
-  // const handlePrint = useReactToPrint({
-  //     content: () => printRef.current,
-  //     onAfterPrint: () => {
-  //         setShouldPrint(false);
-  //     },
-  // });
   return (
     <>
       {addToFolder && (
@@ -53,6 +52,13 @@ export const ActionArea = () => {
           }}
         />
       )}
+      <ShareModal
+        open={share}
+        pathName={pathName}
+        onClose={() => {
+          setShare(false);
+        }}
+      />
       <ExportTermModal
         isOpen={exportOpen}
         onClose={() => setExportOpen(false)}
@@ -67,19 +73,9 @@ export const ActionArea = () => {
         <ActionButton
           icon={IconShare}
           label="Chia sẻ"
-          //   onClick={() => setShare(true)}
+          onClick={() => setShare(true)}
         />
-        <ActionButton
-          icon={IconPrinter}
-          isLoading={shouldPrint}
-          label="Print"
-          onClick={() => {
-            setShouldPrint(true);
-            requestAnimationFrame(() => {
-              // handlePrint();
-            });
-          }}
-        />
+
         <ActionButton
           icon={IconTableExport}
           label="Xuất ra"
@@ -121,7 +117,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
     <Hint label={label} side="bottom">
       <Button
         aria-label={label}
-        className="rounded-none bg-background"
+        className="bg-background rounded-none"
         disabled={isLoading}
         size={"icon"}
         variant={"ghost"}

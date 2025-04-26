@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { DueCardTest, TestRange } from "@highschool/interfaces";
 import { useFlashcardTestQuery } from "@highschool/react-query/queries";
@@ -20,32 +20,22 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
   const router = useRouter();
   const { slug } = useParams();
   const searchParams = useSearchParams();
+  const [storeInitialized, setStoreInitialized] = useState(false);
 
-  const { data: testData, isLoading } = useFlashcardTestQuery({
-    mode: TestRange.Today,
+  const testRangeParam = searchParams.get("testRange");
+
+  const {
+    data: testData,
+    isLoading,
+    refetch,
+  } = useFlashcardTestQuery({
+    mode: (testRangeParam! as unknown as TestRange) ?? TestRange.Today,
     limit: 100,
     slug: slug as string,
   });
 
-  const storeRef = useRef<RememberedStore>(null);
-
-  useEffect(() => {
-    if (testData && testData?.dueCards?.length === 0) {
-      toast.info("Hãy bắt đầu học trước rồi làm kiểm tra nhé");
-      router.replace(`/study-set/${slug as string}`);
-    }
-  }, [testData]);
-
-  if (isLoading) {
-    return <TestLoading />;
-  }
-
-  if (!testData || testData?.dueCards?.length === 0) {
-    return;
-  }
-
-  if (!storeRef.current) {
-    storeRef.current = createRememberedStore(undefined, {
+  const storeRef = useRef<RememberedStore>(
+    createRememberedStore(undefined, {
       onAnswerDelegate: (index) => {
         const next = document.getElementById(`test-card-${index + 1}`);
 
@@ -65,49 +55,73 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
           input.focus();
         }
       },
-    });
+    }),
+  );
 
-    const { settings, valid } = searchParams.get("count")
-      ? getQueryParams(searchParams)
-      : { settings: DEFAULT_PROPS.settings, valid: true };
+  useEffect(() => {
+    console.log("testRangeParam changed, refetching...", testRangeParam);
+    refetch();
+    setStoreInitialized(false);
+  }, [testRangeParam, refetch]);
 
-    // SUPER IMPORTANT: **clone the terms when initializing** so we aren't modifying the original
-    // objects when we transition back to the main set page (test store uses a lot of .pop() calls on the array)
-    const cloned = Array.from(testData?.dueCards!);
-
-    if (!valid) {
-      router.replace(`/study-set/${slug as string}/remembered`);
+  useEffect(() => {
+    if (testData && testData?.dueCards?.length === 0) {
+      toast.info("Tips: Hãy bắt đầu học trước rồi làm kiểm tra nhé");
+      router.replace(`/study-set/${slug as string}`);
     }
-    storeRef.current
-      .getState()
-      .initialize(
-        cloned as DueCardTest[],
-        Math.min(settings.questionCount, cloned.length),
-        settings.questionTypes,
-        settings.answerMode,
-        settings.testRange,
+  }, [testData, router, slug]);
+
+  useEffect(() => {
+    if (
+      testData &&
+      testData.dueCards &&
+      testData.dueCards.length > 0 &&
+      !storeInitialized
+    ) {
+      console.log(
+        "Initializing store with new test data:",
+        testData.dueCards.length,
       );
+
+      const { settings, valid } = searchParams.get("count")
+        ? getQueryParams(searchParams)
+        : { settings: DEFAULT_PROPS.settings, valid: true };
+
+      if (!valid) {
+        router.replace(`/study-set/${slug as string}/remembered`);
+
+        return;
+      }
+
+      const cloned = Array.from(testData.dueCards);
+
+      storeRef.current
+        .getState()
+        .initialize(
+          cloned as DueCardTest[],
+          Math.min(settings.questionCount, cloned.length),
+          settings.questionTypes,
+          settings.answerMode,
+          (testRangeParam as unknown as TestRange) ?? settings.testRange,
+        );
+
+      setStoreInitialized(true);
+    }
+  }, [testData, searchParams, slug, router, storeInitialized, testRangeParam]);
+
+  if (isLoading) {
+    return <TestLoading />;
   }
-
-  //   useEffect(() => {
-  //     const onRefetch = (data: SetData) => {
-  //       if (!data) return;
-  //       storeRef.current?.setState({
-  //         allTerms: data.terms as FlashcardContent[],
-  //       });
-  //     };
-
-  //     queryEventChannel.on("setQueryRefetched", onRefetch);
-
-  //     return () => {
-  //       queryEventChannel.off("setQueryRefetched", onRefetch);
-  //     };
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, []);
 
   return (
     <RememberedContext.Provider value={storeRef.current}>
-      {children}
+      {!testData || testData?.dueCards?.length === 0 ? (
+        <div className="p-4 text-center">
+          <p>Không có dữ liệu kiểm tra. Vui lòng bắt đầu học trước.</p>
+        </div>
+      ) : (
+        children
+      )}
     </RememberedContext.Provider>
   );
 };

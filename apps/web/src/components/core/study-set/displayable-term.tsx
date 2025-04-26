@@ -313,7 +313,7 @@ export const DisplayableTerm = ({ flashcardContent }: DisplayableTermProps) => {
               <Button
                 className="size-8 scale-75 rounded-full md:scale-100"
                 size="icon"
-                variant={isEditing ? "default" : "ghost"}
+                variant={"ghost"}
                 onClick={() => {
                   if (!authed) {
                     menuEventChannel.emit("openSignup", {

@@ -56,7 +56,7 @@ export const TermOverView = () => {
 
   return (
     <TermsOverviewContext.Provider value={{ starredOnly }}>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 pb-2">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <h2 className="text-lg">
             <div className="flex flex-row items-center gap-3">

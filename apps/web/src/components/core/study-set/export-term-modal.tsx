@@ -63,7 +63,7 @@ export const ExportTermModal = ({ isOpen, onClose }: ExportTermModalProps) => {
       onClose={onClose}
       onConfirm={handleCopy}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 pb-6">
         <div className="flex flex-row items-start gap-4">
           <div className="flex w-full flex-col gap-2">
             <div className="flex flex-col gap-0">
