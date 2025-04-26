@@ -3,7 +3,12 @@
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
 import { Modal } from "@highschool/components/modal";
-import { StudySetAnswerMode, TestQuestionType } from "@highschool/interfaces";
+import {
+  StudySetAnswerMode,
+  TestQuestionType,
+  TestRange,
+  TestRangeLabels,
+} from "@highschool/interfaces";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Select,
@@ -15,9 +20,12 @@ import {
 } from "@highschool/ui/components/ui/select";
 import { cn } from "@highschool/ui/lib/utils";
 
-import { getQuestionTypeIcon, getQuestionTypeName } from "./utils";
+import {
+  getQuestionTypeIcon,
+  getQuestionTypeName,
+} from "../study-set-test/utils";
 
-import { useTestContext } from "@/stores/use-study-set-test-store";
+import { useRememberedContext } from "@/stores/use-study-set-remembered-store";
 
 export interface TestSettingsModalProps {
   isOpen: boolean;
@@ -45,11 +53,12 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
   onClose,
   onReset,
 }) => {
-  const questionCount = useTestContext((s) => s.settings.questionCount);
-  const allTerms = useTestContext((s) => s.allTerms.length);
-  const answerMode = useTestContext((s) => s.settings.answerMode);
-  const setSettings = useTestContext((s) => s.setSettings);
-  const enabled = useTestContext((s) => s.settings.questionTypes.length > 0);
+  const answerMode = useRememberedContext((s) => s.settings.answerMode);
+  const testRange = useRememberedContext((s) => s.settings.testRange);
+  const setSettings = useRememberedContext((s) => s.setSettings);
+  const enabled = useRememberedContext(
+    (s) => s.settings.questionTypes.length > 0,
+  );
 
   return (
     <Modal
@@ -65,23 +74,7 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
       }}
     >
       <div className="flex flex-col gap-8 pb-6">
-        <div className="flex flex-col gap-8">
-          <div className="flex flex-row items-center gap-8">
-            <p className="whitespace-nowrap text-lg font-semibold">Số câu</p>
-            <Slider
-              className="w-full"
-              max={allTerms}
-              min={1}
-              questionCount={questionCount}
-              step={1}
-              thumbClassName="group"
-              value={[questionCount]}
-              onValueChange={(value) => {
-                setSettings({ questionCount: value[0] });
-              }}
-            />
-          </div>
-        </div>
+        {" "}
         <div className="flex flex-col gap-2">
           <div className="font-semibold">Làm bài kiểm tra bằng:</div>
           <div className="grid grid-cols-2 gap-3">
@@ -90,7 +83,46 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
             ))}
           </div>
         </div>
+        <div className="flex flex-row items-start justify-between gap-8 md:items-center">
+          <div className="flex flex-col">
+            <div className="font-semibold">Phạm vi câu hỏi</div>
+            <div className="text-muted-foreground text-sm">
+              Phạm vi các câu bạn đã học trong vòng
+            </div>
+          </div>
+          <div className="w-40">
+            <Select
+              value={testRange.toString()}
+              onValueChange={(value) =>
+                setSettings({
+                  testRange: Number(value) as TestRange,
+                })
+              }
+            >
+              <SelectTrigger>
+                <SelectValue className="text-base" />
+              </SelectTrigger>
+              <SelectContent
+                style={{ zIndex: 3000 }}
+                onCloseAutoFocus={(e) => e.preventDefault()}
+              >
+                <SelectGroup className="w-full">
+                  {Object.keys(TestRange)
+                    .filter((k) => !isNaN(Number(k)))
+                    .map((key) => {
+                      const value = Number(key) as TestRange;
 
+                      return (
+                        <SelectItem key={value} value={value.toString()}>
+                          {TestRangeLabels[value]}
+                        </SelectItem>
+                      );
+                    })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
         <div className="flex flex-row items-start justify-between gap-8 md:items-center">
           <div className="flex flex-col">
             <div className="font-semibold">Trả lời bằng</div>
@@ -171,8 +203,8 @@ Slider.displayName = SliderPrimitive.Root.displayName;
 const QuestionTypeComponent: React.FC<{ type: TestQuestionType }> = ({
   type,
 }) => {
-  const questionTypes = useTestContext((s) => s.settings.questionTypes);
-  const setSettings = useTestContext((s) => s.setSettings);
+  const questionTypes = useRememberedContext((s) => s.settings.questionTypes);
+  const setSettings = useRememberedContext((s) => s.setSettings);
 
   const Icon = getQuestionTypeIcon(type);
 

@@ -12,7 +12,7 @@ import {
 import { SlideFade } from "../../common/slide-fade";
 import { TestOptions } from "../test-options";
 
-import { useTestContext } from "@/stores/use-study-set-test-store";
+import { useRememberedContext } from "@/stores/use-study-set-remembered-store";
 
 export interface TestCardGapProps {
   type: "start" | "question" | "finish";
@@ -145,7 +145,9 @@ export const TestCardGapRaw = ({
 const GapIcon: React.FC<
   Pick<TestCardGapProps, "type" | "correctness" | "index">
 > = ({ type, correctness, index }) => {
-  const answered = useTestContext((s) => s.timeline[index || 0]?.answered);
+  const answered = useRememberedContext(
+    (s) => s.timeline[index || 0]?.answered,
+  );
 
   const Icon =
     correctness !== undefined

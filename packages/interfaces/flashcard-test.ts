@@ -6,6 +6,20 @@ export interface EntailmentResult {
   score: number;
 }
 
+export enum TestRange {
+  Today = 0,
+  LastThreeDays = 1,
+  LastSevenDays = 2,
+  AllTime = 3,
+}
+
+export const TestRangeLabels: Record<TestRange, string> = {
+  [TestRange.Today]: "Hôm nay",
+  [TestRange.LastThreeDays]: "3 ngày qua",
+  [TestRange.LastSevenDays]: "7 ngày qua",
+  [TestRange.AllTime]: "Tất cả thời gian",
+};
+
 export interface CortexGraderResponse {
   answer: string;
   input: string;

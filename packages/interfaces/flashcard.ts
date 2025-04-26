@@ -107,6 +107,33 @@ export type StudiableTermWithDistractors = StudiableTerm & {
   distractors: Distractor[];
 };
 
+export interface FlashcardTest {
+  flashcardId: string;
+  flashcardName: string;
+  flashcardDescription: string;
+  dueCardCount: number;
+  totalCardCount: number;
+  progressPercentage: number;
+  isReview: boolean;
+  dueCards: DueCardTest[];
+}
+
+export interface DueCardTest {
+  contentId: string;
+  term: string;
+  definition: string;
+  termRichText: string;
+  definitionRichText: string;
+  image: string;
+  dueDate: Date;
+  isOverdue: boolean;
+  isNew: boolean;
+  isReview: boolean;
+  isDueToday: boolean;
+  priority: number;
+  distractors: Distractor[];
+}
+
 export interface DraftData {
   id: string;
   userId: string;

@@ -423,6 +423,18 @@ export const flashcardEndpoints = {
       API_VERSIONS.V1,
       `/container/flashcard/${flashcardId}/preset/${presetId}`,
     ),
+  getFlashcardTest: (slug: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/feature/flashcard/${slug}/remembered`,
+    ),
+  ratingFlashcard: (flashcardId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/flashcard/rating/${flashcardId}`,
+    ),
   getTop: createEndpoint(
     SERVICE_PREFIXES.DOCUMENT,
     API_VERSIONS.V1,

@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { TestRange } from "@highschool/interfaces";
 
 import {
   createFlashcard,
@@ -12,6 +13,7 @@ import {
   getFlashcardBySlug,
   getFlashcards,
   getFlashcardsFor,
+  getFlashcardTestData,
   getFSRSById,
   getFSRSBySlug,
   getOwnerFlashcard,
@@ -19,12 +21,35 @@ import {
   getTopFlashcard,
   getUserFlashcard,
   patchFlashcard,
+  ratingFlashcard,
   resetFlashcardProgress,
   starTerm,
   updateContainer,
   updateFSRSProgress,
   updatePreset,
 } from "../apis/flashcard.ts";
+
+export const useFlashcardTestQuery = ({
+  mode,
+  limit,
+  slug,
+}: {
+  mode: TestRange;
+  limit: number;
+  slug: string;
+}) => {
+  return useQuery({
+    queryKey: ["flashcard-test", { mode, limit, slug }],
+    queryFn: () => getFlashcardTestData({ mode, limit, slug }),
+  });
+};
+
+export const useRateFlashcardMutation = () => {
+  return useMutation({
+    mutationKey: ["rate-flashcard"],
+    mutationFn: ratingFlashcard,
+  });
+};
 
 export const useFSRSByIdQuery = ({
   flashcardId,

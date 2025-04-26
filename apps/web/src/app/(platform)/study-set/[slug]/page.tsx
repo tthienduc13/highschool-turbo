@@ -1,4 +1,3 @@
-// app/study-set/[slug]/page.tsx
 import {
   HydrationBoundary,
   QueryClient,
@@ -9,6 +8,7 @@ import {
   getFlashcardContentsBySlug,
 } from "@highschool/react-query/apis";
 import { Metadata } from "next";
+import { cache } from "react";
 
 import StudySetModule from "@/components/modules/StudySet";
 
@@ -18,7 +18,7 @@ const getFlashcardContentsQueryKey = (slug: string) => [
   slug,
 ];
 
-async function getFlashcardData(slug: string) {
+const getFlashcardData = cache(async (slug: string) => {
   try {
     return await getFlashcardBySlug({ slug });
   } catch (error) {
@@ -26,7 +26,28 @@ async function getFlashcardData(slug: string) {
 
     return null;
   }
-}
+});
+
+const prepareQueryClient = cache(async (slug: string) => {
+  const queryClient = new QueryClient();
+
+  const flashcardData = await getFlashcardData(slug);
+
+  queryClient.setQueryData(getFlashcardQueryKey(slug), flashcardData);
+
+  await queryClient.prefetchQuery({
+    queryKey: getFlashcardContentsQueryKey(slug),
+    queryFn: () =>
+      getFlashcardContentsBySlug({
+        slug,
+        pageNumber: 1,
+        pageSize: 1000,
+      }),
+    staleTime: 60 * 1000,
+  });
+
+  return { queryClient, flashcardData };
+});
 
 export const generateMetadata = async ({
   params,
@@ -35,13 +56,7 @@ export const generateMetadata = async ({
 }): Promise<Metadata | undefined> => {
   const { slug } = await params;
 
-  const queryClient = new QueryClient();
-
-  const flashcardData = await queryClient.fetchQuery({
-    queryKey: getFlashcardQueryKey(slug),
-    queryFn: () => getFlashcardData(slug),
-    staleTime: 60 * 1000,
-  });
+  const { flashcardData } = await prepareQueryClient(slug);
 
   if (!flashcardData) return undefined;
 
@@ -57,29 +72,12 @@ export default async function StudySet({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: getFlashcardQueryKey(slug),
-    queryFn: () => getFlashcardData(slug),
-    staleTime: 60 * 1000,
-  });
-
-  // Prefetch flashcard contents
-  await queryClient.prefetchQuery({
-    queryKey: getFlashcardContentsQueryKey(slug),
-    queryFn: () =>
-      getFlashcardContentsBySlug({
-        slug,
-        pageNumber: 1,
-        pageSize: 1000,
-      }),
-    staleTime: 60 * 1000, // 1 phút
-  });
+  const { queryClient } = await prepareQueryClient(slug);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <StudySetModule slug={slug} />
+      <StudySetModule preloaded={true} slug={slug} />
     </HydrationBoundary>
   );
 }

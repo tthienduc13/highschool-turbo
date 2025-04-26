@@ -55,7 +55,6 @@ export const CreateTestData: React.FC<React.PropsWithChildren> = ({
     if (!valid) {
       router.replace(`/study-set/${flashcard.slug}/test`);
     }
-
     storeRef.current
       .getState()
       .initialize(

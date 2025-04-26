@@ -54,7 +54,7 @@ export const RecentView = ({ isLoading, data }: RecentViewProps) => {
                 ? `/courses/${item.slugDocument}`
                 : item.typeDocument === DocumentType.Flashcard
                   ? `/study-set/${item.slugDocument}`
-                  : `/document/${item.slugDocument}`
+                  : `/documents/${item.slugDocument}`
             }
           >
             <Button

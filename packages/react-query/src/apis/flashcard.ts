@@ -12,6 +12,8 @@ import {
   Pagination,
   ResponseModel,
   TagFlashcard,
+  TestRange,
+  FlashcardTest,
 } from "@highschool/interfaces";
 import {
   tagEndpoints,
@@ -24,6 +26,26 @@ import {
 import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
+
+export const ratingFlashcard = async ({
+  flashcardId,
+  star,
+}: {
+  flashcardId: string;
+  star: number;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      flashcardEndpoints.ratingFlashcard(flashcardId),
+      { star },
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while rating flashcard", error);
+    throw error;
+  }
+};
 
 export interface CreateFlashcardResponse {
   id: string;
@@ -562,6 +584,30 @@ export const getDraftById = async ({
   } catch (error) {
     console.error("Error while getting draft by id", error);
     console.error("Error while resetting flashcard progress", error);
+    throw error;
+  }
+};
+
+export const getFlashcardTestData = async ({
+  mode,
+  limit,
+  slug,
+}: {
+  mode: TestRange;
+  limit: number;
+  slug: string;
+}): Promise<FlashcardTest> => {
+  try {
+    const { data } = await axiosServices.get(
+      flashcardEndpoints.getFlashcardTest(slug),
+      {
+        params: { mode, limit },
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting flashcard test data", error);
     throw error;
   }
 };

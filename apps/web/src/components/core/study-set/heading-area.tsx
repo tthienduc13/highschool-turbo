@@ -9,6 +9,7 @@ import { Button } from "@highschool/ui/components/ui/button";
 import {
   IconEditCircle,
   IconStar,
+  IconStarFilled,
   IconTrash,
   IconTrendingUp,
 } from "@tabler/icons-react";
@@ -18,6 +19,8 @@ import { Hint } from "../common/hint";
 import { visibilityIcon } from "../common/renderer/visibility-icon";
 import { visibilityText } from "../common/renderer/visibility-text";
 
+import { RatingModal } from "./rating-modal";
+
 import { useSet } from "@/hooks/use-set";
 
 export const HeadingArea = () => {
@@ -25,7 +28,9 @@ export const HeadingArea = () => {
 
   const { data: session } = useSession();
   const router = useRouter();
+
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [ratingModalOpen, setRatingModalOpen] = useState(false);
 
   const deleteSet = useDeleteFlashcardMutation();
 
@@ -55,6 +60,11 @@ export const HeadingArea = () => {
             },
           );
         }}
+      />
+      <RatingModal
+        flashcardId={flashcard.id}
+        isOpen={ratingModalOpen}
+        onClose={() => setRatingModalOpen(false)}
       />
       <div className="flex flex-col gap-4">
         <h1 className="break-all text-2xl font-bold md:text-4xl">
@@ -95,13 +105,22 @@ export const HeadingArea = () => {
               </Hint>
             </div>
           ) : (
-            <Button
-              variant={"outline"}
-              onClick={() => toast.info("🤪 Đi chơi về làm")}
-            >
-              <IconStar />
-              Đánh giá
-            </Button>
+            <>
+              {flashcard.isRated ? (
+                <div className="flex flex-row items-center gap-2 text-lg">
+                  <IconStarFilled className="text-yellow-500" size={24} />
+                  {flashcard.star} sao
+                </div>
+              ) : (
+                <Button
+                  variant={"outline"}
+                  onClick={() => setRatingModalOpen(true)}
+                >
+                  <IconStar />
+                  Đánh giá
+                </Button>
+              )}
+            </>
           )}
         </div>
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">

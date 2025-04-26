@@ -9,10 +9,11 @@ import {
   SetData,
   StudiableTerm,
 } from "@highschool/interfaces";
+import { useQuery } from "@tanstack/react-query";
 import {
-  useFlashcardBySlugQuery,
-  useContentsBySlugQuery,
-} from "@highschool/react-query/queries";
+  getFlashcardBySlug,
+  getFlashcardContentsBySlug,
+} from "@highschool/react-query/apis";
 
 import { SetNotFound } from "@/components/core/common/404s/set-404";
 import { Loading } from "@/components/core/common/loading";
@@ -24,6 +25,11 @@ import {
   ContainerStoreProps,
   createContainerStore,
 } from "@/stores/use-container-store";
+const getFlashcardQueryKey = (slug: string) => ["flashcard-by-slug", slug];
+const getFlashcardContentsQueryKey = (slug: string) => [
+  "flashcardContent-by-slug",
+  slug,
+];
 
 export interface HydrateSetDataProps {
   slug: string;
@@ -32,6 +38,7 @@ export interface HydrateSetDataProps {
   disallowDirty?: boolean;
   requireFresh?: boolean;
   placeholder?: React.ReactNode;
+  preloaded?: boolean;
 }
 
 export const HydrateSetData: React.FC<
@@ -43,6 +50,7 @@ export const HydrateSetData: React.FC<
   disallowDirty = false,
   requireFresh,
   placeholder,
+  preloaded = false,
   children,
 }) => {
   const { data: session, status } = useSession();
@@ -56,18 +64,25 @@ export const HydrateSetData: React.FC<
     error,
     isFetchedAfterMount,
     isSuccess: flashcardSuccess,
-  } = useFlashcardBySlugQuery({
-    slug,
+  } = useQuery({
+    queryFn: () => getFlashcardBySlug({ slug }),
+    queryKey: getFlashcardQueryKey(slug),
+    staleTime: preloaded ? 5 * 60 * 1000 : 60 * 1000,
   });
 
   const {
     data: flashcardContentData,
     refetch: refetchFlashcardContent,
     isSuccess: flashcardContentSuccess,
-  } = useContentsBySlugQuery({
-    slug,
-    pageNumber: 1,
-    pageSize: status === "authenticated" ? 1000 : 10,
+  } = useQuery({
+    queryFn: () =>
+      getFlashcardContentsBySlug({
+        slug: slug,
+        pageNumber: 1,
+        pageSize: status === "authenticated" ? 1000 : 10,
+      }),
+    queryKey: getFlashcardContentsQueryKey(slug),
+    staleTime: preloaded ? 5 * 60 * 1000 : 60 * 1000,
   });
 
   const createInjectedData = useCallback(
@@ -130,21 +145,24 @@ export const HydrateSetData: React.FC<
     }
   }, [isDirty, refetchFlashcard, refetchFlashcardContent]);
 
+  const isDataReady = preloaded
+    ? flashcardData && flashcardContentData
+    : flashcardSuccess && flashcardContentSuccess;
+
   if (error) return <SetNotFound />;
 
   if (
     status === "loading" ||
     (!isPublic && !session) ||
-    !flashcardData ||
-    !flashcardContentData ||
+    !isDataReady ||
     (disallowDirty && isDirty) ||
     (!isFetchedAfterMount && requireFresh)
   )
     return placeholder || <Loading />;
 
   const setData: SetData = createInjectedData(
-    flashcardData,
-    flashcardContentData,
+    flashcardData!,
+    flashcardContentData ?? [],
   );
 
   return <ContextLayer data={setData}>{children}</ContextLayer>;

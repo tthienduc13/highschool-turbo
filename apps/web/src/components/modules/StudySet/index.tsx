@@ -18,8 +18,13 @@ import { SetLoading } from "@/components/core/study-set/set-loading";
 import { TermImageLayer } from "@/components/core/study-set/term-image-layer";
 import { TermOverView } from "@/components/core/study-set/term-overview";
 
-// Receive slug as a prop from the page component
-function StudySetModule({ slug }: { slug: string }) {
+function StudySetModule({
+  slug,
+  preloaded,
+}: {
+  slug: string;
+  preloaded?: boolean;
+}) {
   const [isScrollPast, setIsScrollPast] = useState(false);
 
   const handleScroll = () => {
@@ -41,6 +46,7 @@ function StudySetModule({ slug }: { slug: string }) {
       <HydrateSetData
         isPublic
         placeholder={<SetLoading />}
+        preloaded={preloaded}
         slug={slug} // Pass the slug down instead of using useParams
       >
         <EditorGlobalStyles />
