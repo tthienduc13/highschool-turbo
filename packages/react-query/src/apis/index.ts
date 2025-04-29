@@ -29,3 +29,4 @@ export * from "./ai.ts";
 export * from "./report.ts";
 export * from "./fsrs.ts";
 export * from "./theory.ts";
+export * from "./assignment.ts";

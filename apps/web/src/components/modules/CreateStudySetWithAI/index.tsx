@@ -14,7 +14,7 @@ function CreateStudySetWithAIModule() {
     <WithFooter>
       <EnterWrapper>
         <Container
-          className="flex flex-col items-center justify-center gap-10"
+          className="mt-10 flex flex-col items-center justify-center gap-10"
           maxWidth="4xl"
         >
           <h1 className="relative text-center text-3xl font-bold md:text-4xl">

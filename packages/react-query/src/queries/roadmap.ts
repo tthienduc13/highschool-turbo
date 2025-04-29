@@ -38,6 +38,7 @@ export const useGetDocumentsQuery = ({
   const queryKey = ["roadmap-documents"];
   const queryFn = async () => await getDocumentsById(documentIds);
   const enabled = disabled;
+
   return { queryFn, queryKey, enabled };
 };
 

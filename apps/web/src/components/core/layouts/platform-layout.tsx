@@ -87,6 +87,7 @@ function PlatformLayout({
     if (pathName.endsWith("/about-fsrs")) return true;
 
     if (pathName.includes("/chapters/")) return true;
+    if (pathName.includes("/zone/")) return true;
 
     return false;
   };

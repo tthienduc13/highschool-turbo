@@ -87,7 +87,7 @@ export const Banner = () => {
 
   return (
     <div className="relative size-full">
-      <div className="absolute top-[190px] -z-10 h-full w-[400%] max-w-[2200px] opacity-10 blur-[30px] lg:top-[260px] lg:w-[150%]">
+      <div className="absolute top-[190px] -z-10 h-full w-[400%] max-w-[4000px] opacity-10 blur-[30px] lg:top-[260px] lg:w-[150%]">
         <div className="relative size-full rotate-12">
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-0 pb-[31.25%]" />
           <div className="bg-custom-gradient absolute inset-0 flex size-full items-center justify-center overflow-hidden" />

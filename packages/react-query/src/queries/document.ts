@@ -8,10 +8,69 @@ import {
   getDocumentManagementBySlug,
   getDocumentMedia,
   getDocuments,
+  getDocumentsList,
   getDownloadDocument,
   updateDocument,
   uploadDocument,
 } from "../apis/document.ts";
+
+export interface FilterPayload {
+  search?: string;
+  pageNumber: number;
+  pageSize: number;
+  schoolId?: string;
+  semester?: number | null;
+  documentYear?: number;
+  sortPopular?: boolean | null;
+  provinceId?: string;
+  categoryIds?: string;
+  curriculumIds?: string;
+  subjectId?: string;
+}
+
+export const useDocumentsQuery = ({
+  search,
+  pageNumber,
+  pageSize,
+  schoolId,
+  categoryIds,
+  semester,
+  sortPopular,
+  documentYear,
+  curriculumIds,
+  provinceId,
+  subjectId,
+}: FilterPayload) => {
+  return useQuery({
+    queryKey: [
+      "document",
+      search,
+      pageNumber,
+      pageSize,
+      sortPopular,
+      semester,
+      schoolId,
+      categoryIds,
+      curriculumIds,
+      documentYear,
+      provinceId,
+      subjectId,
+    ],
+    queryFn: () =>
+      getDocumentsList({
+        search: search,
+        pageNumber: pageNumber,
+        pageSize: pageSize,
+        schoolId: schoolId,
+        semester: semester,
+        curriculumIds: curriculumIds,
+        categoryIds: categoryIds,
+        documentYear: documentYear,
+        subjectId: subjectId,
+        provinceId: provinceId,
+      }),
+  });
+};
 
 export const useDocumentQuery = ({
   pageSize,

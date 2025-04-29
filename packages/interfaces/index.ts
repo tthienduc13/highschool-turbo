@@ -31,3 +31,4 @@ export * from "./report";
 export * from "./fsrs";
 export * from "./theory";
 export * from "./university-category";
+export * from "./assignment";

@@ -52,6 +52,7 @@
         "@tiptap/extension-typography": "^2.10.4",
         "@tiptap/extension-underline": "^2.10.4",
         "@tiptap/react": "^2.10.4",
+        "@tremor/react": "^3.18.7",
         "@uiw/react-heat-map": "^2.3.2",
         "@uiw/react-watermark": "^1.0.1",
         "@xyflow/react": "^12.3.6",

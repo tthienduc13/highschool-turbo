@@ -1,7 +1,6 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarSeparator,
 } from "@highschool/ui/components/ui/sidebar";
@@ -93,9 +92,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavWorkspaces workspaces={data.workspaces} />
         <NavSecondary className="mt-auto" items={data.navSecondary} /> */}
       </SidebarContent>
-      <SidebarFooter>
-        <div>asdf</div>
-      </SidebarFooter>
+
       {/* <SidebarRail /> */}
     </Sidebar>
   );

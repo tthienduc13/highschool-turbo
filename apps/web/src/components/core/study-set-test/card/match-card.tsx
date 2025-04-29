@@ -182,7 +182,7 @@ export const InteractiveMatchCard: React.FC<CardProps> = ({ i }) => {
                   className={`order-[ flex items-center${id}] md:order-[${id + 1}]`}
                 >
                   <div className="flex w-full flex-row items-center justify-between gap-4">
-                    <div className="whitespace-nowrap">
+                    <div className="whitespace-pre-wrap">
                       {" "}
                       <ScriptFormatter>
                         {word(question.answerMode, term, "prompt")}

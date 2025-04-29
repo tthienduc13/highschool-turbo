@@ -46,7 +46,7 @@ export const TopBar = () => {
   return (
     <div
       className={cn(
-        "sticky top-2 z-50 -ml-2 w-[calc(100%+16px)] rounded-xl border-2 bg-white px-5 py-4 shadow-xl sm:-ml-5 sm:w-[calc(100%+40px)] dark:bg-gray-800",
+        "sticky top-2  -ml-2 w-[calc(100%+16px)] rounded-xl border-2 bg-white px-5 py-4 shadow-xl sm:-ml-5 sm:w-[calc(100%+40px)] dark:bg-gray-800",
         errorState
           ? "border-red-500 dark:border-red-300"
           : "border-gray-100 dark:border-gray-800/50",
