@@ -11,6 +11,7 @@ import {
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
 import { School } from "@highschool/interfaces";
+import { useDeleteUniversityMutation } from "@highschool/react-query/queries";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
@@ -26,9 +27,12 @@ export function UniversityDeleteDialog({
   currentRow,
 }: Props) {
   const [value, setValue] = useState("");
+  const { mutateAsync: deleteUniversity } = useDeleteUniversityMutation();
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (value.trim() !== currentRow.schoolName) return;
+
+    await deleteUniversity(currentRow.id);
 
     onOpenChange(false);
     toast.success("University deleted successfully");

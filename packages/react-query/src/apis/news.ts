@@ -12,7 +12,7 @@ import {
   tagEndpoints,
 } from "@highschool/endpoints";
 
-import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
+import axiosServices from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
@@ -162,10 +162,7 @@ export const CreateTag = async ({ newTagName }: { newTagName: string }) => {
 };
 
 export const createBlog = async (data: NewsCreate) => {
-  const reponse = await axiosClientUpload.postForm(
-    `${newsEndpoints.create}`,
-    data,
-  );
+  const reponse = await axiosServices.post(`${newsEndpoints.create}`, data);
 
   return reponse.data;
 };
@@ -191,6 +188,55 @@ export const getStatisticNews = async ({
     return data;
   } catch (error) {
     console.log("error while getting realted news", error);
+    throw error;
+  }
+};
+
+export const createNews = async (data: NewsCreate) => {
+  try {
+    const response = await axiosServices.post(newsEndpoints.create, data);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while creating news", error);
+    throw error;
+  }
+};
+
+export const updateNews = async ({
+  id,
+  contentHtml,
+  content,
+  newsTagId,
+}: {
+  id: string;
+  contentHtml: string;
+  content: string;
+  newsTagId: string;
+}) => {
+  try {
+    const response = await axiosServices.patch(`${newsEndpoints.update(id)}`, {
+      contentHtml,
+      content,
+      newsTagId,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while updating news", error);
+    throw error;
+  }
+};
+
+export const deleteNews = async (newsId: string) => {
+  try {
+    const response = await axiosServices.delete(
+      `${newsEndpoints.delete(newsId)}`,
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while deleting news", error);
     throw error;
   }
 };

@@ -23,9 +23,15 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@highschool/ui/components/ui/tooltip";
-import { useNewsDetailQuery } from "@highschool/react-query/queries";
+import {
+    useDeleteNewsMutation,
+    useNewsDetailQuery,
+    useUpdateNewsMutation,
+} from "@highschool/react-query/queries";
 import { ContentData } from "@highschool/components/minimal-editor/ui/types";
 import { MinimalTiptapEditor } from "@highschool/components/minimal-editor/ui/minimal-tiptap";
+import { Button } from "@highschool/ui/components/ui/button";
+import { useRouter } from "next/navigation";
 
 import { convertDateString, convertTimeAgo } from "@/domain/utils/time";
 
@@ -36,14 +42,15 @@ interface NewsDetailModuleProps {
 function NewsDetailModule({ slug }: NewsDetailModuleProps) {
     const titleHeading = "Update News";
 
+    const router = useRouter();
+
     const [contentData, setContentData] = useState<ContentData>();
     const { data: initialNewsData, isLoading } = useNewsDetailQuery(slug);
 
-    if (isLoading) {
-        if (contentData) {
-            console.log("ok");
-        }
+    const { mutateAsync: updateNews } = useUpdateNewsMutation();
+    const { mutateAsync: deleteNews } = useDeleteNewsMutation();
 
+    if (isLoading) {
         return (
             <div className="bg-background flex w-full flex-col rounded-lg p-4">
                 <Skeleton className="h-[30vh] w-full" />
@@ -51,9 +58,36 @@ function NewsDetailModule({ slug }: NewsDetailModuleProps) {
         );
     }
 
+    const handleUpdateNews = async () => {
+        if (!contentData) {
+            return;
+        }
+
+        await updateNews({
+            id: initialNewsData?.id ?? "",
+            contentHtml: contentData.contentHtml ?? "",
+            content: contentData.contentText ?? "",
+            newsTagId: initialNewsData?.newsTagId ?? "",
+        });
+    };
+
+    const handleDeleteNews = async () => {
+        await deleteNews(initialNewsData?.id ?? "");
+
+        router.push("/news");
+    };
+
     return (
         <div className="bg-background flex w-full flex-col rounded-lg p-4">
-            <div className="text-primary text-3xl font-bold">{titleHeading}</div>
+            <div className="flex items-center justify-between">
+                <div className="text-primary text-3xl font-bold">{titleHeading}</div>
+                <div className="flex items-center gap-2">
+                    <Button variant={"destructive"} onClick={handleDeleteNews}>
+                        Delete
+                    </Button>
+                    <Button onClick={handleUpdateNews}>Update</Button>
+                </div>
+            </div>
 
             <Card className="mt-4">
                 <CardHeader>

@@ -17,6 +17,7 @@ import { useState } from "react";
 import {
   useCreateUniversityListMutation,
   useProvincesQuery,
+  useUpdateUniversityMutation,
   useUploaderMutation,
 } from "@highschool/react-query/queries";
 import { toast } from "sonner";
@@ -52,7 +53,8 @@ export function UniversityActionDialog({
         ? "Edit Profile"
         : "View Profile";
 
-  const { mutate: createUniversity } = useCreateUniversityListMutation();
+  const { mutateAsync: createUniversity } = useCreateUniversityListMutation();
+  const { mutateAsync: updateUniversity } = useUpdateUniversityMutation();
 
   const [university, setUniversity] = useState<University>(
     currentRow ?? ({} as University),
@@ -115,8 +117,6 @@ export function UniversityActionDialog({
       universityMajors,
     } = university;
 
-    console.log("university", university);
-
     if (
       !uniCode ||
       !name ||
@@ -158,10 +158,6 @@ export function UniversityActionDialog({
       return "Program details must be at least 10 characters";
     }
 
-    if (!singleFile) {
-      return "Please upload an image";
-    }
-
     return "";
   };
 
@@ -181,22 +177,39 @@ export function UniversityActionDialog({
 
       return;
     }
+
     const profilePicture = await handleUpload();
 
-    createUniversity([
-      {
+    if (typeOpen === "add") {
+      await createUniversity([
+        {
+          name: university.name,
+          description: university.description,
+          uniCode: university.uniCode,
+          logoUrl: profilePicture,
+          admissionDetails: university.admission_details,
+          fieldDetails: university.field_details,
+          newsDetails: university.news_details,
+          programDetails: university.program_details,
+          city: Number(university.cityId),
+          tags: university.tags,
+        },
+      ]);
+    } else if (typeOpen === "edit") {
+      await updateUniversity({
+        id: university.id,
         name: university.name,
         description: university.description,
         uniCode: university.uniCode,
-        logoUrl: profilePicture,
-        admissionDetails: university.admission_details,
-        fieldDetails: university.field_details,
-        newsDetails: university.news_details,
-        programDetails: university.program_details,
-        city: Number(university.city),
+        logoUrl: profilePicture == "" ? university.logoUrl : profilePicture,
+        admission_details: university.admission_details,
+        field_details: university.field_details,
+        news_details: university.news_details,
+        program_details: university.program_details,
+        cityId: Number(university.cityId),
         tags: university.tags,
-      },
-    ]);
+      });
+    }
 
     clearFields();
     onOpenChange(false);
@@ -307,7 +320,7 @@ export function UniversityActionDialog({
             <Select
               value={university.city ?? ""}
               onValueChange={(e) =>
-                setUniversity((prev) => ({ ...prev, city: e }))
+                setUniversity((prev) => ({ ...prev, cityId: Number(e) }))
               }
             >
               <SelectTrigger className="bg-background mr-4 rounded-lg border-2 text-left">
@@ -383,6 +396,7 @@ export function UniversityActionDialog({
             Tags <span className="text-primary">(optional)</span>
           </Label>
           <ComboboxTag
+            defaultValues={university.tags ?? []}
             setTags={(tags) =>
               setUniversity((prev) => ({
                 ...prev,

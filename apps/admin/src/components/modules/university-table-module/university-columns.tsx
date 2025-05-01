@@ -27,7 +27,7 @@ export const columns: ColumnDef<University>[] = [
         <LongText className="max-w-36">{row.original.uniCode}</LongText>
       </div>
     ),
-    meta: { className: "max-w-12" },
+    meta: { className: "max-w-15" },
     enableSorting: false,
   },
   {
@@ -79,7 +79,7 @@ export const columns: ColumnDef<University>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="UniversityMajor" />
     ),
-    cell: ({ row }) => <div>{row.original.universityMajors.length}</div>,
+    cell: ({ row }) => <div>{row.original.universityMajors?.length}</div>,
     enableSorting: false,
   },
   {

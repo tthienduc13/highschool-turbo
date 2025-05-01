@@ -99,7 +99,7 @@ export const updateUniversity = async (
         uniCode: university.uniCode,
         name: university.name,
         description: university.description,
-        city: university.city,
+        city: university.cityId,
         newsDetails: university.news_details,
         admissionDetails: university.admission_details,
         programDetails: university.program_details,

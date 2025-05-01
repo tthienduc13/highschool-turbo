@@ -6,8 +6,9 @@ export interface University {
   name: string;
   description: string;
   logoUrl: string;
-  city: string;
-  universityMajors: UniversityMajor[];
+  city?: string;
+  cityId?: number;
+  universityMajors?: UniversityMajor[];
   news_details: string;
   admission_details: string;
   program_details: string;

@@ -1176,6 +1176,10 @@ export const newsEndpoints = {
     API_VERSIONS.V1,
     "/statistic/news",
   ),
+  update: (newsId: string) =>
+    createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, `/new/${newsId}`),
+  delete: (newsId: string) =>
+    createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, `/new/${newsId}`),
 } as const;
 
 // Tag Endpoints

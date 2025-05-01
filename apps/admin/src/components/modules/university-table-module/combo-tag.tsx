@@ -27,11 +27,17 @@ import { UniversityTag } from "@highschool/interfaces";
 
 export interface ComboboxUniversityProps {
   setTags: (tags: string[]) => void;
+  defaultValues?: string[];
 }
 
-export function ComboboxTag({ setTags }: ComboboxUniversityProps) {
+export function ComboboxTag({
+  setTags,
+  defaultValues,
+}: ComboboxUniversityProps) {
   const title = "Tags";
-  const [selectedValues, setSelectedValues] = React.useState<string[]>([]);
+  const [selectedValues, setSelectedValues] = React.useState<string[]>(
+    defaultValues || [],
+  );
   const [searchQuery, setSearchQuery] = React.useState("");
   const debounceSearch: string = useDebounceValue(searchQuery, 300);
 
@@ -104,7 +110,7 @@ export function ComboboxTag({ setTags }: ComboboxUniversityProps) {
                   ) : (
                     tagList
                       .filter(
-                        (option) => selectedValues.indexOf(option.id) !== -1,
+                        (option) => selectedValues.indexOf(option.name) !== -1,
                       )
                       .map((option) => (
                         <Badge
@@ -151,12 +157,12 @@ export function ComboboxTag({ setTags }: ComboboxUniversityProps) {
               <CommandEmpty className="mt-0">No results found.</CommandEmpty>
               <CommandGroup key={debounceSearch}>
                 {tagList.map((option) => {
-                  const isSelected = selectedValues.indexOf(option.id) !== -1;
+                  const isSelected = selectedValues.indexOf(option.name) !== -1;
 
                   return (
                     <CommandItem
                       key={option.id}
-                      value={option.id}
+                      value={option.name}
                       onSelect={handleSelectedValues}
                     >
                       <div
@@ -198,7 +204,7 @@ export function ComboboxTag({ setTags }: ComboboxUniversityProps) {
         {selectedValues.length > 0 &&
           selectedValues.map((subject) => (
             <Badge key={`tag-${subject}`}>
-              {tagList.find((s) => s.id === subject)?.name ||
+              {tagList.find((s) => s.name === subject)?.name ||
                 "Unknown University"}
             </Badge>
           ))}
