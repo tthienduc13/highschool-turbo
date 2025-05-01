@@ -3,6 +3,7 @@ import {
   Document,
   DocumentMedia,
   DocumentUpdate,
+  FilterPayload,
   Pagination,
   ResponseModel,
   UpdateDocument,
@@ -12,6 +13,34 @@ import { documentEndpoints, mediaEndpoints } from "@highschool/endpoints";
 import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
+
+export const getDocumentsList = async ({
+  search,
+  pageNumber,
+  pageSize,
+  schoolId,
+  categoryIds,
+  semester,
+  documentYear,
+  sortPopular,
+  provinceId,
+  curriculumIds,
+  subjectId,
+}: FilterPayload): Promise<Pagination<Document[]>> => {
+  return fetchPaginatedData<Document[]>(documentEndpoints.getDocuments, {
+    search: search,
+    pageNumber: pageNumber,
+    pageSize: pageSize,
+    sortPopular,
+    semester,
+    subjectId: schoolId,
+    categoryIds: categoryIds,
+    curriculumIds: curriculumIds,
+    SubjectId: subjectId,
+    documentYear: documentYear,
+    provinceId: provinceId,
+  });
+};
 
 export const getDocuments = async ({
   pageSize,

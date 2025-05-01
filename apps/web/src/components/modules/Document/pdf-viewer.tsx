@@ -38,7 +38,6 @@ export default function PDFViewer({ pdfUrl }: PDFViewerProps) {
   }
 
   function onDocumentLoadError(err: Error) {
-    console.error("Error loading PDF:", err);
     setError(`Failed to load PDF document: ${err.message}`);
     setIsLoading(false);
   }

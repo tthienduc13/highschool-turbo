@@ -54,10 +54,8 @@ export const flashcardAttachToTypeLabels: Record<
 };
 
 export const TitleProperties = () => {
-  // State cho việc kiểm soát input và item đã chọn
   const [searchInput, setSearchInput] = useState("");
 
-  // Lấy dữ liệu từ context
   const _title = useSetEditorContext((s) => s.title);
   const _description = useSetEditorContext((s) => s.description);
   const _entityId = useSetEditorContext((s) => s.entityId);
@@ -69,7 +67,6 @@ export const TitleProperties = () => {
   const apiSetEntityId = useSetEditorContext((s) => s.setEntityId);
   const apiSetFlashcardType = useSetEditorContext((s) => s.setFlashcardType);
 
-  // State cho form
   const [title, setTitle] = useState(_title);
   const [description, setDescription] = useState(_description);
   const [entityId, setEntityId] = useState<string | null>(_entityId || null);
@@ -94,7 +91,7 @@ export const TitleProperties = () => {
       //     return `Thuộc ${item.subject?.name || ""}`;
 
       case FlashcardAttachToType.Subject:
-        return ""; // Môn học không cần hiển thị mối quan hệ
+        return "";
 
       default:
         return "";
@@ -107,10 +104,8 @@ export const TitleProperties = () => {
     limit: 6,
   });
 
-  // Cập nhật searchInput khi component mount và có entityId
   useEffect(() => {
     if (_entityId && searchResult && searchResult.length > 0) {
-      // Tìm item có id trùng với entityId từ context
       const selectedItem = searchResult.find((item) => {
         const itemId = getItemId(item, flashcardType);
 

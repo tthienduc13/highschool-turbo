@@ -38,10 +38,41 @@ export interface ZonePreview {
   createdBy: string;
   createdAt: string;
   status?: string;
+  isOwner?: boolean;
 }
 
 export enum MemberRole {
   Student = "Student",
   Teacher = "Teacher",
-  Admin = "Admin",
+  Owner = "Owner",
+}
+
+export interface MemberList {
+  members: Member[];
+  pendingMembers: PendingMember[];
+}
+
+export interface Member {
+  id: string;
+  groupId: null;
+  role: MemberRole;
+  createdAt: Date;
+  email: string;
+  user: ZoneUser;
+}
+
+export interface ZoneUser {
+  userId: null | string;
+  role: null | string;
+  fullName: string | null;
+  username: string;
+  avatar: null | string;
+}
+
+export interface PendingMember {
+  id: number;
+  role: MemberRole;
+  createdAt: Date;
+  email: string;
+  user: ZoneUser;
 }

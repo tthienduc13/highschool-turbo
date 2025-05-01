@@ -1,6 +1,5 @@
 "use client";
 
-import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
 import { Modal } from "@highschool/components/modal";
 import {
@@ -161,44 +160,6 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
     </Modal>
   );
 };
-
-const Slider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & {
-    thumbClassName?: string;
-    questionCount: number;
-  }
->(({ className, thumbClassName, questionCount, ...props }, ref) => (
-  <SliderPrimitive.Root
-    ref={ref}
-    className={cn(
-      "relative flex w-full touch-none select-none items-center",
-      className,
-    )}
-    {...props}
-  >
-    <SliderPrimitive.Track className="relative h-0.5 w-full grow overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
-      <SliderPrimitive.Range className="absolute h-full bg-blue-800" />
-    </SliderPrimitive.Track>
-
-    <SliderPrimitive.Thumb
-      className={cn(
-        "focus-visible:ring-ring relative block h-10 w-10 rounded-full border-[4px] border-blue-500 bg-white shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:border-blue-500 dark:bg-gray-800",
-        "active:scale-130 active:border-2.3 hover:scale-110",
-        thumbClassName,
-      )}
-    >
-      <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full px-2 py-1 text-sm font-bold transition-all group-hover:scale-110 group-active:scale-110"
-        style={{ zIndex: 1000 }}
-      >
-        {questionCount}
-      </div>
-    </SliderPrimitive.Thumb>
-  </SliderPrimitive.Root>
-));
-
-Slider.displayName = SliderPrimitive.Root.displayName;
 
 const QuestionTypeComponent: React.FC<{ type: TestQuestionType }> = ({
   type,

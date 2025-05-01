@@ -29,7 +29,7 @@ const options: {
   },
   {
     label: "Chủ sở hữu",
-    value: MemberRole.Admin,
+    value: MemberRole.Owner,
   },
 ];
 

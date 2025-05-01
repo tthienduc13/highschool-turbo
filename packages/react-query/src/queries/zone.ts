@@ -1,6 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getZoneById, getZones } from "../apis/zone.ts";
+import { getAllMember, getZoneById, getZones } from "../apis/zone.ts";
+
+export const useAllMembersQuery = (zoneId: string) => {
+  return useQuery({
+    queryKey: ["zone-member", zoneId],
+    queryFn: () => getAllMember({ zoneId }),
+    enabled: !!zoneId,
+  });
+};
 
 export const useZoneDetailQuery = (zoneId: string) => {
   return useQuery({
@@ -16,10 +24,10 @@ export const useZonesQuery = ({
   pageNumber,
   isAscending,
 }: {
-  search: string;
+  search?: string;
   pageSize: number;
   pageNumber: number;
-  isAscending: boolean;
+  isAscending?: boolean;
 }) => {
   return useQuery({
     queryKey: ["zones", search, pageSize, pageNumber, isAscending],

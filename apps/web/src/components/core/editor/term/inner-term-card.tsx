@@ -69,6 +69,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
   const termFocusedRef = useRef(termFocused);
 
   termFocusedRef.current = termFocused;
+
   const definitionFocusedRef = useRef(definitionFocused);
 
   definitionFocusedRef.current = definitionFocused;
@@ -105,6 +106,7 @@ export const InnerTermCard: React.FC<InnerTermCardProps> = ({
       if (justCreated) editor.chain().focus();
     },
   });
+
   const termRef = useRef(termEditor);
 
   termRef.current = termEditor;

@@ -99,12 +99,6 @@ function DocumentModule() {
                         Học kỳ: {documentData?.semester}
                       </span>
                     </div>
-                    {/* <div className="flex items-center gap-2">
-                      <IconFileText className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        ID: {document.id}
-                      </span>
-                    </div> */}
                   </div>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
@@ -178,19 +172,6 @@ function DocumentModule() {
                     Phương pháp giải nhanh đề thi THPT Quốc Gia
                   </li>
                 </ul>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Thông tin thêm</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">
-                  Tài liệu này cung cấp đề thi tham khảo cho kỳ thi THPT Quốc
-                  Gia môn Toán. Học sinh có thể sử dụng để ôn tập và chuẩn bị
-                  cho kỳ thi chính thức.
-                </p>
               </CardContent>
             </Card>
           </div>

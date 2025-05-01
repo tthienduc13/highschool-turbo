@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 
+import DocumentLibraryModule from "@/components/modules/DocumentLibrary";
+
 export const metadata: Metadata = {
-  title: "Tất cả khoá học",
+  title: "Kho tài liệu",
 };
 
 function DocumentLibrary() {
-  //   return <DocumentLibraryModule />;
-  return <div>abc</div>;
+  return <DocumentLibraryModule />;
 }
 
 export default DocumentLibrary;

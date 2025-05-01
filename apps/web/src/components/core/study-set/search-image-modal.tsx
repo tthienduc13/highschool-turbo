@@ -12,11 +12,6 @@ import {
   DialogTitle,
 } from "@highschool/ui/components/ui/dialog";
 import { Input } from "@highschool/ui/components/ui/input";
-import {
-  IconAlertCircle,
-  IconCloudUpload,
-  IconLock,
-} from "@tabler/icons-react";
 
 import { Context, editorEventChannel } from "@/events/editor";
 import { useDropzone } from "@/hooks/use-drop-zone";
@@ -230,7 +225,7 @@ export const SearchImagesModal = ({
           <VisuallyHidden>
             <DialogDescription>Descritption</DialogDescription>
           </VisuallyHidden>
-          <div className="active:scale-97 ease-in-out rounded-xl border-2 border-gray-200 bg-gray-50/40 p-0 shadow-xl backdrop-blur-md transition-transform duration-150 dark:border-gray-700 dark:bg-gray-800/60">
+          <div className="active:scale-97 rounded-xl border-2 border-gray-200 bg-gray-50/40 p-0 shadow-xl backdrop-blur-md transition-transform duration-150 ease-in-out dark:border-gray-700 dark:bg-gray-800/60">
             <div className="px-5 py-4">
               <Input
                 ref={inputRef}
@@ -256,64 +251,12 @@ export const SearchImagesModal = ({
           <p className="ml-3 mt-3 text-xs text-gray-500 opacity-75">
             Ảnh bởi{" "}
             <Link
-              className="ease-in-out font-semibold text-gray-600 transition-colors duration-150 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+              className="font-semibold text-gray-600 transition-colors duration-150 ease-in-out hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               href="https://unsplash.com/?utm_source=quenti&utm_medium=referral"
             >
               Unsplash
             </Link>
           </p>
-          <div className="relative mx-6 mt-6 cursor-not-allowed">
-            <div
-              {...getRootProps()}
-              className="ease-in-out group relative w-full cursor-pointer overflow-hidden rounded-xl border-2 border-gray-200 bg-gray-50/40 px-6 py-10 transition-colors duration-200 hover:border-gray-300 dark:border-gray-700 dark:bg-gray-800/30 dark:hover:border-gray-600"
-            >
-              <div
-                className="absolute left-0 top-0 h-full bg-gray-200 opacity-50 transition-[width] duration-700 dark:bg-gray-700"
-                style={{ width: `${progress ?? 0 * 100}%` }}
-              />
-              <input {...getInputProps()} disabled />
-              <div className="absolute left-0 top-0 flex items-center gap-1">
-                <div className="rounded-full bg-gray-50 p-1 text-blue-600 dark:bg-gray-900 dark:text-blue-200">
-                  <div className="rounded-full bg-white p-[4px] shadow-md dark:bg-gray-800/50">
-                    <IconLock size={16} />
-                  </div>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Nâng cấp lên tài khoản Pro
-                </p>
-              </div>
-
-              {fileName ? (
-                <div className="z-10 flex h-[46px] items-center justify-center">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative text-blue-600 dark:text-blue-400">
-                      <UploadDots />
-                      <IconCloudUpload className="animate-bounce" />
-                    </div>
-                    <span className="text-sm font-semibold">{fileName}</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="z-10 flex flex-col items-center">
-                  <div className="flex items-center space-x-3 text-gray-500 transition-colors duration-200 group-hover:text-gray-700 dark:group-hover:text-gray-300">
-                    <IconCloudUpload />
-                    <span className="font-semibold">Chọn ảnh của bạn</span>
-                  </div>
-                  <span className="mt-1 text-xs text-gray-500">
-                    Kéo và thả ảnh vào đây
-                  </span>
-                </div>
-              )}
-            </div>
-            {uploadError && (
-              <div className="absolute left-1/2 top-full mt-3 w-full -translate-x-1/2">
-                <div className="flex items-center space-x-2 text-red-500 dark:text-red-400">
-                  <IconAlertCircle size={16} />
-                  <span className="text-sm font-medium">{uploadError}</span>
-                </div>
-              </div>
-            )}
-          </div>
         </DialogContent>
       </Dialog>
     </ResultsContext.Provider>
@@ -395,7 +338,7 @@ function Thumbnail({ index }: ThumbnailProps) {
             className="aspect-square size-full object-cover"
             src={image.urls.small}
           />
-          <div className="bg-gradient-to-t absolute bottom-0 left-0 w-full overflow-hidden from-[hsl(230,21%,11%)] to-transparent px-[7px] py-1 pt-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <div className="absolute bottom-0 left-0 w-full overflow-hidden bg-gradient-to-t from-[hsl(230,21%,11%)] to-transparent px-[7px] py-1 pt-10 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
             <div className="w-full overflow-hidden text-ellipsis">
               <Link
                 className="overflow-hidden whitespace-nowrap text-[10px] font-medium text-gray-50"

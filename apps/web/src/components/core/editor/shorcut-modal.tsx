@@ -9,7 +9,7 @@ export interface ShortcutModalProps {
 export const ShortcutModal = ({ isOpen, onClose }: ShortcutModalProps) => {
   return (
     <Modal withoutFooter isOpen={isOpen} title="Phím tắt" onClose={onClose}>
-      <div className="mt-4 flex flex-col gap-6">
+      <div className="mt-4 flex flex-col gap-6 pb-6">
         <Shortcut
           label="Thêm thẻ bên dưới thẻ hiện tại"
           name="Thêm thẻ mới"
@@ -53,7 +53,7 @@ const Shortcut: React.FC<ShortcutProps> = ({ name, label, shortcut }) => {
     <div className="flex w-full items-start justify-between">
       <div className="flex flex-col">
         <p className="text-lg font-bold md:text-xl">{name}</p>
-        {label && <div className="text-sm text-muted-foreground">{label}</div>}
+        {label && <div className="text-muted-foreground text-sm">{label}</div>}
       </div>
       {shortcut}
     </div>

@@ -61,7 +61,7 @@ export const OwnFlashcard = () => {
         <div className="flex w-full flex-col items-center justify-center gap-2 text-center">
           <h2 className="text-lg font-bold">Không có gì cả 🫠</h2>
           <p className="text-muted-foreground">{placeholder}</p>
-          <Link href={"/create"}>
+          <Link href={"/study-set/create"}>
             <Button className="mt-2 w-fit">Tạo ngay</Button>
           </Link>
         </div>

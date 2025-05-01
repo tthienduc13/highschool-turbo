@@ -1111,7 +1111,27 @@ export const zoneEndpoints = {
     API_VERSIONS.V1,
     "/zones",
   ),
+  getAllMembers: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members",
+  ),
 } as const;
+
+export const assignmentEndpoints = {
+  create: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/assignment/${zoneId}`,
+    ),
+  getAssignmentsByZone: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/assignment/zone/${zoneId}`,
+    ),
+};
 
 // News Endpoints
 export const newsEndpoints = {

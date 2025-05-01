@@ -154,7 +154,7 @@ export const EditTermModal = ({
         );
       }}
     >
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 pb-6">
         <div className="flex w-full flex-col gap-2">
           <RichTextBar activeEditor={wordEditor} />
           <EditorContent

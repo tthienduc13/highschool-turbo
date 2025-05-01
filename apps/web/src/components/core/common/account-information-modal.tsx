@@ -53,7 +53,9 @@ export const AccountInformationModal = () => {
 
   return (
     <Modal withoutFooter isOpen={open} onClose={() => setOpen(false)}>
-      <Components />
+      <div className="pb-6">
+        <Components />
+      </div>
     </Modal>
   );
 };

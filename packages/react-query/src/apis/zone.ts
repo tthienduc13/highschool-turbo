@@ -1,4 +1,5 @@
 import {
+  MemberList,
   Pagination,
   ResponseModel,
   Zone,
@@ -51,16 +52,36 @@ export const getZoneById = async (zoneId: string): Promise<Zone> => {
   }
 };
 
+export const getAllMember = async ({
+  zoneId,
+}: {
+  zoneId: string;
+}): Promise<MemberList> => {
+  try {
+    const { data } = await axiosServices.get(zoneEndpoints.getAllMembers, {
+      params: {
+        zoneId,
+        Type: "All",
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while getting all members", error);
+    throw error;
+  }
+};
+
 export const getZones = async ({
   search,
   pageSize,
   pageNumber,
   isAscending,
 }: {
-  search: string;
+  search?: string;
   pageSize: number;
   pageNumber: number;
-  isAscending: boolean;
+  isAscending?: boolean;
 }): Promise<Pagination<ZonePreview[]>> => {
   return fetchPaginatedData(zoneEndpoints.getZones, {
     search,
