@@ -29,8 +29,6 @@ import ImageUploader from "@/components/ui/image-upload";
 function CreateNewsModule() {
     const titleHeading = "Create News";
     const [selectedProvince, setSelectedProvince] = useState<string>("");
-    const [thumbnail, setThumbnail] = useState<string | null>(null);
-    const [image, setImage] = useState<File | null>(null);
     const [tag, setTag] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [contentData, setContentData] = useState<ContentData>();
@@ -44,22 +42,6 @@ function CreateNewsModule() {
         pageNumber: 1,
         pageSize: 999999,
     });
-
-    const handleThumbnailUpload = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const file = event.target.files?.[0];
-
-        if (file) {
-            setImage(file);
-            const reader = new FileReader();
-
-            reader.onloadend = () => {
-                setThumbnail(reader.result as string);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
 
     const handleCreateBlog = async () => {
         if (title.length < 10) {
@@ -80,7 +62,7 @@ function CreateNewsModule() {
             return;
         }
 
-        if (!image) {
+        if (!singleFile) {
             toast.error("Please upload thumbnail");
 
             return;
@@ -104,7 +86,7 @@ function CreateNewsModule() {
             }
 
             const url = await uploadImage({
-                image: image,
+                image: singleFile,
                 folder: HighSchoolAssets.NewsThumbnail,
             });
 

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   checkSubjectCurriculumPublished,
@@ -156,9 +156,15 @@ export const useCourseMutation = () => {
 };
 
 export const useCourseWithAutoMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["create-course-with-auto"],
     mutationFn: createCourseWithAutomation,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["course"] });
+      queryClient.invalidateQueries({ queryKey: ["courses"] });
+    },
   });
 };
 

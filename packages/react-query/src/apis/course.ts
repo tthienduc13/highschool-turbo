@@ -29,6 +29,7 @@ export interface CreateCoursePayload {
   subjectDescription: string;
   subjectCode: string;
   information: string;
+  isExternal: boolean;
 }
 
 export const updateUserCurriculum = async ({
@@ -295,6 +296,7 @@ export const createCourse = async (
     formData.append("category", values.category);
     formData.append("subjectDescription", values.subjectDescription);
     formData.append("subjectCode", values.subjectCode);
+    formData.append("isExternal", values.isExternal.toString());
 
     // If information is an object, stringify it
     if (typeof values.information === "object") {
@@ -335,6 +337,7 @@ export const createCourseWithAutomation = async (
     formData.append("category", values.category);
     formData.append("subjectDescription", values.subjectDescription);
     formData.append("subjectCode", values.subjectCode);
+    formData.append("isExternal", values.isExternal.toString());
 
     // If information is an object, stringify it
     if (typeof values.information === "object") {

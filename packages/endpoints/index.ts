@@ -513,6 +513,11 @@ export const flashcardEndpoints = {
       API_VERSIONS.V1,
       `/flashcard/draft/${id}`,
     ),
+  getFlashcardStatistic: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/statistic",
+  ),
 } as const;
 
 // Flashcard Content Endpoints
@@ -1011,6 +1016,11 @@ export const universityEndpoints = {
     API_VERSIONS.V1,
     "/university/saved",
   ),
+  getUniversityTags: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/universityTag",
+  ),
 } as const;
 
 // KET Endpoints
@@ -1166,6 +1176,10 @@ export const newsEndpoints = {
     API_VERSIONS.V1,
     "/statistic/news",
   ),
+  update: (newsId: string) =>
+    createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, `/new/${newsId}`),
+  delete: (newsId: string) =>
+    createEndpoint(SERVICE_PREFIXES.MEDIA, API_VERSIONS.V1, `/new/${newsId}`),
 } as const;
 
 // Tag Endpoints

@@ -13,6 +13,7 @@ import {
   getUniversityCategory,
   getUniversityMajor,
   getUniversityMajorName,
+  getUniversityTags,
   saveUniversity,
   updateUniversity,
   updateUniversityMajor,
@@ -116,7 +117,7 @@ export const useCreateUniversityListMutation = () => {
     mutationKey: ["create-university"],
     mutationFn: createUniversityList,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["university"] });
+      queryClient.invalidateQueries({ queryKey: ["universities"] });
       toast.success(data.message ?? "Create successfully");
 
       return data;
@@ -284,5 +285,18 @@ export const useSavedUniversitiesQuery = ({
   return useMutation({
     mutationKey: ["save-university", { pageSize, pageNumber }],
     mutationFn: () => getSavedUniversities({ pageSize, pageNumber }),
+  });
+};
+
+export const useGetUniversityTags = ({
+  page,
+  eachPage,
+}: {
+  page: number;
+  eachPage: number;
+}) => {
+  return useQuery({
+    queryKey: ["university-tags", page, eachPage],
+    queryFn: () => getUniversityTags({ page, eachPage }),
   });
 };

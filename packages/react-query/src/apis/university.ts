@@ -6,6 +6,7 @@ import {
   UniversityCity,
   UniversityCreate,
   UniversityMajor,
+  UniversityTag,
 } from "@highschool/interfaces";
 import { universityEndpoints } from "@highschool/endpoints";
 
@@ -98,10 +99,12 @@ export const updateUniversity = async (
         uniCode: university.uniCode,
         name: university.name,
         description: university.description,
-        region: university.city,
-        contactPhone: university.contactPhone,
-        contactEmail: university.contactEmail,
-        websiteLink: university.websiteLink,
+        city: university.cityId,
+        newsDetails: university.news_details,
+        admissionDetails: university.admission_details,
+        programDetails: university.program_details,
+        fieldDetails: university.field_details,
+        tags: university.tags,
       },
     );
 
@@ -295,4 +298,20 @@ export const deleteSavedUniversity = async ({
     console.error("Error while delete university ", error);
     throw error;
   }
+};
+
+export const getUniversityTags = async ({
+  page,
+  eachPage,
+}: {
+  page: number;
+  eachPage: number;
+}): Promise<Pagination<UniversityTag[]>> => {
+  return fetchPaginatedData<UniversityTag[]>(
+    universityEndpoints.getUniversityTags,
+    {
+      pageSize: eachPage,
+      pageNumber: page,
+    },
+  );
 };

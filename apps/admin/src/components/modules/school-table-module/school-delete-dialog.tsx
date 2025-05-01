@@ -27,15 +27,7 @@ export function SchoolDeleteDialog({ open, onOpenChange, currentRow }: Props) {
     if (value.trim() !== currentRow.schoolName) return;
 
     onOpenChange(false);
-    toast("The following user has been deleted:", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
-            {JSON.stringify(currentRow, null, 2)}
-          </code>
-        </pre>
-      ),
-    });
+    toast.success("School deleted successfully");
   };
 
   return (

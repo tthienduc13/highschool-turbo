@@ -28,7 +28,6 @@ import {
 } from "@highschool/ui/components/ui/form";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
-  useCourseMutation,
   useCourseWithAutoMutation,
   useMasterCoursesQuery,
 } from "@highschool/react-query/queries";
@@ -62,18 +61,15 @@ const formSchema = z.object({
 
 function SubjectCreateModule() {
   const router = useRouter();
-  const [isChecked, setIsChecked] = useState(true);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isExternal, setIsExternal] = useState(false);
 
   const { data } = useMasterCoursesQuery({ pageNumber: 1, pageSize: 20 });
 
-  const createCourse = useCourseMutation();
   const createCourseWithAutomation = useCourseWithAutoMutation();
 
-  const isPending =
-    createCourse.isPending || createCourseWithAutomation.isPending;
+  const isPending = createCourseWithAutomation.isPending;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -119,21 +115,12 @@ function SubjectCreateModule() {
         isExternal: isExternal,
       };
 
-      if (isChecked) {
-        createCourseWithAutomation.mutate(createValues, {
-          onSuccess: (data) => {
-            toast.success(data.message);
-            router.push(`/subjects/${data.data}`);
-          },
-        });
-      } else {
-        createCourse.mutate(createValues, {
-          onSuccess: (data) => {
-            toast.success(data.message);
-            router.push(`/subjects/${data.data}`);
-          },
-        });
-      }
+      createCourseWithAutomation.mutate(createValues, {
+        onSuccess: (data) => {
+          toast.success(data.message);
+          router.push(`/subjects/${data.data}`);
+        },
+      });
     } catch (error: any) {
       if (error.response) {
         toast.error(`Server responded with ${error.response.status} error`);
@@ -336,7 +323,7 @@ function SubjectCreateModule() {
                 )}
               />
 
-              <div className="flex items-center space-x-2 py-4">
+              {/* <div className="flex items-center space-x-2 py-4">
                 <Switch
                   checked={isChecked}
                   disabled={isSubmitting}
@@ -354,7 +341,7 @@ function SubjectCreateModule() {
                     Enable to automatically create subject with curriculum
                   </p>
                 </div>
-              </div>
+              </div> */}
 
               <div className="flex items-center space-x-2 py-4">
                 <Switch

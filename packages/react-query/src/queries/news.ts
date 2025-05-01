@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import {
   createBlog,
   CreateTag,
+  deleteNews,
   GetAllTag,
   getAuthorNews,
   getHotNews,
@@ -18,6 +19,7 @@ import {
   getPopularNews,
   getRelatedNews,
   getStatisticNews,
+  updateNews,
 } from "../apis/news.ts";
 
 export const useHotNewsQuery = () => {
@@ -181,6 +183,8 @@ export const useCreateBlogMutation = () => {
     }) =>
       createBlog({ newsTagId, newName, content, contentHtml, image, location }),
     onSuccess: (data) => {
+      toast.success(data.message ?? "Create new blog successfully");
+
       return data;
     },
     onError: (error) => {
@@ -201,5 +205,44 @@ export const useStatisticNewsQuery = ({ newType }: { newType: string }) => {
   return useQuery({
     queryKey: ["statistic-news", newType],
     queryFn: () => getStatisticNews({ newType }),
+  });
+};
+
+export const useUpdateNewsMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["update-news"],
+    mutationFn: updateNews,
+    onSuccess: (data) => {
+      toast.success(data.message ?? "Update news successfully");
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some errors occured");
+
+      return error;
+    },
+  });
+};
+
+export const useDeleteNewsMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteNews,
+    onSuccess: (data) => {
+      toast.success(data.message ?? "Delete news successfully");
+      queryClient.invalidateQueries({ queryKey: ["news"] });
+
+      return data;
+    },
+    onError: (error) => {
+      toast.error(error.message ?? "Some errors occured");
+
+      return error;
+    },
   });
 };

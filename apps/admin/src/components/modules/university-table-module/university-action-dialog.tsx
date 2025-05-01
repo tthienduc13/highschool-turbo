@@ -17,6 +17,7 @@ import { useState } from "react";
 import {
   useCreateUniversityListMutation,
   useProvincesQuery,
+  useUpdateUniversityMutation,
   useUploaderMutation,
 } from "@highschool/react-query/queries";
 import { toast } from "sonner";
@@ -27,6 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@highschool/ui/components/ui/select";
+
+import { ComboboxTag } from "./combo-tag";
 
 import ImageUploader from "@/components/ui/image-upload";
 import { useTable } from "@/stores/table-context";
@@ -50,7 +53,8 @@ export function UniversityActionDialog({
         ? "Edit Profile"
         : "View Profile";
 
-  const { mutate: createUniversity } = useCreateUniversityListMutation();
+  const { mutateAsync: createUniversity } = useCreateUniversityListMutation();
+  const { mutateAsync: updateUniversity } = useUpdateUniversityMutation();
 
   const [university, setUniversity] = useState<University>(
     currentRow ?? ({} as University),
@@ -103,20 +107,25 @@ export function UniversityActionDialog({
       uniCode,
       name,
       description,
-      contactPhone,
-      contactEmail,
-      websiteLink,
       logoUrl,
+      admission_details,
+      city,
+      field_details,
+      news_details,
+      program_details,
+      tags,
+      universityMajors,
     } = university;
 
     if (
       !uniCode ||
       !name ||
       !description ||
-      !contactPhone ||
-      !contactEmail ||
-      !websiteLink ||
-      !logoUrl
+      !admission_details ||
+      !city ||
+      !field_details ||
+      !news_details ||
+      !program_details
     ) {
       return "Please fill all required fields";
     }
@@ -133,18 +142,20 @@ export function UniversityActionDialog({
       return "Description must be at least 10 characters";
     }
 
-    if (!/^\d{10,15}$/.test(contactPhone)) {
-      return "Contact phone must be a valid number with 10-15 digits";
+    if (admission_details.length < 10) {
+      return "Admission details must be at least 10 characters";
     }
 
-    if (
-      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/.test(contactEmail)
-    ) {
-      return "Invalid email format";
+    if (field_details.length < 10) {
+      return "Field details must be at least 10 characters";
     }
 
-    if (!singleFile) {
-      return "Please upload an image";
+    if (news_details.length < 10) {
+      return "News details must be at least 10 characters";
+    }
+
+    if (program_details.length < 10) {
+      return "Program details must be at least 10 characters";
     }
 
     return "";
@@ -166,20 +177,39 @@ export function UniversityActionDialog({
 
       return;
     }
+
     const profilePicture = await handleUpload();
 
-    createUniversity([
-      {
+    if (typeOpen === "add") {
+      await createUniversity([
+        {
+          name: university.name,
+          description: university.description,
+          uniCode: university.uniCode,
+          logoUrl: profilePicture,
+          admissionDetails: university.admission_details,
+          fieldDetails: university.field_details,
+          newsDetails: university.news_details,
+          programDetails: university.program_details,
+          city: Number(university.cityId),
+          tags: university.tags,
+        },
+      ]);
+    } else if (typeOpen === "edit") {
+      await updateUniversity({
+        id: university.id,
         name: university.name,
-        websiteLink: university.websiteLink,
-        contactEmail: university.contactEmail,
-        contactPhone: university.contactPhone,
         description: university.description,
-        region: university.city,
         uniCode: university.uniCode,
-        logoUrl: profilePicture,
-      },
-    ]);
+        logoUrl: profilePicture == "" ? university.logoUrl : profilePicture,
+        admission_details: university.admission_details,
+        field_details: university.field_details,
+        news_details: university.news_details,
+        program_details: university.program_details,
+        cityId: Number(university.cityId),
+        tags: university.tags,
+      });
+    }
 
     clearFields();
     onOpenChange(false);
@@ -236,6 +266,7 @@ export function UniversityActionDialog({
               Description <span className="text-primary">(required)</span>
             </Label>
             <Textarea
+              className="h-[15vh]"
               placeholder="Description"
               value={university.description}
               onChange={(e) =>
@@ -248,17 +279,17 @@ export function UniversityActionDialog({
           </div>
           <div>
             <Label className="text-sm font-semibold">
-              Contact Phone <span className="text-primary">(required)</span>
+              News Details <span className="text-primary">(required)</span>
             </Label>
             <div className="relative">
-              <Input
-                placeholder="Phone Number"
-                type="tel"
-                value={university.contactPhone}
+              <Textarea
+                className="h-[15vh]"
+                placeholder="News Details"
+                value={university.news_details}
                 onChange={(e) =>
                   setUniversity((prev) => ({
                     ...prev,
-                    contactPhone: e.target.value,
+                    news_details: e.target.value,
                   }))
                 }
               />
@@ -266,17 +297,17 @@ export function UniversityActionDialog({
           </div>
           <div>
             <Label className="text-sm font-semibold">
-              Contact Email <span className="text-primary">(required)</span>
+              Admission Details <span className="text-primary">(required)</span>
             </Label>
             <div className="relative">
-              <Input
-                placeholder="Email Address"
-                type="email"
-                value={university.contactEmail}
+              <Textarea
+                className="h-[15vh]"
+                placeholder="Admission Details"
+                value={university.admission_details}
                 onChange={(e) =>
                   setUniversity((prev) => ({
                     ...prev,
-                    contactEmail: e.target.value,
+                    admission_details: e.target.value,
                   }))
                 }
               />
@@ -289,7 +320,7 @@ export function UniversityActionDialog({
             <Select
               value={university.city ?? ""}
               onValueChange={(e) =>
-                setUniversity((prev) => ({ ...prev, city: e }))
+                setUniversity((prev) => ({ ...prev, cityId: Number(e) }))
               }
             >
               <SelectTrigger className="bg-background mr-4 rounded-lg border-2 text-left">
@@ -315,17 +346,35 @@ export function UniversityActionDialog({
           </div>
           <div>
             <Label className="text-sm font-semibold">
-              Website Link <span className="text-primary">(required)</span>
+              Program Details <span className="text-primary">(required)</span>
             </Label>
             <div className="relative">
-              <Input
-                placeholder="Website URL"
-                type="url"
-                value={university.websiteLink}
+              <Textarea
+                className="h-[15vh]"
+                placeholder="Program Details"
+                value={university.program_details}
                 onChange={(e) =>
                   setUniversity((prev) => ({
                     ...prev,
-                    websiteLink: e.target.value,
+                    program_details: e.target.value,
+                  }))
+                }
+              />
+            </div>
+          </div>
+          <div>
+            <Label className="text-sm font-semibold">
+              Field Details <span className="text-primary">(required)</span>
+            </Label>
+            <div className="relative">
+              <Textarea
+                className="h-[15vh]"
+                placeholder="Field Details"
+                value={university.field_details}
+                onChange={(e) =>
+                  setUniversity((prev) => ({
+                    ...prev,
+                    field_details: e.target.value,
                   }))
                 }
               />
@@ -341,6 +390,20 @@ export function UniversityActionDialog({
               onChange={(e) => handleImageChange(Array.isArray(e) ? e[0] : e)}
             />
           </div>
+        </div>
+        <div className="mb-4 flex flex-col gap-2">
+          <Label className="text-sm font-semibold">
+            Tags <span className="text-primary">(optional)</span>
+          </Label>
+          <ComboboxTag
+            defaultValues={university.tags ?? []}
+            setTags={(tags) =>
+              setUniversity((prev) => ({
+                ...prev,
+                tags,
+              }))
+            }
+          />
         </div>
         <SheetFooter>
           <Button type="submit" onClick={handleSaveChange}>

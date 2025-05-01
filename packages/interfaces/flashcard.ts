@@ -260,3 +260,12 @@ export enum FlashcardRating {
   Good = "good",
   Easy = "easy",
 }
+
+export interface FlashcardStatistic {
+  totalFlashcards: number;
+  thisMonthFlashcards: number;
+  increaseFlashcardPercent: number;
+  totalFlashcardDrafts: number;
+  totalFlashcardOpens: number;
+  totalFlashcardLinks: number;
+}

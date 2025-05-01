@@ -13,6 +13,7 @@ import {
   getFlashcardBySlug,
   getFlashcards,
   getFlashcardsFor,
+  getFlashcardStatistics,
   getFlashcardTestData,
   getFSRSById,
   getFSRSBySlug,
@@ -382,5 +383,12 @@ export const useResetFlashcardMutation = () => {
   return useMutation({
     mutationKey: ["reset-flashcard"],
     mutationFn: resetFlashcardProgress,
+  });
+};
+
+export const useStatisticFlashcardQuery = ({ type }: { type: string }) => {
+  return useQuery({
+    queryKey: ["flashcard-statictis", type],
+    queryFn: () => getFlashcardStatistics({ type }),
   });
 };

@@ -12,18 +12,16 @@ function MasterSubjectModule() {
   const filter = useMasterSubjectFilter();
 
   return (
-    <>
-      <TableProvider>
-        <DataTable
-          columns={columns}
-          extraButton={<SubjectPrimaryButton />}
-          filter={filter}
-          subTitle="Manage your Master Subject here."
-          title="Master Subject List"
-        />
-        <SubjectActions />
-      </TableProvider>
-    </>
+    <TableProvider>
+      <DataTable
+        columns={columns}
+        extraButton={<SubjectPrimaryButton />}
+        filter={filter}
+        subTitle="Manage your Master Subject here."
+        title="Master Subject List"
+      />
+      <SubjectActions />
+    </TableProvider>
   );
 }
 

@@ -1,8 +1,19 @@
 "use client";
 
 import React from "react";
-import { IconFlame, IconNews, IconTrashX } from "@tabler/icons-react";
-import { useStatisticNewsQuery } from "@highschool/react-query/queries";
+import {
+    IconCircleKey,
+    IconFlame,
+    IconLock,
+    IconLockOpen2,
+    IconNews,
+    IconPlayCardStar,
+    IconTrashX,
+} from "@tabler/icons-react";
+import {
+    useStatisticFlashcardQuery,
+    useStatisticNewsQuery,
+} from "@highschool/react-query/queries";
 
 import { TopCourse } from "./top-course";
 
@@ -14,6 +25,10 @@ import { EngagementChart } from "@/components/ui/charts/engagement-chart";
 function ModeratorDashboardModule() {
     const { data: news } = useStatisticNewsQuery({
         newType: "All",
+    });
+
+    const { data: flashcards } = useStatisticFlashcardQuery({
+        type: "all",
     });
 
     return (
@@ -38,6 +53,29 @@ function ModeratorDashboardModule() {
                         />
                     );
                 })}
+                <CardContent
+                    color="bg-[#F8EFE2]"
+                    data={flashcards?.totalFlashcards ?? 0}
+                    icon={<IconPlayCardStar className="size-5 text-orange-400" />}
+                    items={[
+                        {
+                            title: "Open",
+                            data: flashcards?.totalFlashcardOpens ?? 0,
+                            icon: IconLockOpen2,
+                        },
+                        {
+                            title: "Draf",
+                            data: flashcards?.totalFlashcardDrafts ?? 0,
+                            icon: IconLock,
+                        },
+                        {
+                            title: "Link",
+                            data: flashcards?.totalFlashcardLinks ?? 0,
+                            icon: IconCircleKey,
+                        },
+                    ]}
+                    title={"Flashcards"}
+                />
                 <CardContent
                     color={"bg-[#e2f3f7]"}
                     data={news?.totalNews ?? 0}
