@@ -13,10 +13,7 @@ import {
 } from "@highschool/ui/components/ui/sheet";
 import { Label } from "@highschool/ui/components/ui/label";
 import { useState } from "react";
-import {
-  useCreateSchoolMutation,
-  useProvincesQuery,
-} from "@highschool/react-query/queries";
+import { useProvincesQuery } from "@highschool/react-query/queries";
 import { toast } from "sonner";
 import {
   Select,
@@ -45,33 +42,30 @@ export function SchoolActionDialog({ currentRow, open, onOpenChange }: Props) {
         ? "Edit School"
         : "View School";
 
-  const { mutate: createSchool } = useCreateSchoolMutation();
+  // const { mutate: createSchool } = useCreateSchoolMutation();
+
   const { data: provinces } = useProvincesQuery({
     pageNumber: 1,
     pageSize: 99999,
   });
 
-  const [schoolName, setSchoolName] = useState<string>("");
-  const [regionId, setRegionId] = useState<number>(0);
-  const [locationDetail, setLocationDetail] = useState<string>("");
+  const [schoolName, setSchoolName] = useState<string>(
+    currentRow?.schoolName ?? "",
+  );
+  const [regionId, setRegionId] = useState<number>(currentRow?.provinceId ?? 0);
 
   const clearFields = () => {
     setSchoolName("");
     setRegionId(0);
-    setLocationDetail("");
   };
 
   const validationFields = () => {
-    if (!schoolName && !regionId && !locationDetail) {
+    if (!schoolName && !regionId) {
       return "Please fill all required fields";
     }
 
     if (schoolName.length < 2) {
       return "Username must be at least 3 characters";
-    }
-
-    if (locationDetail?.length < 2) {
-      return "Username already exists";
     }
 
     if (regionId == 0) {
@@ -90,13 +84,12 @@ export function SchoolActionDialog({ currentRow, open, onOpenChange }: Props) {
       return;
     }
 
-    createSchool([
-      {
-        schoolName: schoolName,
-        locationDetail: locationDetail,
-        provinceId: regionId,
-      },
-    ]);
+    // createSchool([
+    //   {
+    //     schoolName: schoolName,
+    //     provinceId: regionId,
+    //   },
+    // ]);
 
     clearFields();
     onOpenChange(false);
@@ -126,18 +119,7 @@ export function SchoolActionDialog({ currentRow, open, onOpenChange }: Props) {
             </div>
           </div>
           <div>
-            <Label className="text-sm font-semibold">
-              Location Detail <span className="text-primary">(required)</span>
-            </Label>
-            <Input
-              placeholder="Location Detail"
-              type="text"
-              value={locationDetail}
-              onChange={(e) => setLocationDetail(e.target.value)}
-            />
-          </div>
-          <div>
-            <Select>
+            <Select defaultValue={regionId.toString()}>
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Select a province" />
               </SelectTrigger>

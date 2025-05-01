@@ -181,6 +181,8 @@ export const useCreateBlogMutation = () => {
     }) =>
       createBlog({ newsTagId, newName, content, contentHtml, image, location }),
     onSuccess: (data) => {
+      toast.success(data.message ?? "Create new blog successfully");
+
       return data;
     },
     onError: (error) => {

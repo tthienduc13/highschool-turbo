@@ -15,7 +15,7 @@ import {
 export const navModerator = {
   navMain: [
     {
-      title: "Subject Managments",
+      title: "Subject Managements",
       url: "/subjects",
       isActive: true,
       icon: IconBook,

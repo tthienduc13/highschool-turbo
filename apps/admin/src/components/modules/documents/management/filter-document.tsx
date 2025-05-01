@@ -52,7 +52,7 @@ export const FilterDocument = ({
     handleFilter,
 }: FilterDocumentProps) => {
     const { data: provinces } = useProvincesQuery({
-        pageSize: 20,
+        pageSize: 999999,
         pageNumber: 1,
     });
 

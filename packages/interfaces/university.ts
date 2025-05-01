@@ -5,9 +5,6 @@ export interface University {
   uniCode: string;
   name: string;
   description: string;
-  contactPhone: string;
-  contactEmail: string;
-  websiteLink: string;
   logoUrl: string;
   city: string;
   universityMajors: UniversityMajor[];
@@ -16,6 +13,9 @@ export interface University {
   program_details: string;
   field_details: string;
   tags: string[];
+  contactEmail?: string;
+  contactPhone?: string;
+  websiteLink?: string;
 }
 
 export interface UniversityMajor {
@@ -56,11 +56,13 @@ export type UniversityCreate = {
   uniCode: string;
   name: string;
   description: string;
-  region: string;
-  contactPhone: string;
-  contactEmail: string;
-  websiteLink: string;
   logoUrl: string;
+  city: number;
+  newsDetails: string;
+  admissionDetails: string;
+  programDetails: string;
+  fieldDetails: string;
+  tags: string[];
 };
 
 export const getAdmissionMethodLabel = (method: string) => {
@@ -93,12 +95,7 @@ interface MajorCategoryCode {
   secondaryHollandTrait: string;
 }
 
-interface MajorCode {
+export interface UniversityTag {
   id: string;
-  majorCode: string;
   name: string;
-  description: string;
-  skillYouLearn: string;
-  majorCategoryCode: string;
-  majorCategory: MajorCategoryCode;
 }

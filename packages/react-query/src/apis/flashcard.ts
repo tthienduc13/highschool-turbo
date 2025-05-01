@@ -14,6 +14,7 @@ import {
   TagFlashcard,
   TestRange,
   FlashcardTest,
+  FlashcardStatistic,
 } from "@highschool/interfaces";
 import {
   tagEndpoints,
@@ -608,6 +609,26 @@ export const getFlashcardTestData = async ({
     return data;
   } catch (error) {
     console.error("Error while getting flashcard test data", error);
+    throw error;
+  }
+};
+
+export const getFlashcardStatistics = async ({
+  type,
+}: {
+  type: string;
+}): Promise<FlashcardStatistic> => {
+  try {
+    const response = await axiosServices.get(
+      flashcardEndpoints.getFlashcardStatistic,
+      {
+        params: { type },
+      },
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error while getting flashcard statistics", error);
     throw error;
   }
 };

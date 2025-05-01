@@ -153,7 +153,7 @@ const UniversityCard = ({ university, onRemove }: UniversityCardProps) => {
                   src={university.logoUrl}
                   width={64}
                 />
-                <Link href={university.websiteLink}>
+                <Link href={university.websiteLink ?? "#"}>
                   <h2 className="hover:text-primary text-lg font-semibold">
                     {university.name}
                   </h2>

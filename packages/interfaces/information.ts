@@ -15,5 +15,5 @@ export type School = {
 export type CreateSchoolData = {
   provinceId: number;
   schoolName: string;
-  locationDetail: string;
+  locationDetail?: string;
 };

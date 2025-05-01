@@ -29,6 +29,7 @@ export function DataTableToolbar<T>({ filter }: DataTableToolbarProps<T>) {
       <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
         <Input
           className="h-8 w-[150px] lg:w-[250px]"
+          disabled={filter.setSearch == null}
           placeholder={filter.placeholder}
           value={filter.search ?? ""}
           onChange={(event) => filter.setSearch?.(event?.target?.value! ?? "")}

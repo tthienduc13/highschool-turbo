@@ -513,6 +513,11 @@ export const flashcardEndpoints = {
       API_VERSIONS.V1,
       `/flashcard/draft/${id}`,
     ),
+  getFlashcardStatistic: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/flashcard/statistic",
+  ),
 } as const;
 
 // Flashcard Content Endpoints
@@ -1010,6 +1015,11 @@ export const universityEndpoints = {
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
     "/university/saved",
+  ),
+  getUniversityTags: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/universityTag",
   ),
 } as const;
 

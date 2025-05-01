@@ -1,5 +1,5 @@
-import { IconSchool } from "@tabler/icons-react";
 import { Button } from "@highschool/ui/components/ui/button";
+import { IconSchool } from "@tabler/icons-react";
 
 import { ImportUniversityButton } from "./button-import";
 

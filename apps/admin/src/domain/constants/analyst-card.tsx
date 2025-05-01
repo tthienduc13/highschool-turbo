@@ -1,11 +1,9 @@
 import {
   IconBrandParsinta,
-  IconCircleKey,
   IconFileTypeDoc,
   IconFolder,
   IconLock,
   IconLockOpen2,
-  IconPlayCardStar,
   IconScript,
   IconVocabulary,
   TablerIcon,
@@ -28,17 +26,17 @@ export interface ContentAnalyst {
 }
 
 export const contentAnalysts: ContentAnalyst[] = [
-  {
-    id: "flashcard",
-    title: "Flashcards",
-    bgColor: "bg-[#F8EFE2]",
-    icon: <IconPlayCardStar className="size-5 text-orange-400" />,
-    items: [
-      { title: "Open", data: 0, icon: IconLockOpen2 },
-      { title: "Hiden", data: 0, icon: IconLock },
-      { title: "Link", data: 0, icon: IconCircleKey },
-    ],
-  },
+  // {
+  //   id: "flashcard",
+  //   title: "Flashcards",
+  //   bgColor: "bg-[#F8EFE2]",
+  //   icon: <IconPlayCardStar className="size-5 text-orange-400" />,
+  //   items: [
+  //     { title: "Open", data: 0, icon: IconLockOpen2 },
+  //     { title: "Hiden", data: 0, icon: IconLock },
+  //     { title: "Link", data: 0, icon: IconCircleKey },
+  //   ],
+  // },
   {
     id: "course",
     title: "Courses",
