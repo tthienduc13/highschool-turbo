@@ -14,6 +14,26 @@ import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
 
+export const getRelatedDocuments = async ({
+  documentId,
+}: {
+  documentId: string;
+}): Promise<Document[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      documentEndpoints.getRelatedDocument(documentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.log(
+      `Error fetching related documents for documentId:${documentId}`,
+      error,
+    );
+    throw error;
+  }
+};
+
 export const getDocumentsList = async ({
   search,
   pageNumber,

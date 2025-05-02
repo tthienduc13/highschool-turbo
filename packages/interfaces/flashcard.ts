@@ -269,3 +269,9 @@ export interface FlashcardStatistic {
   totalFlashcardOpens: number;
   totalFlashcardLinks: number;
 }
+
+export interface FlashcardLearnResult extends Flashcard {
+  newCardCount: number;
+  cardInLearningCount: number;
+  dueForReview: number;
+}

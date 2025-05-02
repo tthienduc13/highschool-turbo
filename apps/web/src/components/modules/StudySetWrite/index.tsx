@@ -27,7 +27,7 @@ function StudySetWriteModule() {
       }
       slug={slug as string}
     >
-      <Container maxWidth="4xl">
+      <Container className="h-ful pb-20 md:mt-10" maxWidth="7xl">
         <div className="flex flex-col gap-8">
           <TitleBar />
           <WritingContainer />

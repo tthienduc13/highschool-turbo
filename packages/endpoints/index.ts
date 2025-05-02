@@ -350,6 +350,12 @@ export const documentEndpoints = {
       API_VERSIONS.V1,
       `/document/slug/${slug}/management`,
     ),
+  getRelatedDocument: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/documents/${id}/related`,
+    ),
 } as const;
 
 // Folder Endpoints

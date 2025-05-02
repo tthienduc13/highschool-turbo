@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import {
   useDocumentBySlugQuery,
   useDocumentMediaQuery,
+  useRelatedDocumentQuery,
 } from "@highschool/react-query/queries";
 import {
   Card,
@@ -17,12 +18,14 @@ import {
   IconCalendar,
   IconDownload,
   IconEye,
+  IconLoader2,
   IconThumbUp,
 } from "@tabler/icons-react";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
 import { Grade } from "@highschool/interfaces";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
@@ -53,6 +56,9 @@ function DocumentModule() {
   const { data: mediaData, isLoading: mediaLoading } = useDocumentMediaQuery(
     documentData?.id!,
   );
+
+  const { data: relatedDocuments, isLoading: relatedDocumentsLoading } =
+    useRelatedDocumentQuery({ documentId: documentData?.id! });
 
   const createdAt = documentData?.createdAt
     ? new Date(documentData.createdAt).toLocaleDateString()
@@ -158,20 +164,28 @@ function DocumentModule() {
                 <CardTitle>Tài liệu liên quan</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-3">
-                  <li className="cursor-pointer text-sm hover:underline">
-                    Đề thi thử THPT Quốc Gia Môn Toán năm 2023
-                  </li>
-                  <li className="cursor-pointer text-sm hover:underline">
-                    Đáp án đề thi THPT Quốc Gia Môn Toán năm 2022
-                  </li>
-                  <li className="cursor-pointer text-sm hover:underline">
-                    Bộ đề ôn tập THPT Quốc Gia Môn Toán
-                  </li>
-                  <li className="cursor-pointer text-sm hover:underline">
-                    Phương pháp giải nhanh đề thi THPT Quốc Gia
-                  </li>
-                </ul>
+                {relatedDocumentsLoading ? (
+                  <div className="h-10 w-full">
+                    <IconLoader2 className="animate-spin" />
+                  </div>
+                ) : relatedDocuments && relatedDocuments.length > 0 ? (
+                  <ul className="flex flex-col gap-3">
+                    {relatedDocuments.map((document) => (
+                      <Link
+                        key={document.id}
+                        href={`/documents/${document.documentSlug}`}
+                      >
+                        <li className="cursor-pointer text-sm hover:underline">
+                          {document.documentName}
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted-foreground w-full text-center text-sm">
+                    Không có tài liệu liên quan
+                  </p>
+                )}
               </CardContent>
             </Card>
           </div>

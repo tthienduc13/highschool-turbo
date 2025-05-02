@@ -22,15 +22,11 @@ export const ComboboxInput = ({
 }: ComboboxInputProps) => {
   const { getInputProps, isOpen } = useComboboxContext();
 
-  // Lấy các props từ Downshift
   const downshiftInputProps = getInputProps?.() || {};
 
-  // Tạo handler kết hợp
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Gọi handler của Downshift nếu có
     (downshiftInputProps as React.InputHTMLAttributes<HTMLInputElement>).onChange?.(e);
 
-    // Gọi handler được kiểm soát nếu được cung cấp
     onControlledChange?.(e.target.value);
   };
 
@@ -40,7 +36,6 @@ export const ComboboxInput = ({
         <Input
           {...props}
           {...downshiftInputProps}
-          // Ghi đè các props cần kiểm soát
           value={controlledValue !== undefined ? controlledValue : (downshiftInputProps as any).value ?? ''}
           onChange={handleChange}
         />

@@ -10,6 +10,7 @@ import {
   getDocuments,
   getDocumentsList,
   getDownloadDocument,
+  getRelatedDocuments,
   updateDocument,
   uploadDocument,
 } from "../apis/document.ts";
@@ -232,5 +233,16 @@ export const useUpdateDocumentMutation = () => {
       toast.error("An error occurred while uploading the file.");
       console.log("Error uploading file:", error);
     },
+  });
+};
+
+export const useRelatedDocumentQuery = ({
+  documentId,
+}: {
+  documentId: string;
+}) => {
+  return useQuery({
+    queryKey: ["related-document", documentId],
+    queryFn: () => getRelatedDocuments({ documentId }),
   });
 };

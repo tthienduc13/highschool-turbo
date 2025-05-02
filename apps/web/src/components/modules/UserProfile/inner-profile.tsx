@@ -8,8 +8,11 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { ProfileArea } from "./profile-area";
+import { LearningFlashcardList } from "./tabs/learning-flashcard-list";
 
 import { Container } from "@/components/core/layouts/container";
+import { useMe } from "@/hooks/use-me";
+import { useProfile } from "@/hooks/use-profile";
 
 const FlashcardList = dynamic(
   () => import("./tabs/flashcard").then((l) => l.FlashcardList),
@@ -22,7 +25,7 @@ const FolderList = dynamic(
 );
 
 export enum NavTab {
-  Overview = "Overview",
+  LearningFlashcard = "LearningFlashcard",
   Flashcard = "Flashcard",
   Folder = "Folder",
 }
@@ -32,27 +35,41 @@ export const InnerProfile = () => {
   const searchParams = useSearchParams();
   const pathName = usePathname();
 
+  const me = useMe();
+  const profile = useProfile();
+
+  const isMe = me?.username === profile?.username;
+
   const _type = searchParams.get("type") as NavTab;
 
   return (
     <Container maxWidth="4xl">
       <div className="flex flex-col gap-12">
         <ProfileArea />
-        <Tabs className="w-full  " defaultValue={_type ?? NavTab.Overview}>
+        <Tabs
+          className="w-full  "
+          defaultValue={
+            (_type ?? isMe) ? NavTab.LearningFlashcard : NavTab.Flashcard
+          }
+        >
           <TabsList
             className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 md:mb-10 dark:border-gray-800/50 "
             variant={"outline"}
           >
-            <TabsTrigger
-              className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
-              value={NavTab.Overview}
-              variant={"outline"}
-              onClick={() => {
-                router.replace(`${pathName}?type=${NavTab.Overview}`);
-              }}
-            >
-              Thông tin tổng quan
-            </TabsTrigger>
+            {isMe && (
+              <TabsTrigger
+                className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
+                value={NavTab.LearningFlashcard}
+                variant={"outline"}
+                onClick={() => {
+                  router.replace(
+                    `${pathName}?type=${NavTab.LearningFlashcard}`,
+                  );
+                }}
+              >
+                Thẻ ghi nhớ đang học
+              </TabsTrigger>
+            )}
             <TabsTrigger
               className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
               value={NavTab.Flashcard}
@@ -61,7 +78,7 @@ export const InnerProfile = () => {
                 router.replace(`${pathName}?type=${NavTab.Flashcard}`);
               }}
             >
-              Thẻ ghi nhớ
+              Thẻ ghi nhớ {isMe && "của tôi"}
             </TabsTrigger>
             <TabsTrigger
               className="h-10 text-sm  data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
@@ -71,12 +88,12 @@ export const InnerProfile = () => {
                 router.replace(`${pathName}?type=${NavTab.Folder}`);
               }}
             >
-              Thư mục
+              Thư mục {isMe && "của tôi"}
             </TabsTrigger>
             {/* <TabsTrigger value="documents">Tài liệu</TabsTrigger> */}
           </TabsList>
-          <TabsContent value={NavTab.Overview}>
-            <div>Đây là overview</div>
+          <TabsContent value={NavTab.LearningFlashcard}>
+            <LearningFlashcardList />
           </TabsContent>
           <TabsContent value={NavTab.Flashcard}>
             <FlashcardList />

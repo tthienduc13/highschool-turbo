@@ -17,6 +17,7 @@ import { cn } from "@highschool/ui/lib/utils";
 import { DueCard } from "@highschool/interfaces";
 
 import { AnimatedCheckCircle } from "../common/animated-icons/animated-check-circle";
+import { Container } from "../layouts/container";
 
 import { useWritingContext } from "@/stores/use-study-set-writing-store";
 
@@ -43,52 +44,53 @@ export const WritingCard = () => {
   }
 
   return (
-    <div
-      className="flex w-full flex-col gap-4"
-      style={{ marginBottom: "100px" }}
-    >
-      <motion.div
-        key={active.contentId}
-        animate={{ translateY: 0, opacity: 1 }}
-        initial={{ translateY: -20, opacity: 0.5 }}
-      >
-        <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
-          {status !== undefined && (
-            <motion.div
-              animate={{ opacity: isVisible ? 0.2 : 0 }}
-              aria-hidden="true"
-              className="absolute inset-0 z-[-1] rounded-2xl shadow-lg"
-              initial={{ opacity: 0 }}
-              style={{
-                backgroundColor: neutralColor,
-                boxShadow: `0 5px 60px -5px ${neutralColor}`,
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          )}
-          <CardContent className="size-full overflow-hidden rounded-2xl p-0">
-            <div className="h-1 w-full overflow-hidden bg-gray-200">
+    <div className="flex w-full flex-row " style={{ marginBottom: "300px" }}>
+      <Container maxWidth="4xl">
+        <motion.div
+          key={active.contentId}
+          animate={{ translateY: 0, opacity: 1 }}
+          initial={{ translateY: -20, opacity: 0.5 }}
+        >
+          <Card className="bg-background relative rounded-2xl border-2 border-gray-50 shadow-xl dark:border-gray-700">
+            {status !== undefined && (
               <motion.div
-                animate={{ width: `${progress * 100}%` }}
-                className="h-full bg-orange-300"
-                initial={{ width: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                animate={{ opacity: isVisible ? 0.2 : 0 }}
+                aria-hidden="true"
+                className="absolute inset-0 z-[-1] rounded-2xl shadow-lg"
+                initial={{ opacity: 0 }}
+                style={{
+                  backgroundColor: neutralColor,
+                  boxShadow: `0 5px 60px -5px ${neutralColor}`,
+                }}
+                transition={{ duration: 0.3 }}
               />
-            </div>
-            <div className="flex flex-col gap-6 px-8 py-6">
-              <div className="flex w-full flex-row gap-3">
-                <h2 className="font-semibold text-gray-500">Thuật ngữ</h2>
+            )}
+            <CardContent className="size-full overflow-hidden rounded-2xl p-0">
+              <div className="h-1 w-full overflow-hidden bg-gray-200">
+                <motion.div
+                  animate={{ width: `${progress * 100}%` }}
+                  className="h-full bg-orange-300"
+                  initial={{ width: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
+                />
               </div>
-              <div className="min-h-[60px] md:min-h-[140px]">
-                <div className="whitespace-pre-wrap text-xl">{active.term}</div>
+              <div className="flex flex-col gap-6 px-8 py-6">
+                <div className="flex w-full flex-row gap-3">
+                  <h2 className="font-semibold text-gray-500">Thuật ngữ</h2>
+                </div>
+                <div className="min-h-[60px] md:min-h-[140px]">
+                  <div className="whitespace-pre-wrap text-xl">
+                    {active.term}
+                  </div>
+                </div>
+                <WriteSection active={active} i={active.contentId} />
               </div>
-              <WriteSection active={active} i={active.contentId} />
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </Container>
       {cardResult.assessment !== "" && (
-        <div className="no-scrollbar flex max-h-[200px] w-full flex-col gap-6 overflow-y-scroll rounded-2xl border border-gray-50 bg-white p-4 shadow-lg dark:border-gray-700">
+        <div className="no-scrollbar flex h-fit w-full flex-1 flex-col gap-6 overflow-y-scroll rounded-2xl border border-gray-50 bg-white p-4 shadow-lg dark:border-gray-700">
           <div className="flex flex-col gap-2">
             <div
               className={cn(
