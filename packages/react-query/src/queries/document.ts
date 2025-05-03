@@ -119,7 +119,7 @@ export const useDocumentQuery = ({
       getDocuments({
         pageSize,
         pageNumber,
-        seach,
+        search: seach,
         sortPopular,
         schoolId,
         subjectIds,
