@@ -65,7 +65,7 @@ export const getDocumentsList = async ({
 export const getDocuments = async ({
   pageSize,
   pageNumber,
-  seach,
+  search,
   sortPopular,
   schoolId,
   subjectIds,
@@ -77,7 +77,7 @@ export const getDocuments = async ({
 }: Partial<{
   pageSize: number;
   pageNumber: number;
-  seach?: string;
+  search?: string;
   sortPopular?: boolean;
   schoolId?: string | null;
   subjectIds?: string;
@@ -95,7 +95,7 @@ export const getDocuments = async ({
   return fetchPaginatedData<Document[]>(documentEndpoints.getDocuments, {
     pageSize,
     pageNumber,
-    seach,
+    search,
     sortPopular,
     schoolId,
     subjectIds,
