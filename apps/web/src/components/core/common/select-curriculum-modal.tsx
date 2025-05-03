@@ -43,7 +43,7 @@ export const SelectCurriculumModal = ({
       title="Chọn chương trình học của bạn"
       onClose={onClose}
     >
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 pb-6 md:grid-cols-3">
         {filterdCurriculum!.map((curriculum) => (
           <Button
             key={curriculum.id}

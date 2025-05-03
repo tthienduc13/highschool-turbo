@@ -1142,6 +1142,12 @@ export const assignmentEndpoints = {
       API_VERSIONS.V1,
       `/assignment/${zoneId}`,
     ),
+  delete: (assingmentId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/assignment/${assingmentId}`,
+    ),
   getAssignmentsByZone: (zoneId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.ACADEMIC_HUB,

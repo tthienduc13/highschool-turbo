@@ -1,5 +1,6 @@
 import { useUserFoldersQuery } from "@highschool/react-query/queries";
 import { IconFolder } from "@tabler/icons-react";
+import { StudySetVisibility } from "@highschool/interfaces";
 
 import { ProfileLinkable } from "../profile-linkable";
 
@@ -43,9 +44,16 @@ export const FolderList = () => {
                 key={item.id}
                 label="mục"
                 leftIcon={<IconFolder className="min-w-[18px]" size="18" />}
-                numValues={item.countFlashCard ?? 0 + item.countDocument ?? 0}
+                numValues={
+                  (item.countFlashCard ?? 0) + (item.countDocument ?? 0)
+                }
                 title={item.name}
                 url={`/profile/${profile.username}/folder/${item.id}`}
+                visibility={
+                  item.visibility.toLowerCase() === "private"
+                    ? StudySetVisibility.Private
+                    : StudySetVisibility.Public
+                }
               />
             ))}
           </div>

@@ -43,12 +43,14 @@ export const EditFolderModal = ({
         onClose();
       }}
     >
-      <Input
-        className="h-12 w-full border-0 border-b-4 border-b-blue-300  bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
-        placeholder="Tiêu đề"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
+      <div className="pb-6">
+        <Input
+          className="h-12 w-full border-0 border-b-4 border-b-blue-300  bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
+          placeholder="Tiêu đề"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
     </Modal>
   );
 };

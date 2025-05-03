@@ -40,44 +40,74 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@highschool/ui/components/ui/alert";
-import { Separator } from "@highschool/ui/components/ui/separator";
 import { toast } from "sonner";
 import {
   IconAlertCircle,
   IconCalendar,
   IconCircleCheck,
   IconCirclePlus,
-  IconClock,
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
 import { AssignmentPayload } from "@highschool/interfaces";
 import { useAssignmentMutation } from "@highschool/react-query/queries";
-import { useParams } from "next/navigation";
-
-// import { CsvImporter } from "@/components/csv-importer";
+import { useParams, useRouter } from "next/navigation";
+import { Separator } from "@highschool/ui/components/ui/separator";
+import { useQueryClient } from "@tanstack/react-query";
 
 const questionSchema = z.object({
   question: z.string().min(1, "Câu hỏi không được để trống"),
-  answers: z.array(z.string()).min(1, "Phải có ít nhất một câu trả lời"),
-  correctAnswer: z.number().min(0, "Phải chọn câu trả lời đúng"),
+  answers: z
+    .array(z.string())
+    .min(1, "Phải có ít nhất một câu trả lời")
+    .max(6, "Mỗi câu hỏi chỉ được có tối đa 6 câu trả lời"),
+  correctAnswer: z.number().min(0, "Đáp án đúng phải lớn hơn hoặc bằng 0"),
 });
 
-const formSchema = z.object({
-  title: z.string().min(1, "Tiêu đề không được để trống"),
-  noticed: z.string().optional(),
-  availableAt: z.date().optional(),
-  availableTime: z.string().optional(),
-  dueAt: z.date().optional(),
-  dueTime: z.string().optional(),
-  lockedAt: z.date().optional(),
-  lockedTime: z.string().optional(),
-  published: z.boolean().default(false),
-  testContent: z
-    .array(questionSchema)
-    .min(1, "Phải có ít nhất một câu hỏi")
-    .max(50, "Tối đa 50 câu hỏi"),
-});
+const formSchema = z
+  .object({
+    title: z.string().min(1, "Tiêu đề không được để trống"),
+    noticed: z.string().optional(),
+    availableAt: z
+      .date({
+        required_error: "Ngày mở là bắt buộc",
+        invalid_type_error: "Ngày mở không hợp lệ",
+      })
+      .min(new Date(), "Ngày mở phải sau thời điểm hiện tại"),
+    availableTime: z.string().optional(),
+    dueAt: z.date({
+      required_error: "Hạn nộp là bắt buộc",
+      invalid_type_error: "Hạn nộp không hợp lệ",
+    }),
+    dueTime: z.string().optional(),
+    lockedAt: z.date({
+      required_error: "Ngày khóa là bắt buộc",
+      invalid_type_error: "Ngày khóa không hợp lệ",
+    }),
+    lockedTime: z.string().optional(),
+    published: z.boolean().default(false),
+    testContent: z
+      .array(questionSchema)
+      .min(1, "Phải có ít nhất một câu hỏi")
+      .max(50, "Tối đa 50 câu hỏi"),
+  })
+  .superRefine((data, ctx) => {
+    if (data.dueAt && data.availableAt && data.dueAt <= data.availableAt) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Hạn nộp phải sau ngày mở",
+        path: ["dueAt"],
+      });
+    }
+
+    if (data.lockedAt && data.dueAt && data.lockedAt < data.dueAt) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Ngày khóa phải sau hoặc bằng hạn nộp",
+        path: ["lockedAt"],
+      });
+    }
+  });
 
 type FormValues = z.infer<typeof formSchema>;
 
@@ -85,6 +115,10 @@ export function AssignmentForm() {
   const params = useParams();
   const zoneId = params.id as string;
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   const apiCreateAssignment = useAssignmentMutation();
 
@@ -160,65 +194,32 @@ export function AssignmentForm() {
         {
           onSuccess: (data) => {
             toast.success(data.message);
+            queryClient.invalidateQueries({
+              queryKey: ["getAssignmentsByZone", zoneId],
+            });
+            router.push(`/zone/${zoneId}/assignment`);
           },
           onError: (data) => {
             toast.error(data.message);
           },
         },
       );
-
-      // Submit the form data
-      //   const result = await createAssignment(formattedData);
-
-      //   if (result.success) {
-      //     toast.success("Thành công", {
-      //       description: "Bài kiểm tra đã được tạo thành công.",
-      //       action: (
-      //         <div className="flex size-8 items-center justify-center rounded-full bg-green-500/20">
-      //           <IconCheck className="size-5 text-green-500" />
-      //         </div>
-      //       ),
-      //     });
-      //     // Reset the form
-      //     form.reset();
-      //   } else {
-      //     toast.error("Lỗi", {
-      //       description: result.error || "Không thể tạo bài kiểm tra",
-
-      //       action: (
-      //         <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-      //           <IconAlertCircle className="text-destructive size-5" />
-      //         </div>
-      //       ),
-      //     });
-      //   }
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Lỗi", {
         description: "Đã xảy ra lỗi không mong muốn",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  // Add a new question
   const addQuestion = () => {
     const currentQuestions = form.getValues("testContent");
 
     if (currentQuestions.length >= 50) {
       toast.error("Đã đạt giới hạn", {
         description: "Tối đa 50 câu hỏi được phép",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
 
       return;
@@ -230,18 +231,12 @@ export function AssignmentForm() {
     ]);
   };
 
-  // Remove a question
   const removeQuestion = (index: number) => {
     const currentQuestions = form.getValues("testContent");
 
     if (currentQuestions.length <= 1) {
       toast.error("Không thể xóa", {
         description: "Phải có ít nhất một câu hỏi",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
 
       return;
@@ -252,7 +247,6 @@ export function AssignmentForm() {
     form.setValue("testContent", updatedQuestions);
   };
 
-  // Add a new answer option to a question
   const addAnswer = (questionIndex: number) => {
     const currentQuestions = form.getValues("testContent");
     const currentAnswers = currentQuestions[questionIndex].answers;
@@ -260,11 +254,6 @@ export function AssignmentForm() {
     if (currentAnswers.length >= 4) {
       toast.error("Đã đạt giới hạn", {
         description: "Tối đa 4 câu trả lời cho mỗi câu hỏi",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
 
       return;
@@ -276,7 +265,6 @@ export function AssignmentForm() {
     form.setValue("testContent", updatedQuestions);
   };
 
-  // Remove an answer option from a question
   const removeAnswer = (questionIndex: number, answerIndex: number) => {
     const currentQuestions = form.getValues("testContent");
     const currentAnswers = currentQuestions[questionIndex].answers;
@@ -285,11 +273,6 @@ export function AssignmentForm() {
     if (currentAnswers.length <= 1) {
       toast.error("Không thể xóa", {
         description: "Phải có ít nhất một câu trả lời",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
 
       return;
@@ -319,11 +302,6 @@ export function AssignmentForm() {
       toast.error("Quá nhiều câu hỏi", {
         description:
           "CSV chứa hơn 50 câu hỏi. Chỉ 50 câu đầu tiên sẽ được nhập.",
-        action: (
-          <div className="bg-destructive/20 flex size-8 items-center justify-center rounded-full">
-            <IconAlertCircle className="text-destructive size-5" />
-          </div>
-        ),
       });
       questions = questions.slice(0, 50);
     }
@@ -358,11 +336,10 @@ export function AssignmentForm() {
   const questionCount = form.watch("testContent").length;
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto w-full">
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-          {/* Thông tin chung */}
-          <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-6">
             <div>
               <h2 className="mb-6 text-xl font-semibold">Thông tin chung</h2>
               <div className="grid gap-6">
@@ -467,7 +444,6 @@ export function AssignmentForm() {
                                 className="h-12"
                               />
                             </FormControl>
-                            <IconClock className="text-muted-foreground size-5" />
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -537,7 +513,6 @@ export function AssignmentForm() {
                                 className="h-12"
                               />
                             </FormControl>
-                            <IconClock className="text-muted-foreground size-5" />
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -607,7 +582,6 @@ export function AssignmentForm() {
                                 className="h-12"
                               />
                             </FormControl>
-                            <IconClock className="text-muted-foreground size-5" />
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -640,9 +614,6 @@ export function AssignmentForm() {
               </div>
             </div>
 
-            <Separator className="my-8" />
-
-            {/* Danh sách câu hỏi */}
             <div>
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="flex items-center gap-2 text-xl font-semibold">
@@ -827,20 +798,20 @@ export function AssignmentForm() {
                   ))}
                 </div>
               )}
-
-              <div className="mt-8 flex justify-end">
-                <Button className="px-6" disabled={isSubmitting} type="submit">
-                  {isSubmitting ? (
-                    "Đang tạo bài kiểm tra..."
-                  ) : (
-                    <>
-                      <IconPlus className="mr-2 size-4" />
-                      Tạo bài kiểm tra
-                    </>
-                  )}
-                </Button>
-              </div>
             </div>
+          </div>
+          <Separator />
+          <div className="mt-8 flex justify-end">
+            <Button className="px-6" disabled={isSubmitting} type="submit">
+              {isSubmitting ? (
+                "Đang tạo bài kiểm tra..."
+              ) : (
+                <>
+                  <IconPlus className="mr-2 size-4" />
+                  Tạo bài kiểm tra
+                </>
+              )}
+            </Button>
           </div>
         </form>
       </Form>

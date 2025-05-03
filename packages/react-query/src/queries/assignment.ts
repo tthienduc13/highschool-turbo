@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { createAssignment, getAssignmentByZone } from "../apis/assignment.ts";
+import {
+  createAssignment,
+  deleteAssignment,
+  getAssignmentByZone,
+} from "../apis/assignment.ts";
 
 export const useAssignmentMutation = () => {
   return useMutation({
@@ -14,5 +18,12 @@ export const useZoneAssignmentQuery = ({ zoneId }: { zoneId: string }) => {
     queryKey: ["getAssignmentsByZone", zoneId],
     queryFn: () => getAssignmentByZone({ zoneId }),
     enabled: !!zoneId,
+  });
+};
+
+export const useDeleteAssignmentMutation = () => {
+  return useMutation({
+    mutationKey: ["deleteAssignment"],
+    mutationFn: deleteAssignment,
   });
 };

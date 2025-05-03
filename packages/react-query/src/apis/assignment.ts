@@ -43,3 +43,20 @@ export const getAssignmentByZone = async ({
     throw error;
   }
 };
+
+export const deleteAssignment = async ({
+  assigmentId,
+}: {
+  assigmentId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      assignmentEndpoints.delete(assigmentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error deleting assignment by zone:", error);
+    throw error;
+  }
+};

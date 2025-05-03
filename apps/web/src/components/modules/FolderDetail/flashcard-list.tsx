@@ -62,7 +62,7 @@ export const FlashcardList = () => {
         <div className="flex flex-row items-center gap-2">
           <IconCards size={24} />
           <h2 className="whitespace-nowrap text-2xl font-bold">
-            Thẻ ghi nhớ ({folder.folderUser.countFlashCard})
+            Thẻ ghi nhớ ({folder.flashcards.length ?? 0})
           </h2>
         </div>
         <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(256px,1fr))] gap-4">
@@ -86,7 +86,7 @@ export const FlashcardList = () => {
             />
           ))}
           <Button
-            className="h-full min-h-[120px] text-lg text-primary"
+            className="text-primary h-full min-h-[120px] text-lg"
             variant={"outline"}
             onClick={() => {
               setAddSetsModalOpen(true);

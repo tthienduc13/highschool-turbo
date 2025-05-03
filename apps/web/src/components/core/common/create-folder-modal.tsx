@@ -43,6 +43,21 @@ export const CreateFolderModal = ({
     }
   }, [createFolder.isSuccess, createFolder.data]);
 
+  //   useEffect(() => {
+  //     if (createFolder.isSuccess && createFolder.data) {
+  //       if (!childSetId) {
+  //         onClose();
+  //         router.push(
+  //           `/profile/${me?.username}/folder/${createFolder.data.data}`,
+  //         );
+  //         toast.success(createFolder.data.message);
+  //       } else {
+  //         menuEventChannel.emit("folderWithDocumentCreated", childSetId);
+  //         onClose();
+  //       }
+  //     }
+  //   }, [createFolder.isSuccess, createFolder.data]);
+
   const handleCreateFolder = async () => {
     await createFolder.mutateAsync({
       folderName: title,
@@ -72,7 +87,6 @@ export const CreateFolderModal = ({
       }}
     >
       <div className="pb-6">
-        {" "}
         <Input
           className="h-12 w-full border-0 border-b-4 border-b-blue-300  bg-gray-100 pt-2 !text-lg font-bold shadow-none focus-within:border-b-4 focus-visible:border-b-blue-500 focus-visible:ring-0 dark:bg-gray-700 dark:focus-visible:border-blue-300"
           placeholder="Tiêu đề"

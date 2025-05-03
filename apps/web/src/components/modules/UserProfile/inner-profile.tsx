@@ -39,6 +39,7 @@ export const InnerProfile = () => {
   const profile = useProfile();
 
   const isMe = me?.username === profile?.username;
+  const isTeacher = me?.roleName?.toLowerCase() === "teacher";
 
   const _type = searchParams.get("type") as NavTab;
 
@@ -49,14 +50,16 @@ export const InnerProfile = () => {
         <Tabs
           className="w-full  "
           defaultValue={
-            (_type ?? isMe) ? NavTab.LearningFlashcard : NavTab.Flashcard
+            (_type ?? (isMe && !isTeacher))
+              ? NavTab.LearningFlashcard
+              : NavTab.Flashcard
           }
         >
           <TabsList
             className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 dark:border-gray-800/50 "
             variant={"outline"}
           >
-            {isMe && (
+            {isMe && !isTeacher && (
               <TabsTrigger
                 className="h-10 text-sm data-[state=active]:border-b-blue-800 data-[state=active]:text-blue-700 md:text-base dark:data-[state=active]:border-b-blue-400 dark:data-[state=active]:text-blue-400"
                 value={NavTab.LearningFlashcard}

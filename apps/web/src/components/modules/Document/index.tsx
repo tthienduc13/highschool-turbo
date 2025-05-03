@@ -19,6 +19,7 @@ import {
   IconCalendar,
   IconDownload,
   IconEye,
+  IconFolderPlus,
   IconLoader2,
   IconThumbUp,
 } from "@tabler/icons-react";
@@ -27,6 +28,9 @@ import { Button } from "@highschool/ui/components/ui/button";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useState } from "react";
+
+import { AddToFolderModal } from "./add-to-folder-modal";
 
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
@@ -46,6 +50,8 @@ const PDFViewer = dynamic(() => import("./pdf-viewer"), {
 
 function DocumentModule() {
   const params = useParams();
+
+  const [openAddToFolderModal, setOpenAddToFolderModal] = useState(false);
 
   const { data: documentData, isLoading } = useDocumentBySlugQuery({
     slug: params.slug as string,
@@ -69,130 +75,149 @@ function DocumentModule() {
   }
 
   return (
-    <WithFooter>
-      <Container className="flex flex-col gap-10" maxWidth="7xl">
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <Card className="mb-6">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="text-2xl font-bold">
-                      {documentData?.documentName}
-                    </CardTitle>
-                    <CardDescription className="mt-2">
-                      {documentData?.documentDescription}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <IconCalendar className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        Năm: {documentData?.documentYear}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <IconBooks className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        Học kỳ: {documentData?.semester}
-                      </span>
+    <>
+      <AddToFolderModal
+        documentId={documentData?.id!}
+        isOpen={openAddToFolderModal}
+        onClose={() => setOpenAddToFolderModal(false)}
+      />
+      <WithFooter>
+        <Container className="flex flex-col gap-10" maxWidth="7xl">
+          <div className="grid gap-6 lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <Card className="mb-6">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-2xl font-bold">
+                        {documentData?.documentName}
+                      </CardTitle>
+                      <CardDescription className="mt-2">
+                        {documentData?.documentDescription}
+                      </CardDescription>
                     </div>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <IconEye className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        Lượt xem: {documentData?.view ?? 0}
-                      </span>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <IconCalendar className="text-muted-foreground size-4" />
+                        <span className="text-muted-foreground text-sm">
+                          Năm: {documentData?.documentYear}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IconBooks className="text-muted-foreground size-4" />
+                        <span className="text-muted-foreground text-sm">
+                          Học kỳ: {documentData?.semester}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <IconDownload className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        Lượt tải: {documentData?.download ?? 0}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <IconThumbUp className="text-muted-foreground size-4" />
-                      <span className="text-muted-foreground text-sm">
-                        Lượt thích: {documentData?.like ?? 0}
-                      </span>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <IconEye className="text-muted-foreground size-4" />
+                        <span className="text-muted-foreground text-sm">
+                          Lượt xem: {documentData?.view ?? 0}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IconDownload className="text-muted-foreground size-4" />
+                        <span className="text-muted-foreground text-sm">
+                          Lượt tải: {documentData?.download ?? 0}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IconThumbUp className="text-muted-foreground size-4" />
+                        <span className="text-muted-foreground text-sm">
+                          Lượt thích: {documentData?.like ?? 0}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge variant="outline">
-                    {documentData?.subjectCurriculum.subjectName}
-                  </Badge>
-                </div>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Button
-                    className="flex items-center gap-2"
-                    onClick={() => {
-                      if (documentData?.id) {
-                        apiDownloadDocument.mutate(
-                          { documentId: documentData.id },
-                          {
-                            onSuccess: () => {
-                              toast.success("Tải tài liệu thành công");
-                            },
-                          },
-                        );
-                      }
-                    }}
-                  >
-                    <IconDownload className="size-4" />
-                    Tải xuống
-                  </Button>
-                </div>
-                <div className="text-muted-foreground mt-4 text-sm">
-                  Ngày tạo: {new Date(createdAt).toLocaleDateString()}
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <Badge variant="outline">
+                      {documentData?.subjectCurriculum.subjectName}
+                    </Badge>
+                  </div>
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="text-muted-foreground mt-4 text-sm">
+                      Ngày tạo: {new Date(createdAt).toLocaleDateString()}
+                    </div>
+                    <div className="mt-6 flex flex-row items-center justify-end gap-2">
+                      <Button
+                        className="flex items-center gap-2"
+                        variant={"outline"}
+                        onClick={() => {
+                          setOpenAddToFolderModal(true);
+                        }}
+                      >
+                        <IconFolderPlus className="size-4" />
+                        Thêm vào thư mục
+                      </Button>
+                      <Button
+                        className="flex items-center gap-2"
+                        onClick={() => {
+                          if (documentData?.id) {
+                            apiDownloadDocument.mutate(
+                              { documentId: documentData.id },
+                              {
+                                onSuccess: () => {
+                                  toast.success("Tải tài liệu thành công");
+                                },
+                              },
+                            );
+                          }
+                        }}
+                      >
+                        <IconDownload className="size-4" />
+                        Tải xuống
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <div className="h-[800px] w-full overflow-hidden rounded-lg border">
-              <PDFViewer pdfUrl={mediaData?.data?.documentFileUrl!} />
+              <div className="h-[800px] w-full overflow-hidden rounded-lg border">
+                <PDFViewer pdfUrl={mediaData?.data?.documentFileUrl!} />
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Tài liệu liên quan</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {relatedDocumentsLoading ? (
+                    <div className="h-10 w-full">
+                      <IconLoader2 className="animate-spin" />
+                    </div>
+                  ) : relatedDocuments && relatedDocuments.length > 0 ? (
+                    <ul className="flex flex-col gap-3">
+                      {relatedDocuments.map((document) => (
+                        <Link
+                          key={document.id}
+                          href={`/documents/${document.documentSlug}`}
+                        >
+                          <li className="cursor-pointer text-sm hover:underline">
+                            {document.documentName}
+                          </li>
+                        </Link>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-muted-foreground w-full text-center text-sm">
+                      Không có tài liệu liên quan
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           </div>
-
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Tài liệu liên quan</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {relatedDocumentsLoading ? (
-                  <div className="h-10 w-full">
-                    <IconLoader2 className="animate-spin" />
-                  </div>
-                ) : relatedDocuments && relatedDocuments.length > 0 ? (
-                  <ul className="flex flex-col gap-3">
-                    {relatedDocuments.map((document) => (
-                      <Link
-                        key={document.id}
-                        href={`/documents/${document.documentSlug}`}
-                      >
-                        <li className="cursor-pointer text-sm hover:underline">
-                          {document.documentName}
-                        </li>
-                      </Link>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-muted-foreground w-full text-center text-sm">
-                    Không có tài liệu liên quan
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </Container>
-    </WithFooter>
+        </Container>
+      </WithFooter>
+    </>
   );
 }
 
