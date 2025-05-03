@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import {
   useDocumentBySlugQuery,
   useDocumentMediaQuery,
+  useDownloadDocumentMutation,
   useRelatedDocumentQuery,
 } from "@highschool/react-query/queries";
 import {
@@ -23,14 +24,13 @@ import {
 } from "@tabler/icons-react";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
-import { Grade } from "@highschool/interfaces";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { WithFooter } from "@/components/core/common/with-footer";
 import { Container } from "@/components/core/layouts/container";
 import { Loading } from "@/components/core/common/loading";
-import { gradeTextRenderer } from "@/components/core/common/renderer/grade";
 
 const PDFViewer = dynamic(() => import("./pdf-viewer"), {
   ssr: false,
@@ -38,9 +38,7 @@ const PDFViewer = dynamic(() => import("./pdf-viewer"), {
     <div className="bg-muted/20 flex h-[800px] w-full items-center justify-center rounded-lg border">
       <div className="flex flex-col items-center">
         <div className="border-primary size-8 animate-spin rounded-full border-4 border-t-transparent" />
-        <p className="text-muted-foreground mt-2 text-sm">
-          Loading PDF viewer...
-        </p>
+        <p className="text-muted-foreground mt-2 text-sm">Đang tải PDF...</p>
       </div>
     </div>
   ),
@@ -60,13 +58,11 @@ function DocumentModule() {
   const { data: relatedDocuments, isLoading: relatedDocumentsLoading } =
     useRelatedDocumentQuery({ documentId: documentData?.id! });
 
+  const apiDownloadDocument = useDownloadDocumentMutation();
+
   const createdAt = documentData?.createdAt
     ? new Date(documentData.createdAt).toLocaleDateString()
     : "Unknown";
-
-  const updatedAt = documentData?.updatedAt
-    ? new Date(documentData.updatedAt).toLocaleDateString()
-    : createdAt;
 
   if (isLoading || mediaLoading) {
     return <Loading />;
@@ -129,20 +125,25 @@ function DocumentModule() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Badge variant="outline">
-                    {gradeTextRenderer(
-                      documentData?.category?.categoryName as Grade,
-                    )}
-                  </Badge>
-                  <Badge variant="outline">
-                    {" "}
                     {documentData?.subjectCurriculum.subjectName}
-                  </Badge>
-                  <Badge variant="outline">
-                    {documentData?.subjectCurriculum.curriculumName}
                   </Badge>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <Button className="flex items-center gap-2">
+                  <Button
+                    className="flex items-center gap-2"
+                    onClick={() => {
+                      if (documentData?.id) {
+                        apiDownloadDocument.mutate(
+                          { documentId: documentData.id },
+                          {
+                            onSuccess: () => {
+                              toast.success("Tải tài liệu thành công");
+                            },
+                          },
+                        );
+                      }
+                    }}
+                  >
                     <IconDownload className="size-4" />
                     Tải xuống
                   </Button>

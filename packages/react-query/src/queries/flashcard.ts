@@ -17,6 +17,7 @@ import {
   getFlashcardTestData,
   getFSRSById,
   getFSRSBySlug,
+  getLearnResultFlashcard,
   getOwnerFlashcard,
   getTagFlashcard,
   getTopFlashcard,
@@ -29,6 +30,19 @@ import {
   updateFSRSProgress,
   updatePreset,
 } from "../apis/flashcard.ts";
+
+export const useFlashcardResultQuery = ({
+  pageNumber,
+  pageSize,
+}: {
+  pageNumber: number;
+  pageSize: number;
+}) => {
+  return useQuery({
+    queryKey: ["flashcard-result", pageNumber, pageSize],
+    queryFn: () => getLearnResultFlashcard({ pageNumber, pageSize }),
+  });
+};
 
 export const useFlashcardTestQuery = ({
   mode,

@@ -15,6 +15,7 @@ import {
   TestRange,
   FlashcardTest,
   FlashcardStatistic,
+  FlashcardLearnResult,
 } from "@highschool/interfaces";
 import {
   tagEndpoints,
@@ -27,6 +28,22 @@ import {
 import axiosServices, { axiosClientUpload } from "../lib/axios.ts";
 
 import fetchPaginatedData from "./common.ts";
+
+export const getLearnResultFlashcard = async ({
+  pageSize,
+  pageNumber,
+}: Partial<{
+  pageSize: number;
+  pageNumber: number;
+}>): Promise<Pagination<FlashcardLearnResult[]>> => {
+  return fetchPaginatedData<FlashcardLearnResult[]>(
+    flashcardEndpoints.learnedFlashcardProgress,
+    {
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    },
+  );
+};
 
 export const ratingFlashcard = async ({
   flashcardId,

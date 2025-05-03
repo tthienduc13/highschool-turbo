@@ -62,6 +62,23 @@ export const getDocumentsList = async ({
   });
 };
 
+export const downloadDocument = async ({
+  documentId,
+}: {
+  documentId: string;
+}) => {
+  try {
+    const { data } = await axiosServices.get(
+      mediaEndpoints.downloadDocument(documentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while downloading document", error);
+    throw error;
+  }
+};
+
 export const getDocuments = async ({
   pageSize,
   pageNumber,

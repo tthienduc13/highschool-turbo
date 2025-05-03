@@ -19,6 +19,28 @@ async function clearAuthCookies() {
   cookieStore.delete("auth_state");
 }
 
+/**
+ * Check if content is binary data that should not be parsed as JSON
+ */
+function isBinaryContentType(contentType: string): boolean {
+  const binaryTypes = [
+    "application/pdf",
+    "application/zip",
+    "application/x-zip-compressed",
+    "application/octet-stream",
+    "image/",
+    "audio/",
+    "video/",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument",
+    "application/msword",
+    "application/x-msdownload",
+    "text/csv",
+  ];
+
+  return binaryTypes.some((type) => contentType.toLowerCase().includes(type));
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Get content type from incoming request
@@ -127,9 +149,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Thêm timeout cho request
+    // Add timeout for request
     let controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 giây timeout
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 seconds timeout
 
     requestOptions.signal = controller.signal;
 
@@ -153,7 +175,7 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Xử lý riêng lỗi 503
+      // Handle 503 separately
       if (response.status === 503) {
         console.error(`Service unavailable: ${targetUrl}`);
 
@@ -170,7 +192,7 @@ export async function POST(request: NextRequest) {
 
       // Handle 500+ errors
       if (response.status >= 500) {
-        // Không gọi signOut() trực tiếp để tránh redirect
+        // Don't call signOut() directly to avoid redirect
         await clearAuthCookies();
 
         return NextResponse.json(
@@ -190,7 +212,47 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // Get all the response headers
+      // Get the response content type
+      const responseContentType = response.headers.get("content-type") || "";
+
+      // Check if this is binary data
+      if (isBinaryContentType(responseContentType)) {
+        console.log(`Binary response detected: ${responseContentType}`);
+
+        // Get the response as arrayBuffer for binary data
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Create response headers, preserving important ones
+        const responseHeaders = new Headers();
+
+        // Copy content-type and content-disposition
+        responseHeaders.set("Content-Type", responseContentType);
+        const contentDisposition = response.headers.get("content-disposition");
+
+        if (contentDisposition) {
+          responseHeaders.set("Content-Disposition", contentDisposition);
+        }
+
+        // Copy other important headers
+        response.headers.forEach((value, key) => {
+          if (
+            key.toLowerCase() !== "content-type" &&
+            key.toLowerCase() !== "content-disposition" &&
+            key.toLowerCase() !== "content-encoding" &&
+            key.toLowerCase() !== "content-length"
+          ) {
+            responseHeaders.set(key, value);
+          }
+        });
+
+        // Return the binary data as-is
+        return new NextResponse(arrayBuffer, {
+          status: response.status,
+          headers: responseHeaders,
+        });
+      }
+
+      // For non-binary responses (JSON, text, etc.)
       const responseHeaders = new Headers();
 
       response.headers.forEach((value, key) => {
@@ -230,7 +292,7 @@ export async function POST(request: NextRequest) {
 
       return nextResponse;
     } catch (fetchError: unknown) {
-      // Xử lý lỗi fetch
+      // Handle fetch errors
       clearTimeout(timeoutId);
 
       if (fetchError instanceof Error && fetchError.name === "AbortError") {
@@ -261,8 +323,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error("API proxy error:", error);
 
-    // Không gọi signOut() để tránh redirect
-    // Trả về lỗi nhưng không redirect
+    // Don't call signOut() to avoid redirect
+    // Return error without redirect
     return NextResponse.json(
       {
         error: "Proxy error",

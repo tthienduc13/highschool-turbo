@@ -356,6 +356,12 @@ export const documentEndpoints = {
       API_VERSIONS.V1,
       `/documents/${id}/related`,
     ),
+  downloadDocument: (id: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.DOCUMENT,
+      API_VERSIONS.V1,
+      `/document/download/${id}`,
+    ),
 } as const;
 
 // Folder Endpoints
@@ -429,6 +435,11 @@ export const flashcardEndpoints = {
       API_VERSIONS.V1,
       `/container/flashcard/${flashcardId}/preset/${presetId}`,
     ),
+  learnedFlashcardProgress: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/flashcard/user/learn`,
+  ),
   getFlashcardTest: (slug: string) =>
     createEndpoint(
       SERVICE_PREFIXES.DOCUMENT,

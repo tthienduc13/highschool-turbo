@@ -160,6 +160,78 @@ export const useDocumentMediaQuery = (documentId: string) => {
   });
 };
 
+export const useDownloadDocumentMutation = () => {
+  return useMutation({
+    mutationKey: ["download-document"],
+    mutationFn: getDownloadDocument,
+    onSuccess: (response) => {
+      // Kiểm tra content-type từ response thực tế
+      const contentType = response.headers["content-type"] || "application/pdf";
+
+      console.log("Content-Type:", contentType);
+
+      const blob = new Blob([response.data], {
+        type: contentType,
+      });
+
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+
+      a.href = url;
+
+      // Xử lý tên file
+      let filename = "download.pdf";
+      const disposition = response.headers["content-disposition"];
+
+      if (disposition) {
+        console.log("Content-Disposition:", disposition);
+
+        // Đầu tiên thử với filename*
+        const filenameStarMatch = disposition.match(
+          /filename\*\=UTF-8''([^;]+)/i,
+        );
+        const filenameMatch = disposition.match(/filename="?([^"]+)"?/i);
+
+        if (filenameStarMatch) {
+          try {
+            filename = decodeURIComponent(filenameStarMatch[1]);
+            console.log("Decoded filename*:", filename);
+          } catch (err) {
+            console.warn("Failed to decode filename*", err);
+            // Fallback to regular filename
+            if (filenameMatch) {
+              filename = filenameMatch[1];
+            }
+          }
+        } else if (filenameMatch) {
+          filename = filenameMatch[1];
+          // Có thể filename thông thường cũng bị encode
+          try {
+            filename = decodeURIComponent(filename);
+          } catch (err) {
+            console.warn("Failed to decode regular filename", err);
+          }
+        }
+      }
+
+      console.log("Final filename:", filename);
+
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+
+      // Kiểm tra blob để debugging
+      console.log("Blob size:", blob.size);
+      console.log("Blob type:", blob.type);
+    },
+    onError: (error) => {
+      console.error("Tải tài liệu thất bại:", error);
+    },
+  });
+};
+
 export const useDownloadDocumentMediaQuery = (documentId: string) => {
   return useQuery({
     queryKey: ["document-media", "download", documentId],

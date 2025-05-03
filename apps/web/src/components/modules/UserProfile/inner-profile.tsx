@@ -53,7 +53,7 @@ export const InnerProfile = () => {
           }
         >
           <TabsList
-            className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 md:mb-10 dark:border-gray-800/50 "
+            className="mb-5 h-10 w-full border-b-2 border-gray-200 p-0 dark:border-gray-800/50 "
             variant={"outline"}
           >
             {isMe && (
