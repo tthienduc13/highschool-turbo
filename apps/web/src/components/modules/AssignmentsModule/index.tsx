@@ -55,9 +55,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import ZoneLayout from "@/components/core/layouts/zone-layout";
 import { Container } from "@/components/core/layouts/container";
 import { ConfirmModal } from "@/components/core/common/confirm-modal";
+import { useMe } from "@/hooks/use-me";
 
 function AssignmentsModule() {
   const params = useParams();
+  const me = useMe();
+
+  const isTeacher = me?.roleName?.toLocaleLowerCase() === "teacher";
   const { data, isSuccess, isLoading } = useZoneAssignmentQuery({
     zoneId: params.id as string,
   });
@@ -89,16 +93,13 @@ function AssignmentsModule() {
 
   const formatDate = (dateString: string) => {
     try {
-      return format(new Date(dateString), "MMM dd, yyyy", {
+      return format(new Date(dateString), "dd/MM/yyyy HH:mm", {
         locale: vi,
       });
     } catch (error) {
-      return "Invalid date";
+      return "Ngày không hợp lệ";
     }
   };
-
-  console.log(filteredExams);
-
   const handleDelete = (id: string) => {
     setOpenDeleteModal(true);
     setSelectedExam(id);
@@ -162,7 +163,7 @@ function AssignmentsModule() {
         }}
       />
       <ZoneLayout>
-        <Container className="flex flex-col gap-8" maxWidth="6xl">
+        <Container className="flex flex-col gap-8" maxWidth="7xl">
           <div className="flex flex-row items-center justify-between">
             <h1 className="text-2xl font-semibold">
               Các bài kiểm tra ({data?.length})
@@ -280,51 +281,72 @@ function AssignmentsModule() {
                               <IconDotsCircleHorizontal className="size-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
+                          <DropdownMenuContent align="end" className="w-48">
                             <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                             <DropdownMenuItem
                               className="cursor-pointer"
                               onClick={() => {
-                                router.push(
-                                  `/zone/${params.id as string}/assignment/${exam.id}`,
-                                );
+                                isTeacher
+                                  ? router.push(
+                                      `/zone/${params.id}/assignment/${exam.id}`,
+                                    )
+                                  : router.push(
+                                      `/zone/${params.id}/assignment/${exam.id}/test`,
+                                    );
                               }}
                             >
-                              <IconEye className="mr-2 size-4" />
-                              Xem chi tiết
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="cursor-pointer">
-                              <IconEdit className="mr-2 size-4" />
-                              Chỉnh sửa
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="cursor-pointer"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                togglePublish(exam.id);
-                              }}
-                            >
-                              {exam.published ? (
-                                <>
-                                  <IconLock className="mr-2 size-4" />
-                                  Đóng
-                                </>
+                              {isTeacher ? (
+                                <IconEye className="mr-2 size-4" />
                               ) : (
-                                <>
-                                  <IconLockOpen className="mr-2 size-4" />
-                                  Mở
-                                </>
+                                <IconFileText className="mr-2 size-4" />
                               )}
+                              {isTeacher ? " Xem chi tiết" : "Làm bài"}
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="cursor-pointer text-red-600"
-                              onClick={() => handleDelete(exam.id)}
-                            >
-                              <IconTrash className="mr-2 size-4" />
-                              Xoá
-                            </DropdownMenuItem>
+                            {isTeacher && (
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() => {
+                                  router.push(
+                                    `/zone/${params.id}/assignment/${exam.id}/edit`,
+                                  );
+                                }}
+                              >
+                                <IconEdit className="mr-2 size-4" />
+                                Chỉnh sửa
+                              </DropdownMenuItem>
+                            )}
+                            {isTeacher && <DropdownMenuSeparator />}
+                            {isTeacher && (
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  togglePublish(exam.id);
+                                }}
+                              >
+                                {exam.published ? (
+                                  <>
+                                    <IconLock className="mr-2 size-4" />
+                                    Đóng
+                                  </>
+                                ) : (
+                                  <>
+                                    <IconLockOpen className="mr-2 size-4" />
+                                    Mở
+                                  </>
+                                )}
+                              </DropdownMenuItem>
+                            )}
+                            {isTeacher && <DropdownMenuSeparator />}{" "}
+                            {isTeacher && (
+                              <DropdownMenuItem
+                                className="cursor-pointer text-red-600"
+                                onClick={() => handleDelete(exam.id)}
+                              >
+                                <IconTrash className="mr-2 size-4" />
+                                Xoá
+                              </DropdownMenuItem>
+                            )}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>

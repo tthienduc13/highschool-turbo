@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -48,12 +48,24 @@ import {
   IconCirclePlus,
   IconPlus,
   IconTrash,
+  IconEdit,
 } from "@tabler/icons-react";
-import { AssignmentPayload } from "@highschool/interfaces";
-import { useAssignmentMutation } from "@highschool/react-query/queries";
+import { AssignmentDetail, AssignmentPayload } from "@highschool/interfaces";
+import {
+  useAssignmentMutation,
+  useUpdateAssignmentMutation,
+} from "@highschool/react-query/queries";
 import { useParams, useRouter } from "next/navigation";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { useQueryClient } from "@tanstack/react-query";
+
+import { CsvImporter } from "./csv-importer";
+
+// Định nghĩa props cho component
+interface AssignmentFormProps {
+  type: "create" | "edit";
+  assignmentData?: AssignmentDetail;
+}
 
 const questionSchema = z.object({
   question: z.string().min(1, "Câu hỏi không được để trống"),
@@ -73,17 +85,24 @@ const formSchema = z
         required_error: "Ngày mở là bắt buộc",
         invalid_type_error: "Ngày mở không hợp lệ",
       })
-      .min(new Date(), "Ngày mở phải sau thời điểm hiện tại"),
+      .optional()
+      .or(z.string()),
     availableTime: z.string().optional(),
-    dueAt: z.date({
-      required_error: "Hạn nộp là bắt buộc",
-      invalid_type_error: "Hạn nộp không hợp lệ",
-    }),
+    dueAt: z
+      .date({
+        required_error: "Hạn nộp là bắt buộc",
+        invalid_type_error: "Hạn nộp không hợp lệ",
+      })
+      .optional()
+      .or(z.string()),
     dueTime: z.string().optional(),
-    lockedAt: z.date({
-      required_error: "Ngày khóa là bắt buộc",
-      invalid_type_error: "Ngày khóa không hợp lệ",
-    }),
+    lockedAt: z
+      .date({
+        required_error: "Ngày khóa là bắt buộc",
+        invalid_type_error: "Ngày khóa không hợp lệ",
+      })
+      .optional()
+      .or(z.string()),
     lockedTime: z.string().optional(),
     published: z.boolean().default(false),
     testContent: z
@@ -92,41 +111,155 @@ const formSchema = z
       .max(50, "Tối đa 50 câu hỏi"),
   })
   .superRefine((data, ctx) => {
-    if (data.dueAt && data.availableAt && data.dueAt <= data.availableAt) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Hạn nộp phải sau ngày mở",
-        path: ["dueAt"],
-      });
+    // Kiểm tra thời gian mở phải sau thời điểm hiện tại (chỉ khi tạo mới)
+    if (data.availableAt && data.availableTime) {
+      const now = new Date();
+      let availableDate: Date;
+
+      if (typeof data.availableAt === "string") {
+        availableDate = new Date(data.availableAt);
+      } else {
+        availableDate = new Date(data.availableAt);
+      }
+
+      // Thêm giờ và phút từ availableTime
+      if (data.availableTime) {
+        const [hours, minutes] = data.availableTime.split(":").map(Number);
+
+        availableDate.setHours(hours, minutes, 0, 0);
+      }
+
+      // Chỉ validate trong trường hợp là ngày hôm nay
+      if (
+        availableDate.getDate() === now.getDate() &&
+        availableDate.getMonth() === now.getMonth() &&
+        availableDate.getFullYear() === now.getFullYear() &&
+        availableDate < now
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Thời gian mở phải sau thời điểm hiện tại",
+          path: ["availableTime"],
+        });
+      }
     }
 
-    if (data.lockedAt && data.dueAt && data.lockedAt < data.dueAt) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Ngày khóa phải sau hoặc bằng hạn nộp",
-        path: ["lockedAt"],
-      });
+    // Kiểm tra hạn nộp phải sau ngày mở
+    if (data.dueAt && data.availableAt) {
+      let dueDate: Date;
+      let availableDate: Date;
+
+      if (typeof data.dueAt === "string") {
+        dueDate = new Date(data.dueAt);
+      } else {
+        dueDate = new Date(data.dueAt);
+      }
+
+      if (typeof data.availableAt === "string") {
+        availableDate = new Date(data.availableAt);
+      } else {
+        availableDate = new Date(data.availableAt);
+      }
+
+      // Thêm giờ và phút
+      if (data.dueTime) {
+        const [hours, minutes] = data.dueTime.split(":").map(Number);
+
+        dueDate.setHours(hours, minutes, 0, 0);
+      }
+
+      if (data.availableTime) {
+        const [hours, minutes] = data.availableTime.split(":").map(Number);
+
+        availableDate.setHours(hours, minutes, 0, 0);
+      }
+
+      if (dueDate <= availableDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Hạn nộp phải sau thời gian mở",
+          path: ["dueAt"],
+        });
+      }
+    }
+
+    // Kiểm tra ngày khóa phải sau hoặc bằng hạn nộp
+    if (data.lockedAt && data.dueAt) {
+      let lockedDate: Date;
+      let dueDate: Date;
+
+      if (typeof data.lockedAt === "string") {
+        lockedDate = new Date(data.lockedAt);
+      } else {
+        lockedDate = new Date(data.lockedAt);
+      }
+
+      if (typeof data.dueAt === "string") {
+        dueDate = new Date(data.dueAt);
+      } else {
+        dueDate = new Date(data.dueAt);
+      }
+
+      // Thêm giờ và phút
+      if (data.lockedTime) {
+        const [hours, minutes] = data.lockedTime.split(":").map(Number);
+
+        lockedDate.setHours(hours, minutes, 0, 0);
+      }
+
+      if (data.dueTime) {
+        const [hours, minutes] = data.dueTime.split(":").map(Number);
+
+        dueDate.setHours(hours, minutes, 0, 0);
+      }
+
+      if (lockedDate < dueDate) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Thời gian khóa phải sau hoặc bằng hạn nộp",
+          path: ["lockedAt"],
+        });
+      }
     }
   });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function AssignmentForm() {
+export function AssignmentForm({
+  type = "create",
+  assignmentData,
+}: AssignmentFormProps) {
   const params = useParams();
   const zoneId = params.id as string;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const queryClient = useQueryClient();
-
   const router = useRouter();
 
   const apiCreateAssignment = useAssignmentMutation();
+  const apiUpdateAssignment = useUpdateAssignmentMutation();
 
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
+  // Chuẩn bị giá trị mặc định cho form
+  const getDefaultValues = (): FormValues => {
+    const now = new Date();
+    const tomorrow = new Date(now);
+
+    tomorrow.setDate(now.getDate() + 1);
+
+    // Đặt thời gian mặc định là giờ hiện tại + 1 giờ
+    const defaultHour = now.getHours() + 1;
+    const defaultMinute = now.getMinutes();
+    const defaultTime = `${String(defaultHour).padStart(2, "0")}:${String(defaultMinute).padStart(2, "0")}`;
+
+    const defaultValues: FormValues = {
       title: "",
       noticed: "",
+      availableAt: now,
+      availableTime: defaultTime,
+      dueAt: tomorrow,
+      dueTime: defaultTime,
+      lockedAt: tomorrow,
+      lockedTime: defaultTime,
       published: false,
       testContent: [
         {
@@ -135,24 +268,83 @@ export function AssignmentForm() {
           correctAnswer: 0,
         },
       ],
-    },
+    };
+
+    return defaultValues;
+  };
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: getDefaultValues(),
   });
+
+  // Xử lý điền dữ liệu từ assignmentData nếu type là "edit"
+  useEffect(() => {
+    if (type === "edit" && assignmentData) {
+      // Xử lý date và time từ các chuỗi datetime ISO
+      const parseDateTime = (isoString: string) => {
+        if (!isoString) return { date: undefined, time: undefined };
+
+        const dateObj = new Date(isoString);
+        const hours = String(dateObj.getHours()).padStart(2, "0");
+        const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+
+        return {
+          date: dateObj,
+          time: `${hours}:${minutes}`,
+        };
+      };
+
+      const availableDateTime = parseDateTime(assignmentData.availableAt);
+      const dueDateTime = parseDateTime(assignmentData.dueAt);
+      const lockedDateTime = parseDateTime(assignmentData.lockedAt);
+
+      // Chuyển đổi dữ liệu câu hỏi từ định dạng API sang định dạng form
+      const formattedQuestions = assignmentData.questions.map((q) => ({
+        question: q.question,
+        answers: q.answers,
+        correctAnswer: q.correctAnswer,
+      }));
+
+      // Đặt giá trị ban đầu cho form khi chỉnh sửa
+      form.reset({
+        title: assignmentData.title,
+        noticed: assignmentData.noticed || "",
+        availableAt: availableDateTime.date,
+        availableTime: availableDateTime.time,
+        dueAt: dueDateTime.date,
+        dueTime: dueDateTime.time,
+        lockedAt: lockedDateTime.date,
+        lockedTime: lockedDateTime.time,
+        published: assignmentData.published,
+        testContent:
+          formattedQuestions.length > 0
+            ? formattedQuestions
+            : [{ question: "", answers: [""], correctAnswer: 0 }],
+      });
+    }
+  }, [type, assignmentData, form]);
 
   const onSubmit = async (data: FormValues) => {
     try {
       setIsSubmitting(true);
 
       const combineDateTime = (
-        date: Date | undefined,
+        date: Date | undefined | string,
         time: string | undefined,
       ) => {
         if (!date) return null;
 
-        const newDate = new Date(date);
+        let newDate: Date;
+
+        if (typeof date === "string") {
+          newDate = new Date(date);
+        } else {
+          newDate = new Date(date);
+        }
 
         if (time) {
           const [hours, minutes] = time.split(":").map(Number);
-          const newDate = new Date(date);
 
           newDate.setHours(hours, minutes);
         }
@@ -186,28 +378,57 @@ export function AssignmentForm() {
         }),
       };
 
-      apiCreateAssignment.mutateAsync(
-        {
-          zoneId: zoneId,
-          payload: formattedData,
-        },
-        {
-          onSuccess: (data) => {
-            toast.success(data.message);
-            queryClient.invalidateQueries({
-              queryKey: ["getAssignmentsByZone", zoneId],
-            });
-            router.push(`/zone/${zoneId}/assignment`);
+      console.log(formattedData);
+
+      if (type === "create") {
+        // Gọi API tạo mới
+        apiCreateAssignment.mutateAsync(
+          {
+            zoneId: zoneId,
+            payload: formattedData,
           },
-          onError: (data) => {
-            toast.error(data.message);
+          {
+            onSuccess: (data) => {
+              toast.success(data.message);
+              queryClient.invalidateQueries({
+                queryKey: ["getAssignmentsByZone", zoneId],
+              });
+              router.push(`/zone/${zoneId}/assignment`);
+            },
+            onError: (error: any) => {
+              toast.error(
+                error.message || "Có lỗi xảy ra khi tạo bài kiểm tra",
+              );
+            },
           },
-        },
-      );
-    } catch (error) {
+        );
+      } else {
+        // Gọi API cập nhật
+        apiUpdateAssignment.mutateAsync(
+          {
+            assignmentId: assignmentData?.id!,
+            payload: formattedData,
+          },
+          {
+            onSuccess: (data) => {
+              toast.success(data.message);
+              queryClient.invalidateQueries({
+                queryKey: ["getAssignmentsByZone", zoneId],
+              });
+              router.push(`/zone/${zoneId}/assignment`);
+            },
+            onError: (error: any) => {
+              toast.error(
+                error.message || "Có lỗi xảy ra khi cập nhật bài kiểm tra",
+              );
+            },
+          },
+        );
+      }
+    } catch (error: any) {
       console.error("Error submitting form:", error);
       toast.error("Lỗi", {
-        description: "Đã xảy ra lỗi không mong muốn",
+        description: error.message || "Đã xảy ra lỗi không mong muốn",
       });
     } finally {
       setIsSubmitting(false);
@@ -296,7 +517,6 @@ export function AssignmentForm() {
     form.setValue("testContent", updatedQuestions);
   };
 
-  // Handle CSV import
   const handleCsvImport = (questions: any[]) => {
     if (questions.length > 50) {
       toast.error("Quá nhiều câu hỏi", {
@@ -332,7 +552,6 @@ export function AssignmentForm() {
       ),
     });
   };
-
   const questionCount = form.watch("testContent").length;
 
   return (
@@ -401,9 +620,19 @@ export function AssignmentForm() {
                                   variant={"outline"}
                                 >
                                   {field.value ? (
-                                    format(field.value, "dd/MM/yyyy", {
-                                      locale: vi,
-                                    })
+                                    typeof field.value === "object" ? (
+                                      format(field.value, "dd/MM/yyyy", {
+                                        locale: vi,
+                                      })
+                                    ) : (
+                                      format(
+                                        new Date(field.value),
+                                        "dd/MM/yyyy",
+                                        {
+                                          locale: vi,
+                                        },
+                                      )
+                                    )
                                   ) : (
                                     <span>Chọn ngày</span>
                                   )}
@@ -419,7 +648,13 @@ export function AssignmentForm() {
                                 initialFocus
                                 locale={vi}
                                 mode="single"
-                                selected={field.value}
+                                selected={
+                                  typeof field.value === "object"
+                                    ? field.value
+                                    : typeof field.value === "string"
+                                      ? new Date(field.value)
+                                      : undefined
+                                }
                                 onSelect={field.onChange}
                               />
                             </PopoverContent>
@@ -470,9 +705,19 @@ export function AssignmentForm() {
                                   variant={"outline"}
                                 >
                                   {field.value ? (
-                                    format(field.value, "dd/MM/yyyy", {
-                                      locale: vi,
-                                    })
+                                    typeof field.value === "object" ? (
+                                      format(field.value, "dd/MM/yyyy", {
+                                        locale: vi,
+                                      })
+                                    ) : (
+                                      format(
+                                        new Date(field.value),
+                                        "dd/MM/yyyy",
+                                        {
+                                          locale: vi,
+                                        },
+                                      )
+                                    )
                                   ) : (
                                     <span>Chọn ngày</span>
                                   )}
@@ -488,7 +733,13 @@ export function AssignmentForm() {
                                 initialFocus
                                 locale={vi}
                                 mode="single"
-                                selected={field.value}
+                                selected={
+                                  typeof field.value === "object"
+                                    ? field.value
+                                    : typeof field.value === "string"
+                                      ? new Date(field.value)
+                                      : undefined
+                                }
                                 onSelect={field.onChange}
                               />
                             </PopoverContent>
@@ -539,9 +790,19 @@ export function AssignmentForm() {
                                   variant={"outline"}
                                 >
                                   {field.value ? (
-                                    format(field.value, "dd/MM/yyyy", {
-                                      locale: vi,
-                                    })
+                                    typeof field.value === "object" ? (
+                                      format(field.value, "dd/MM/yyyy", {
+                                        locale: vi,
+                                      })
+                                    ) : (
+                                      format(
+                                        new Date(field.value),
+                                        "dd/MM/yyyy",
+                                        {
+                                          locale: vi,
+                                        },
+                                      )
+                                    )
                                   ) : (
                                     <span>Chọn ngày</span>
                                   )}
@@ -557,7 +818,13 @@ export function AssignmentForm() {
                                 initialFocus
                                 locale={vi}
                                 mode="single"
-                                selected={field.value}
+                                selected={
+                                  typeof field.value === "object"
+                                    ? field.value
+                                    : typeof field.value === "string"
+                                      ? new Date(field.value)
+                                      : undefined
+                                }
                                 onSelect={field.onChange}
                               />
                             </PopoverContent>
@@ -624,7 +891,7 @@ export function AssignmentForm() {
                 </h2>
                 <div className="flex gap-2">
                   {/* TODO: */}
-                  {/* <CsvImporter onImport={handleCsvImport} /> */}
+                  <CsvImporter onImport={handleCsvImport} />
                   <Button
                     className="flex items-center gap-2"
                     type="button"
@@ -798,17 +1065,31 @@ export function AssignmentForm() {
                   ))}
                 </div>
               )}
+              <Button
+                className="v mt-4 flex w-full items-center gap-2"
+                type="button"
+                variant={"outline"}
+                onClick={addQuestion}
+              >
+                <IconCirclePlus className="size-4" />
+                Thêm câu hỏi
+              </Button>
             </div>
           </div>
           <Separator />
           <div className="mt-8 flex justify-end">
             <Button className="px-6" disabled={isSubmitting} type="submit">
               {isSubmitting ? (
-                "Đang tạo bài kiểm tra..."
-              ) : (
+                "Đang xử lý..."
+              ) : type === "create" ? (
                 <>
                   <IconPlus className="mr-2 size-4" />
                   Tạo bài kiểm tra
+                </>
+              ) : (
+                <>
+                  <IconEdit className="mr-2 size-4" />
+                  Cập nhật bài kiểm tra
                 </>
               )}
             </Button>

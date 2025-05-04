@@ -1,5 +1,6 @@
 import {
   Assignment,
+  AssignmentDetail,
   AssignmentPayload,
   ResponseModel,
 } from "@highschool/interfaces";
@@ -17,6 +18,43 @@ export const createAssignment = async ({
   try {
     const { data } = await axiosServices.post(
       assignmentEndpoints.create(zoneId),
+      { ...payload, type: "exam" },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error creating assignment:", error);
+    throw error;
+  }
+};
+
+export const getAssignmentDetail = async ({
+  assignmentId,
+}: {
+  assignmentId: string;
+}): Promise<AssignmentDetail> => {
+  try {
+    const { data } = await axiosServices.get(
+      assignmentEndpoints.getDetail(assignmentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error getting assignment detail:", error);
+    throw error;
+  }
+};
+
+export const updateAssignment = async ({
+  assignmentId,
+  payload,
+}: {
+  assignmentId: string;
+  payload: AssignmentPayload;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      assignmentEndpoints.update(assignmentId),
       { ...payload, type: "exam" },
     );
 
@@ -57,6 +95,28 @@ export const deleteAssignment = async ({
     return data;
   } catch (error) {
     console.error("Error deleting assignment by zone:", error);
+    throw error;
+  }
+};
+
+export const submitAssignment = async ({
+  assignmentId,
+  answers,
+}: {
+  assignmentId: string;
+  answers: { id: string; answers: string }[];
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.post(
+      assignmentEndpoints.submitAssignment(assignmentId),
+      {
+        answer: answers,
+      },
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error submitting assignment:", error);
     throw error;
   }
 };

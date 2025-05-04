@@ -1,6 +1,7 @@
 import {
   useRecommendedDataQuery,
   useTopFlashcardQuery,
+  useZonesQuery,
 } from "@highschool/react-query/queries";
 import { RecentView as RecentViewType } from "@highschool/interfaces";
 
@@ -10,6 +11,7 @@ import { RecommendFlashcard } from "./recommend-flashcard";
 import { RecommendCourse } from "./recommend-course";
 import { RecommendDocument } from "./recommend-document";
 import { TopFlashcard } from "./top-flashcard";
+import { ZoneList } from "./zone-list";
 
 import { Container } from "@/components/core/layouts/container";
 
@@ -24,6 +26,11 @@ export const StudentHome = ({
 }: StudentHomeProps) => {
   const { data: recommendedData } = useRecommendedDataQuery(true);
 
+  const { data } = useZonesQuery({
+    pageNumber: 1,
+    pageSize: 1000,
+  });
+
   const { data: topFlashcardData, isLoading: topFlashcardIsLoading } =
     useTopFlashcardQuery();
 
@@ -32,6 +39,8 @@ export const StudentHome = ({
       <FinishProfile />
 
       <RecentView data={recentViewData} isLoading={isLoading} />
+
+      <ZoneList data={data?.data ?? []} />
 
       <RecommendFlashcard data={recommendedData?.flashcards ?? []} />
 

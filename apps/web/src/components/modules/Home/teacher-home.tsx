@@ -25,7 +25,7 @@ export const TeacherHome = ({
     <Container className="flex flex-col gap-12" maxWidth="7xl">
       <FinishProfile />
 
-      <RecentView data={recentViewData} isLoading={isLoading} />
+      <RecentView data={recentViewData} isLoading={isLoading || zoneLoading} />
 
       <ZoneList data={data?.data ?? []} />
     </Container>

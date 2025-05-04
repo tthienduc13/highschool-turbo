@@ -1,8 +1,6 @@
 "use client";
 
 import { ZonePreview } from "@highschool/interfaces";
-import { useEffect, useState } from "react";
-import { useAuthorsQuery } from "@highschool/react-query/queries";
 import Link from "next/link";
 import { cn } from "@highschool/ui/lib/utils";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
@@ -16,22 +14,6 @@ interface ZoneListProps {
 }
 
 export const ZoneList = ({ data }: ZoneListProps) => {
-  const [userIds, setUserIds] = useState<string[]>([]);
-
-  const { data: user, isLoading: userLoading } = useAuthorsQuery({ userIds });
-
-  useEffect(() => {
-    if (data) {
-      const uniqueUserIds = Array.from(
-        new Set(
-          data.map((document: { createdBy: string }) => document.createdBy),
-        ),
-      );
-
-      setUserIds(uniqueUserIds);
-    }
-  }, [data]);
-
   if (!data) {
     return;
   }

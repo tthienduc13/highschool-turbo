@@ -1,22 +1,28 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { Button } from "@highschool/ui/components/ui/button";
+import React, { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useAssignmentQuery } from "@highschool/react-query/queries";
 
-import { AssignmentForm } from "./form";
+import { AssignmentForm } from "../CreateAssignment/form";
 
 import { Container } from "@/components/core/layouts/container";
 import ZoneLayout from "@/components/core/layouts/zone-layout";
 import { useMe } from "@/hooks/use-me";
+import { Loading } from "@/components/core/common/loading";
 
-function CreateAssignmentModule() {
+function EditAssignmentModule() {
   const me = useMe();
   const router = useRouter();
   const params = useParams();
 
   const isTeacher = me?.roleName?.toLocaleLowerCase() === "teacher";
+
+  const { data, isLoading } = useAssignmentQuery({
+    assignmentId: params.assignmentId as string,
+  });
 
   useEffect(() => {
     if (!isTeacher) {
@@ -27,7 +33,13 @@ function CreateAssignmentModule() {
     }
   }, [isTeacher]);
 
-  if (!isTeacher) {
+  if (isLoading) {
+    <ZoneLayout>
+      <Loading />
+    </ZoneLayout>;
+  }
+
+  if (!isTeacher || !data) {
     return;
   }
 
@@ -46,11 +58,11 @@ function CreateAssignmentModule() {
           </Button>
         </div>
         <div className="rounded-xl border-2 border-gray-200 bg-white p-8 dark:border-gray-700">
-          <AssignmentForm type="create" />
+          <AssignmentForm assignmentData={data} type="edit" />
         </div>
       </Container>
     </ZoneLayout>
   );
 }
 
-export default CreateAssignmentModule;
+export default EditAssignmentModule;

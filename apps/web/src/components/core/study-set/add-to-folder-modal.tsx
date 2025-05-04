@@ -65,6 +65,9 @@ export const AddToFolderModal = ({
       isOpen={isOpen}
       title="Thêm vào thư mục"
       onClose={onClose}
+      onConfirm={() => {
+        onClose();
+      }}
     >
       <div className="flex flex-col gap-3 pb-6">
         {isLoading ? (

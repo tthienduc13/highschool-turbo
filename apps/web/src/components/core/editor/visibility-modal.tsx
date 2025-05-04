@@ -37,7 +37,7 @@ export const VisibilityModal: React.FC<VisibilityModalProps> = ({
       title="Thay đổi trạng thái hiển thị"
       onClose={onClose}
     >
-      <div className="flex w-full flex-col overflow-hidden rounded-xl border-2 border-gray-200 dark:border-gray-700">
+      <div className="flex w-full flex-col overflow-hidden rounded-xl border-2 border-gray-200 pb-6 dark:border-gray-700">
         {[
           {
             visibility: StudySetVisibility.Public,
