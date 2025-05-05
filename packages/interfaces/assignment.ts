@@ -21,7 +21,22 @@ export interface AssignmentDetail {
   published: boolean;
   createdBy: string;
   questions: AssignmentQuestion[];
-  submissions: any[];
+  submitted: boolean;
+  submissions: AssignmentSubmission[];
+}
+export interface AssignmentSubmission {
+  id: string;
+  memberId: number;
+  assignmentId: string;
+  score: number;
+  userId: string;
+  learner: Learner;
+}
+
+export interface Learner {
+  authorId: string;
+  authorName: string;
+  authorImage: string;
 }
 
 export interface AssignmentQuestion {
@@ -53,4 +68,5 @@ export interface Assignment {
   published: boolean;
   createdBy: string;
   submissionsCount: number;
+  submitted: boolean;
 }

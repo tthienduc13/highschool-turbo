@@ -84,6 +84,7 @@
         "react-pdf": "^9.1.1",
         "react-to-print": "^2.15.1",
         "react-top-loading-bar": "^3.0.2",
+        "recharts": "^2.15.1",
         "sonner": "^1.7.1",
         "thumbhash": "^0.1.1",
         "use-fit-text": "^2.4.0",

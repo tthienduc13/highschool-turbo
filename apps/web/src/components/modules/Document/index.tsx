@@ -29,6 +29,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 import { AddToFolderModal } from "./add-to-folder-modal";
 
@@ -50,6 +51,10 @@ const PDFViewer = dynamic(() => import("./pdf-viewer"), {
 
 function DocumentModule() {
   const params = useParams();
+
+  const session = useSession();
+
+  const isAuthenticated = session.status === "authenticated";
 
   const [openAddToFolderModal, setOpenAddToFolderModal] = useState(false);
 
@@ -145,16 +150,18 @@ function DocumentModule() {
                       Ngày tạo: {new Date(createdAt).toLocaleDateString()}
                     </div>
                     <div className="mt-6 flex flex-row items-center justify-end gap-2">
-                      <Button
-                        className="flex items-center gap-2"
-                        variant={"outline"}
-                        onClick={() => {
-                          setOpenAddToFolderModal(true);
-                        }}
-                      >
-                        <IconFolderPlus className="size-4" />
-                        Thêm vào thư mục
-                      </Button>
+                      {isAuthenticated && (
+                        <Button
+                          className="flex items-center gap-2"
+                          variant={"outline"}
+                          onClick={() => {
+                            setOpenAddToFolderModal(true);
+                          }}
+                        >
+                          <IconFolderPlus className="size-4" />
+                          Thêm vào thư mục
+                        </Button>
+                      )}
                       <Button
                         className="flex items-center gap-2"
                         onClick={() => {

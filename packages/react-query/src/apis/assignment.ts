@@ -105,7 +105,7 @@ export const submitAssignment = async ({
 }: {
   assignmentId: string;
   answers: { id: string; answers: string }[];
-}): Promise<ResponseModel<string>> => {
+}): Promise<ResponseModel<number>> => {
   try {
     const { data } = await axiosServices.post(
       assignmentEndpoints.submitAssignment(assignmentId),
