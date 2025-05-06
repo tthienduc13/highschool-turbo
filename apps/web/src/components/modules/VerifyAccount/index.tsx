@@ -16,7 +16,12 @@ function VerifyAccountModule() {
 
   useEffect(() => {
     if (token && email) {
-      signIn("magic-link", { token, email });
+      const hasTriedSignIn = sessionStorage.getItem("hasTriedSignIn");
+
+      if (!hasTriedSignIn) {
+        sessionStorage.setItem("hasTriedSignIn", "true");
+        signIn("magic-link", { token, email });
+      }
     }
   }, [token, email]);
 

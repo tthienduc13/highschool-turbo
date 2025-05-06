@@ -66,18 +66,27 @@ export const verifyAccount = async ({
   token: string;
 }): Promise<ResponseModel<UserSession>> => {
   try {
+    const processedToken = decodeURI(token);
+
+    console.log("Sent Data", { email, processedToken });
+
     const { data } = await axiosServices.post(authEndpoints.verifyAccount, {
       email: email,
-      token: decodeURI(token),
+      token: processedToken,
     });
 
     return data;
   } catch (error) {
     console.log("Error while verify account", error);
+
+    // Ghi log chi tiết hơn
+    if (axios.isAxiosError(error)) {
+      console.error("API Error:", error.response?.data);
+    }
+
     throw error;
   }
 };
-
 export const googleAuthentication = async ({
   email,
   fullName,
