@@ -527,6 +527,9 @@ importers:
       react-top-loading-bar:
         specifier: ^3.0.2
         version: 3.0.2(react@19.1.0)
+      recharts:
+        specifier: ^2.15.1
+        version: 2.15.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       sonner:
         specifier: ^1.7.1
         version: 1.7.4(react-dom@19.1.0(react@19.1.0))(react@19.1.0)

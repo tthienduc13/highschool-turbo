@@ -8,11 +8,14 @@ import {
 import { useParams, useRouter } from "next/navigation";
 import {
   IconCalendar,
+  IconCircleCheck,
   IconCirclePlus,
+  IconCircleX,
   IconClock,
   IconDotsCircleHorizontal,
   IconEdit,
   IconEye,
+  IconFileIsr,
   IconFileText,
   IconLock,
   IconLockOpen,
@@ -168,14 +171,16 @@ function AssignmentsModule() {
             <h1 className="text-2xl font-semibold">
               Các bài kiểm tra ({data?.length})
             </h1>
-            <Button
-              onClick={() =>
-                router.push(`/zone/${params.id as string}/assignment/new`)
-              }
-            >
-              <IconCirclePlus />
-              Thêm mới
-            </Button>
+            {isTeacher && (
+              <Button
+                onClick={() =>
+                  router.push(`/zone/${params.id as string}/assignment/new`)
+                }
+              >
+                <IconCirclePlus />
+                Thêm mới
+              </Button>
+            )}
           </div>
           <div className="flex flex-row items-center justify-between gap-5">
             <div className="dark:border-800/50 flex w-full flex-1 flex-row rounded-md border border-gray-200 bg-white shadow-sm dark:bg-gray-800">
@@ -203,11 +208,11 @@ function AssignmentsModule() {
               <SelectContent>
                 <SelectItem value="all">Tất cả trạng thái</SelectItem>
                 <SelectItem value="published">Đã mở</SelectItem>
-                <SelectItem value="unpublished">Chưa mở</SelectItem>
+                <SelectItem value="unpublished">Đóng</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <div className="overflow-hidden rounded-md border bg-white">
+          <div className="w-full overflow-hidden rounded-md border bg-white">
             <Table>
               <TableHeader>
                 <TableRow className="bg-white">
@@ -217,6 +222,7 @@ function AssignmentsModule() {
                   <TableHead>Kết thúc</TableHead>
                   <TableHead>Trạng thái</TableHead>
                   <TableHead>Số lượng nộp</TableHead>
+                  {!isTeacher && <TableHead />}
                   <TableHead className="text-right" />
                 </TableRow>
               </TableHeader>
@@ -273,6 +279,24 @@ function AssignmentsModule() {
                         )}
                       </TableCell>
                       <TableCell>{exam.submissionsCount}</TableCell>
+                      {!isTeacher && (
+                        <TableCell>
+                          {exam.submitted ? (
+                            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                              <IconCircleCheck className="mr-1 size-3" />
+                              Đã nộp
+                            </Badge>
+                          ) : (
+                            <Badge
+                              className="bg-destructive/10 text-gray-800 hover:bg-gray-100"
+                              variant="outline"
+                            >
+                              <IconCircleX className="mr-1 size-3" />
+                              Chưa nộp
+                            </Badge>
+                          )}
+                        </TableCell>
+                      )}
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -290,17 +314,27 @@ function AssignmentsModule() {
                                   ? router.push(
                                       `/zone/${params.id}/assignment/${exam.id}`,
                                     )
-                                  : router.push(
-                                      `/zone/${params.id}/assignment/${exam.id}/test`,
-                                    );
+                                  : exam.submitted
+                                    ? router.push(
+                                        `/zone/${params.id}/assignment/${exam.id}/review`,
+                                      )
+                                    : router.push(
+                                        `/zone/${params.id}/assignment/${exam.id}/test`,
+                                      );
                               }}
                             >
                               {isTeacher ? (
                                 <IconEye className="mr-2 size-4" />
+                              ) : exam.submitted ? (
+                                <IconFileIsr className="mr-2 size-4" />
                               ) : (
                                 <IconFileText className="mr-2 size-4" />
                               )}
-                              {isTeacher ? " Xem chi tiết" : "Làm bài"}
+                              {isTeacher
+                                ? " Xem chi tiết"
+                                : exam.submitted
+                                  ? "Xem bài làm"
+                                  : "Làm bài"}
                             </DropdownMenuItem>
                             {isTeacher && (
                               <DropdownMenuItem

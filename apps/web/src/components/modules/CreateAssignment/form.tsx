@@ -378,8 +378,6 @@ export function AssignmentForm({
         }),
       };
 
-      console.log(formattedData);
-
       if (type === "create") {
         // Gọi API tạo mới
         apiCreateAssignment.mutateAsync(
@@ -391,7 +389,7 @@ export function AssignmentForm({
             onSuccess: (data) => {
               toast.success(data.message);
               queryClient.invalidateQueries({
-                queryKey: ["getAssignmentsByZone", zoneId],
+                queryKey: ["getAssignmentsByZone", params.id],
               });
               router.push(`/zone/${zoneId}/assignment`);
             },
@@ -413,7 +411,7 @@ export function AssignmentForm({
             onSuccess: (data) => {
               toast.success(data.message);
               queryClient.invalidateQueries({
-                queryKey: ["getAssignmentsByZone", zoneId],
+                queryKey: ["getAssignmentsByZone", params.id],
               });
               router.push(`/zone/${zoneId}/assignment`);
             },

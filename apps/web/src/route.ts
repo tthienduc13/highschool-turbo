@@ -3,7 +3,12 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/study-set", "/study-set/*", "/about-fsrs"];
+export const publicRoutes = [
+  "/study-set",
+  "/study-set/*",
+  "/about-fsrs",
+  "/documents/*",
+];
 export const restrictedRoutes = ["/study-set/*/learn"];
 
 /**

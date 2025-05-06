@@ -13,6 +13,7 @@ export interface Zone {
   folderIds: string[];
   assignments: Assignment[];
   pendingZoneInvitesCount: number;
+  createdBy: string;
   zoneBansCount: number;
   zoneMembershipsCount: number;
   createdAt?: string;

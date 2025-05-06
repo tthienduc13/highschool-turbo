@@ -8,7 +8,6 @@ import {
   IconArrowLeft,
   IconArrowRight,
   IconBook,
-  IconCheck,
   IconCircleCheck,
   IconClock,
   IconHelpCircle,
@@ -39,6 +38,7 @@ import {
   RadioGroupItem,
 } from "@highschool/ui/components/ui/radio-group";
 import { Label } from "@highschool/ui/components/ui/label";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { Badge } from "./badge";
 
@@ -66,6 +66,8 @@ export function formatTimeRemaining(milliseconds: number): string {
 function AssignmentTestModule() {
   const router = useRouter();
   const params = useParams();
+  const queryClient = useQueryClient();
+
   const handleBack = () => {
     if (confirm("Bài làm của bạn sẽ không được lưu lại")) {
       router.push(`/zone/${params.id}/assignment`);
@@ -85,22 +87,10 @@ function AssignmentTestModule() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isTestSubmitted, setIsTestSubmitted] = useState(false);
   const [isBeforeAvailableTime, setIsBeforeAvailableTime] = useState(false);
+  const [isAfterDueTime, setIsAfterDueTime] = useState(false);
+  const [userScore, setUserScore] = useState<number | null>(null);
 
-  // Kiểm tra thời gian mở bài
-  useEffect(() => {
-    if (testData?.availableAt) {
-      const availableTime = new Date(testData.availableAt).getTime();
-      const currentTime = new Date().getTime();
-
-      if (currentTime < availableTime) {
-        setIsBeforeAvailableTime(true);
-      } else {
-        setIsBeforeAvailableTime(false);
-      }
-    }
-  }, [testData]);
-
-  const totalQuestions = testData?.questions?.length || 0;
+  const totalQuestions = testData?.questions?.length ?? 0;
   const currentQuestion = testData?.questions?.[currentQuestionIndex];
   const answeredCount = Object.keys(answers).length;
   const allQuestionsAnswered = answeredCount === totalQuestions;
@@ -117,40 +107,16 @@ function AssignmentTestModule() {
   };
 
   const navigateToQuestion = (index: number) => {
-    if (index >= 0 && totalQuestions && index < totalQuestions) {
+    if (index >= 0 && index < totalQuestions) {
       setCurrentQuestionIndex(index);
     }
-  };
-
-  const findFirstUnansweredQuestion = () => {
-    if (!testData?.questions || testData.questions.length === 0) {
-      return 0;
-    }
-
-    for (let i = 0; i < testData.questions.length; i++) {
-      const questionId = testData.questions[i].id;
-
-      if (!answers[questionId]) {
-        return i;
-      }
-    }
-
-    return 0;
   };
 
   const apiSubmit = useSubmitMutation();
 
   const handleSubmitTest = async () => {
-    if (!allQuestionsAnswered) {
-      const firstUnansweredIndex = findFirstUnansweredQuestion();
-
-      setCurrentQuestionIndex(firstUnansweredIndex);
-
-      toast.error("Vui lòng trả lời tất cả các câu hỏi trước khi nộp bài", {
-        description: `Bạn chưa trả lời câu hỏi ${
-          firstUnansweredIndex + 1
-        }/${totalQuestions}.`,
-      });
+    if (!testData?.questions?.length) {
+      toast.error("Không có câu hỏi nào trong bài kiểm tra");
 
       return;
     }
@@ -163,21 +129,25 @@ function AssignmentTestModule() {
         answers: answer.text,
       }));
 
-      apiSubmit.mutateAsync(
+      await apiSubmit.mutateAsync(
         {
           assignmentId: params.assignmentId as string,
           answers: formattedAnswers,
         },
         {
-          onSuccess: () => {
+          onSuccess: (data) => {
             setIsTestSubmitted(true);
             toast.success("Nộp bài thành công", {
               description: "Bài kiểm tra của bạn đã được nộp thành công.",
             });
+            setUserScore(data.data ?? 0);
+            queryClient.invalidateQueries({
+              queryKey: ["getAssignmentsByZone", params.id],
+            });
           },
         },
       );
-    } catch {
+    } catch (error) {
       toast.error("Lỗi khi nộp bài", {
         description: "Đã xảy ra lỗi khi nộp bài kiểm tra. Vui lòng thử lại.",
       });
@@ -189,29 +159,35 @@ function AssignmentTestModule() {
   useEffect(() => {
     if (testData?.dueAt) {
       const dueTime = new Date(testData.dueAt).getTime();
+      const now = new Date().getTime();
 
-      const timer = setInterval(() => {
-        const now = new Date().getTime();
-        const remaining = dueTime - now;
-
-        if (remaining <= 0) {
-          clearInterval(timer);
-          setTimeRemaining(0);
-          handleSubmitTest();
-        } else {
-          setTimeRemaining(remaining);
-        }
-      }, 1000);
-
-      return () => clearInterval(timer);
+      if (now > dueTime) {
+        setIsAfterDueTime(true);
+      } else {
+        setIsAfterDueTime(false);
+      }
     }
-  }, []);
+  }, [testData?.dueAt]);
+
+  useEffect(() => {
+    if (testData?.submitted) {
+      toast.info("Bài kiểm tra đã được nộp trước đó", {
+        description: "Bạn không thể làm lại bài kiểm tra này.",
+      });
+      router.push(
+        `/zone/${params.id}/assignment/${params.assignmentId}/review`,
+      );
+    }
+  }, [testData?.submitted, params.id, params.assignmentId, router]);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  // Render màn hình "Chưa đến thời gian mở bài"
+  if (!testData || testData.submitted) {
+    return;
+  }
+
   if (isBeforeAvailableTime && testData) {
     return (
       <div className="container mx-auto max-w-4xl px-4 py-8">
@@ -263,7 +239,67 @@ function AssignmentTestModule() {
               className="bg-blue-500 hover:bg-blue-600"
               onClick={() => router.push(`/zone/${params.id}/assignment`)}
             >
-              <IconArrowRight />
+              <IconArrowLeft />
+              Quay lại
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (isAfterDueTime && testData) {
+    return (
+      <div className="container mx-auto max-w-4xl px-4 py-8">
+        <Card className="w-full overflow-hidden">
+          <div className="h-2 bg-red-500" />
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl font-bold">
+              {testData?.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <div className="mb-6 flex size-24 items-center justify-center rounded-full bg-red-100">
+              <IconAlertCircle className="size-12 text-red-500" />
+            </div>
+            <h2 className="mb-2 text-2xl font-bold">
+              Đã hết thời gian làm bài
+            </h2>
+            <p className="text-muted-foreground mb-6 text-center">
+              Bài kiểm tra này đã đóng vào:{" "}
+              <strong>
+                {new Date(testData.dueAt).toLocaleString("vi-VN")}
+              </strong>
+            </p>
+            <div className="mb-6 w-full max-w-md rounded-lg border border-red-500 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950">
+              <div className="mb-2 flex items-center gap-2">
+                <IconInfoCircle className="size-5 text-red-500" />
+                <h3 className="font-medium">Thông tin bài kiểm tra</h3>
+              </div>
+              <div className="mt-2 grid gap-2">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Thời gian mở:</span>
+                  <span className="font-medium">
+                    {new Date(testData.availableAt).toLocaleString("vi-VN")}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Thời gian đóng:</span>
+                  <span className="font-medium">
+                    {new Date(testData.lockedAt).toLocaleString("vi-VN")}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Số câu hỏi:</span>
+                  <span className="font-medium">{testData.totalQuestion}</span>
+                </div>
+              </div>
+            </div>
+            <Button
+              className="bg-blue-500 hover:bg-blue-600"
+              onClick={() => router.push(`/zone/${params.id}/assignment`)}
+            >
+              <IconArrowLeft />
               Quay lại
             </Button>
           </CardContent>
@@ -287,6 +323,9 @@ function AssignmentTestModule() {
               <IconCircleCheck className="size-12 text-green-500" />
             </div>
             <h2 className="mb-2 text-2xl font-bold">Nộp bài thành công!</h2>
+            <p className="text-muted-foreground mb-6 text-center">
+              Điểm của bạn: {userScore}/ 10
+            </p>
             <p className="text-muted-foreground mb-6 text-center">
               Bạn đã trả lời {answeredCount} trong số {totalQuestions} câu hỏi.
             </p>
@@ -378,7 +417,7 @@ function AssignmentTestModule() {
                   <Separator />
                   <ul className="space-y-2 text-sm">
                     <li className="flex items-start gap-2">
-                      <IconCheck className="mt-0.5 size-4 shrink-0 text-indigo-500" />
+                      <IconCircleCheck className="mt-0.5 size-4 shrink-0 text-indigo-500" />
                       <span>Chọn một đáp án đúng cho mỗi câu hỏi</span>
                     </li>
                     <li className="flex items-start gap-2">
@@ -432,10 +471,6 @@ function AssignmentTestModule() {
         </Card>
       </div>
     );
-  }
-
-  if (!testData) {
-    return;
   }
 
   return (
