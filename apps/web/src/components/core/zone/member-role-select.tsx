@@ -1,4 +1,4 @@
-import { MemberRole } from "@highschool/interfaces";
+import { InviteMemberRole } from "@highschool/interfaces";
 import {
   Select,
   SelectContent,
@@ -8,28 +8,24 @@ import {
 } from "@highschool/ui/components/ui/select";
 
 export interface MemberRoleSelectProps {
-  value: MemberRole;
-  onChange: (role: MemberRole) => void;
+  value: InviteMemberRole;
+  onChange: (role: InviteMemberRole) => void;
   //   myRole: MemberRole;
   isDisabled?: boolean;
 }
 
 const options: {
   label: string;
-  value: MemberRole;
+  value: InviteMemberRole;
   isDisabled?: boolean;
 }[] = [
   {
     label: "Thành viên",
-    value: MemberRole.Student,
+    value: InviteMemberRole.Student,
   },
   {
-    label: "Quản trị viên",
-    value: MemberRole.Teacher,
-  },
-  {
-    label: "Chủ sở hữu",
-    value: MemberRole.Owner,
+    label: "Mentor",
+    value: InviteMemberRole.Teacher,
   },
 ];
 

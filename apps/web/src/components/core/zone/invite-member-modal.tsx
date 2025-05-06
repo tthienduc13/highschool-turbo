@@ -15,12 +15,14 @@ import {
   TabsTrigger,
 } from "@highschool/ui/components/ui/tabs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { IconUpload, IconUser, IconUsers } from "@tabler/icons-react";
+import { IconUser, IconUsers } from "@tabler/icons-react";
 import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
-import { MemberRole } from "@highschool/interfaces";
-import { Button } from "@highschool/ui/components/ui/button";
+import { InviteMemberRole } from "@highschool/interfaces";
+import { useInviteMutation } from "@highschool/react-query/queries";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { ImportTermTextArea } from "../editor/term/import-term-textarea";
 
@@ -34,23 +36,25 @@ interface InviteMemberModalProps {
 
 interface InviteMemberFormInputs {
   emails: string | string[];
-  role: MemberRole;
+  role: InviteMemberRole;
   sendEmails: boolean;
 }
 
 const requiredEmail = () =>
   z
     .string()
-    .nonempty({ message: "Email is required" })
-    .email({ message: "Enter a valid email" });
+    .nonempty({ message: "Email không được để trống" })
+    .email({ message: "Email không hợp lệ" });
 
 const schema = () =>
   z.object({
     emails: z.union([
       requiredEmail(),
-      z.array(requiredEmail()).nonempty("Emails are required"),
+      z.array(requiredEmail()).nonempty("Danh sách email không được để trống"),
     ]),
-    role: z.enum(["Member", "Admin", "Owner"]),
+    role: z.nativeEnum(InviteMemberRole, {
+      errorMap: () => ({ message: "Vui lòng chọn vai trò" }),
+    }),
     sendEmails: z.boolean(),
   });
 
@@ -59,74 +63,76 @@ export const InviteMemberModal = ({
   onClose,
   zoneId,
 }: InviteMemberModalProps) => {
+  const queryClient = useQueryClient();
   const inviteMemberFormMethods = useForm<InviteMemberFormInputs>({
     defaultValues: {
       emails: "",
-      role: MemberRole.Student,
+      role: InviteMemberRole.Student,
       sendEmails: true,
     },
     resolver: zodResolver(schema()),
   });
   const {
     formState: { errors },
+    handleSubmit,
   } = inviteMemberFormMethods;
 
-  //   const inviteMember = api.organizations.inviteMember.useMutation({
-  //     onSuccess: async () => {
-  //       await utils.organizations.get.invalidate();
-  //       onClose();
-  //     },
-  //   });
+  const apiInviteMember = useInviteMutation();
 
-  const inviteMember = () => {};
+  //   const handleFileUpload = (e: React.FormEvent<HTMLInputElement>) => {
+  //     const target = e.target as HTMLInputElement;
 
-  //   const createInvite = api.organizations.createInvite.useMutation({
-  //     onSuccess: async (token) => {
-  //       await copyInviteLink(token);
-  //       await utils.organizations.get.invalidate();
-  //     },
-  //   });
+  //     if (!target.files?.length) return;
 
-  const createInvite = () => {};
+  //     const reader = new FileReader();
 
-  //   const copyInviteLink = async (providedToken?: string) => {
-  //     await navigator.clipboard.writeText(
-  //       `${env.NEXT_PUBLIC_APP_URL}/orgs?token=${providedToken || token || ""}`,
-  //     );
-  //     toast({
-  //       title: "Invite link copied to clipboard",
-  //       status: "success",
-  //       icon: <AnimatedCheckCircle />,
-  //       render: Toast,
-  //     });
+  //     reader.onload = (e) => {
+  //       const content = e?.target?.result as string;
+  //       const emails = content
+  //         ?.split(",")
+  //         .map((email) => email.trim().toLowerCase());
+
+  //       inviteMemberFormMethods.setValue("emails", emails);
+  //     };
+
+  //     reader.readAsText(target.files[0]!);
   //   };
 
-  const handleFileUpload = (e: React.FormEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
+  const onSubmit: SubmitHandler<InviteMemberFormInputs> = async (data) => {
+    try {
+      const emails = Array.isArray(data.emails) ? data.emails : [data.emails];
 
-    if (!target.files?.length) return;
+      const formattedData = {
+        members: emails.map((email) => ({
+          email: email,
+          type: data.role,
+        })),
+      };
 
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const content = e?.target?.result as string;
-      const emails = content
-        ?.split(",")
-        .map((email) => email.trim().toLowerCase());
-
-      inviteMemberFormMethods.setValue("emails", emails);
-    };
-
-    reader.readAsText(target.files[0]!);
+      apiInviteMember.mutateAsync(
+        {
+          zoneId: zoneId,
+          members: formattedData.members,
+        },
+        {
+          onSuccess: (data) => {
+            queryClient.invalidateQueries({
+              queryKey: ["zone-member", zoneId],
+            });
+            toast.success(data.message);
+            inviteMemberFormMethods.reset();
+            onClose();
+          },
+        },
+      );
+      console.log("Form submitted with data:", formattedData);
+    } catch (error) {
+      console.error("Form submission error:", error);
+    }
   };
 
-  const onSubmit: SubmitHandler<InviteMemberFormInputs> = async (data) => {
-    // await inviteMember.mutateAsync({
-    //   orgId,
-    //   emails: Array.isArray(data.emails) ? data.emails : [data.emails],
-    //   role: data.role,
-    //   sendEmail: data.sendEmails,
-    // });
+  const onFormSubmit = (e: React.FormEvent) => {
+    handleSubmit(onSubmit)(e);
   };
 
   const [tabIndex, setTabIndex] = useState(0);
@@ -142,12 +148,15 @@ export const InviteMemberModal = ({
   const importRef = useRef<HTMLInputElement | null>(null);
 
   return (
-    <Modal isOpen={isOpen} title="Mời thành viên" onClose={onClose}>
+    <Modal
+      buttonLabel="Mời"
+      isOpen={isOpen}
+      title="Mời thành viên"
+      onClose={onClose}
+      onConfirm={() => handleSubmit(onSubmit)()}
+    >
       <Form {...inviteMemberFormMethods}>
-        <form
-          className="pb-6"
-          onSubmit={inviteMemberFormMethods.handleSubmit(onSubmit)}
-        >
+        <form noValidate className="pb-6" onSubmit={onFormSubmit}>
           <Tabs
             className="flex flex-col gap-6"
             defaultValue="single"
@@ -243,7 +252,7 @@ export const InviteMemberModal = ({
                       </FormItem>
                     )}
                   />
-                  <Button
+                  {/* <Button
                     color="gray"
                     variant="outline"
                     onClick={() => {
@@ -263,7 +272,7 @@ export const InviteMemberModal = ({
                     onChange={(e) => {
                       if (e) handleFileUpload(e);
                     }}
-                  />
+                  /> */}
                 </div>
                 <FormField
                   control={inviteMemberFormMethods.control}

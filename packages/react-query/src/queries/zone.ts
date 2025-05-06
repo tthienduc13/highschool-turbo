@@ -8,6 +8,8 @@ import {
   getZoneById,
   getZoneDashboard,
   getZones,
+  inviteZoneMember,
+  replyInvitation,
 } from "../apis/zone.ts";
 
 export const useAllMembersQuery = (zoneId: string) => {
@@ -79,7 +81,7 @@ export const useChangeZoneStatusMutation = () => {
       toast.error(error.message ?? "Some error occurred");
     },
   });
-}
+};
 
 export const useZoneDashboard = ({ zoneId }: { zoneId: string }) => {
   return useQuery({
@@ -87,4 +89,18 @@ export const useZoneDashboard = ({ zoneId }: { zoneId: string }) => {
     queryFn: () => getZoneDashboard({ zoneId }),
     enabled: !!zoneId,
   });
-}
+};
+
+export const useInviteMutation = () => {
+  return useMutation({
+    mutationKey: ["invite-zone-member"],
+    mutationFn: inviteZoneMember,
+  });
+};
+
+export const useReplyMutation = () => {
+  return useMutation({
+    mutationKey: ["reply-zone-member"],
+    mutationFn: replyInvitation,
+  });
+};

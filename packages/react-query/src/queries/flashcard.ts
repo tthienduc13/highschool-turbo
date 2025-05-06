@@ -1,4 +1,4 @@
-import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { TestRange } from "@highschool/interfaces";
 
 import {
@@ -295,6 +295,7 @@ export const useFlashcardQuery = ({
 };
 
 export const useInifiniteFlashcard = ({
+  pageNumber,
   pageSize,
   search,
   tags,
@@ -305,6 +306,7 @@ export const useInifiniteFlashcard = ({
   status,
   isDeleted,
 }: {
+  pageNumber: number;
   pageSize: number;
   search?: string;
   tags?: string[];
@@ -315,12 +317,12 @@ export const useInifiniteFlashcard = ({
   status?: string;
   isDeleted?: boolean;
 }) => {
-  return useInfiniteQuery({
+  return useQuery({
     queryKey: ["flashcard", { entityId, flashcardType }],
-    initialPageParam: 1,
-    queryFn: ({ pageParam }) =>
+
+    queryFn: () =>
       getFlashcardsFor({
-        pageNumber: pageParam,
+        pageNumber: pageNumber,
         pageSize: pageSize,
         search: search,
         tags: tags,
@@ -331,10 +333,6 @@ export const useInifiniteFlashcard = ({
         status: status,
         isDeleted: isDeleted,
       }),
-    getNextPageParam: (lastPage, allPages) => {
-      return allPages.length + 1;
-    },
-    refetchOnWindowFocus: true,
   });
 };
 

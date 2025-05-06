@@ -125,7 +125,6 @@ const createContextAwareAxiosInstance = (
 
       if (error.response?.status >= 500) {
         error.config.__isRetryAttempt = true;
-        signOut();
         console.error(
           "Server error, not retrying:",
           error.response?.data || error.message,

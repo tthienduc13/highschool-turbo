@@ -6,6 +6,7 @@ import {
 } from "@highschool/ui/components/ui/tabs";
 
 import { RelatedFlashcard } from "./related-flashcard";
+import { RelatedDocument } from "./related-document";
 
 interface RelatedResourceProps {
   courseId: string;
@@ -26,6 +27,9 @@ export const RealatedResource = ({ courseId }: RelatedResourceProps) => {
         </TabsList>
         <TabsContent value="flashcard">
           <RelatedFlashcard courseId={courseId} />
+        </TabsContent>
+        <TabsContent value="documents">
+          <RelatedDocument courseId={courseId} />
         </TabsContent>
       </Tabs>
     </div>

@@ -6,7 +6,10 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@highschool/ui/components/ui/card";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
-import { useZoneDetailQuery } from "@highschool/react-query/queries";
+import {
+  useAllMembersQuery,
+  useZoneDetailQuery,
+} from "@highschool/react-query/queries";
 import dynamic from "next/dynamic";
 
 import { WizardLayout } from "@/components/core/zone/wizard-layout";
@@ -28,6 +31,7 @@ function MemberOnboardingModule() {
   const router = useRouter();
 
   const { data: zone } = useZoneDetailQuery(params.id as string);
+  const { data: zoneMembers } = useAllMembersQuery(params.id as string);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   return (
@@ -93,38 +97,17 @@ function MemberOnboardingModule() {
                     label={me?.roleName || "Chủ"}
                     nameOrEmail={me?.name}
                   />
-                  {/* {others
-                  .filter((m) => visible.includes(m.id))
-                  .map((m) => (
-                    <OnboardingMember
-                      key={m.id}
-                      image={m.user.image}
-                      label={m.role}
-                      nameOrEmail={m.user.name}
-                    />
-                  ))}
-                {pending
-                  .filter((m) => visible.includes(m.id))
-                  .map((m) => (
+
+                  {zoneMembers?.pendingMembers.map((m) => (
                     <OnboardingMember
                       key={m.id}
                       pending
-                      image={m.user?.image}
+                      image={m.user?.avatar}
                       label={m.role}
-                      nameOrEmail={m.user?.name ?? m.email}
+                      nameOrEmail={m.user?.fullName ?? m.email}
                     />
-                  ))} */}
+                  ))}
                 </div>
-                {/* {numHidden > 0 && (
-                <HStack color="gray.500" ml="2">
-                  <IconUsers size={16} />
-                  <HStack spacing="1">
-                    <Text fontSize="sm">{plural(all.length, "member")}</Text>
-                    <IconPointFilled size={8} />
-                    <Text fontSize="sm">{numHidden} hidden</Text>
-                  </HStack>
-                </HStack>
-              )} */}
               </div>
             )}
           </CardContent>

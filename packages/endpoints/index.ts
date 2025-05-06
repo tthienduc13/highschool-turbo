@@ -1142,6 +1142,16 @@ export const zoneEndpoints = {
     API_VERSIONS.V1,
     "/zones",
   ),
+  invite: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members/invites",
+  ),
+  reply: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members/reply",
+  ),
   getById: (zoneId: string) =>
     createEndpoint(
       SERVICE_PREFIXES.ACADEMIC_HUB,

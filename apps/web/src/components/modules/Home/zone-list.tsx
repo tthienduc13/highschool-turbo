@@ -4,7 +4,6 @@ import { ZonePreview } from "@highschool/interfaces";
 import Link from "next/link";
 import { cn } from "@highschool/ui/lib/utils";
 import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
-import Image from "next/image";
 import { IconHistory } from "@tabler/icons-react";
 
 import { Wrapper } from "./wrapper";
@@ -44,7 +43,7 @@ export const ZoneCard = ({ data }: ZoneCardProps) => {
         className="hover:border-b-primary cursor-pointer overflow-hidden rounded-lg border-2 border-gray-200 bg-white  shadow-md transition-all duration-200 ease-in-out hover:-translate-y-2 dark:border-gray-700 dark:bg-gray-800"
         // style={{ zIndex: menuOpen ? 30 : 25 }}
       >
-        <Image
+        {/* <Image
           priority
           alt={data.name}
           className="h-[100px] w-full object-cover"
@@ -52,7 +51,7 @@ export const ZoneCard = ({ data }: ZoneCardProps) => {
           quality={100}
           src={data.bannerUrl ?? ""}
           width={100}
-        />
+        /> */}
         <div className="flex h-full flex-col justify-center gap-4 p-5">
           <div className={cn("flex gap-2", "flex-col")}>
             <div className="flex w-full items-center justify-between gap-2">
@@ -77,7 +76,7 @@ export const ZoneCard = ({ data }: ZoneCardProps) => {
               </div>
             </div>
             <div className="flex flex-row items-center justify-between">
-              <div className="line-clamp-2 flex flex-row items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <div className="line-clamp-2 flex min-h-10 flex-row items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 {data.description}
               </div>
             </div>
