@@ -2,6 +2,7 @@ import {
   Assignment,
   AssignmentDetail,
   AssignmentPayload,
+  AssignmentSubmission,
   ResponseModel,
 } from "@highschool/interfaces";
 import { assignmentEndpoints } from "@highschool/endpoints";
@@ -90,6 +91,23 @@ export const deleteAssignment = async ({
   try {
     const { data } = await axiosServices.delete(
       assignmentEndpoints.delete(assigmentId),
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error deleting assignment by zone:", error);
+    throw error;
+  }
+};
+
+export const getSubmission = async ({
+  assignmentId,
+}: {
+  assignmentId: string;
+}): Promise<AssignmentSubmission[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      assignmentEndpoints.getSubmission(assignmentId),
     );
 
     return data;

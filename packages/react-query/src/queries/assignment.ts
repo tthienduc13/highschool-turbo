@@ -5,6 +5,7 @@ import {
   deleteAssignment,
   getAssignmentByZone,
   getAssignmentDetail,
+  getSubmission,
   submitAssignment,
   updateAssignment,
 } from "../apis/assignment.ts";
@@ -54,5 +55,17 @@ export const useSubmitMutation = () => {
   return useMutation({
     mutationKey: ["submitAssignment"],
     mutationFn: submitAssignment,
+  });
+};
+
+export const useSubmissionQuery = ({
+  assignmentId,
+}: {
+  assignmentId: string;
+}) => {
+  return useQuery({
+    queryKey: ["getAssignmentSubmission", assignmentId],
+    queryFn: () => getSubmission({ assignmentId }),
+    enabled: !!assignmentId,
   });
 };

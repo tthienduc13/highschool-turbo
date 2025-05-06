@@ -123,7 +123,6 @@ function AssignmentDetailModule() {
         totalSubmissions
       : 0;
 
-  // Sorting function
   const requestSort = (key: string) => {
     let direction: "ascending" | "descending" = "ascending";
 
@@ -328,12 +327,10 @@ function AssignmentDetailModule() {
                 <Table className="border">
                   <TableHeader className="bg-muted/50">
                     <TableRow>
+                      <TableHead className="font-semibold">Mã</TableHead>
                       <TableHead className="font-semibold">Học viên</TableHead>
                       <TableHead className="font-semibold">
                         Mã bài nộp
-                      </TableHead>
-                      <TableHead className="font-semibold">
-                        Mã thành viên
                       </TableHead>
                       <TableHead className="text-right font-semibold">
                         <Button
@@ -345,12 +342,14 @@ function AssignmentDetailModule() {
                           {getSortDirectionIcon("score")}
                         </Button>
                       </TableHead>
+                      <TableHead className="font-semibold">Giờ nộp</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {sortedSubmissions.length > 0 ? (
                       sortedSubmissions.map((submission) => (
                         <TableRow key={submission.id}>
+                          <TableCell>{submission.memberId}</TableCell>
                           <TableCell>
                             <div className="flex items-center gap-3">
                               <Avatar>
@@ -380,7 +379,6 @@ function AssignmentDetailModule() {
                           <TableCell className="font-mono text-xs">
                             {submission.id}
                           </TableCell>
-                          <TableCell>{submission.memberId}</TableCell>
                           <TableCell className="text-right">
                             <Badge
                               variant={
@@ -393,6 +391,9 @@ function AssignmentDetailModule() {
                             >
                               {submission.score}/10
                             </Badge>
+                          </TableCell>
+                          <TableCell>
+                            {formatDate(submission.createdAt)}
                           </TableCell>
                         </TableRow>
                       ))
@@ -421,38 +422,43 @@ function AssignmentDetailModule() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {assignment?.questions.map((question) => (
-                  <div key={question.id} className="mb-6 rounded-lg border p-4">
-                    <div className="mb-4 flex items-start justify-between">
-                      <h3 className="text-lg font-semibold">
-                        Câu hỏi {question.order}: {question.question}
-                      </h3>
-                      <Badge>
-                        Đáp án đúng:{" "}
-                        {String.fromCharCode(65 + question.correctAnswer)}
-                      </Badge>
-                    </div>
-                    <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                      {question.answers.map((answer, answerIndex) => (
-                        <div
-                          key={answerIndex}
-                          className={`rounded-md border p-3 ${
-                            answerIndex === question.correctAnswer
-                              ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
-                              : "bg-gray-50 dark:bg-gray-900"
-                          }`}
-                        >
-                          <div className="flex items-center gap-2">
-                            <span className="flex size-6 items-center justify-center rounded-full bg-gray-200 text-sm font-medium dark:bg-gray-700">
-                              {String.fromCharCode(65 + answerIndex)}
-                            </span>
-                            <span>{answer}</span>
+                {assignment?.questions
+                  .sort((a, b) => a.order - b.order)
+                  .map((question) => (
+                    <div
+                      key={question.id}
+                      className="mb-6 rounded-lg border p-4"
+                    >
+                      <div className="mb-4 flex items-start justify-between">
+                        <h3 className="text-lg font-semibold">
+                          Câu hỏi {question.order}: {question.question}
+                        </h3>
+                        <Badge>
+                          Đáp án đúng:{" "}
+                          {String.fromCharCode(65 + question.correctAnswer)}
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                        {question.answers.map((answer, answerIndex) => (
+                          <div
+                            key={answerIndex}
+                            className={`rounded-md border p-3 ${
+                              answerIndex === question.correctAnswer
+                                ? "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
+                                : "bg-gray-50 dark:bg-gray-900"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="flex size-6 items-center justify-center rounded-full bg-gray-200 text-sm font-medium dark:bg-gray-700">
+                                {String.fromCharCode(65 + answerIndex)}
+                              </span>
+                              <span>{answer}</span>
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </CardContent>
             </Card>
           </TabsContent>

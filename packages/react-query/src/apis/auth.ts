@@ -68,7 +68,7 @@ export const verifyAccount = async ({
   try {
     const { data } = await axiosServices.post(authEndpoints.verifyAccount, {
       email: email,
-      token: token,
+      token: decodeURI(token),
     });
 
     return data;

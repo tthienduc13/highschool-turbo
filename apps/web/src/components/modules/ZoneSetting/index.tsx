@@ -121,41 +121,42 @@ function ZoneSettingModule() {
                     width={64}
                   />
                 </div>
-                <div className="flex flex-col gap-1">
-                  <input
-                    accept="image/*"
-                    id="upload-logo-input"
-                    style={{ position: "absolute", display: "none" }}
-                    type="file"
-                    onInput={onInputFile}
-                  />
-                  <div className="flex h-[42px] items-center">
-                    <p className="max-w-xs text-sm text-gray-600 dark:text-gray-400">
-                      Chung tôi khuyên bạn nên sử dụng ảnh có kích thước
-                      512x512px
-                    </p>
-                  </div>
-                  <div className="flex flex-row items-center gap-2">
-                    <label htmlFor="upload-logo-input">
+                {isAuthor && (
+                  <div className="flex flex-col gap-1">
+                    <input
+                      accept="image/*"
+                      id="upload-logo-input"
+                      style={{ position: "absolute", display: "none" }}
+                      type="file"
+                      onInput={onInputFile}
+                    />
+                    <div className="flex h-[42px] items-center">
+                      <p className="max-w-xs text-sm text-gray-600 dark:text-gray-400">
+                        Chung tôi khuyên bạn nên sử dụng ảnh có kích thước
+                        512x512px
+                      </p>
+                    </div>
+                    <div className="flex flex-row items-center gap-2">
+                      <label htmlFor="upload-logo-input">
+                        <Button
+                          className="cursor-pointer "
+                          type="button"
+                          variant={"outline"}
+                        >
+                          <IconUpload size={16} />
+                          Tải lên ảnh
+                        </Button>
+                      </label>
                       <Button
-                        className="cursor-pointer "
-                        disabled={isAuthor}
-                        type="button"
+                        disabled={!zone?.logoUrl || !file || !isAuthor}
                         variant={"outline"}
+                        onClick={() => setImageSrc(null)}
                       >
-                        <IconUpload size={16} />
-                        Tải lên ảnh
+                        Xoá
                       </Button>
-                    </label>
-                    <Button
-                      disabled={!zone?.logoUrl || !file || !isAuthor}
-                      variant={"outline"}
-                      onClick={() => setImageSrc(null)}
-                    >
-                      Xoá
-                    </Button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className="flex flex-col gap-1">
                 <p className="text-sm text-gray-500">Tên</p>

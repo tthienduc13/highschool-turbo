@@ -1,7 +1,9 @@
 import React from "react";
 
+import AssignmentReviewModule from "@/components/modules/AssignmentReview";
+
 function Page() {
-  return <div>Page</div>;
+  return <AssignmentReviewModule />;
 }
 
 export default Page;

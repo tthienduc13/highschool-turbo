@@ -16,12 +16,27 @@ export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
     return;
   }
 
+  const isYoutubeUrl = lesson.videoUrl.includes("youtube");
+
+  if (isYoutubeUrl) {
+    return (
+      <iframe
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        className="aspect-video w-full"
+        frameBorder="0"
+        referrerPolicy="strict-origin-when-cross-origin"
+        src={lesson.videoUrl}
+        title="YouTube video player"
+      />
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div className="relative aspect-video overflow-hidden rounded-xl">
         {!isReady && (
           <div className="absolute inset-0 flex size-full items-center justify-center bg-slate-800">
-            <IconLoader2 className="animate-spin text-secondary" size={32} />
+            <IconLoader2 className="text-secondary animate-spin" size={32} />
           </div>
         )}
         <video
