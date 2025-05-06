@@ -76,7 +76,7 @@ function AssignmentReviewModule() {
           </Button>
           <h1 className="text-2xl font-semibold">Điểm của bạn</h1>
         </div>
-        <Table className="w-full rounded-lg border bg-white">
+        <Table className="w-full overflow-hidden rounded-lg border bg-white">
           <TableHeader className="bg-muted/50">
             <TableRow>
               <TableHead className="font-semibold">Mã</TableHead>

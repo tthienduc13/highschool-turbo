@@ -1178,6 +1178,12 @@ export const assignmentEndpoints = {
       API_VERSIONS.V1,
       `/submissions/${assignmentId}`,
     ),
+  getZoneDashboard: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/zones/dashboard/${zoneId}`,
+    ),
 };
 
 // News Endpoints

@@ -77,3 +77,25 @@ export interface PendingMember {
   email: string;
   user: ZoneUser;
 }
+
+export interface ZoneStatistic {
+  zoneUser: ZoneUserSummary;
+  zoneAssignment: ZoneAssignment;
+  zoneDashboards: ZoneDashboard[];
+}
+
+interface ZoneAssignment {
+  totalAssignment: number;
+  totalSubmission: number;
+}
+
+export interface ZoneDashboard {
+  range: string;
+  count: number;
+}
+
+interface ZoneUserSummary {
+  totalUser: number;
+  totalStudent: number;
+  totalMentor: number;
+}

@@ -4,8 +4,9 @@ import {
   ResponseModel,
   Zone,
   ZonePreview,
+  ZoneStatistic,
 } from "@highschool/interfaces";
-import { zoneEndpoints } from "@highschool/endpoints";
+import { assignmentEndpoints, zoneEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -89,4 +90,21 @@ export const getZones = async ({
     pageNumber,
     isAscending,
   });
+};
+
+export const getZoneDashboard = async ({
+  zoneId,
+}: {
+  zoneId: string;
+}): Promise<ZoneStatistic> => {
+  try {
+    const { data } = await axiosServices.get(
+      assignmentEndpoints.getZoneDashboard(zoneId),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while getting zone dashboard", error);
+    throw error;
+  }
 };
