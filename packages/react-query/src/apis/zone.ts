@@ -92,6 +92,43 @@ export const getZones = async ({
   });
 };
 
+export const deleteZone = async ({
+  zoneId,
+}: {
+  zoneId: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(
+      zoneEndpoints.deleteZone(zoneId),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while getting zone dashboard", error);
+    throw error;
+  }
+}
+
+export const changeStatusZone = async ({
+  zoneId,
+  status,
+}: {
+  zoneId: string;
+  status: string;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.patch(
+      zoneEndpoints.changeStatus(zoneId),
+      { status },
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while changing zone status", error);
+    throw error;
+  }
+};
+
 export const getZoneDashboard = async ({
   zoneId,
 }: {
@@ -104,7 +141,7 @@ export const getZoneDashboard = async ({
 
     return data;
   } catch (error) {
-    console.log("Error while getting zone dashboard", error);
+    console.log("Error while deleting zone", error);
     throw error;
   }
 };

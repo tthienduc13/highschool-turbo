@@ -54,7 +54,7 @@ export function UserDetailsModal({
   const [activeTab, setActiveTab] = useState("info");
 
   const { data: user, isPending: isUserLoading } = useUserDetailQuery({
-    username: "nglethienduc",
+    username: currentUser.username,
   });
 
   if (isUserLoading) {
@@ -231,7 +231,7 @@ export function UserDetailsModal({
                 <div className="mt-2">
                   <h3 className="mb-2 text-sm font-semibold">Subjects</h3>
                   <div className="flex flex-wrap gap-1">
-                    {userData?.subjectsTaught.map((subject, index) => (
+                    {userData?.subjectsTaught?.map((subject, index) => (
                       <Badge key={index} variant="secondary">
                         {subject}
                       </Badge>

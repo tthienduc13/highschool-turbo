@@ -2,15 +2,22 @@
 
 import React from "react";
 import {
+    IconBrandParsinta,
     IconCircleKey,
+    IconFileTypeDoc,
     IconFlame,
+    IconFolder,
     IconLock,
     IconLockOpen2,
     IconNews,
     IconPlayCardStar,
+    IconScript,
     IconTrashX,
+    IconVocabulary,
 } from "@tabler/icons-react";
 import {
+    useGetMaterials,
+    useGetSubjectCurriculumAnalystQuery,
     useStatisticFlashcardQuery,
     useStatisticNewsQuery,
 } from "@highschool/react-query/queries";
@@ -18,7 +25,6 @@ import {
 import { TopCourse } from "./top-course";
 
 import CardContent from "@/components/ui/card-content";
-import { contentAnalysts } from "@/domain/constants/analyst-card";
 import { ContentCreationChart } from "@/components/ui/charts/content-creation-trend";
 import { EngagementChart } from "@/components/ui/charts/engagement-chart";
 
@@ -27,9 +33,11 @@ function ModeratorDashboardModule() {
         newType: "All",
     });
 
-    const { data: flashcards } = useStatisticFlashcardQuery({
-        type: "all",
-    });
+    const { data: flashcards } = useStatisticFlashcardQuery();
+
+    const { data: materials } = useGetMaterials();
+
+    const { data: subjectCurriculums } = useGetSubjectCurriculumAnalystQuery();
 
     return (
         <div className="flex-1 space-y-4 overflow-auto p-2 md:py-4">
@@ -41,36 +49,70 @@ function ModeratorDashboardModule() {
                 </p>
             </div>
             <div className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                {contentAnalysts.map((content, index) => {
-                    return (
-                        <CardContent
-                            key={index}
-                            color={content.bgColor}
-                            data={0}
-                            icon={content.icon}
-                            items={content.items}
-                            title={content.title}
-                        />
-                    );
-                })}
+                <CardContent
+                    key={"course"}
+                    color={"bg-[#EFF7E2]"}
+                    data={
+                        (subjectCurriculums?.published ?? 0) +
+                        (subjectCurriculums?.unpublished ?? 0)
+                    }
+                    icon={<IconBrandParsinta className="size-5 text-green-500" />}
+                    items={[
+                        {
+                            title: "Published",
+                            data: subjectCurriculums?.published ?? 0,
+                            icon: IconLockOpen2,
+                        },
+                        {
+                            title: "Unpublished",
+                            data: subjectCurriculums?.unpublished ?? 0,
+                            icon: IconLock,
+                        },
+                    ]}
+                    title={"Courses"}
+                />
+                <CardContent
+                    key={"material"}
+                    color={"bg-[#EAE8F5]"}
+                    data={materials?.totalCount ?? 0}
+                    icon={<IconFileTypeDoc className="size-5 text-indigo-500" />}
+                    items={[
+                        {
+                            title: "Lessons",
+                            data: materials?.lessonCount ?? 0,
+                            icon: IconVocabulary,
+                        },
+                        {
+                            title: "Folders",
+                            data: materials?.folderCount ?? 0,
+                            icon: IconFolder,
+                        },
+                        {
+                            title: "Documents",
+                            data: materials?.documentCount ?? 0,
+                            icon: IconScript,
+                        },
+                    ]}
+                    title={"Materials"}
+                />
                 <CardContent
                     color="bg-[#F8EFE2]"
-                    data={flashcards?.totalFlashcards ?? 0}
+                    data={flashcards?.totalFlashcard ?? 0}
                     icon={<IconPlayCardStar className="size-5 text-orange-400" />}
                     items={[
                         {
                             title: "Open",
-                            data: flashcards?.totalFlashcardOpens ?? 0,
+                            data: flashcards?.totalFlashcardOpen ?? 0,
                             icon: IconLockOpen2,
                         },
                         {
                             title: "Draf",
-                            data: flashcards?.totalFlashcardDrafts ?? 0,
+                            data: flashcards?.totalFlashcardDraft ?? 0,
                             icon: IconLock,
                         },
                         {
                             title: "Link",
-                            data: flashcards?.totalFlashcardLinks ?? 0,
+                            data: flashcards?.totalFlashcardLink ?? 0,
                             icon: IconCircleKey,
                         },
                     ]}

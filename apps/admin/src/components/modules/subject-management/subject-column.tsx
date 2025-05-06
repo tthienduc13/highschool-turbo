@@ -10,7 +10,7 @@ import { DataTableRowActions } from "@/components/core/table/data-table-row-acti
 
 export const columns: ColumnDef<Course>[] = [
   {
-    id: "subjectName",
+    accessorKey: "subjectName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Subject Name" />
     ),
@@ -32,7 +32,7 @@ export const columns: ColumnDef<Course>[] = [
     meta: { className: "w-fit" },
   },
   {
-    id: "class",
+    accessorKey: "class",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Class" />
     ),
@@ -48,7 +48,7 @@ export const columns: ColumnDef<Course>[] = [
     meta: { className: "w-fit" },
   },
   {
-    id: "masterSubjectName",
+    accessorKey: "masterSubjectName",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Master Subject" />
     ),
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Course>[] = [
     meta: { className: "w-fit" },
   },
   {
-    id: "information",
+    accessorKey: "information",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Information" />
     ),
@@ -73,14 +73,14 @@ export const columns: ColumnDef<Course>[] = [
 
       return (
         <div className="flex flex-row items-center gap-2">
-          <LongText className="w-full max-w-96">{information}</LongText>
+          <LongText lines={3}>{information}</LongText>
         </div>
       );
     },
     meta: { className: "w-full" },
   },
   {
-    id: "updatedAt",
+    accessorKey: "updatedAt",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Last Update" />
     ),

@@ -31,3 +31,28 @@ export interface CourseCategory {
   categoryName: string;
   categorySlug: string;
 }
+
+export interface Material {
+  totalCount: number;
+  documentCount: number;
+  lessonCount: number;
+  folderCount: number;
+}
+
+export interface ContentAnalyst {
+  date: string;
+  document: number;
+  flashcard: number;
+  courses: number;
+}
+
+export interface SubjectCurriculumAnalyst {
+  published: number;
+  unpublished: number;
+}
+
+export interface TopEngagement {
+  name: string;
+  totalEnrollmentCount: number;
+  completion: number;
+}

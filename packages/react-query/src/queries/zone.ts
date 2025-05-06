@@ -1,6 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 import {
+  changeStatusZone,
+  deleteZone,
   getAllMember,
   getZoneById,
   getZoneDashboard,
@@ -40,10 +43,48 @@ export const useZonesQuery = ({
   });
 };
 
+export const useDeleteZoneMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["delete-zone"],
+    mutationFn: deleteZone,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["zones"] });
+
+      toast.success("Zone deleted successfully.");
+    },
+    onError: (error) => {
+      console.error("Error deleting zone:", error);
+
+      toast.error(error.message ?? "Some error occurred");
+    },
+  });
+};
+
+export const useChangeZoneStatusMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["change-zone-status"],
+    mutationFn: changeStatusZone,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["zones"] });
+
+      toast.success("Zone status changed successfully.");
+    },
+    onError: (error) => {
+      console.error("Error changing zone status:", error);
+
+      toast.error(error.message ?? "Some error occurred");
+    },
+  });
+}
+
 export const useZoneDashboard = ({ zoneId }: { zoneId: string }) => {
   return useQuery({
     queryKey: ["zone-dashboard", zoneId],
     queryFn: () => getZoneDashboard({ zoneId }),
     enabled: !!zoneId,
   });
-};
+}

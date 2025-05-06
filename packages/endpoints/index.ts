@@ -669,6 +669,11 @@ export const subjectCurriculumEndpoints = {
     API_VERSIONS.V1,
     "/subject-curriculum/publish",
   ),
+  getSubjectCurriculumAnalyst: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/statistic/subject-curriculum",
+  ),
 };
 
 export const masterCourseEndpoints = {
@@ -755,6 +760,26 @@ export const courseEndpoints = {
       API_VERSIONS.V1,
       `/unenroll?subjectId=${subjectId}&curriculumId=${curriculumId}`,
     ),
+  getMaterials: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/statistic/material",
+  ),
+  getContentCreated: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    "/statistic/content-created",
+  ),
+  getTopEngagement: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/top-engage`,
+  ),
+  getEngagementContentType: createEndpoint(
+    SERVICE_PREFIXES.DOCUMENT,
+    API_VERSIONS.V1,
+    `/engage-by-type`,
+  ),
 } as const;
 
 // MBTI Endpoints
@@ -1133,6 +1158,18 @@ export const zoneEndpoints = {
     API_VERSIONS.V1,
     "/members",
   ),
+  deleteZone: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/zones/${zoneId}`,
+    ),
+  changeStatus: (zoneId: string) =>
+    createEndpoint(
+      SERVICE_PREFIXES.ACADEMIC_HUB,
+      API_VERSIONS.V1,
+      `/zones/${zoneId}/status`,
+    ),
 } as const;
 
 export const assignmentEndpoints = {

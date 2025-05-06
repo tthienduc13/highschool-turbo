@@ -1,3 +1,5 @@
+import { Assignment } from "./assignment";
+
 export interface Zone {
   id: string;
   name: string;
@@ -9,14 +11,14 @@ export interface Zone {
   documentIds: string[];
   flashcardIds: string[];
   folderIds: string[];
-  assignments: string[];
+  assignments: Assignment[];
   pendingZoneInvitesCount: number;
-  createdBy: string;
   zoneBansCount: number;
   zoneMembershipsCount: number;
   createdAt?: string;
   updatedAt?: string;
   status?: string;
+  createdBy?: string;
 }
 
 export interface AuthorZone {
@@ -40,6 +42,12 @@ export interface ZonePreview {
   createdAt: string;
   status?: string;
   isOwner?: boolean;
+  author?: {
+    authorId: string;
+    authorName: string;
+    authorImage?: string;
+  };
+  memberCount: number;
 }
 
 export enum MemberRole {
@@ -51,6 +59,7 @@ export enum MemberRole {
 export interface MemberList {
   members: Member[];
   pendingMembers: PendingMember[];
+  bannedMembers: Member[];
 }
 
 export interface Member {
@@ -76,6 +85,11 @@ export interface PendingMember {
   createdAt: Date;
   email: string;
   user: ZoneUser;
+}
+
+export enum ZoneStatus {
+  Available = "Available",
+  Banned = "Banned",
 }
 
 export interface ZoneStatistic {

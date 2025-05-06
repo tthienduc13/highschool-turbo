@@ -208,18 +208,6 @@ export const navAdmin = {
       icon: IconSettings,
       items: [
         {
-          title: "Support",
-          url: "#",
-        },
-        {
-          title: "Feedback",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "/settings",
-        },
-        {
           title: "Reports",
           url: "/report",
         },

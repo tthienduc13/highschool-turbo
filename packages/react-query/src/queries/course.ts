@@ -10,11 +10,16 @@ import {
   editMasterCourse,
   enrollCourse,
   getCategories,
+  getContentCreated,
   getCourseById,
   getCourseBySlug,
   getCourses,
+  getEngagementContentType,
   getMasterCourses,
+  getMaterials,
+  getSubjectCurriculumAnalyst,
   getSubjectCurriculumPublished,
+  getTopCourseOrFlashcard,
   publishCourse,
   unEnrollCourse,
   unpublishCourse,
@@ -192,5 +197,48 @@ export const useGetSubjectCurriculumPublishedQuery = ({
         pageSize: pageSize,
         pageNumber: pageNumber,
       }),
+  });
+};
+
+export const useGetMaterials = () => {
+  return useQuery({
+    queryKey: ["materials"],
+    queryFn: () => getMaterials(),
+  });
+};
+
+export const useGetContentCreated = ({
+  type,
+}: {
+  type: "year" | "month" | "week" | "day";
+}) => {
+  return useQuery({
+    queryKey: ["content-created", type],
+    queryFn: () => getContentCreated({ type }),
+  });
+};
+
+export const useGetSubjectCurriculumAnalystQuery = () => {
+  return useQuery({
+    queryKey: ["subject-curriculum-analyst"],
+    queryFn: () => getSubjectCurriculumAnalyst(),
+  });
+};
+
+export const useGetTopCourseOrFlashcardQuery = ({
+  type,
+}: {
+  type: "course" | "flashcard";
+}) => {
+  return useQuery({
+    queryKey: ["top-course-or-flashcard", type],
+    queryFn: () => getTopCourseOrFlashcard({ type }),
+  });
+};
+
+export const useGetEngagementContentTypeQuery = () => {
+  return useQuery({
+    queryKey: ["engagement-content-type"],
+    queryFn: () => getEngagementContentType(),
   });
 };

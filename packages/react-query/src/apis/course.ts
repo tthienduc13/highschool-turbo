@@ -1,11 +1,15 @@
 import {
+  ContentAnalyst,
   Course,
   CourseCategory,
   Grade,
   MasterCourse,
+  Material,
   Pagination,
   ResponseModel,
   SubjectCurriculum,
+  SubjectCurriculumAnalyst,
+  TopEngagement,
 } from "@highschool/interfaces";
 import {
   categoryEndpoints,
@@ -434,4 +438,81 @@ export const getSubjectCurriculumPublished = async ({
       pageNumber,
     },
   );
+};
+
+export const getMaterials = async (): Promise<Material> => {
+  try {
+    const { data } = await axiosServices.get(courseEndpoints.getMaterials);
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting materials", error);
+    throw error;
+  }
+};
+
+export const getContentCreated = async ({
+  type,
+}: {
+  type: "year" | "month" | "week" | "day";
+}): Promise<ContentAnalyst[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${courseEndpoints.getContentCreated}?type=${type}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting content created", error);
+    throw error;
+  }
+};
+
+export const getSubjectCurriculumAnalyst =
+  async (): Promise<SubjectCurriculumAnalyst> => {
+    try {
+      const { data } = await axiosServices.get(
+        subjectCurriculumEndpoints.getSubjectCurriculumAnalyst,
+      );
+
+      return data;
+    } catch (error) {
+      console.error("Error while getting subject curriculum analyst", error);
+      throw error;
+    }
+  };
+
+export const getTopCourseOrFlashcard = async ({
+  type,
+}: {
+  type: "course" | "flashcard";
+}): Promise<TopEngagement[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      `${courseEndpoints.getTopEngagement}?filter=${type}`,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting top course or flashcard", error);
+    throw error;
+  }
+};
+
+export const getEngagementContentType = async (): Promise<
+  {
+    name: string;
+    count: number;
+  }[]
+> => {
+  try {
+    const { data } = await axiosServices.get(
+      courseEndpoints.getEngagementContentType,
+    );
+
+    return data;
+  } catch (error) {
+    console.error("Error while getting engagement content type", error);
+    throw error;
+  }
 };

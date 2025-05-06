@@ -15,23 +15,17 @@ import {
     IconPencil,
     IconStatusChange,
 } from "@tabler/icons-react";
-import { Zone } from "@highschool/interfaces";
+import { Member, Zone } from "@highschool/interfaces";
+import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
+
+import { formatDate } from "@/lib/utils";
 
 interface ZoneOverviewProps {
     zone: Zone;
+    author?: Member;
 }
 
-export function ZoneOverview({ zone }: ZoneOverviewProps) {
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    };
-
+export function ZoneOverview({ zone, author }: ZoneOverviewProps) {
     const totalContent =
         zone.documentIds.length +
         zone.flashcardIds.length +
@@ -127,7 +121,7 @@ export function ZoneOverview({ zone }: ZoneOverviewProps) {
                             </div>
                             <div className="flex items-center gap-2">
                                 <IconPencil className="text-muted-foreground size-4" />
-                                <span className="text-sm">Assignments</span>
+                                <span className="text-sm">Assigns</span>
                                 <Badge className="ml-auto" variant="secondary">
                                     {zone.assignments.length}
                                 </Badge>
@@ -154,33 +148,23 @@ export function ZoneOverview({ zone }: ZoneOverviewProps) {
                     <CardDescription>Author information</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div>
-                        <h3 className="text-muted-foreground mb-1 text-sm font-medium">
-                            Email Author
-                        </h3>
-                        <p className="break-all font-mono text-xs">
-                            {zone.author?.email ?? ""}
-                        </p>
+                    <div className="flex items-center gap-2">
+                        <Avatar className="size-8">
+                            <AvatarImage
+                                alt={author?.user.fullName ?? ""}
+                                src={author?.user.avatar ?? ""}
+                            />
+                        </Avatar>
+                        <p className="break-all text-xs">{author?.email ?? ""}</p>
                     </div>
 
                     <Separator />
 
-                    <div>
-                        <h3 className="text-muted-foreground mb-1 text-sm font-medium">
-                            First Name
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-muted-foreground text-sm font-medium">
+                            Full Name:
                         </h3>
-                        <p className="text-muted-foreground break-all text-xs">
-                            {zone.author?.firstName ?? ""}
-                        </p>
-                    </div>
-
-                    <div>
-                        <h3 className="text-muted-foreground mb-1 text-sm font-medium">
-                            Last Name
-                        </h3>
-                        <p className="text-muted-foreground break-all text-xs">
-                            {zone.author?.lastName ?? ""}
-                        </p>
+                        <p className="break-all text-xs">{author?.user.fullName ?? ""}</p>
                     </div>
                 </CardContent>
             </Card>

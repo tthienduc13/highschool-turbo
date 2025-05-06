@@ -69,5 +69,5 @@ export interface Assignment {
   published: boolean;
   createdBy: string;
   submissionsCount: number;
-  submitted: boolean;
+  submitted?: boolean;
 }

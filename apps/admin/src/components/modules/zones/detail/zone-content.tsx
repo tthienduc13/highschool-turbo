@@ -13,14 +13,10 @@ import {
     IconLayoutGrid,
     IconPencil,
 } from "@tabler/icons-react";
+import { Zone } from "@highschool/interfaces";
 
 interface ZoneContentProps {
-    zone: {
-        documentIds: string[];
-        flashcardIds: string[];
-        folderIds: string[];
-        assignments: string[];
-    };
+    zone: Zone;
 }
 
 export function ZoneContent({ zone }: ZoneContentProps) {
@@ -146,13 +142,15 @@ export function ZoneContent({ zone }: ZoneContentProps) {
                         </div>
                         <div className="space-y-2">
                             {zone.assignments.length > 0 ? (
-                                zone.assignments.slice(0, 3).map((assignId) => (
+                                zone.assignments.slice(0, 3).map((assignment) => (
                                     <div
-                                        key={assignId}
+                                        key={assignment.id}
                                         className="flex items-center gap-2 rounded-md border px-3 py-2"
                                     >
                                         <IconPencil className="text-muted-foreground size-4" />
-                                        <span className="text-sm font-medium">{assignId}</span>
+                                        <span className="text-sm font-medium">
+                                            {assignment.title}
+                                        </span>
                                     </div>
                                 ))
                             ) : (

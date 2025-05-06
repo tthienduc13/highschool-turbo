@@ -5,6 +5,7 @@ export interface Lesson {
   slug: string;
   like: number;
   videoUrl: string;
+  youtubeVideoUrl?: string;
   createdAt: Date;
   theoryCount: number;
   displayOrder: number;
@@ -40,6 +41,7 @@ export interface CreateLessonPayload {
   lessonName: string;
   lessonMaterial: string;
   displayOrder: number;
+  youtubeVideoUrl: string;
 }
 
 export interface EditLessonPayload extends CreateLessonPayload {

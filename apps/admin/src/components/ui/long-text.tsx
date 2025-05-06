@@ -18,12 +18,14 @@ interface Props {
   children: React.ReactNode;
   className?: string;
   contentClassName?: string;
+  lines?: number;
 }
 
 export default function LongText({
   children,
   className = "",
   contentClassName = "",
+  lines = 1,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOverflown, setIsOverflown] = useState(false);
@@ -38,9 +40,31 @@ export default function LongText({
     setIsOverflown(false);
   }, []);
 
+  // Create styles for line clamping
+  // Create styles for line clamping
+  const lineClampStyle =
+    lines > 1
+      ? {
+        display: "-webkit-box",
+        WebkitLineClamp: lines,
+        WebkitBoxOrient: "vertical" as const,
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "normal" as const,
+      }
+      : {
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap" as const,
+        overflow: "hidden",
+      };
+
   if (!isOverflown)
     return (
-      <div ref={ref} className={cn("truncate", className)}>
+      <div
+        ref={ref}
+        className={cn(lines === 1 ? "truncate" : "", className)}
+        style={lines > 1 ? lineClampStyle : undefined}
+      >
         {children}
       </div>
     );
@@ -51,11 +75,15 @@ export default function LongText({
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div ref={ref} className={cn("truncate", className)}>
+              <div
+                ref={ref}
+                className={cn(lines === 1 ? "truncate" : "", className)}
+                style={lines > 1 ? lineClampStyle : undefined}
+              >
                 {children}
               </div>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className="w-[40vw]">
               <p className={contentClassName}>{children}</p>
             </TooltipContent>
           </Tooltip>
@@ -64,7 +92,11 @@ export default function LongText({
       <div className="sm:hidden">
         <Popover>
           <PopoverTrigger asChild>
-            <div ref={ref} className={cn("truncate", className)}>
+            <div
+              ref={ref}
+              className={cn(lines === 1 ? "truncate" : "", className)}
+              style={lines > 1 ? lineClampStyle : undefined}
+            >
               {children}
             </div>
           </PopoverTrigger>

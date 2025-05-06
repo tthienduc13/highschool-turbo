@@ -208,17 +208,20 @@ export const updateNews = async ({
   contentHtml,
   content,
   newsTagId,
+  location,
 }: {
   id: string;
   contentHtml: string;
   content: string;
   newsTagId: string;
+  location: string;
 }) => {
   try {
     const response = await axiosServices.patch(`${newsEndpoints.update(id)}`, {
       contentHtml,
       content,
       newsTagId,
+      location,
     });
 
     return response.data;

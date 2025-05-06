@@ -21,6 +21,7 @@ import { ContentData } from "@highschool/components/minimal-editor/ui/types";
 import { toast } from "sonner";
 import MinimalTiptapEditor from "@highschool/components/minimal-editor/ui/minimal-tiptap";
 import { HighSchoolAssets } from "@highschool/interfaces";
+import { useRouter } from "next/navigation";
 
 import { ComboboxTag } from "./combobox-tag";
 
@@ -34,6 +35,7 @@ function CreateNewsModule() {
     const [contentData, setContentData] = useState<ContentData>();
     const { mutateAsync: uploadImage } = useUploaderMutation();
     const [singleFile, setSingleFile] = useState<File | null>(null);
+    const router = useRouter();
 
     const { mutateAsync: createBlogMutation, isPending: isLoading } =
         useCreateBlogMutation();
@@ -101,7 +103,7 @@ function CreateNewsModule() {
 
             toast.success(result.message);
 
-            window.location.reload();
+            router.push("/news-management");
         } catch {
             toast.error("Failed to create news");
         }
