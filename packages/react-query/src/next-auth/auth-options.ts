@@ -8,6 +8,7 @@ import { GoogleLoginRequest } from "@highschool/interfaces";
 import { cookies } from "next/headers.js";
 import { env } from "@highschool/env";
 import { ACCESS_TOKEN } from "@highschool/lib/constants.ts";
+import axios from "axios";
 
 import {
   credentialLogin,
@@ -103,16 +104,37 @@ export const authConfig: NextAuthConfig = {
         credentials: Partial<MagicLinkCredentials> | undefined,
       ): Promise<User | null> {
         if (!credentials?.email || !credentials.token) {
-          throw new Error("Email and token are required.");
+          console.error("Email và token là bắt buộc");
+
+          return null;
         }
         try {
           const { data } = await verifyAccount({
             email: credentials.email,
-            token: encodeURI(credentials.token),
+            token: credentials.token,
           });
 
-          return data!;
+          if (!data || !data) {
+            console.error("Không có dữ liệu người dùng trả về");
+
+            return null;
+          }
+
+          return data;
         } catch (error) {
+          // Xử lý lỗi token hết hạn
+          if (axios.isAxiosError(error) && error.response?.status === 400) {
+            const errorMessage = error.response?.data?.message;
+
+            // Có thể lưu thông báo lỗi vào sessionStorage để hiển thị trên trang lỗi
+            if (typeof window !== "undefined") {
+              sessionStorage.setItem(
+                "authError",
+                errorMessage || "Token không hợp lệ hoặc đã hết hạn",
+              );
+            }
+          }
+
           console.error("Magic Link authorization failed:", error);
 
           return null;

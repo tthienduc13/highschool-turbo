@@ -1,5 +1,9 @@
+"use client";
+
 import React from "react";
 import { Col, Grid } from "@tremor/react";
+import { useParams } from "next/navigation";
+import { useZoneDashboard } from "@highschool/react-query/queries";
 
 import { Container } from "@/components/core/layouts/container";
 import { ZoneDisplay } from "@/components/core/zone/zone-display";
@@ -10,11 +14,14 @@ import { ZoneResource } from "@/components/core/zone/dashboard/resources";
 import ZoneLayout from "@/components/core/layouts/zone-layout";
 
 function ZoneDetailModule() {
+  const params = useParams();
+
+  const { data } = useZoneDashboard({ zoneId: params.id as string });
+
   return (
     <ZoneLayout>
       <Container className="px-0" maxWidth="6xl">
         <div className="flex flex-col gap-12">
-          {/* {org && isUpgraded && org.published && <OrganizationWelcome />} */}
           <div className="flex flex-col gap-6">
             <ZoneDisplay />
             <Grid
@@ -24,11 +31,13 @@ function ZoneDetailModule() {
               numItemsSm={1}
             >
               <Col className="h-[500]" numColSpanLg={2}>
-                <ZoneActivity />
+                <ZoneActivity zoneDashboardsData={data?.zoneDashboards ?? []} />
               </Col>
               <Col className="mt-6 space-y-6 lg:mt-0" numColSpan={1}>
                 <OrganizationUsers />
-                <ZoneResource />
+                <ZoneResource
+                  total={data?.zoneAssignment.totalAssignment ?? 0}
+                />
               </Col>
             </Grid>
           </div>

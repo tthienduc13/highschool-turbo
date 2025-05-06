@@ -4,8 +4,9 @@ import {
   ResponseModel,
   Zone,
   ZonePreview,
+  ZoneStatistic,
 } from "@highschool/interfaces";
-import { zoneEndpoints } from "@highschool/endpoints";
+import { assignmentEndpoints, zoneEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -103,10 +104,10 @@ export const deleteZone = async ({
 
     return data;
   } catch (error) {
-    console.log("Error while deleting zone", error);
+    console.log("Error while getting zone dashboard", error);
     throw error;
   }
-};
+}
 
 export const changeStatusZone = async ({
   zoneId,
@@ -124,6 +125,23 @@ export const changeStatusZone = async ({
     return data;
   } catch (error) {
     console.log("Error while changing zone status", error);
+    throw error;
+  }
+};
+
+export const getZoneDashboard = async ({
+  zoneId,
+}: {
+  zoneId: string;
+}): Promise<ZoneStatistic> => {
+  try {
+    const { data } = await axiosServices.get(
+      assignmentEndpoints.getZoneDashboard(zoneId),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while deleting zone", error);
     throw error;
   }
 };

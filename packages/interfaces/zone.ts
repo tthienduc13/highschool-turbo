@@ -13,7 +13,6 @@ export interface Zone {
   folderIds: string[];
   assignments: Assignment[];
   pendingZoneInvitesCount: number;
-  createdBy: string;
   zoneBansCount: number;
   zoneMembershipsCount: number;
   createdAt?: string;
@@ -91,4 +90,26 @@ export interface PendingMember {
 export enum ZoneStatus {
   Available = "Available",
   Banned = "Banned",
+}
+
+export interface ZoneStatistic {
+  zoneUser: ZoneUserSummary;
+  zoneAssignment: ZoneAssignment;
+  zoneDashboards: ZoneDashboard[];
+}
+
+interface ZoneAssignment {
+  totalAssignment: number;
+  totalSubmission: number;
+}
+
+export interface ZoneDashboard {
+  range: string;
+  count: number;
+}
+
+interface ZoneUserSummary {
+  totalUser: number;
+  totalStudent: number;
+  totalMentor: number;
 }

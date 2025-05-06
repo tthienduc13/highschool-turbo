@@ -16,7 +16,6 @@ export function CsvImporter({ onImport }: CsvImporterProps) {
 
     if (!file) return;
 
-    // Kiểm tra định dạng file
     if (file.type !== "text/csv" && !file.name.endsWith(".csv")) {
       toast.error("Định dạng không hợp lệ", {
         description: "Vui lòng chọn file CSV",
@@ -27,7 +26,6 @@ export function CsvImporter({ onImport }: CsvImporterProps) {
 
     setIsImporting(true);
 
-    // Đọc và parse file CSV
     Papa.parse(file, {
       header: true,
       dynamicTyping: true,

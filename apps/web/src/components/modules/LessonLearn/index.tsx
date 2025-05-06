@@ -2,7 +2,6 @@
 
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Lesson, Pagination } from "@highschool/interfaces";
 import {
@@ -14,7 +13,6 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { IconCircleCheck, IconCircleX, IconLoader2 } from "@tabler/icons-react";
 
-import { Quiz } from "./quiz";
 import { TheoryList } from "./theory-list";
 
 import { Breadcrumbs } from "@/components/core/common/breadcumbs";
@@ -32,7 +30,6 @@ function LessonLearnModule() {
   const lessonsData: Pagination<Lesson[]> | undefined =
     queryClient.getQueryData(["lesson-list", params.chapterId]);
 
-  const [showQuiz, setShowQuiz] = useState<boolean>(false);
   const { data: courseDetail, isLoading: courseLoading } = useCourseBySlugQuery(
     {
       slug: params.slug as string,
@@ -56,10 +53,6 @@ function LessonLearnModule() {
     return <Loading />;
   }
 
-  if (showQuiz) {
-    return <Quiz setShowQuiz={setShowQuiz} />;
-  }
-
   return (
     <Container className="flex w-full flex-col gap-8 pb-10 pt-8" maxWidth="7xl">
       {isLoading ? (
@@ -71,14 +64,6 @@ function LessonLearnModule() {
       <TheoryList theories={lessonData?.theories!} />
       <div className="mt-8 flex flex-row justify-end">
         <div className="flex flex-row items-center gap-2">
-          <Button
-            disabled={markDone.isPending}
-            size={"lg"}
-            variant={"outline"}
-            onClick={() => setShowQuiz(true)}
-          >
-            Làm bài kiểm tra
-          </Button>
           {!matchedLesson?.isDone ? (
             <button
               className="flex items-center justify-center gap-2 rounded-md bg-green-600 px-4 py-2 text-sm text-white hover:opacity-80"

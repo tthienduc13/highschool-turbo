@@ -6,6 +6,7 @@ import {
   deleteZone,
   getAllMember,
   getZoneById,
+  getZoneDashboard,
   getZones,
 } from "../apis/zone.ts";
 
@@ -78,4 +79,12 @@ export const useChangeZoneStatusMutation = () => {
       toast.error(error.message ?? "Some error occurred");
     },
   });
-};
+}
+
+export const useZoneDashboard = ({ zoneId }: { zoneId: string }) => {
+  return useQuery({
+    queryKey: ["zone-dashboard", zoneId],
+    queryFn: () => getZoneDashboard({ zoneId }),
+    enabled: !!zoneId,
+  });
+}

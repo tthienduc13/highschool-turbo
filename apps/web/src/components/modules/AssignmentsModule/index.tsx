@@ -108,6 +108,7 @@ function AssignmentsModule() {
     setSelectedExam(id);
   };
 
+  //   const isOverdue =
   const togglePublish = (id: string) => {
     setExams(
       exams.map((exam) =>
@@ -234,158 +235,169 @@ function AssignmentsModule() {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filteredExams?.map((exam) => (
-                    <TableRow key={exam.id} className="cursor-pointer">
-                      <TableCell className="font-medium">
-                        <div>
-                          <div className="font-medium">{exam.title}</div>
-                          <div className="text-muted-foreground max-w-[200px] truncate text-sm">
-                            {exam.noticed}
+                  filteredExams?.map((exam) => {
+                    const dueTime = new Date(exam.dueAt).getTime();
+                    const now = new Date().getTime();
+
+                    const isOverdue = dueTime < now;
+
+                    return (
+                      <TableRow key={exam.id} className="cursor-pointer">
+                        <TableCell className="font-medium">
+                          <div>
+                            <div className="font-medium">{exam.title}</div>
+                            <div className="text-muted-foreground max-w-[200px] truncate text-sm">
+                              {exam.noticed}
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <IconFileText className="text-muted-foreground size-4" />
-                          {exam.totalQuestion}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <IconCalendar className="text-muted-foreground size-4" />
-                          {formatDate(exam.availableAt)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1">
-                          <IconClock className="text-muted-foreground size-4" />
-                          {formatDate(exam.dueAt)}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        {exam.published ? (
-                          <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                            <IconLockOpen2 className="mr-1 size-3" />
-                            Mở
-                          </Badge>
-                        ) : (
-                          <Badge
-                            className="bg-destructive/10 text-gray-800 hover:bg-gray-100"
-                            variant="outline"
-                          >
-                            <IconLock className="mr-1 size-3" />
-                            Đóng
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell>{exam.submissionsCount}</TableCell>
-                      {!isTeacher && (
+                        </TableCell>
                         <TableCell>
-                          {exam.submitted ? (
+                          <div className="flex items-center gap-1">
+                            <IconFileText className="text-muted-foreground size-4" />
+                            {exam.totalQuestion}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <IconCalendar className="text-muted-foreground size-4" />
+                            {formatDate(exam.availableAt)}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <IconClock className="text-muted-foreground size-4" />
+                            {formatDate(exam.dueAt)}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          {exam.published && !isOverdue ? (
                             <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                              <IconCircleCheck className="mr-1 size-3" />
-                              Đã nộp
+                              <IconLockOpen2 className="mr-1 size-3" />
+                              Mở
                             </Badge>
                           ) : (
                             <Badge
                               className="bg-destructive/10 text-gray-800 hover:bg-gray-100"
                               variant="outline"
                             >
-                              <IconCircleX className="mr-1 size-3" />
-                              Chưa nộp
+                              <IconLock className="mr-1 size-3" />
+                              Đóng
                             </Badge>
                           )}
                         </TableCell>
-                      )}
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button className="size-8 p-0" variant="ghost">
-                              <span className="sr-only">Mở thanh chọn</span>
-                              <IconDotsCircleHorizontal className="size-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuLabel>Hành động</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              className="cursor-pointer"
-                              onClick={() => {
-                                isTeacher
-                                  ? router.push(
-                                      `/zone/${params.id}/assignment/${exam.id}`,
-                                    )
-                                  : exam.submitted
-                                    ? router.push(
-                                        `/zone/${params.id}/assignment/${exam.id}/review`,
-                                      )
-                                    : router.push(
-                                        `/zone/${params.id}/assignment/${exam.id}/test`,
-                                      );
-                              }}
-                            >
-                              {isTeacher ? (
-                                <IconEye className="mr-2 size-4" />
-                              ) : exam.submitted ? (
-                                <IconFileIsr className="mr-2 size-4" />
-                              ) : (
-                                <IconFileText className="mr-2 size-4" />
-                              )}
-                              {isTeacher
-                                ? " Xem chi tiết"
-                                : exam.submitted
-                                  ? "Xem bài làm"
-                                  : "Làm bài"}
-                            </DropdownMenuItem>
-                            {isTeacher && (
+                        <TableCell>{exam.submissionsCount}</TableCell>
+                        {!isTeacher && (
+                          <TableCell>
+                            {exam.submitted ? (
+                              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                                <IconCircleCheck className="mr-1 size-3" />
+                                Đã nộp
+                              </Badge>
+                            ) : (
+                              <Badge
+                                className="bg-destructive/10 text-gray-800 hover:bg-gray-100"
+                                variant="outline"
+                              >
+                                <IconCircleX className="mr-1 size-3" />
+                                Chưa nộp
+                              </Badge>
+                            )}
+                          </TableCell>
+                        )}
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button className="size-8 p-0" variant="ghost">
+                                <span className="sr-only">Mở thanh chọn</span>
+                                <IconDotsCircleHorizontal className="size-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-48">
+                              <DropdownMenuLabel>Hành động</DropdownMenuLabel>
                               <DropdownMenuItem
                                 className="cursor-pointer"
                                 onClick={() => {
-                                  router.push(
-                                    `/zone/${params.id}/assignment/${exam.id}/edit`,
-                                  );
+                                  isTeacher
+                                    ? router.push(
+                                        `/zone/${params.id}/assignment/${exam.id}`,
+                                      )
+                                    : exam.submitted
+                                      ? router.push(
+                                          `/zone/${params.id}/assignment/${exam.id}/review`,
+                                        )
+                                      : router.push(
+                                          `/zone/${params.id}/assignment/${exam.id}/test`,
+                                        );
                                 }}
                               >
-                                <IconEdit className="mr-2 size-4" />
-                                Chỉnh sửa
-                              </DropdownMenuItem>
-                            )}
-                            {isTeacher && <DropdownMenuSeparator />}
-                            {isTeacher && (
-                              <DropdownMenuItem
-                                className="cursor-pointer"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  togglePublish(exam.id);
-                                }}
-                              >
-                                {exam.published ? (
-                                  <>
-                                    <IconLock className="mr-2 size-4" />
-                                    Đóng
-                                  </>
+                                {isTeacher ? (
+                                  <IconEye className="mr-2 size-4" />
+                                ) : exam.submitted ? (
+                                  <IconFileIsr className="mr-2 size-4" />
+                                ) : isOverdue ? (
+                                  ""
                                 ) : (
-                                  <>
-                                    <IconLockOpen className="mr-2 size-4" />
-                                    Mở
-                                  </>
+                                  <IconFileText className="mr-2 size-4" />
                                 )}
+                                {isTeacher
+                                  ? " Xem chi tiết"
+                                  : exam.submitted
+                                    ? "Xem bài làm"
+                                    : isOverdue
+                                      ? ""
+                                      : "Làm bài"}
                               </DropdownMenuItem>
-                            )}
-                            {isTeacher && <DropdownMenuSeparator />}{" "}
-                            {isTeacher && (
-                              <DropdownMenuItem
-                                className="cursor-pointer text-red-600"
-                                onClick={() => handleDelete(exam.id)}
-                              >
-                                <IconTrash className="mr-2 size-4" />
-                                Xoá
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
+                              {isTeacher && (
+                                <DropdownMenuItem
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    router.push(
+                                      `/zone/${params.id}/assignment/${exam.id}/edit`,
+                                    );
+                                  }}
+                                >
+                                  <IconEdit className="mr-2 size-4" />
+                                  Chỉnh sửa
+                                </DropdownMenuItem>
+                              )}
+                              {isTeacher && <DropdownMenuSeparator />}
+                              {isTeacher && (
+                                <DropdownMenuItem
+                                  className="cursor-pointer"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    togglePublish(exam.id);
+                                  }}
+                                >
+                                  {exam.published ? (
+                                    <>
+                                      <IconLock className="mr-2 size-4" />
+                                      Đóng
+                                    </>
+                                  ) : (
+                                    <>
+                                      <IconLockOpen className="mr-2 size-4" />
+                                      Mở
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                              )}
+                              {isTeacher && <DropdownMenuSeparator />}{" "}
+                              {isTeacher && (
+                                <DropdownMenuItem
+                                  className="cursor-pointer text-red-600"
+                                  onClick={() => handleDelete(exam.id)}
+                                >
+                                  <IconTrash className="mr-2 size-4" />
+                                  Xoá
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
                 )}
               </TableBody>
             </Table>

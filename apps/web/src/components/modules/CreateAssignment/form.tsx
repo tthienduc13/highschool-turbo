@@ -61,7 +61,6 @@ import { useQueryClient } from "@tanstack/react-query";
 
 import { CsvImporter } from "./csv-importer";
 
-// Định nghĩa props cho component
 interface AssignmentFormProps {
   type: "create" | "edit";
   assignmentData?: AssignmentDetail;
@@ -503,12 +502,9 @@ export function AssignmentForm({
       (_, i) => i !== answerIndex,
     );
 
-    // Adjust the correctAnswer index if needed
     if (answerIndex === correctAnswerIndex) {
-      // If we're removing the correct answer, reset to the first answer
       updatedQuestions[questionIndex].correctAnswer = 0;
     } else if (answerIndex < correctAnswerIndex) {
-      // If we're removing an answer before the correct one, decrement the index
       updatedQuestions[questionIndex].correctAnswer = correctAnswerIndex - 1;
     }
 
@@ -524,18 +520,13 @@ export function AssignmentForm({
       questions = questions.slice(0, 50);
     }
 
-    // Format the imported questions to match our schema
     const formattedQuestions = questions.map((q) => {
       const answers = q.answers || [""];
-      // Find the index of the correct answer
-      const correctAnswerIndex = answers.findIndex(
-        (answer: string) => answer === q.correctAnswer,
-      );
 
       return {
         question: q.question || "",
         answers: answers,
-        correctAnswer: correctAnswerIndex >= 0 ? correctAnswerIndex : 0,
+        correctAnswer: q.correctAnswer,
       };
     });
 

@@ -31,6 +31,7 @@ export interface AssignmentSubmission {
   score: number;
   userId: string;
   learner: Learner;
+  createdAt: string;
 }
 
 export interface Learner {
