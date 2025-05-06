@@ -12,6 +12,7 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@highschool/ui/components/ui/chart";
+import { useGetEngagementContentTypeQuery } from "@highschool/react-query/queries";
 
 import {
     Bar,
@@ -22,13 +23,15 @@ import {
     YAxis,
 } from "@/components/ui/chart";
 
-const data = [
-    { name: "Course", count: 4 },
-    { name: "Flashcard", count: 17 },
-    { name: "Zone", count: 17 },
-];
-
+// const data = [
+//     { name: "Course", count: 4 },
+//     { name: "Flashcard", count: 17 },
+//     { name: "Zone", count: 17 },
+// ];
+// const data = [
 export function EngagementChart() {
+    const { data } = useGetEngagementContentTypeQuery();
+
     return (
         <Card>
             <CardHeader>
@@ -71,13 +74,13 @@ export function EngagementChart() {
                             <ChartTooltip
                                 content={
                                     <ChartTooltipContent
-                                        formatter={(value) => [`${value}`, "Count"]}
+                                        formatter={(value) => [`${value}`, " Users"]}
                                         labelFormatter={(label) => `${label}`}
                                     />
                                 }
                             />
                             <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                                {data.map((entry, index) => {
+                                {data?.map((entry, index) => {
                                     const colors = ["#dc2626", "#16a34a", "#2563eb"];
 
                                     return (

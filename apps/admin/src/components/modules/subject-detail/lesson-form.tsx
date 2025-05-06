@@ -189,7 +189,7 @@ export const LessonForm = ({
     if (selectedLesson && isUpdating) {
       form.reset({
         lessonName: selectedLesson.lessonName,
-        youtubeUrl: selectedLesson.videoUrl,
+        youtubeUrl: selectedLesson.youtubeVideoUrl,
       });
       setVideoId(selectedLesson.videoUrl);
     }
@@ -331,7 +331,7 @@ export const LessonForm = ({
                     <FormLabel>Youtube Url</FormLabel>
                     <FormControl>
                       <Input
-                        className="w-[30vw] bg-white"
+                        className="w-[22  vw] bg-white"
                         disabled={isSubmitting}
                         placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ'"
                         {...field}
@@ -422,7 +422,7 @@ export const LessonForm = ({
                     <FormLabel>Youtube Url</FormLabel>
                     <FormControl>
                       <Input
-                        className="w-[30vw] bg-white"
+                        className="w-[22vw] bg-white"
                         disabled={isSubmitting}
                         placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ'"
                         {...field}

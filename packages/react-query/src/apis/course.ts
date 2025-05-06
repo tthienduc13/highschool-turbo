@@ -499,10 +499,12 @@ export const getTopCourseOrFlashcard = async ({
   }
 };
 
-export const getEngagementContentType = async (): Promise<{
-  name: string;
-  count: number;
-}> => {
+export const getEngagementContentType = async (): Promise<
+  {
+    name: string;
+    count: number;
+  }[]
+> => {
   try {
     const { data } = await axiosServices.get(
       courseEndpoints.getEngagementContentType,

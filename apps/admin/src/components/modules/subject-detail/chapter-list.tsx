@@ -72,11 +72,10 @@ export const ChaptersList = ({
     text-gray-700 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300`}
             >
               <button
-                className={`dark: rounded-l-md border-r border-r-gray-200 px-2 py-3 transition hover:bg-gray-300 dark:border-r-slate-800 dark:hover:bg-slate-700 ${
-                  selectedChapter?.id === chapter.id
+                className={`dark: rounded-l-md border-r border-r-gray-200 px-2 py-3 transition hover:bg-gray-300 dark:border-r-slate-800 dark:hover:bg-slate-700 ${selectedChapter?.id === chapter.id
                     ? "bg-gray-300 dark:bg-slate-700"
                     : ""
-                }`}
+                  }`}
                 onClick={() => toggleChapter(chapter)}
               >
                 <IconChevronDown
