@@ -36,11 +36,26 @@ interface LessonFormProps {
   isLoading: boolean;
 }
 
+const regexPatterns = [
+  /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/watch\?.*v=)([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+];
+
 const formSchema = z.object({
   lessonName: z
     .string()
     .min(1, { message: "Lesson name is required" })
     .max(200, { message: "Lesson name must be less than 200 characters" }),
+
+  youtubeUrl: z
+    .string()
+    .optional()
+    .refine((value) => {
+      if (!value) return true; // Allow empty value
+
+      return regexPatterns.some((pattern) => pattern.test(value));
+    }),
 });
 
 export const LessonForm = ({
@@ -53,6 +68,7 @@ export const LessonForm = ({
   const [isUpdating, setIsUpdating] = useState(false);
   const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
   const [nextDisplayOrder, setNextDisplayOrder] = useState(1);
+  const [videoId, setVideoId] = useState<string | null>(null);
 
   const queryClient = useQueryClient();
 
@@ -61,6 +77,7 @@ export const LessonForm = ({
     mode: "onChange",
     defaultValues: {
       lessonName: "",
+      youtubeUrl: "",
     },
   });
 
@@ -78,6 +95,7 @@ export const LessonForm = ({
           displayOrder: selectedLesson.displayOrder,
           lessonName: values.lessonName,
           lessonMaterial: "lessonMaterial",
+          youtubeVideoUrl: values.youtubeUrl ?? "",
         };
 
         editLesson.mutate(
@@ -108,6 +126,7 @@ export const LessonForm = ({
           lessonName: values.lessonName,
           displayOrder: nextDisplayOrder,
           lessonMaterial: "lessonMaterial",
+          youtubeVideoUrl: values.youtubeUrl ?? "",
         };
 
         createLesson.mutate(
@@ -170,7 +189,9 @@ export const LessonForm = ({
     if (selectedLesson && isUpdating) {
       form.reset({
         lessonName: selectedLesson.lessonName,
+        youtubeUrl: selectedLesson.videoUrl,
       });
+      setVideoId(selectedLesson.videoUrl);
     }
   }, [selectedLesson, isUpdating, form]);
 
@@ -212,6 +233,39 @@ export const LessonForm = ({
         toast.error(error.message || "Failed to delete lesson");
       },
     });
+  };
+
+  const extractYoutubeId = (input: string): string | null => {
+    // Handle direct video ID input
+    if (/^[a-zA-Z0-9_-]{11}$/.test(input)) {
+      return input;
+    }
+
+    for (const regex of regexPatterns) {
+      const match = input.match(regex);
+
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    return null;
+  };
+
+  const handlePreview = () => {
+    if (!form.getValues().youtubeUrl?.trim()) {
+      toast.error("Please enter a YouTube URL or video ID");
+
+      return;
+    }
+
+    const extractedId = extractYoutubeId(form.getValues().youtubeUrl ?? "");
+
+    if (extractedId) {
+      setVideoId(extractedId);
+    } else {
+      toast.error("Invalid YouTube URL or video ID");
+    }
   };
 
   if (isLoading) {
@@ -268,6 +322,48 @@ export const LessonForm = ({
               )}
             />
 
+            <div className="flex flex-row items-end gap-2">
+              <FormField
+                control={form.control}
+                name="youtubeUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Youtube Url</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-[30vw] bg-white"
+                        disabled={isSubmitting}
+                        placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ'"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="button" onClick={handlePreview}>
+                Preview
+              </Button>
+            </div>
+
+            {videoId && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Video Preview</h3>
+                <div className="bg-muted aspect-video w-full overflow-hidden rounded-lg border">
+                  <iframe
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    className="aspect-video w-full"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title="YouTube video player"
+                    width="100%"
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="text-muted-foreground text-sm">
               {selectedLesson
                 ? `Editing lesson with display order ${selectedLesson.displayOrder}`
@@ -316,6 +412,48 @@ export const LessonForm = ({
                 </FormItem>
               )}
             />
+
+            <div className="flex flex-row items-end gap-2">
+              <FormField
+                control={form.control}
+                name="youtubeUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Youtube Url</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-[30vw] bg-white"
+                        disabled={isSubmitting}
+                        placeholder="https://youtube.com/watch?v=dQw4w9WgXcQ or dQw4w9WgXcQ'"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button type="button" onClick={handlePreview}>
+                Preview
+              </Button>
+            </div>
+
+            {videoId && (
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">Video Preview</h3>
+                <div className="bg-muted aspect-video w-full overflow-hidden rounded-lg border">
+                  <iframe
+                    allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    className="aspect-video w-full"
+                    height="100%"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title="YouTube video player"
+                    width="100%"
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="text-muted-foreground text-sm">
               Display order will be set to {nextDisplayOrder} (automatically

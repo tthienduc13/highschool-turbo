@@ -206,10 +206,12 @@ export const useMinimalTiptapEditor = ({
     });
 
     try {
-      return await uploadImage({
+      const response = await uploadImage({
         image: file,
         folder: HighSchoolAssets.NewsContent,
       });
+
+      return response.data;
     } catch (error) {
       console.error("Upload failed:", error);
       toast.error("Upload failed");

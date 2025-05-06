@@ -1,3 +1,4 @@
+import { useGetTopCourseOrFlashcardQuery } from "@highschool/react-query/queries";
 import {
     Card,
     CardContent,
@@ -5,30 +6,54 @@ import {
     CardHeader,
     CardTitle,
 } from "@highschool/ui/components/ui/card";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@highschool/ui/components/ui/select";
+import { useState } from "react";
 
 export const TopCourse = () => {
+    const [type, setType] = useState<"flashcard" | "course">("course");
+
+    const { data } = useGetTopCourseOrFlashcardQuery({
+        type,
+    });
+
     return (
         <Card>
-            <CardHeader>
-                <CardTitle>Top Courses by Engagement</CardTitle>
-                <CardDescription>
-                    Most active courses by student participation
-                </CardDescription>
+            <CardHeader className="flex">
+                <div>
+                    <CardTitle>Top {type}s by Engagement</CardTitle>
+                    <CardDescription>
+                        Most active {type}s by student participation
+                    </CardDescription>
+                </div>
+                <div>
+                    <Select
+                        value={type}
+                        onValueChange={(value) => setType(value as "flashcard" | "course")}
+                    >
+                        <SelectTrigger className="w-[120px]">
+                            <SelectValue placeholder="Select range" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="flashcard">Flashcard</SelectItem>
+                            <SelectItem value="course">Course</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
             </CardHeader>
             <CardContent>
                 <div className="space-y-4">
-                    {[
-                        { name: "Advanced Mathematics", students: 1245, completion: 78 },
-                        { name: "Introduction to Biology", students: 987, completion: 82 },
-                        { name: "World History", students: 876, completion: 65 },
-                        { name: "Physics 101", students: 754, completion: 71 },
-                        { name: "English Literature", students: 698, completion: 69 },
-                    ].map((course, i) => (
+                    {data?.map((course, i) => (
                         <div key={i} className="flex items-center justify-between">
                             <div>
                                 <p className="font-medium">{course.name}</p>
                                 <p className="text-muted-foreground text-sm">
-                                    {course.students} active students
+                                    {course.totalEnrollmentCount} active {type}s
                                 </p>
                             </div>
                             <div className="flex items-center">

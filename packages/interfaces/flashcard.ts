@@ -262,12 +262,12 @@ export enum FlashcardRating {
 }
 
 export interface FlashcardStatistic {
-  totalFlashcards: number;
-  thisMonthFlashcards: number;
+  totalFlashcard: number;
+  thisMonthFlashcard: number;
   increaseFlashcardPercent: number;
-  totalFlashcardDrafts: number;
-  totalFlashcardOpens: number;
-  totalFlashcardLinks: number;
+  totalFlashcardDraft: number;
+  totalFlashcardOpen: number;
+  totalFlashcardLink: number;
 }
 
 export interface FlashcardLearnResult extends Flashcard {

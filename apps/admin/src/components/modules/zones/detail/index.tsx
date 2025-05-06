@@ -1,6 +1,9 @@
 "use client";
 
-import { useZoneDetailQuery } from "@highschool/react-query/queries";
+import {
+    useAllMembersQuery,
+    useZoneDetailQuery,
+} from "@highschool/react-query/queries";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconArrowLeft, IconTrash } from "@tabler/icons-react";
@@ -11,7 +14,7 @@ import { useEffect } from "react";
 
 import { ZoneOverview } from "./zone-overview";
 import { ZoneMembers } from "./zone-members";
-import { ZoneContent } from "./zone-content";
+import { ZoneAssignments } from "./zone-assignment";
 
 interface ZoneDetailModuleProps {
     id: string;
@@ -26,6 +29,8 @@ export default function ZoneDetailModule({ id }: ZoneDetailModuleProps) {
             return router.push("/zones");
         }
     }, [isLoading]);
+
+    const { data: members, isPending: isMemberLoading } = useAllMembersQuery(id);
 
     return (
         <div className="flex flex-col gap-6">
@@ -79,13 +84,13 @@ export default function ZoneDetailModule({ id }: ZoneDetailModuleProps) {
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Left column - Zone overview */}
                 <div className="lg:col-span-1">
-                    {zone && <ZoneOverview zone={zone} />}
+                    {zone && <ZoneOverview author={members?.members[0]} zone={zone} />}
                 </div>
 
                 {/* Right column - Zone members and content */}
                 <div className="space-y-6 lg:col-span-2">
-                    {zone && <ZoneMembers zone={zone} />}
-                    {zone && <ZoneContent zone={zone} />}
+                    {zone && members && <ZoneMembers memberList={members} zone={zone} />}
+                    {zone && <ZoneAssignments zone={zone} />}
                 </div>
             </div>
         </div>

@@ -400,9 +400,9 @@ export const useResetFlashcardMutation = () => {
   });
 };
 
-export const useStatisticFlashcardQuery = ({ type }: { type: string }) => {
+export const useStatisticFlashcardQuery = () => {
   return useQuery({
-    queryKey: ["flashcard-statictis", type],
-    queryFn: () => getFlashcardStatistics({ type }),
+    queryKey: ["flashcard-statictis"],
+    queryFn: () => getFlashcardStatistics(),
   });
 };

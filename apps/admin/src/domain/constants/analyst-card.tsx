@@ -1,11 +1,7 @@
 import {
   IconBrandParsinta,
-  IconFileTypeDoc,
-  IconFolder,
   IconLock,
   IconLockOpen2,
-  IconScript,
-  IconVocabulary,
   TablerIcon,
 } from "@tabler/icons-react";
 import React from "react";
@@ -57,17 +53,17 @@ export const contentAnalysts: ContentAnalyst[] = [
   //     { title: "Deleted", data: 0, icon: IconTrashX },
   //   ],
   // },
-  {
-    id: "material",
-    title: "Materials",
-    bgColor: "bg-[#EAE8F5]",
-    icon: <IconFileTypeDoc className="size-5 text-indigo-500" />,
-    items: [
-      { title: "Lessons", data: 0, icon: IconVocabulary },
-      { title: "Folders", data: 0, icon: IconFolder },
-      { title: "Documents", data: 0, icon: IconScript },
-    ],
-  },
+  // {
+  //   id: "material",
+  //   title: "Materials",
+  //   bgColor: "bg-[#EAE8F5]",
+  //   icon: <IconFileTypeDoc className="size-5 text-indigo-500" />,
+  //   items: [
+  //     { title: "Lessons", data: 0, icon: IconVocabulary },
+  //     { title: "Folders", data: 0, icon: IconFolder },
+  //     { title: "Documents", data: 0, icon: IconScript },
+  //   ],
+  // },
 ];
 
 // Your data should follow this structure

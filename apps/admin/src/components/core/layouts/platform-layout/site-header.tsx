@@ -1,6 +1,6 @@
 "use client";
 
-import { IconBell, IconLayoutSidebar } from "@tabler/icons-react";
+import { IconLayoutSidebar, IconLogout } from "@tabler/icons-react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,6 +13,9 @@ import { Button } from "@highschool/ui/components/ui/button";
 import { Separator } from "@highschool/ui/components/ui/separator";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
+import { deleteClientCookie } from "@highschool/lib/cookies";
+import { signOut } from "next-auth/react";
+import { ACCESS_TOKEN } from "@highschool/lib/constants";
 
 import { useSidebar } from "../../common/sidebar";
 import { ThemeSwitcher } from "../../common/theme-switcher";
@@ -75,8 +78,16 @@ export function SiteHeader() {
           <Separator className="mr-2 h-4" orientation="vertical" />
           <ThemeSwitcher />
           <Separator className="mr-2 h-4" orientation="vertical" />
-          <Button className="rounded-full " size={"icon"} variant={"ghost"}>
-            <IconBell className="!size-5" />
+          <Button
+            className="rounded-full "
+            size={"icon"}
+            variant={"ghost"}
+            onClick={async () => {
+              await deleteClientCookie(ACCESS_TOKEN);
+              await signOut();
+            }}
+          >
+            <IconLogout className="!size-5" />
           </Button>
         </div>
       </div>

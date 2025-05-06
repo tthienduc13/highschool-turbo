@@ -41,7 +41,7 @@ export function useZoneFilter({
 
     return {
         data: Array.isArray(data?.data) ? data.data : [],
-        placeholder: "Filter user",
+        placeholder: "Filter zones",
         pagination,
         isLoading,
         search,

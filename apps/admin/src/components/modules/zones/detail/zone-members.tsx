@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@highschool/ui/components/ui/avatar";
+import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
   Card,
@@ -21,59 +17,22 @@ import {
   TabsList,
   TabsTrigger,
 } from "@highschool/ui/components/ui/tabs";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@highschool/ui/components/ui/dropdown-menu";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import {
   IconBan,
   IconClock,
-  IconDotsCircleHorizontal,
   IconMail,
   IconSearch,
-  IconUserPlus,
   IconUsers,
 } from "@tabler/icons-react";
-
-interface Member {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  joinedAt: string;
-}
-
-interface PendingInvite {
-  id: string;
-  email: string;
-  invitedAt: string;
-}
-
-interface BannedUser {
-  id: string;
-  name: string;
-  email: string;
-  bannedAt: string;
-  reason: string;
-}
+import { MemberList, Zone } from "@highschool/interfaces";
 
 interface ZoneMembersProps {
-  zone: {
-    members?: Member[];
-    pendingInvites?: PendingInvite[];
-    bannedUsers?: BannedUser[];
-    zoneMembershipsCount: number;
-    pendingZoneInvitesCount: number;
-    zoneBansCount: number;
-  };
+  memberList: MemberList;
+  zone: Zone;
 }
 
-export function ZoneMembers({ zone }: ZoneMembersProps) {
+export function ZoneMembers({ memberList, zone }: ZoneMembersProps) {
   const [searchQuery, setSearchQuery] = useState("");
 
   const formatDate = (dateString: string) => {
@@ -84,13 +43,13 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
     });
   };
 
-  const members = zone.members || [];
-  const pendingInvites = zone.pendingInvites || [];
-  const bannedUsers = zone.bannedUsers || [];
+  const members = memberList.members || [];
+  const pendingInvites = memberList.pendingMembers || [];
+  const bannedUsers = memberList.bannedMembers || [];
 
   const filteredMembers = members.filter(
     (member) =>
-      member.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      member.user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       member.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
@@ -100,7 +59,7 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
 
   const filteredBanned = bannedUsers.filter(
     (user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.user.fullName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       user.email.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
@@ -111,10 +70,6 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
           <CardTitle>Zone Members</CardTitle>
           <CardDescription>Manage members, invites, and bans</CardDescription>
         </div>
-        <Button size="sm">
-          <IconUserPlus className="mr-2 size-4" />
-          Invite Member
-        </Button>
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex items-center gap-2">
@@ -180,15 +135,12 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
                     <div className="flex items-center gap-3">
                       <Avatar>
                         <AvatarImage
-                          alt={member.name}
-                          src={`/placeholder.svg`}
+                          alt={member.user.fullName?.[0]}
+                          src={member.user.avatar ?? ""}
                         />
-                        <AvatarFallback>
-                          {member.name.substring(0, 2).toUpperCase()}
-                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">{member.name}</p>
+                        <p className="font-medium">{member.user.fullName}</p>
                         <p className="text-muted-foreground text-xs">
                           {member.email}
                         </p>
@@ -197,32 +149,8 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
                     <div className="flex items-center gap-4">
                       <Badge variant="outline">{member.role}</Badge>
                       <div className="text-muted-foreground text-xs">
-                        Joined {formatDate(member.joinedAt)}
+                        Joined {formatDate(member.createdAt.toString())}
                       </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            className="size-8"
-                            size="icon"
-                            variant="ghost"
-                          >
-                            <IconDotsCircleHorizontal className="size-4" />
-                            <span className="sr-only">Open menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem>Change role</DropdownMenuItem>
-                          <DropdownMenuItem>View activity</DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-destructive">
-                            Remove from zone
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive">
-                            Ban user
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </div>
                   </div>
                 ))}
@@ -260,7 +188,7 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
                       <div>
                         <p className="font-medium">{invite.email}</p>
                         <p className="text-muted-foreground text-xs">
-                          Invited {formatDate(invite.invitedAt)}
+                          Invited {formatDate(invite.createdAt.toString())}
                         </p>
                       </div>
                     </div>
@@ -301,13 +229,13 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
                   >
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarImage alt={user.name} src={`/placeholder.svg`} />
-                        <AvatarFallback>
-                          {user.name.substring(0, 2).toUpperCase()}
-                        </AvatarFallback>
+                        <AvatarImage
+                          alt={user.user.fullName?.[0]}
+                          src={user.user.avatar ?? ""}
+                        />
                       </Avatar>
                       <div>
-                        <p className="font-medium">{user.name}</p>
+                        <p className="font-medium">{user.user.fullName}</p>
                         <p className="text-muted-foreground text-xs">
                           {user.email}
                         </p>
@@ -316,10 +244,10 @@ export function ZoneMembers({ zone }: ZoneMembersProps) {
                     <div className="flex items-center gap-4">
                       <div className="text-xs">
                         <span className="text-muted-foreground">
-                          Banned {formatDate(user.bannedAt)}
+                          Banned {formatDate(user.createdAt.toString())}
                         </span>
                         <p className="text-destructive">
-                          Reason: {user.reason}
+                          Reason: {"Inappropriate content"}
                         </p>
                       </div>
                       <Button size="sm" variant="outline">

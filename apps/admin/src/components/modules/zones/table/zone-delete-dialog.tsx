@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { IconAlertTriangle } from "@tabler/icons-react";
-import { toast } from "sonner";
 import {
   Alert,
   AlertDescription,
@@ -10,7 +9,8 @@ import {
 } from "@highschool/ui/components/ui/alert";
 import { Input } from "@highschool/ui/components/ui/input";
 import { Label } from "@highschool/ui/components/ui/label";
-import { ZonePreview } from "@highschool/interfaces";
+import { ZonePreview, ZoneStatus } from "@highschool/interfaces";
+import { useChangeZoneStatusMutation } from "@highschool/react-query/queries";
 
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
@@ -22,43 +22,44 @@ interface Props {
 
 export function ZoneDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   const [value, setValue] = useState("");
+  const { mutateAsync: changeStatusZone } = useChangeZoneStatusMutation();
 
-  const handleDelete = () => {
-    if (value.trim() !== currentRow.id) return;
+  const getStatus = () => {
+    if (currentRow.status === ZoneStatus.Available) return ZoneStatus.Banned;
+    if (currentRow.status === ZoneStatus.Banned) return ZoneStatus.Available;
+
+    return currentRow.status;
+  };
+
+  const handleDelete = async () => {
+    if (value.trim() !== currentRow.name) return;
+
+    await changeStatusZone({
+      zoneId: currentRow.id,
+      status: getStatus() ?? ZoneStatus.Available,
+    });
 
     onOpenChange(false);
-    toast("The following zone has been deleted:", {
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">
-            {JSON.stringify(currentRow, null, 2)}
-          </code>
-        </pre>
-      ),
-    });
   };
 
   return (
     <ConfirmDialog
       destructive
-      confirmText="Delete"
+      confirmText={currentRow.status}
       desc={
         <div className="space-y-4">
           <p className="mb-2">
             Are you sure you want to delete{" "}
             <span className="font-bold">{currentRow.name}</span>?
             <br />
-            This action will permanently remove the zone with with id{" "}
-            <span className="font-bold">
-              {currentRow.id?.toUpperCase()}
-            </span>{" "}
-            from the system. This cannot be undone.
+            This action will permanently remove this zone from the system. This
+            cannot be undone.
           </p>
 
           <Label className="my-2">
-            Zone ID:
+            Zone Name:
             <Input
-              placeholder="Enter Zone Id to confirm deletion."
+              placeholder="Enter Zone Name to confirm deletion."
               value={value}
               onChange={(e) => setValue(e.target.value)}
             />
@@ -72,7 +73,7 @@ export function ZoneDeleteDialog({ open, onOpenChange, currentRow }: Props) {
           </Alert>
         </div>
       }
-      disabled={value.trim() !== currentRow.id}
+      disabled={value.trim() !== currentRow.name}
       handleConfirm={handleDelete}
       open={open}
       title={
@@ -81,7 +82,7 @@ export function ZoneDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             className="stroke-destructive mr-1 inline-block"
             size={18}
           />{" "}
-          Delete Zone
+          {getStatus()} Zone
         </span>
       }
       onOpenChange={onOpenChange}

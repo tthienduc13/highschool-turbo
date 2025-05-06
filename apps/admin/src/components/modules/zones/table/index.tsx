@@ -18,8 +18,8 @@ function ZoneManagementModule() {
             <DataTable
                 columns={columns}
                 filter={filter}
-                subTitle="Manage your University here."
-                title="University List"
+                subTitle="Manage your Zone here."
+                title="Zone List"
             />
             <ZoneDialogs />
         </TableProvider>

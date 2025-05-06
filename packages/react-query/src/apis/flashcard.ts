@@ -630,17 +630,10 @@ export const getFlashcardTestData = async ({
   }
 };
 
-export const getFlashcardStatistics = async ({
-  type,
-}: {
-  type: string;
-}): Promise<FlashcardStatistic> => {
+export const getFlashcardStatistics = async (): Promise<FlashcardStatistic> => {
   try {
     const response = await axiosServices.get(
       flashcardEndpoints.getFlashcardStatistic,
-      {
-        params: { type },
-      },
     );
 
     return response.data;
