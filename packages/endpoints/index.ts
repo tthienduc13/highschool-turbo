@@ -992,6 +992,11 @@ export const universityEndpoints = {
     API_VERSIONS.V1,
     "/university",
   ),
+  getSavedList: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/saved",
+  ),
   getUniversityName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,
@@ -1141,6 +1146,21 @@ export const zoneEndpoints = {
     SERVICE_PREFIXES.ACADEMIC_HUB,
     API_VERSIONS.V1,
     "/zones",
+  ),
+  invite: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members/invites",
+  ),
+  removeUser: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members",
+  ),
+  reply: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members/reply",
   ),
   getById: (zoneId: string) =>
     createEndpoint(

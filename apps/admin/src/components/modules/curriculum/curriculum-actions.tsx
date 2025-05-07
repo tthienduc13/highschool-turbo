@@ -14,16 +14,16 @@ export const CurriculumActions = () => {
       />
       {currentRow && (
         <>
-          {/* <CurriculumModal
+          <CurriculumModal
             key={`curriculum-edit-${currentRow.id}`}
             currentRow={currentRow}
             open={open === "edit"}
             onOpenChange={() => setOpen("edit")}
-          /> */}
+          />
           <CurriculumModal
             key={`curriculum-delete-${currentRow.id}`}
             currentRow={currentRow}
-            open={open === "delete" || open === "edit"}
+            open={open === "delete"}
             onOpenChange={() => setOpen("delete")}
           />
         </>

@@ -253,7 +253,7 @@ export const useHeatmapQuery = ({
   startYear,
   endYear,
 }: {
-  viewType: "flashcard" | "login" | "learnedlesson";
+  viewType: string;
   startYear: number;
   endYear: number;
 }) => {

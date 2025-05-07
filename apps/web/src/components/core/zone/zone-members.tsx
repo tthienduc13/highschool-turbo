@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import React from "react";
-import { IconEdit, IconPlus, IconSearch, IconUserX } from "@tabler/icons-react";
+import { IconPlus, IconSearch, IconUserX } from "@tabler/icons-react";
 import {
   useAllMembersQuery,
   useZoneDetailQuery,
@@ -35,13 +35,10 @@ export const ZoneMembers = () => {
   const pending = zoneMember ? zoneMember.pendingMembers : [];
 
   const [inviteModalOpen, setInviteModalOpen] = React.useState(false);
-  const [editMember, setEditMember] = React.useState<string | undefined>();
-  const [editMemberType, setEditMemberType] = React.useState<"user" | "invite">(
-    "user",
-  );
+
   const [removeMember, setRemoveMember] = React.useState<string | undefined>();
   const [removeMemberType, setRemoveMemberType] = React.useState<
-    "user" | "invite"
+    "user" | "ban"
   >("user");
   const [search, setSearch] = React.useState("");
 
@@ -67,29 +64,14 @@ export const ZoneMembers = () => {
 
   const canManage = (targetRole: MemberRole) =>
     me
-      ? me.role !== MemberRole.Student &&
+      ? me.role === MemberRole.Owner &&
         (targetRole !== "Owner" || me.role === "Owner")
       : false;
 
-  const editMemberCallback = React.useCallback((id: string) => {
-    setEditMemberType("user");
-    setEditMember(id);
-  }, []);
   const removeMemberCallback = React.useCallback((id: string) => {
     setRemoveMemberType("user");
     setRemoveMember(id);
   }, []);
-  const editInviteCallback = React.useCallback((id: string) => {
-    setEditMemberType("invite");
-    setEditMember(id);
-  }, []);
-  const removeInviteCallback = React.useCallback((id: string) => {
-    setRemoveMemberType("invite");
-    setRemoveMember(id);
-  }, []);
-
-  //   const borderColor = useColorModeValue("gray.200", "gray.700");
-  //   const menuBg = useColorModeValue("white", "gray.800");
 
   return (
     <div className="mt-10 flex flex-col gap-10 pb-20">
@@ -101,19 +83,6 @@ export const ZoneMembers = () => {
               zoneId={zone.id}
               onClose={() => setInviteModalOpen(false)}
             />
-            {/* <EditMemberModal
-              id={editMember || ""}
-              isOpen={!!editMember}
-              role={
-                editMemberType == "user"
-                  ? org.members.find((m) => m.id == editMember)?.role ||
-                    "Member"
-                  : org.pendingInvites.find((m) => m.id == editMember)?.role ||
-                    "Member"
-              }
-              type={editMemberType}
-              onClose={() => setEditMember(undefined)}
-            /> */}
             <RemoveMemberModal
               id={removeMember || ""}
               isOpen={!!removeMember}
@@ -148,18 +117,24 @@ export const ZoneMembers = () => {
             {me && filterFn(me) && (
               <MemberComponent
                 isMe
-                // additionalTags={
-                //   <>
-                //     {me.role !== "Member" && (
-                //       <Tag
-                //         colorScheme={me.role == "Owner" ? "purple" : "gray"}
-                //         size="sm"
-                //       >
-                //         {me.role}
-                //       </Tag>
-                //     )}
-                //   </>
-                // }
+                additionalTags={
+                  <>
+                    {me.role === MemberRole.Owner && (
+                      <div
+                        className={cn(
+                          "rounded px-2 text-[10px] ",
+                          "bg-purple-500/40",
+                        )}
+                      >
+                        {me.role.toLocaleLowerCase() === "owner"
+                          ? "Chủ sở hữu"
+                          : me.role.toLocaleLowerCase() === "teacher"
+                            ? "Người hướng dẫn"
+                            : "Học sinh"}
+                      </div>
+                    )}
+                  </>
+                }
                 email={me.email}
                 id={me.id}
                 user={me}
@@ -169,11 +144,6 @@ export const ZoneMembers = () => {
               <MemberComponent
                 key={m.id}
                 actions={[
-                  {
-                    label: "Chỉnh sửa",
-                    icon: IconEdit,
-                    onClick: editMemberCallback,
-                  },
                   {
                     label: "Xoá",
                     icon: IconUserX,
@@ -213,14 +183,10 @@ export const ZoneMembers = () => {
                 pending
                 actions={[
                   {
-                    label: "Edit",
-                    icon: IconEdit,
-                    onClick: editInviteCallback,
-                  },
-                  {
-                    label: "Remove",
+                    label: "Xoá",
                     icon: IconUserX,
-                    onClick: removeInviteCallback,
+                    onClick: removeMemberCallback,
+                    destructive: true,
                   },
                 ]}
                 canManage={canManage(MemberRole.Student)}

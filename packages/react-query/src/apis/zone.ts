@@ -1,4 +1,5 @@
 import {
+  InviteMemberRole,
   MemberList,
   Pagination,
   ResponseModel,
@@ -107,7 +108,7 @@ export const deleteZone = async ({
     console.log("Error while getting zone dashboard", error);
     throw error;
   }
-}
+};
 
 export const changeStatusZone = async ({
   zoneId,
@@ -142,6 +143,74 @@ export const getZoneDashboard = async ({
     return data;
   } catch (error) {
     console.log("Error while deleting zone", error);
+    throw error;
+  }
+};
+
+export const inviteZoneMember = async ({
+  zoneId,
+  members,
+}: {
+  zoneId: string;
+  members: { email: string; type: InviteMemberRole }[];
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.post(zoneEndpoints.invite, {
+      zoneId,
+      members,
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while inviting zone member", error);
+    throw error;
+  }
+};
+
+export const replyInvitation = async ({
+  zoneId,
+  invite,
+}: {
+  zoneId: string;
+  invite: 1 | 2;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.post(zoneEndpoints.reply, {
+      zoneId,
+      relyInvite: invite,
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while replying invitation", error);
+    throw error;
+  }
+};
+
+export const removeUserFromZone = async ({
+  userId,
+  email,
+  zoneId,
+  isBanned,
+}: {
+  userId: string;
+  email?: string;
+  zoneId: string;
+  isBanned: boolean;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(zoneEndpoints.removeUser, {
+      data: {
+        zoneId,
+        userId,
+        email,
+        isBanned,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while removing user from zone", error);
     throw error;
   }
 };

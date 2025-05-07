@@ -1,3 +1,4 @@
+import { cn } from "@highschool/ui/lib/utils";
 import { motion } from "framer-motion";
 
 const draw = {
@@ -12,11 +13,15 @@ const draw = {
   },
 };
 
-export const AnimatedXCircle = () => {
+interface AnimatedXCircleProps {
+  className?: string;
+}
+
+export const AnimatedXCircle = ({ className }: AnimatedXCircleProps) => {
   return (
     <motion.svg
       animate="visible"
-      className="min-h-[24px] min-w-[24px]"
+      className={cn("min-h-[24px] min-w-[24px]", className)}
       fill="none"
       height="24"
       initial="hidden"

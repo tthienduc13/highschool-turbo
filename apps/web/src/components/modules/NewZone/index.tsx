@@ -19,6 +19,7 @@ import {
   FormMessage,
 } from "@highschool/ui/components/ui/form";
 import { Input } from "@highschool/ui/components/ui/input";
+import { Textarea } from "@highschool/ui/components/ui/textarea";
 
 import { WizardLayout } from "../../core/zone/wizard-layout";
 
@@ -30,11 +31,13 @@ const schema = z.object({
     .string()
     .nonempty({ message: "Hãy nhập tên" })
     .max(50, { message: "Tên phải ít hơn 50 kí tự" }),
+  description: z.string().max(250, { message: "Tên phải ít hơn 50 kí tự" }),
   logoUrl: z.string(),
 });
 
 interface NewOrganizationFormInput {
   name: string;
+  description?: string;
   logoUrl: string;
 }
 
@@ -44,6 +47,7 @@ function NewZoneModule() {
   const newOrganizationFormMethods = useForm<NewOrganizationFormInput>({
     defaultValues: {
       name: "",
+      description: "",
       logoUrl: "",
     },
     resolver: zodResolver(schema),
@@ -88,6 +92,7 @@ function NewZoneModule() {
 
       await create.mutateAsync({
         name: data.name,
+        description: data.description,
         logoUrl: logoUrl,
       });
     } catch (error) {
@@ -185,6 +190,25 @@ function NewZoneModule() {
                         <Input
                           className="hover:border-primary focus-within:border-primary h-10 border-gray-200 transition-all duration-200 dark:border-gray-800/50"
                           placeholder="Acme, Inc."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage>{errors.name?.message}</FormMessage>
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={newOrganizationFormMethods.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="mb-2.5 text-sm text-gray-500">
+                        Mô tả zone
+                      </FormLabel>
+                      <FormControl>
+                        <Textarea
+                          className="hover:border-primary focus-within:border-primary border-gray-200 transition-all duration-200 dark:border-gray-800/50"
+                          placeholder="Mô tả về zone của bạn"
                           {...field}
                         />
                       </FormControl>

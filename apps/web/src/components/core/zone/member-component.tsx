@@ -97,7 +97,6 @@ export const MemberComponentRaw: React.FC<MemberComponentProps> = ({
           <div className="flex flex-row gap-4 space-x-4 md:hidden">
             <Tags isMobile={false} />
             <Options
-              isMobile
               actions={actions}
               canManage={canManage}
               id={id}
@@ -148,19 +147,12 @@ const Options: React.FC<
   Pick<
     MemberComponentProps,
     "id" | "user" | "skeleton" | "isMe" | "canManage" | "actions"
-  > & { isMobile?: boolean }
+  >
 > = ({ id, user, skeleton, isMe, canManage = false, actions = [] }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const menuBg = "bg-white dark:bg-gray-800";
   const redMenuColor = "text-red-600 dark:text-red-200";
-
-  const openCallback = React.useCallback(() => {
-    setMenuOpen(true);
-  }, []);
-  const closeCallback = React.useCallback(() => {
-    setMenuOpen(false);
-  }, []);
 
   if (skeleton) {
     return (
@@ -183,7 +175,7 @@ const Options: React.FC<
             </Link>
           </Button>
         )}
-        {!isMe && (
+        {!isMe && canManage && (
           <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
             <DropdownMenuTrigger asChild>
               <Button className="size-8" size="sm" variant="outline">
@@ -202,7 +194,7 @@ const Options: React.FC<
                     "text-sm py-1.5",
                     a.destructive && redMenuColor,
                   )}
-                  onClick={() => a.onClick?.(id)}
+                  onClick={() => a.onClick?.(user?.user.userId!)}
                 >
                   <span className="mr-2">
                     <a.icon size={16} />

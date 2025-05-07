@@ -1,18 +1,9 @@
 "use client";
 
 import { useUniversityCategoryQuery } from "@highschool/react-query/queries";
-import {
-  IconArrowLeft,
-  IconBookmark,
-  IconLink,
-  IconMapPin,
-  IconSchool,
-  IconShare,
-  IconUsers,
-} from "@tabler/icons-react";
+import { IconArrowLeft, IconMapPin, IconSchool } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@highschool/ui/components/ui/button";
 import { Badge } from "@highschool/ui/components/ui/badge";
 import {
   Tabs,
@@ -108,7 +99,7 @@ export default function UniversityDetailModule({ id }: { id: string }) {
                 </div>
               </div>
 
-              <div className="mt-4 flex gap-2 md:mt-0">
+              {/* <div className="mt-4 flex gap-2 md:mt-0">
                 <Button className="gap-1" size="sm" variant="outline">
                   <IconShare size={16} />
                   <span>Chia sẻ</span>
@@ -124,7 +115,7 @@ export default function UniversityDetailModule({ id }: { id: string }) {
                   <IconLink size={16} />
                   <span>Trang web</span>
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -194,14 +185,14 @@ export default function UniversityDetailModule({ id }: { id: string }) {
                 </div>
                 <p>{university.city}, Việt Nam</p>
               </div>
-
+              {/*
               <div className="rounded-lg bg-gray-50 p-4">
                 <div className="mb-2 flex items-center gap-2 text-gray-700">
                   <IconUsers className="text-blue-600" size={20} />
                   <h3 className="font-medium">Quy mô</h3>
                 </div>
                 <p>Khoảng 20,000 sinh viên</p>
-              </div>
+              </div> */}
             </div>
 
             <h3 className="mb-3 text-lg font-semibold text-gray-900">

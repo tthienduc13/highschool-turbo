@@ -55,6 +55,10 @@ export enum MemberRole {
   Teacher = "Teacher",
   Owner = "Owner",
 }
+export enum InviteMemberRole {
+  Student = "Student",
+  Teacher = "Teacher",
+}
 
 export interface MemberList {
   members: Member[];

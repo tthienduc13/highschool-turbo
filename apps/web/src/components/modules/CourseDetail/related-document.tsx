@@ -1,23 +1,21 @@
-import { Flashcard, FlashcardAttachToType } from "@highschool/interfaces";
 import {
   useAuthorsQuery,
-  useInifiniteFlashcard,
+  useDocumentQuery,
 } from "@highschool/react-query/queries";
 import { Skeleton } from "@highschool/ui/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
-import { StudySetCard } from "@/components/core/common/study-set-card";
+import { DocumentCard } from "@/components/core/common/document-card";
 
 interface RelatedFlashcardProps {
   courseId: string;
 }
 
-export const RelatedFlashcard = ({ courseId }: RelatedFlashcardProps) => {
-  const { data, isLoading } = useInifiniteFlashcard({
+export const RelatedDocument = ({ courseId }: RelatedFlashcardProps) => {
+  const { data, isLoading } = useDocumentQuery({
     pageSize: 1000,
     pageNumber: 1,
-    entityId: courseId,
-    flashcardType: FlashcardAttachToType.Subject,
+    subjectIds: courseId,
   });
   const [userIds, setUserIds] = useState<string[]>([]);
 
@@ -26,7 +24,7 @@ export const RelatedFlashcard = ({ courseId }: RelatedFlashcardProps) => {
   useEffect(() => {
     if (data) {
       const uniqueUserIds = Array.from(
-        new Set(data.data.map((flashcard) => flashcard.userId)),
+        new Set(data.data.map((document) => document.createdBy)),
       );
 
       setUserIds(uniqueUserIds);
@@ -48,19 +46,18 @@ export const RelatedFlashcard = ({ courseId }: RelatedFlashcardProps) => {
   return (
     <div className="grid grid-cols-[repeat(auto-fill,_minmax(256px,_1fr))] gap-4">
       {data &&
-        data.data.map((flashcard) => {
+        data.data.map((document) => {
           const matchedUser = users?.find(
-            (user) => user.id === flashcard.userId,
+            (user) => user.id === document.createdBy,
           );
 
           return (
-            <div key={flashcard.id}>
-              <StudySetCard
-                numTerms={flashcard.numberOfFlashcardContent}
-                studySet={flashcard as unknown as Flashcard}
+            <div key={document.id}>
+              <DocumentCard
+                data={document}
                 user={{
-                  fullname: matchedUser?.fullname ?? "Highschool",
-                  image: matchedUser?.profilePicture ?? "/logo.svg",
+                  fullname: matchedUser?.fullname!,
+                  image: matchedUser?.profilePicture!,
                 }}
                 userLoading={userLoading}
                 onRemove={() => {}}
