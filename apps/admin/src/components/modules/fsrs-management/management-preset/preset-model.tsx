@@ -1,12 +1,10 @@
 "use client";
 
-import { Button } from "@highschool/ui/components/ui/button";
 import {
     Dialog,
     DialogContent,
     DialogTitle,
 } from "@highschool/ui/components/ui/dialog";
-import { IconDownload, IconEdit } from "@tabler/icons-react";
 import React from "react";
 import { FSRSPreset } from "@highschool/interfaces";
 
@@ -39,7 +37,7 @@ export default function PresetModal({
                                 Preset ID: {preset?.id}
                             </p>
                         </div>
-                        <div className="flex gap-2">
+                        {/* <div className="flex gap-2">
                             <Button size="sm" variant="outline">
                                 <IconEdit className="mr-2 size-4" />
                                 Edit
@@ -48,7 +46,7 @@ export default function PresetModal({
                                 <IconDownload className="mr-2 size-4" />
                                 Export
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="mt-2">

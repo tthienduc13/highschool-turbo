@@ -42,29 +42,21 @@ interface OccupationCardProps {
   careers?: CareerInfo[];
 }
 
-// const Alert = dynamic(
-//     () =>
-//         import("@/components/core/commons/modals/alert-modal").then(
-//             (mod) => mod.AlertModal
-//         ),
-//     { ssr: false }
-// );
-
 export const OccupationCard = ({ careers }: OccupationCardProps) => {
   const [openAlert, setOpenAlert] = useState<boolean>(false);
   const { mutate: delteOccupation, isPending } = useDeleteOccupationMutation();
   const router = useRouter();
 
+  const handleDelete = (id: string) => {
+    delteOccupation({
+      id: id,
+    });
+  };
+
   return (
     <div className="grid gap-6 md:grid-cols-2">
       {careers?.map((career) => (
         <div key={career.id}>
-          {/* <Alert
-                        isOpen={openAlert}
-                        loading={isPending}
-                        onClose={() => setOpenAlert(false)}
-                        onConfirm={() => delteOccupation({ id: career.id! })}
-                    /> */}
           <Card key={career.id} className="relative">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -104,7 +96,7 @@ export const OccupationCard = ({ careers }: OccupationCardProps) => {
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         className="text-destructive gap-2"
-                        onClick={() => setOpenAlert(true)}
+                        onClick={() => handleDelete(career.id ?? "")}
                       >
                         <IconTrash className="size-4" />
                         Delete

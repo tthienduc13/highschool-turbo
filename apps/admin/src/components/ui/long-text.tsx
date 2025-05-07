@@ -83,7 +83,7 @@ export default function LongText({
                 {children}
               </div>
             </TooltipTrigger>
-            <TooltipContent className="w-[40vw]">
+            <TooltipContent className="max-w-[40vw]">
               <p className={contentClassName}>{children}</p>
             </TooltipContent>
           </Tooltip>

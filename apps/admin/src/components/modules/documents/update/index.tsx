@@ -71,7 +71,6 @@ export default function UpdateDocumentModule({
 }: UpdateDocumentModuleProps) {
   const [file, setFile] = useState<File | null>(null);
   const [selectedProvince, setSelectedProvince] = useState<string>("");
-  const [isDownloaded, setIsDownloaded] = useState(false);
   const router = useRouter();
 
   const { data: subjects, isLoading: subjectLoading } = useCoursesQuery({

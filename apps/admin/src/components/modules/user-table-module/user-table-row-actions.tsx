@@ -1,7 +1,6 @@
 import { Row } from "@tanstack/react-table";
 import {
   IconDotsCircleHorizontal,
-  IconEdit,
   IconInfoCircle,
   IconTrash,
 } from "@tabler/icons-react";
@@ -14,6 +13,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@highschool/ui/components/ui/dropdown-menu";
+import { useSession } from "next-auth/react";
 
 import { useTable } from "@/stores/table-context";
 
@@ -25,6 +25,7 @@ export function UserTableRowActions<T>({
   row,
 }: Readonly<UserTableRowActionsProps<T>>) {
   const { setOpen, setCurrentRow } = useTable();
+  const { data } = useSession();
 
   return (
     <DropdownMenu modal={false}>
@@ -47,17 +48,6 @@ export function UserTableRowActions<T>({
           Detail
           <DropdownMenuShortcut>
             <IconInfoCircle size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => {
-            setCurrentRow(row.original);
-            setOpen("edit");
-          }}
-        >
-          Edit
-          <DropdownMenuShortcut>
-            <IconEdit size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuSeparator />

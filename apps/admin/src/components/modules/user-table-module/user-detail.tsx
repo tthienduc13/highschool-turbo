@@ -266,7 +266,8 @@ export function UserDetailsModal({
                 <div>
                   <p className="text-sm font-medium">Last login</p>
                   <p className="text-muted-foreground text-sm">
-                    {userData?.lastLoginAt.toString() || "No recent login data"}
+                    {userData?.lastLoginAt?.toString() ||
+                      "No recent login data"}
                   </p>
                 </div>
               </div>
