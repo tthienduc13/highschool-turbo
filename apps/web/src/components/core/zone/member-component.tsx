@@ -97,7 +97,6 @@ export const MemberComponentRaw: React.FC<MemberComponentProps> = ({
           <div className="flex flex-row gap-4 space-x-4 md:hidden">
             <Tags isMobile={false} />
             <Options
-              isMobile
               actions={actions}
               canManage={canManage}
               id={id}
@@ -148,7 +147,7 @@ const Options: React.FC<
   Pick<
     MemberComponentProps,
     "id" | "user" | "skeleton" | "isMe" | "canManage" | "actions"
-  > & { isMobile?: boolean }
+  >
 > = ({ id, user, skeleton, isMe, canManage = false, actions = [] }) => {
   const [menuOpen, setMenuOpen] = React.useState(false);
 
@@ -183,7 +182,7 @@ const Options: React.FC<
             </Link>
           </Button>
         )}
-        {!isMe && (
+        {!isMe && canManage && (
           <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
             <DropdownMenuTrigger asChild>
               <Button className="size-8" size="sm" variant="outline">

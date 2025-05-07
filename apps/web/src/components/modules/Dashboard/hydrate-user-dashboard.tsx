@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import {
   useHeatmapQuery,
   useUserOwnStatisticQuery,
@@ -13,6 +13,8 @@ import { ProfileNotFound } from "../../core/common/404s/profile-404";
 
 import { Loading } from "@/components/core/common/loading";
 import { useMe } from "@/hooks/use-me";
+
+type ViewType = "login" | "flashcard" | "learnedlesson";
 
 interface HydrateDashboardDataProps {
   fallback?: React.ReactNode;
@@ -29,6 +31,10 @@ export interface UserDashboard {
   };
   stats: UserOwnStatistics;
   heatmap: Heatmap;
+  selectedViewTypes: ViewType[];
+  setSelectedViewTypes: React.Dispatch<React.SetStateAction<ViewType[]>>;
+  selectedYear: number;
+  setSelectedYear: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const DashboardContext = createContext<UserDashboard>({
@@ -57,6 +63,10 @@ export const DashboardContext = createContext<UserDashboard>({
     endYear: new Date().getFullYear(),
     data: [],
   },
+  selectedViewTypes: ["login"],
+  setSelectedViewTypes: () => {},
+  selectedYear: new Date().getFullYear(),
+  setSelectedYear: () => {},
 });
 
 export const HydrateDashboardData = ({
@@ -65,6 +75,12 @@ export const HydrateDashboardData = ({
 }: HydrateDashboardDataProps) => {
   const me = useMe();
   const { status } = useSession();
+  const [selectedViewTypes, setSelectedViewTypes] = useState<ViewType[]>([
+    "login",
+  ]);
+  const [selectedYear, setSelectedYear] = useState<number>(
+    new Date().getFullYear(),
+  );
   const { data, isLoading, isError } = useUserProfileQuery({
     username: me?.username!,
     status: status,
@@ -74,9 +90,9 @@ export const HydrateDashboardData = ({
     useUserOwnStatisticQuery();
 
   const { data: heatmapData, isLoading: heatmapLoading } = useHeatmapQuery({
-    viewType: "login",
-    startYear: new Date().getFullYear(),
-    endYear: new Date().getFullYear() + 1,
+    viewType: selectedViewTypes.join("/"),
+    startYear: selectedYear,
+    endYear: selectedYear + 1,
   });
 
   if (data?.status === 404 || isError) return <ProfileNotFound />;
@@ -110,11 +126,15 @@ export const HydrateDashboardData = ({
         },
         heatmap: {
           totalActivity: heatmapData?.totalActivity ?? 0,
-          viewType: "flashcard",
-          startYear: heatmapData?.startYear ?? new Date().getFullYear() - 1,
-          endYear: heatmapData?.endYear ?? new Date().getFullYear(),
+          viewType: selectedViewTypes.join("/"),
+          startYear: selectedYear,
+          endYear: selectedYear + 1,
           data: heatmapData?.data ?? [],
         },
+        selectedViewTypes,
+        setSelectedViewTypes,
+        selectedYear,
+        setSelectedYear,
       }}
     >
       {children}

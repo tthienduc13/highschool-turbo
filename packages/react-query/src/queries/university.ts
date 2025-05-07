@@ -282,9 +282,9 @@ export const useSavedUniversitiesQuery = ({
   pageSize: number;
   pageNumber: number;
 }) => {
-  return useMutation({
-    mutationKey: ["save-university", { pageSize, pageNumber }],
-    mutationFn: () => getSavedUniversities({ pageSize, pageNumber }),
+  return useQuery({
+    queryKey: ["save-university", { pageSize, pageNumber }],
+    queryFn: () => getSavedUniversities({ pageSize, pageNumber }),
   });
 };
 

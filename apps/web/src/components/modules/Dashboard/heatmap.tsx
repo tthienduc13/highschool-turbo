@@ -1,8 +1,12 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import HeatMap, { HeatMapValue } from "@uiw/react-heat-map";
-import { IconChevronDown, IconTrendingUp } from "@tabler/icons-react";
+import {
+  IconChevronDown,
+  IconTrendingUp,
+  IconCheck,
+} from "@tabler/icons-react";
 import {
   Tooltip,
   TooltipContent,
@@ -20,15 +24,39 @@ import { cn } from "@highschool/ui/lib/utils";
 
 import { useDashboard } from "@/hooks/use-user-dashboard";
 
+type ViewType = "login" | "flashcard" | "learnedlesson";
+
+const VIEW_TYPE_ORDER: ViewType[] = ["flashcard", "login", "learnedlesson"];
+
 export const ActivityHeatMap = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [selectedYear, setSelectedYear] = useState<number>(
-    new Date().getFullYear(),
-  );
+  const {
+    heatmap,
+    selectedViewTypes,
+    setSelectedViewTypes,
+    selectedYear,
+    setSelectedYear,
+  } = useDashboard();
 
   const years = [2025, 2024, 2023];
 
-  const { heatmap } = useDashboard();
+  const viewTypeLabels: Record<ViewType, string> = {
+    login: "Đăng nhập vào hệ thống",
+    flashcard: "Flashcards hoàn thành",
+    learnedlesson: "Bài học hoàn thành",
+  };
+
+  const toggleViewType = (type: ViewType) => {
+    setSelectedViewTypes((prev) => {
+      if (prev.includes(type)) {
+        return prev.filter((t) => t !== type);
+      }
+      // Add new type and sort according to VIEW_TYPE_ORDER
+      const newTypes = [...prev, type];
+
+      return VIEW_TYPE_ORDER.filter((t) => newTypes.includes(t));
+    });
+  };
 
   const generateEmptyHeatmapData = (
     startYear: number,
@@ -90,9 +118,18 @@ export const ActivityHeatMap = () => {
             alignOffset={10}
             className="flex flex-col gap-2 p-4 shadow-lg"
           >
-            <DropdownMenuItem>Bài học hoàn thành</DropdownMenuItem>
-            <DropdownMenuItem>Flashcards hoàn thành</DropdownMenuItem>
-            <DropdownMenuItem>Đăng nhập vào hệ thông</DropdownMenuItem>
+            {VIEW_TYPE_ORDER.map((type) => (
+              <DropdownMenuItem
+                key={type}
+                className={cn("flex items-center justify-between")}
+                onClick={() => toggleViewType(type)}
+              >
+                <span>{viewTypeLabels[type]}</span>
+                {selectedViewTypes.includes(type) && (
+                  <IconCheck className="ml-2" size={16} />
+                )}
+              </DropdownMenuItem>
+            ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -101,7 +138,7 @@ export const ActivityHeatMap = () => {
         <div className="w-full max-w-4xl overflow-x-auto rounded-lg border-gray-100 bg-white p-6 shadow-lg">
           <HeatMap
             className="w-full"
-            endDate={new Date(endDate)}
+            endDate={new Date(`${selectedYear + 1}/01/01`)}
             monthLabels={[
               "Tháng 1",
               "Tháng 2",
@@ -142,7 +179,7 @@ export const ActivityHeatMap = () => {
               );
             }}
             rectSize={14}
-            startDate={new Date(startDate)}
+            startDate={new Date(`${selectedYear}/01/01`)}
             value={heatmapData}
             weekLabels={["", "T2", "", "T4", "", "T6", ""]}
           />

@@ -491,7 +491,7 @@ export const getUserHeatmap = async ({
   startYear,
   endYear,
 }: {
-  viewType: "flashcard" | "login" | "learnedlesson";
+  viewType: string;
   startYear: number;
   endYear: number;
 }): Promise<Heatmap> => {

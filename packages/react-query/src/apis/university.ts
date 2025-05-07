@@ -272,8 +272,8 @@ export const getSavedUniversities = async ({
 }: Partial<{
   pageNumber: number;
   pageSize: number;
-}>): Promise<Pagination<UniversityCategory>> => {
-  return fetchPaginatedData<UniversityCategory>(
+}>): Promise<Pagination<UniversityCategory[]>> => {
+  return fetchPaginatedData<UniversityCategory[]>(
     universityEndpoints.getSavedUniversity,
     {
       pageNumber,

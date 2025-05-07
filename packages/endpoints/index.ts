@@ -992,6 +992,11 @@ export const universityEndpoints = {
     API_VERSIONS.V1,
     "/university",
   ),
+  getSavedList: createEndpoint(
+    SERVICE_PREFIXES.USER,
+    API_VERSIONS.V1,
+    "/university/saved",
+  ),
   getUniversityName: createEndpoint(
     SERVICE_PREFIXES.USER,
     API_VERSIONS.V1,

@@ -9,7 +9,7 @@ import {
 import { Badge } from "@highschool/ui/components/ui/badge";
 import { Button } from "@highschool/ui/components/ui/button";
 import { cn } from "@highschool/ui/lib/utils";
-import { IconHeart, IconMapPin, IconSchool } from "@tabler/icons-react";
+import { IconBookmark, IconMapPin, IconSchool } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -99,10 +99,10 @@ export default function UniversityCard({
               variant="ghost"
               onClick={handleSaveUniversity}
             >
-              <IconHeart
+              <IconBookmark
                 className={cn(
                   "!size-5 ",
-                  isUniSaved && "fill-red-500 text-red-500",
+                  isUniSaved && "fill-yellow-500 text-yellow-500",
                 )}
               />
             </Button>

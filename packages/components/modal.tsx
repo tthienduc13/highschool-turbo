@@ -20,7 +20,13 @@ interface ModalProps {
   title?: string;
   children?: React.ReactNode;
   buttonLabel?: string;
-  buttonVariant?: string;
+  buttonVariant?:
+    | "default"
+    | "link"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost";
   cancelLabel?: string;
   onConfirm?: () => void;
   description?: string;
@@ -45,6 +51,7 @@ export const Modal = ({
   description,
   isPending,
   isDisabled,
+  buttonVariant = "default",
 }: ModalProps) => {
   return (
     <Credenza open={isOpen} onOpenChange={onClose}>
@@ -97,6 +104,7 @@ export const Modal = ({
               className="!text-base"
               disabled={isPending || isDisabled}
               size={"default"}
+              variant={buttonVariant ?? "default"}
               onClick={onConfirm}
             >
               {isPending ? (
