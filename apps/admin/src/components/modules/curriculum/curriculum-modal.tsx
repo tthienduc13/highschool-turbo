@@ -60,7 +60,6 @@ export const CurriculumModal = ({ open, onOpenChange, currentRow }: Props) => {
       toast.info("Uploading image...");
 
       try {
-        // Simulate upload delay
         const data = await uploadImage.mutateAsync(
           {
             image: singleFile,

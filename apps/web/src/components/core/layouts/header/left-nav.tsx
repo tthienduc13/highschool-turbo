@@ -17,7 +17,6 @@ import { cn } from "@highschool/ui/lib/utils";
 import {
   IconCards,
   IconChevronDown,
-  IconFileTypePdf,
   IconFolder,
   IconRouteAltRight,
   IconSchool,
@@ -79,12 +78,12 @@ export const LeftNav = ({ onFolderClick }: LeftNavProps) => {
       icon: IconSparkles,
       onClick: () => router.push("/study-set/create-with-ai"),
     },
-    {
-      label: "Tài liệu",
-      icon: IconFileTypePdf,
-      onClick: () => handleItemClick("Tài liệu"),
-      teacherOnly: true,
-    },
+    // {
+    //   label: "Tài liệu",
+    //   icon: IconFileTypePdf,
+    //   onClick: () => handleItemClick("Tài liệu"),
+    //   teacherOnly: true,
+    // },
     {
       label: "Thư mục mới",
       icon: IconFolder,
