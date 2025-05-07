@@ -186,3 +186,31 @@ export const replyInvitation = async ({
     throw error;
   }
 };
+
+export const removeUserFromZone = async ({
+  userId,
+  email,
+  zoneId,
+  isBanned,
+}: {
+  userId: string;
+  email?: string;
+  zoneId: string;
+  isBanned: boolean;
+}): Promise<ResponseModel<string>> => {
+  try {
+    const { data } = await axiosServices.delete(zoneEndpoints.removeUser, {
+      data: {
+        zoneId,
+        userId,
+        email,
+        isBanned,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.log("Error while removing user from zone", error);
+    throw error;
+  }
+};

@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import React from "react";
-import { IconBan, IconPlus, IconSearch, IconUserX } from "@tabler/icons-react";
+import { IconPlus, IconSearch, IconUserX } from "@tabler/icons-react";
 import {
   useAllMembersQuery,
   useZoneDetailQuery,
@@ -70,11 +70,6 @@ export const ZoneMembers = () => {
 
   const removeMemberCallback = React.useCallback((id: string) => {
     setRemoveMemberType("user");
-    setRemoveMember(id);
-  }, []);
-
-  const banMemberCallback = React.useCallback((id: string) => {
-    setRemoveMemberType("ban");
     setRemoveMember(id);
   }, []);
 
@@ -150,12 +145,6 @@ export const ZoneMembers = () => {
                 key={m.id}
                 actions={[
                   {
-                    label: "Cấm ",
-                    icon: IconBan,
-                    onClick: banMemberCallback,
-                    destructive: true,
-                  },
-                  {
                     label: "Xoá",
                     icon: IconUserX,
                     onClick: removeMemberCallback,
@@ -193,12 +182,6 @@ export const ZoneMembers = () => {
                 key={m.id}
                 pending
                 actions={[
-                  {
-                    label: "Cấm ",
-                    icon: IconBan,
-                    onClick: banMemberCallback,
-                    destructive: true,
-                  },
                   {
                     label: "Xoá",
                     icon: IconUserX,

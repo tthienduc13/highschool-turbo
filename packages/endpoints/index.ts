@@ -1152,6 +1152,11 @@ export const zoneEndpoints = {
     API_VERSIONS.V1,
     "/members/invites",
   ),
+  removeUser: createEndpoint(
+    SERVICE_PREFIXES.ACADEMIC_HUB,
+    API_VERSIONS.V1,
+    "/members",
+  ),
   reply: createEndpoint(
     SERVICE_PREFIXES.ACADEMIC_HUB,
     API_VERSIONS.V1,

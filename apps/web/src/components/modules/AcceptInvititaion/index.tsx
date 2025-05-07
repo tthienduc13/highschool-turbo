@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@highschool/ui/components/ui/card";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useParams, useRouter } from "next/navigation";
@@ -20,14 +20,23 @@ function AcceptInvitationModule() {
   const params = useParams();
   const router = useRouter();
 
+  const [hasAccepted, setHasAccepted] = useState(false);
+
   const apiReply = useReplyMutation();
 
   useEffect(() => {
-    if (params.id) {
-      apiReply.mutate({
-        zoneId: params.id as string,
-        invite: 1,
-      });
+    if (params.id && !hasAccepted) {
+      apiReply.mutate(
+        {
+          zoneId: params.id as string,
+          invite: 1,
+        },
+        {
+          onSuccess: () => {
+            setHasAccepted(true);
+          },
+        },
+      );
     }
   }, [params.id]);
 

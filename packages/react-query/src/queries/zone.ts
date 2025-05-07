@@ -9,6 +9,7 @@ import {
   getZoneDashboard,
   getZones,
   inviteZoneMember,
+  removeUserFromZone,
   replyInvitation,
 } from "../apis/zone.ts";
 
@@ -102,5 +103,12 @@ export const useReplyMutation = () => {
   return useMutation({
     mutationKey: ["reply-zone-member"],
     mutationFn: replyInvitation,
+  });
+};
+
+export const useRemoveMutation = () => {
+  return useMutation({
+    mutationKey: ["remove-zone-member"],
+    mutationFn: removeUserFromZone,
   });
 };

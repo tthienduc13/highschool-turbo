@@ -154,13 +154,6 @@ const Options: React.FC<
   const menuBg = "bg-white dark:bg-gray-800";
   const redMenuColor = "text-red-600 dark:text-red-200";
 
-  const openCallback = React.useCallback(() => {
-    setMenuOpen(true);
-  }, []);
-  const closeCallback = React.useCallback(() => {
-    setMenuOpen(false);
-  }, []);
-
   if (skeleton) {
     return (
       <div className={cn("md:block")}>
@@ -201,7 +194,7 @@ const Options: React.FC<
                     "text-sm py-1.5",
                     a.destructive && redMenuColor,
                   )}
-                  onClick={() => a.onClick?.(id)}
+                  onClick={() => a.onClick?.(user?.user.userId!)}
                 >
                   <span className="mr-2">
                     <a.icon size={16} />

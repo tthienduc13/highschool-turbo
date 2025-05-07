@@ -1,11 +1,6 @@
 "use client";
 
-import { Button } from "@highschool/ui/components/ui/button";
-import {
-  IconArrowLeft,
-  IconHistory,
-  IconRouteAltRight,
-} from "@tabler/icons-react";
+import { IconRouteAltRight } from "@tabler/icons-react";
 import { useState } from "react";
 import { useUserBriefQuery } from "@highschool/react-query/queries";
 
@@ -29,7 +24,7 @@ export const CareerGuidanceSummary = () => {
             {viewState === "current" ? "Hướng nghiệp" : "Lịch sử của bạn"}{" "}
           </h2>
         </div>
-        {data?.data && (
+        {/* {data?.data && (
           <Button
             variant={viewState === "current" ? "outline" : "default"}
             onClick={() =>
@@ -45,7 +40,7 @@ export const CareerGuidanceSummary = () => {
             )}
             {viewState === "current" ? "Xem lịch sử" : "Quay lại"}
           </Button>
-        )}
+        )} */}
       </div>
       {viewState === "current" ? (
         <CurrentCareerGuidanceSummary brief={data?.data!} />

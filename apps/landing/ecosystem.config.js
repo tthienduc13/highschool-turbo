@@ -7,6 +7,7 @@ module.exports = {
         " turbo run build --filter landing &&  turbo run start --filter landing",
       watch: false,
       env: {
+        NODE_ENV: "production",
         NEXT_PUBLIC_LANDING_URL: "https://www.highschool.vn",
         NEXT_PUBLIC_APP_URL: "https://app.highschool.vn",
         NEXT_PUBLIC_GAME_URL: "https://game.highschool.vn",

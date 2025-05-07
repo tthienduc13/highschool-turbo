@@ -51,7 +51,7 @@ function RejectInvitationModule() {
               <Button
                 className="mt-4"
                 size={"lg"}
-                onClick={() => router.push(`/zone/${params.id}`)}
+                onClick={() => router.push(`/`)}
               >
                 <IconArrowLeft /> Quay về
               </Button>
