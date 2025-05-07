@@ -273,6 +273,7 @@ export const useUploadfileMutation = () => {
 
 export const useCreateDocumentMutation = ({ file }: { file: File }) => {
   const { mutate: uploadFile } = useUploadfileMutation();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["create-document"],
@@ -281,6 +282,7 @@ export const useCreateDocumentMutation = ({ file }: { file: File }) => {
       if (data.status === 201) {
         toast.success(data.message ?? "Document created successfully");
         uploadFile({ documentId: data.data!, file: file });
+        queryClient.invalidateQueries({ queryKey: ["documents"] });
       } else {
         toast.error(
           data.message ?? "An error occurred while creating the document.",
@@ -295,10 +297,14 @@ export const useCreateDocumentMutation = ({ file }: { file: File }) => {
 };
 
 export const useUpdateDocumentMutation = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["update-document"],
     mutationFn: updateDocument,
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["documents"] });
+
       toast.success("Document updated successfully");
     },
     onError: (error) => {

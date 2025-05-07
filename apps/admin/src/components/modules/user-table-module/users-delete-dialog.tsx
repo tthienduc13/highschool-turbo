@@ -51,7 +51,7 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
   return (
     <ConfirmDialog
       destructive
-      confirmText="Delete"
+      confirmText="Save"
       desc={
         <div className="space-y-4">
           <p className="mb-2">

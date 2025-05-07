@@ -34,7 +34,6 @@ import {
 import { useRouter } from "next/navigation";
 
 import CardParam from "./card-param";
-import { RetrievabilityGraph } from "./graph-overview";
 
 import {
     categoryConfig,
@@ -253,7 +252,7 @@ function CreatePresetModule({ id }: CreatePresetModuleProps) {
                                 />
                             </div>
                         </div>
-                        <RetrievabilityGraph parameters={params} />
+                        {/* <RetrievabilityGraph parameters={params} /> */}
                     </div>
                 </CardContent>
             </Card>

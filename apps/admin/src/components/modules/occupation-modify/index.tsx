@@ -183,13 +183,14 @@ function OccupationModifyModule() {
                 createOccupation({
                     careerInfoList: [careerInfo]
                 });
-                setCareerInfo(initialCareerInfo);
+
             } else {
                 updateOccupation({
                     careerInfo: careerInfo
                 });
             }
 
+            router.push('/career-mentor/occupation');
         } catch {
             return;
         }
