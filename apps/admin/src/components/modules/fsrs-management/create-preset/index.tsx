@@ -49,9 +49,9 @@ function CreatePresetModule({ id }: CreatePresetModuleProps) {
     const router = useRouter();
 
     const [activeFilter, setActiveFilter] = useState<"all" | FSRSCategory>("all");
-    const [activeSort, setActiveSort] = useState<"name" | "value" | "impact">(
-        "name",
-    );
+    const [activeSort, setActiveSort] = useState<
+        "default" | "name" | "value" | "impact"
+    >("default");
     const editPreset = useFsrsPresetStore((state) => state.editFsrsPreset);
     const isEdit = useFsrsPresetStore((state) => state.isOpenEdit);
     const typeAction = isEdit ? "Update" : "Create";
@@ -288,6 +288,7 @@ function CreatePresetModule({ id }: CreatePresetModuleProps) {
                                 {activeSort === "name" && "Name"}
                                 {activeSort === "value" && "Value"}
                                 {activeSort === "impact" && "Impact"}
+                                {activeSort === "default" && "Default"}
                                 <IconChevronRight className="ml-2 size-4" />
                             </Button>
                         </DropdownMenuTrigger>

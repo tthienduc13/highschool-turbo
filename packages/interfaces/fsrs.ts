@@ -1,12 +1,15 @@
 export enum FSRSCategory {
-  initialDifficulty = "initialDifficulty",
+  // initialDifficulty = "initialDifficulty",
   difficultyAdjustment = "difficultyAdjustment",
   stabilityAdjustment = "stabilityAdjustment",
   forgettingAdjustment = "forgettingAdjustment",
-  retrievabilityAdjustment = "retrievabilityAdjustment",
-  decayRate = "decayRate",
-  multiplicativeFactor = "multiplicativeFactor",
-  other = "other",
+  // retrievabilityAdjustment = "retrievabilityAdjustment",
+  // decayRate = "decayRate",
+  // multiplicativeFactor = "multiplicativeFactor",
+  // other = "other",
+  // New categories for FSRS 5
+  initialStability = "initialStability",
+  sameDayReviews = "sameDayReviews",
 }
 
 export interface FSRSPreset {
