@@ -25,7 +25,7 @@ interface DocumentCardProps {
   onRemove: () => void;
   removable?: boolean;
   userLoading: boolean;
-  user: {
+  user?: {
     fullname: string | null;
     image: string | null;
   };
@@ -90,56 +90,58 @@ export const DocumentCard = ({
             </div>
           </div>
         </div>
-        <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-4 dark:border-gray-700 ">
-          {!userLoading && (
-            <div className="flex w-full flex-row items-center gap-2">
-              <Avatar className="size-6">
-                <AvatarImage
-                  alt={user.fullname ?? "Người dùng Highschool"}
-                  src={user.image ?? "/logo.svg"}
-                />
-              </Avatar>
-              <div className="flex flex-row items-center gap-1">
-                <div className="text-sm font-semibold">
-                  {user.fullname ?? "Highschool"}
+        {user && (
+          <div className="flex w-full flex-row justify-between border-t border-gray-200 px-4 pt-4 dark:border-gray-700 ">
+            {!userLoading && (
+              <div className="flex w-full flex-row items-center gap-2">
+                <Avatar className="size-6">
+                  <AvatarImage
+                    alt={user.fullname ?? "Người dùng Highschool"}
+                    src={user.image ?? "/logo.svg"}
+                  />
+                </Avatar>
+                <div className="flex flex-row items-center gap-1">
+                  <div className="text-sm font-semibold">
+                    {user.fullname ?? "Highschool"}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          {removable ? (
-            <DropdownMenu
-              open={menuOpen}
-              onOpenChange={() => setMenuOpen(false)}
-            >
-              <DropdownMenuTrigger asChild>
-                <Button
-                  className="h-9 rounded-full"
-                  size={"icon"}
-                  variant={"ghost"}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setMenuOpen(true);
-                  }}
-                >
-                  <IconDotsVertical />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onRemove();
-                    setMenuOpen(false);
-                  }}
-                >
-                  <IconTrash />
-                  Xoá
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
-        </div>
+            )}
+            {removable ? (
+              <DropdownMenu
+                open={menuOpen}
+                onOpenChange={() => setMenuOpen(false)}
+              >
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    className="h-9 rounded-full"
+                    size={"icon"}
+                    variant={"ghost"}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMenuOpen(true);
+                    }}
+                  >
+                    <IconDotsVertical />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onRemove();
+                      setMenuOpen(false);
+                    }}
+                  >
+                    <IconTrash />
+                    Xoá
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : null}
+          </div>
+        )}
       </div>
     </Link>
   );

@@ -9,6 +9,12 @@ interface VideoPlayerProps {
   lesson: LessonDetail;
 }
 
+const regexPatterns = [
+  /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/|youtube\.com\/watch\?.*v=)([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/,
+  /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+];
+
 export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
   const [isReady, setIsReady] = useState(false);
 
@@ -18,15 +24,35 @@ export const VideoPlayer = ({ lesson }: VideoPlayerProps) => {
 
   const isYoutubeUrl = lesson.videoUrl.includes("youtube");
 
-  if (isYoutubeUrl) {
+  const extractYoutubeId = (input: string): string | null => {
+    // Handle direct video ID input
+    if (/^[a-zA-Z0-9_-]{11}$/.test(input)) {
+      return input;
+    }
+
+    for (const regex of regexPatterns) {
+      const match = input.match(regex);
+
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    return null;
+  };
+
+  const videoId = extractYoutubeId(lesson.videoUrl);
+
+  if (isYoutubeUrl && videoId) {
     return (
       <iframe
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         className="aspect-video w-full"
-        frameBorder="0"
-        referrerPolicy="strict-origin-when-cross-origin"
-        src={lesson.videoUrl}
+        height="100%"
+        src={`https://www.youtube.com/embed/${videoId}`}
         title="YouTube video player"
+        width="100%"
       />
     );
   }

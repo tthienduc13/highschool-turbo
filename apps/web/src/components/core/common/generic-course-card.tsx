@@ -22,6 +22,7 @@ export const GenericCourseCard = ({
           <Image
             fill
             alt={title}
+            className="object-cover"
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 33vw"
             src={image}
           />
