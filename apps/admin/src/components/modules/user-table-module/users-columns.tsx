@@ -110,7 +110,11 @@ export const columns: ColumnDef<UserPreview>[] = [
           {userType.icon && (
             <userType.icon className="text-muted-foreground" size={16} />
           )}
-          <span className="text-sm capitalize">{row.original.roleName}</span>
+          <span className="text-sm capitalize">
+            {row.original.roleName.toLowerCase() === "teacher"
+              ? "Academic Mentor"
+              : "Learner"}
+          </span>
         </div>
       );
     },

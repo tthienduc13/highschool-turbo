@@ -20,8 +20,8 @@ function StudentTableModule() {
       <DataTable
         columns={columns}
         filter={filter}
-        subTitle="Manage your Students roles here."
-        title="Student List"
+        subTitle="Manage your Learners roles here."
+        title="Learners List"
       />
       <UsersDialogs />
     </TableProvider>

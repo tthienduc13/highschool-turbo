@@ -188,11 +188,11 @@ export const navAdmin = {
       icon: IconUserCircle,
       items: [
         {
-          title: "Students",
+          title: "Learners",
           url: "/accounts/student",
         },
         {
-          title: "Teachers",
+          title: "Academic Mentors",
           url: "/accounts/teacher",
         },
         {

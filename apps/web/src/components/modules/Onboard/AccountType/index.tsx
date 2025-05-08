@@ -80,7 +80,7 @@ function OnboardAccountTypeModule() {
               )}
             >
               <IconBooks size={18} />
-              <div className="font-semibold">Học sinh</div>
+              <div className="font-semibold">Học viên</div>
             </div>
           </button>
           <button
@@ -98,7 +98,7 @@ function OnboardAccountTypeModule() {
               )}
             >
               <IconSchool size={18} />
-              <div className="font-semibold">Giáo viên</div>
+              <div className="font-semibold">Hướng dẫn</div>
             </div>
           </button>
         </div>
