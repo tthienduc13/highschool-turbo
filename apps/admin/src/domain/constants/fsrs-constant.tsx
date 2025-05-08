@@ -135,6 +135,9 @@ export const categoryConfig = {
     description:
       "Parameters that control how stability is adjusted when reviewing the same card multiple times within a single day.",
   },
+  // decayRate: {},
+  // multiplicativeFactor: {},
+  // other: {},
   // retrievabilityFormula: {
   //   color: "bg-yellow-500",
   //   lightColor: "bg-yellow-100",
