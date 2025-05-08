@@ -16,16 +16,14 @@ import {
   useChapterListByIdQuery,
   useCheckCoursePublishQuery,
   useCourseByIdQuery,
+  useCurriculaQuery,
   useDeactivateCourseMutation,
 } from "@highschool/react-query/queries";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import {
-  CurriculumData,
-  SelectCurriculumModal,
-} from "./select-curriculum-modal";
+import { SelectCurriculumModal } from "./select-curriculum-modal";
 import { TitleForm } from "./title-form";
 import { DescriptionForm } from "./description-form";
 import { ImageForm } from "./image-form";
@@ -46,6 +44,11 @@ function SubjectDetailModule() {
 
   const { data, isLoading } = useCourseByIdQuery({ id: id as string });
 
+  const { data: curriculumData } = useCurriculaQuery({
+    pageNumber: 1,
+    pageSize: 100,
+  });
+
   const { data: chapterData, isLoading: chapterLoading } =
     useChapterListByIdQuery({
       courseId: id as string,
@@ -60,7 +63,7 @@ function SubjectDetailModule() {
       curriculumId: selectedCurriculumId!,
     });
 
-  const currentCurriculum = CurriculumData.find((curriculum) => {
+  const currentCurriculum = curriculumData?.data.find((curriculum) => {
     return curriculum.id === selectedCurriculumId;
   });
 
@@ -116,6 +119,7 @@ function SubjectDetailModule() {
   return (
     <>
       <SelectCurriculumModal
+        cousreId={id as string}
         isOpen={selectOpen}
         selectedCurriculumId={selectedCurriculumId}
         onClose={() => setSelectOpen(false)}
@@ -132,7 +136,7 @@ function SubjectDetailModule() {
                 <Image
                   alt={currentCurriculum?.curriculumName!}
                   height={18}
-                  src={currentCurriculum?.image!}
+                  src={currentCurriculum?.imageUrl! ?? "/logo.svg"}
                   width={18}
                 />
               ) : (

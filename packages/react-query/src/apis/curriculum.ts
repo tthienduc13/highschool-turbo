@@ -1,5 +1,5 @@
 import { Curriculum, Pagination, ResponseModel } from "@highschool/interfaces";
-import { curriculumEndpoints } from "@highschool/endpoints";
+import { courseEndpoints, curriculumEndpoints } from "@highschool/endpoints";
 
 import axiosServices from "../lib/axios.ts";
 
@@ -83,6 +83,23 @@ export const deleteCurriculum = async ({
     return data;
   } catch (error) {
     console.log("Error while deleting curriculum", error);
+    throw error;
+  }
+};
+
+export const getCourseCurriculum = async ({
+  courseId,
+}: {
+  courseId: string;
+}): Promise<Curriculum[]> => {
+  try {
+    const { data } = await axiosServices.get(
+      courseEndpoints.getCourseCurriculum(courseId),
+    );
+
+    return data;
+  } catch (error) {
+    console.log("Error while getting course curriculum", error);
     throw error;
   }
 };

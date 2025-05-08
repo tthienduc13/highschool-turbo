@@ -2,47 +2,36 @@ import Image from "next/image";
 import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 import { IconCircleCheck } from "@tabler/icons-react";
+import { useCourseCurriculumQuery } from "@highschool/react-query/queries";
 
 interface SelectCurriculumModalProps {
   isOpen: boolean;
   onClose: () => void;
+  cousreId: string;
   onSelect: (id: string) => void;
   selectedCurriculumId?: string;
 }
 
-export const CurriculumData = [
-  {
-    id: "01931f33-7d05-758c-9580-aa477f5249a4",
-    curriculumName: "Chân trời sáng tạo",
-    image: "/images/curriculum/chan-troi-sang-tao.png",
-  },
-  {
-    id: "01932971-1395-78b7-8033-cd035de9566b",
-    curriculumName: "Kết nối tri thức",
-    image: "/images/curriculum/ket-noi-tri-thuc.png",
-  },
-  {
-    id: "01932971-336a-747b-d6c8-a28afe4411ba",
-    curriculumName: "Cánh diều",
-    image: "/images/curriculum/canh-dieu.png",
-  },
-];
-
 export const SelectCurriculumModal = ({
   isOpen,
+  cousreId,
   onClose,
   onSelect,
   selectedCurriculumId,
 }: SelectCurriculumModalProps) => {
+  const { data: CurriculumData } = useCourseCurriculumQuery({
+    courseId: cousreId,
+  });
+
   return (
     <Modal
       withoutFooter
       isOpen={isOpen}
-      title="Chọn chương trình học của bạn"
+      title="Chọn chương trình học "
       onClose={onClose}
     >
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        {CurriculumData.map((curriculum) => (
+        {CurriculumData?.map((curriculum) => (
           <Button
             key={curriculum.id}
             className="relative h-full border-gray-200 dark:border-gray-700"
@@ -59,7 +48,7 @@ export const SelectCurriculumModal = ({
                   priority
                   alt={curriculum.curriculumName}
                   sizes="(max-width: 768px) 100vw, 80px"
-                  src={curriculum.image}
+                  src={curriculum.imageUrl}
                 />
               </div>
               <p className="font-medium">{curriculum.curriculumName}</p>

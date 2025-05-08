@@ -4,6 +4,7 @@ import {
   createCurriculum,
   deleteCurriculum,
   editCurriculum,
+  getCourseCurriculum,
   getCurricula,
 } from "../apis/curriculum.ts";
 
@@ -38,5 +39,16 @@ export const useEditCurriculumMutation = () => {
   return useMutation({
     mutationKey: ["edit-curriculum"],
     mutationFn: editCurriculum,
+  });
+};
+
+export const useCourseCurriculumQuery = ({
+  courseId,
+}: {
+  courseId: string;
+}) => {
+  return useQuery({
+    queryKey: ["course-curriculum", courseId],
+    queryFn: () => getCourseCurriculum({ courseId: courseId }),
   });
 };

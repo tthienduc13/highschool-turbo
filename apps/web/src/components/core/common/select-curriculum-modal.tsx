@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Modal } from "@highschool/components/modal";
 import { Button } from "@highschool/ui/components/ui/button";
 import {
-  useCurriculaQuery,
+  useCourseCurriculumQuery,
   useUpdateUserCurriculumMutation,
 } from "@highschool/react-query/queries";
 import { IconCircleCheck } from "@tabler/icons-react";
@@ -22,17 +22,12 @@ export const SelectCurriculumModal = ({
   courseId,
   userCurriculum,
 }: SelectCurriculumModalProps) => {
-  const { data: CurriculumData } = useCurriculaQuery({
-    pageNumber: 1,
-    pageSize: 12,
+  const { data: CurriculumData } = useCourseCurriculumQuery({
+    courseId: courseId,
   });
   const { slug } = useParams();
   const queryClient = useQueryClient();
   const apiUpdateUserCurriculum = useUpdateUserCurriculumMutation();
-
-  const filterdCurriculum = CurriculumData?.data.filter(
-    (curriculum) => !curriculum.isExternal,
-  );
 
   if (!CurriculumData) return;
 
@@ -44,7 +39,7 @@ export const SelectCurriculumModal = ({
       onClose={onClose}
     >
       <div className="grid grid-cols-1 gap-4 pb-6 md:grid-cols-3">
-        {filterdCurriculum!.map((curriculum) => (
+        {CurriculumData!.map((curriculum) => (
           <Button
             key={curriculum.id}
             className="relative h-full border-gray-200 dark:border-gray-700"
