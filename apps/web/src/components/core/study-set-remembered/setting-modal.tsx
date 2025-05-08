@@ -77,9 +77,11 @@ export const TestSettingsModal: React.FC<TestSettingsModalProps> = ({
         <div className="flex flex-col gap-2">
           <div className="font-semibold">Làm bài kiểm tra bằng:</div>
           <div className="grid grid-cols-2 gap-3">
-            {Object.values(TestQuestionType).map((t) => (
-              <QuestionTypeComponent key={t} type={t} />
-            ))}
+            {Object.values(TestQuestionType)
+              .filter((type) => type !== TestQuestionType.Write)
+              .map((t) => (
+                <QuestionTypeComponent key={t} type={t} />
+              ))}
           </div>
         </div>
         <div className="flex flex-row items-start justify-between gap-8 md:items-center">
