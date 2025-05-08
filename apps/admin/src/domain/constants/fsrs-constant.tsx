@@ -5,9 +5,6 @@ import {
   IconBrain,
   IconTrash,
   IconRefresh,
-  IconTrendingDown,
-  IconChartBar,
-  IconHelp,
 } from "@tabler/icons-react";
 import { JSX } from "react";
 
@@ -88,15 +85,15 @@ export interface categoryPreset {
 // };
 
 export const categoryConfig = {
-  initialDifficulty: {
+  initialStability: {
     color: "bg-red-500",
     lightColor: "bg-red-100",
     borderColor: "border-red-300",
     textColor: "text-red-800",
     icon: <IconAdjustments size={16} />,
-    title: "Initial Difficulty",
+    title: "Initial Stability",
     description:
-      "Represents how hard the item is when first learned. A higher value indicates the item starts out more difficult to recall.",
+      "Parameters that determine initial memory stability after the first review of a card, based on the rating given (Again, Hard, Good, Easy).",
   },
   difficultyAdjustment: {
     color: "bg-orange-500",
@@ -106,7 +103,7 @@ export const categoryConfig = {
     icon: <IconBrain size={16} />,
     title: "Difficulty Adjustment",
     description:
-      "Adjusts the item's difficulty over time based on your recall performance, making future scheduling more adaptive.",
+      "Parameters that control how card difficulty (D) is calculated and adjusted based on your performance, affecting how hard a card is to remember.",
   },
   stabilityAdjustment: {
     color: "bg-blue-500",
@@ -116,7 +113,7 @@ export const categoryConfig = {
     icon: <IconHourglassEmpty size={16} />,
     title: "Stability Adjustment",
     description:
-      "Modifies how long the memory stays stable over time. Affects how much the memory decays after each review.",
+      "Parameters that determine how memory stability (S) increases after successful reviews, affecting how long you can retain memories over time.",
   },
   forgettingAdjustment: {
     color: "bg-purple-500",
@@ -126,48 +123,28 @@ export const categoryConfig = {
     icon: <IconTrash size={16} />,
     title: "Forgetting Adjustment",
     description:
-      "Influences how the model treats forgotten reviews, helping it adjust future intervals and item difficulty accordingly.",
+      "Parameters that control how stability is calculated after you forget a card (press 'Again'), determining how quickly you'll see the card again.",
   },
-  retrievabilityAdjustment: {
+  sameDayReviews: {
     color: "bg-green-500",
     lightColor: "bg-green-100",
     borderColor: "border-green-300",
     textColor: "text-green-800",
     icon: <IconRefresh size={16} />,
-    title: "Retrievability Adjustment",
+    title: "Same-Day Reviews",
     description:
-      "Takes into account the estimated probability of successful recall at the time of review, impacting scheduling decisions.",
+      "Parameters that control how stability is adjusted when reviewing the same card multiple times within a single day.",
   },
-  decayRate: {
-    color: "bg-yellow-500",
-    lightColor: "bg-yellow-100",
-    borderColor: "border-yellow-300",
-    textColor: "text-yellow-800",
-    icon: <IconTrendingDown size={16} />,
-    title: "Decay Rate",
-    description:
-      "Represents the rate at which memory strength decays over time. Higher values mean faster forgetting.",
-  },
-  multiplicativeFactor: {
-    color: "bg-teal-500",
-    lightColor: "bg-teal-100",
-    borderColor: "border-teal-300",
-    textColor: "text-teal-800",
-    icon: <IconChartBar size={16} />,
-    title: "Multiplicative Factor",
-    description:
-      "Used to scale other factors, amplifying or dampening their influence in the FSRS formula. Controls sensitivity.",
-  },
-  other: {
-    color: "bg-gray-500",
-    lightColor: "bg-gray-100",
-    borderColor: "border-gray-300",
-    textColor: "text-gray-800",
-    icon: <IconHelp size={16} />,
-    title: "Other Impact",
-    description:
-      "Parameters that influence the model in ways that are not yet fully understood or are minor contributors.",
-  },
+  // retrievabilityFormula: {
+  //   color: "bg-yellow-500",
+  //   lightColor: "bg-yellow-100",
+  //   borderColor: "border-yellow-300",
+  //   textColor: "text-yellow-800",
+  //   icon: <IconTrendingDown size={16} />,
+  //   title: "Retrievability Formula",
+  //   description:
+  //     "Parameters related to the memory retrievability formula. In FSRS 5, retrievability is calculated using a power function R(t,S) = (1 + t/S*factor)^decay.",
+  // },
 };
 
 export const impactConfig = {
@@ -194,173 +171,173 @@ export const impactConfig = {
 export const defaultParameters: FSRSParameter[] = [
   {
     value: 0.40255,
-    name: "Request Retention",
+    name: "w0 - Initial Stability (Again)",
     description:
-      "Target retention rate for scheduling reviews. Higher values lead to more frequent reviews to ensure better memory retention.",
-    category: FSRSCategory.retrievabilityAdjustment,
+      "Initial memory stability when first review is rated 'Again'. This is how stable your memory is if you couldn't recall the card on first review.",
+    category: FSRSCategory.initialStability,
     impact: "high",
     isLocked: false,
   },
   {
     value: 1.18385,
-    name: "Maximum Interval",
+    name: "w1 - Initial Stability (Hard)",
     description:
-      "Maximum interval between reviews in days. Limits how far apart reviews can be scheduled.",
-    category: FSRSCategory.multiplicativeFactor,
-    impact: "medium",
+      "Initial memory stability when first review is rated 'Hard'. This is how stable your memory is if you found the card difficult to recall on first review.",
+    category: FSRSCategory.initialStability,
+    impact: "high",
     isLocked: false,
   },
   {
     value: 3.173,
-    name: "Difficulty Weight",
+    name: "w2 - Initial Stability (Good)",
     description:
-      "Weight of card difficulty in spacing algorithm. Higher values make difficult cards appear more frequently.",
-    category: FSRSCategory.difficultyAdjustment,
+      "Initial memory stability when first review is rated 'Good'. This is how stable your memory is if you successfully recalled the card on first review.",
+    category: FSRSCategory.initialStability,
     impact: "high",
     isLocked: false,
   },
   {
     value: 15.69105,
-    name: "Stability After Success",
+    name: "w3 - Initial Stability (Easy)",
     description:
-      "How much stability increases after a successful review. Higher values increase intervals more aggressively.",
-    category: FSRSCategory.stabilityAdjustment,
+      "Initial memory stability when first review is rated 'Easy'. This is how stable your memory is if you found the card very easy to recall on first review.",
+    category: FSRSCategory.initialStability,
     impact: "high",
     isLocked: false,
   },
   {
     value: 7.1949,
-    name: "Stability After Failure",
+    name: "w4 - Default Difficulty",
     description:
-      "How much stability decreases after a failed review. Lower values decrease intervals more aggressively.",
-    category: FSRSCategory.forgettingAdjustment,
-    impact: "high",
+      "Default difficulty value for new cards. Difficulty ranges from 1-10, with higher values meaning harder cards.",
+    category: FSRSCategory.difficultyAdjustment,
+    impact: "medium",
     isLocked: false,
   },
   {
     value: 0.5345,
-    name: "Spacing Multiplier",
+    name: "w5 - Initial Difficulty Factor",
     description:
-      "Multiplier for interval spacing. Higher values increase all intervals proportionally.",
-    category: FSRSCategory.multiplicativeFactor,
+      "Controls how the initial card difficulty is calculated based on first review rating. Affects the exponential decrease in difficulty for better initial ratings.",
+    category: FSRSCategory.difficultyAdjustment,
     impact: "medium",
     isLocked: false,
   },
   {
     value: 1.4604,
-    name: "Easy Bonus",
+    name: "w6 - Difficulty Change Rate",
     description:
-      "Bonus multiplier for 'Easy' responses. Higher values increase intervals more for easy cards.",
+      "Controls how much difficulty changes with each review. Higher values make difficulty change more dramatically based on your performance.",
     category: FSRSCategory.difficultyAdjustment,
-    impact: "medium",
+    impact: "high",
     isLocked: false,
   },
   {
     value: 0.0046,
-    name: "Hard Penalty",
+    name: "w7 - Difficulty Mean Reversion",
     description:
-      "Penalty multiplier for 'Hard' responses. Lower values decrease intervals more for hard cards.",
+      "Controls how much difficulty tends to revert to a baseline over time. Higher values make difficulty more resistant to extreme values.",
     category: FSRSCategory.difficultyAdjustment,
-    impact: "medium",
+    impact: "low",
     isLocked: false,
   },
   {
     value: 1.54575,
-    name: "New Card Stability",
+    name: "w8 - Stability Scaling Factor",
     description:
-      "Initial stability for new cards. Higher values start new cards with longer intervals.",
-    category: FSRSCategory.initialDifficulty,
+      "Exponential scaling factor in the stability increase formula. Controls the overall magnitude of stability increases after successful reviews.",
+    category: FSRSCategory.stabilityAdjustment,
     impact: "high",
     isLocked: false,
   },
   {
     value: 0.1192,
-    name: "New Card Ease",
+    name: "w9 - Stability Decay Factor",
     description:
-      "Initial ease factor for new cards. Higher values make new cards start with easier scheduling.",
-    category: FSRSCategory.initialDifficulty,
-    impact: "medium",
-    isLocked: false,
-  },
-  {
-    value: 1.01925,
-    name: "Learning Threshold",
-    description:
-      "Stability threshold for considering a card 'learned'. Higher values require more reviews before graduation.",
+      "Controls how the stability increase is affected by the current stability. Higher values reduce the stability increase for already stable memories.",
     category: FSRSCategory.stabilityAdjustment,
     impact: "medium",
     isLocked: false,
   },
   {
-    value: 1.9395,
-    name: "Lapse Stability Reduction",
+    value: 1.01925,
+    name: "w10 - Retrievability Impact",
     description:
-      "How much stability is reduced after a lapse. Higher values make forgotten cards reappear sooner.",
+      "Controls how retrievability affects stability increases. Higher values increase the stability gain more when reviewing cards with lower retrievability.",
+    category: FSRSCategory.stabilityAdjustment,
+    impact: "high",
+    isLocked: false,
+  },
+  {
+    value: 1.9395,
+    name: "w11 - Forgotten Stability Factor",
+    description:
+      "Scaling factor for stability after forgetting a card. Controls the overall magnitude of stability retained after a lapse.",
     category: FSRSCategory.forgettingAdjustment,
     impact: "high",
     isLocked: false,
   },
   {
     value: 0.11,
-    name: "Review Ease Factor",
+    name: "w12 - Difficulty Impact on Forgetting",
     description:
-      "Base ease factor for review cards. Higher values increase intervals more aggressively for all reviews.",
-    category: FSRSCategory.retrievabilityAdjustment,
+      "Controls how card difficulty affects stability after forgetting. Higher values reduce the stability drop more for easier cards.",
+    category: FSRSCategory.forgettingAdjustment,
     impact: "medium",
     isLocked: false,
   },
   {
     value: 0.29605,
-    name: "Minimum Ease",
+    name: "w13 - Prior Stability Impact",
     description:
-      "Minimum allowed ease factor. Prevents cards from becoming too difficult with repeated failures.",
-    category: FSRSCategory.other,
-    impact: "low",
+      "Controls how previous stability affects stability after forgetting. Higher values make prior stability more important in calculating new stability.",
+    category: FSRSCategory.forgettingAdjustment,
+    impact: "medium",
     isLocked: false,
   },
   {
     value: 2.2698,
-    name: "Ease Bonus",
+    name: "w14 - Retrievability Impact on Forgetting",
     description:
-      "Bonus applied to ease after correct answers. Higher values increase ease more after successful reviews.",
-    category: FSRSCategory.retrievabilityAdjustment,
-    impact: "low",
+      "Controls how retrievability affects stability after forgetting. Higher values increase the stability loss more for lower retrievability.",
+    category: FSRSCategory.forgettingAdjustment,
+    impact: "high",
     isLocked: false,
   },
   {
     value: 0.2315,
-    name: "Interval Modifier",
+    name: "w15 - Hard Rating Stability Multiplier",
     description:
-      "Global modifier for all intervals. Higher values increase all intervals proportionally.",
-    category: FSRSCategory.multiplicativeFactor,
-    impact: "high",
+      "Multiplier for stability when rating a card as 'Hard'. Values below 1 reduce the stability increase for hard cards.",
+    category: FSRSCategory.stabilityAdjustment,
+    impact: "medium",
     isLocked: false,
   },
   {
     value: 2.9898,
-    name: "Fuzz Factor",
+    name: "w16 - Easy Rating Stability Multiplier",
     description:
-      "Random variation applied to intervals. Higher values add more randomness to scheduled reviews.",
-    category: FSRSCategory.other,
-    impact: "low",
+      "Multiplier for stability when rating a card as 'Easy'. Values above 1 increase the stability boost for easy cards.",
+    category: FSRSCategory.stabilityAdjustment,
+    impact: "medium",
     isLocked: false,
   },
   {
     value: 0.51655,
-    name: "Forgetting Curve Decay",
+    name: "w17 - Same-Day Review Effect",
     description:
-      "Rate of memory decay in the forgetting curve. Higher values model faster forgetting.",
-    category: FSRSCategory.decayRate,
-    impact: "high",
+      "Controls how much same-day reviews affect stability. Used in the formula for updating stability on same-day reviews.",
+    category: FSRSCategory.sameDayReviews,
+    impact: "medium",
     isLocked: false,
   },
   {
     value: 0.6621,
-    name: "Forgetting okokkok Decay",
+    name: "w18 - Same-Day Review Grade Adjustment",
     description:
-      "Rate of memory decay in the forgetting curve. Higher values model faster forgetting.",
-    category: FSRSCategory.decayRate,
-    impact: "high",
+      "Controls how the rating affects same-day review stability adjustment. Higher values increase the impact of the grade on stability adjustments.",
+    category: FSRSCategory.sameDayReviews,
+    impact: "medium",
     isLocked: false,
   },
 ];

@@ -7,6 +7,9 @@ export enum FSRSCategory {
   decayRate = "decayRate",
   multiplicativeFactor = "multiplicativeFactor",
   other = "other",
+  // New categories for FSRS 5
+  initialStability = "initialStability",
+  sameDayReviews = "sameDayReviews",
 }
 
 export interface FSRSPreset {
