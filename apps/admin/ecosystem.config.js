@@ -16,7 +16,7 @@ module.exports = {
         NEXT_PUBLIC_UNSPLASH_ACCESS_KEY:
           "nWfzWf5tEY6gDnp5eJT_QP-iywksAbuEZh5heHhmmzI",
         NEXT_PUBLIC_API_URL:
-          "https://gateway.victoriousmeadow-6ebc1027.southeastasia.azurecontainerapps.io/",
+          "https://gateway.orangeocean-4a93c1ee.southeastasia.azurecontainerapps.io/",
         AUTH_SECRET: "SwkrPGy31Fg9pJLyAiGOkypD+H51+gSHYLbNKCZdKKY=",
         AUTH_GOOGLE_ID:
           "200245631284-jj3661ph7d8nv2704do68jl0njgfluta.apps.googleusercontent.com",

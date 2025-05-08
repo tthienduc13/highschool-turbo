@@ -8,10 +8,11 @@ import { Avatar, AvatarImage } from "@highschool/ui/components/ui/avatar";
 import { useEffect, useState } from "react";
 import { useAuthorsQuery } from "@highschool/react-query/queries";
 
+import { DocumentCard } from "../../common/document-card";
+
 import { StudySetCard } from "@/components/core/common/study-set-card";
 import { PreviewFlashcardModal } from "@/components/core/common/preview-flashcard-modal";
 import { GenericCourseCard } from "@/components/core/common/generic-course-card";
-import { StudyGuideCard } from "@/components/core/common/study-guide-card";
 
 interface AllResultProp {
   data: SearchAll | undefined;
@@ -56,81 +57,102 @@ export const AllResult = ({ data }: AllResultProp) => {
       />
 
       <div className="flex flex-col gap-10">
-        <Section
-          title="Thẻ ghi nhớ"
-          url={`/search?q=${query}&type=${SearchType.Flashcard}`}
-        >
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-            {data?.flashcards.slice(0, 6).map((flashcard) => {
-              const matchedUser = user?.find(
-                (user) => user.id === flashcard.userId,
-              );
+        {data.flashcards.length > 0 && (
+          <Section
+            title="Thẻ ghi nhớ"
+            url={`/search?q=${query}&type=${SearchType.Flashcard}`}
+          >
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+              {data?.flashcards.slice(0, 6).map((flashcard) => {
+                const matchedUser = user?.find(
+                  (user) => user.id === flashcard.userId,
+                );
 
-              return (
-                <StudySetCard
-                  key={flashcard.id}
-                  bottom={
-                    <div className="flex w-full flex-row items-center justify-between">
-                      <div className="flex flex-row items-center gap-2">
-                        <Avatar className="size-6">
-                          <AvatarImage
-                            alt={
-                              matchedUser?.fullname ?? "Người dùng Highschool"
-                            }
-                            src={matchedUser?.profilePicture ?? "/logo.svg"}
-                          />
-                        </Avatar>
-                        <div className="flex flex-row items-center gap-1">
-                          <div className="text-sm font-semibold">
-                            {matchedUser?.fullname ?? "Người dùng Highschool"}
+                return (
+                  <StudySetCard
+                    key={flashcard.id}
+                    bottom={
+                      <div className="flex w-full flex-row items-center justify-between">
+                        <div className="flex flex-row items-center gap-2">
+                          <Avatar className="size-6">
+                            <AvatarImage
+                              alt={
+                                matchedUser?.fullname ?? "Người dùng Highschool"
+                              }
+                              src={matchedUser?.profilePicture ?? "/logo.svg"}
+                            />
+                          </Avatar>
+                          <div className="flex flex-row items-center gap-1">
+                            <div className="text-sm font-semibold">
+                              {matchedUser?.fullname ?? "Người dùng Highschool"}
+                            </div>
                           </div>
                         </div>
+                        <Button
+                          size={"sm"}
+                          variant={"outline"}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedFlashcard(flashcard);
+                            setOpenPreviewModal(true);
+                          }}
+                        >
+                          Xem trước
+                        </Button>
                       </div>
-                      <Button
-                        size={"sm"}
-                        variant={"outline"}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setSelectedFlashcard(flashcard);
-                          setOpenPreviewModal(true);
-                        }}
-                      >
-                        Xem trước
-                      </Button>
-                    </div>
-                  }
-                  numTerms={flashcard.numberOfFlashcardContent}
-                  studySet={flashcard}
-                  user={{
-                    fullname: "asdf",
-                    image: "sdfa",
-                  }}
-                  userLoading={userLoading}
-                  onRemove={() => {}}
-                />
-              );
-            })}
-          </div>
-        </Section>
+                    }
+                    numTerms={flashcard.numberOfFlashcardContent}
+                    studySet={flashcard}
+                    user={{
+                      fullname: "asdf",
+                      image: "sdfa",
+                    }}
+                    userLoading={userLoading}
+                    onRemove={() => {}}
+                  />
+                );
+              })}
+            </div>
+          </Section>
+        )}
+        {data.subjects.length > 0 && (
+          <Section
+            title="Môn học"
+            url={`/search?q=${query}&type=${SearchType.Subject}`}
+          >
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6">
+              {data?.subjects
+                ?.slice(0, 3)
+                .map((course) => (
+                  <GenericCourseCard
+                    key={course.id}
+                    description={course.information}
+                    href={`/courses/${course.slug}`}
+                    image={course.image ?? "/logo.svg"}
+                    title={course.subjectName}
+                  />
+                ))}
+            </div>
+          </Section>
+        )}
         <Section
-          title="Môn học"
-          url={`/search?q=${query}&type=${SearchType.Subject}`}
+          title="Tài liệu học tập"
+          url={`/search?q=${query}&type=${SearchType.Document}`}
         >
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-6">
-            {data?.subjects
-              ?.slice(0, 3)
-              .map((course) => (
-                <GenericCourseCard
-                  key={course.id}
-                  description={course.information}
-                  href={`/courses/${course.slug}`}
-                  image={course.image ?? "/logo.svg"}
-                  title={course.subjectName}
+          <div className="grid w-full grid-cols-[repeat(auto-fill,minmax(300,1fr))] items-stretch gap-4">
+            {data?.documents
+              ?.slice(0, 4)
+              .map((document) => (
+                <DocumentCard
+                  key={document.id}
+                  data={document}
+                  userLoading={false}
+                  onRemove={() => {}}
                 />
               ))}
           </div>
         </Section>
-        <Section
+        {/* <Section
           title="Gợi ý học tập"
           url={`/search?q=${query}&type=${SearchType.News}`}
         >
@@ -147,7 +169,7 @@ export const AllResult = ({ data }: AllResultProp) => {
                 />
               ))}
           </div>
-        </Section>
+        </Section> */}
       </div>
     </>
   );
